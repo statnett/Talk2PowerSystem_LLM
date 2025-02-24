@@ -1,0 +1,58 @@
+== Large-Language Model (LLM) part of Talk2PowerSystem
+
+v0.1.0, 2025-02-24
+:toc:
+:toclevels: 2
+
+== Overview
+
+Large-Language Model (LLM) part of Talk2PowerSystem (Talk2PowerSystem_LLM) is a core component of the Talk2PowerSystem project, providing all the necessary coding and scripting to support the integration and operation of a Large-Language Model (LLM). This project focuses on enabling robust LLM functionalities, including data preprocessing, model training, inference, and seamless integration with other parts of the Talk2PowerSystem ecosystem.
+
+== Features
+
+* **Data Preprocessing:**  
+  Scripts to clean, normalize, and format data for LLM training.
+
+* **Model Training:**  
+  Pipelines and utilities for fine-tuning and training LLM models.
+
+* **Inference Engine:**  
+  Code for running real-time queries and generating model predictions.
+
+* **System Integration:**  
+  Tools and interfaces to connect the LLM with other components of the Talk2PowerSystem project.
+
+* **Testing and Evaluation:**  
+  Automated tests and performance evaluation scripts to ensure model reliability and accuracy.
+
+== Project Structure
+
+The repository is organized as follows:
+
+* `src/` - Main source code including training, inference, and integration scripts.
+* `data/` - Data sets and preprocessing scripts.
+* `docs/` - Documentation, guides, and technical notes.
+* `tests/` - Unit and integration tests for various modules.
+* `config/` - Configuration files for model parameters and environment settings.
+
+== Installation
+
+=== Prerequisites
+
+* Python 3.8 or higher.
+* Required Python packages listed in `requirements.txt`.
+* System dependencies as outlined in the installation guide within `docs/`.
+
+=== Setup
+
+To set up the project locally, follow these steps:
+
+1. Clone the repository:
+
+'git clone https://github.com/statnett/Talk2PowerSystem_LLM.git'
+
+
+
+== License
+
+Talk2PowerSystem_LLM is licensed under the Apache License 2.0. For more information, see the `LICENSE` file.

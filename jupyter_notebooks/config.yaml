@@ -1,6 +1,7 @@
 graphdb:
   base_url: "<placeholder>"
   repository_id: "<placeholder>"
+  username: "<placeholder>"
 ontology:
   ontology_schema_query_path: "ontology-schema-query.rq"
   string_enumerations_query_path: "string-enumerations-query.rq"

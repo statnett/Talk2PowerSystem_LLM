@@ -1,14 +1,6 @@
-PREFIX cims: <http://iec.ch/TC57/1999/rdf-schema-extensions-19990926#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX onto: <http://www.ontotext.com/>
-PREFIX cimex: <https://rawgit2.com/statnett/Talk2PowerSystem/main/demo1/cimex/>
-PREFIX cim: <http://iec.ch/TC57/2013/CIM-schema-cim16#>
-PREFIX entose: <http://entsoe.eu/CIM/SchemaExtension/3/1#>
-PREFIX entose2: <http://entsoe.eu/CIM/SchemaExtension/3/2#>
-PREFIX uml: <http://iec.ch/TC57/NonStandard/UML#>
 CONSTRUCT {
     ?x ?p ?o
-} FROM onto:explicit WHERE
+} FROM <http://www.ontotext.com/explicit> WHERE
 {
     {
         SELECT DISTINCT ?x {
@@ -19,9 +11,9 @@ CONSTRUCT {
             }
         }
     } UNION {
-        ?x rdfs:isDefinedBy cimex:
+        ?x <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://rawgit2.com/statnett/Talk2PowerSystem/main/demo1/cimex/>
     } UNION {
-        ?enumeration cims:stereotype uml:enumeration.
+        ?enumeration <http://iec.ch/TC57/1999/rdf-schema-extensions-19990926#stereotype> <http://iec.ch/TC57/NonStandard/UML#enumeration>.
         ?x a ?enumeration.
         [] ?y ?x.
     }

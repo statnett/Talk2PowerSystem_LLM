@@ -1,9 +1,8 @@
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX pti: <http://www.pti-us.com/PTI_CIM-schema-cim16#>
-PREFIX cim: <http://iec.ch/TC57/2013/CIM-schema-cim16#>
+PREFIX cim: <https://cim.ucaiug.io/ns#>
+
 SELECT DISTINCT ?property (GROUP_CONCAT(DISTINCT ?object; SEPARATOR="; ") AS ?unique_objects) {
     VALUES ?property {
-        cim:Measurement.measurementType pti:Diagram.type pti:Measurement.uncefactUnitCode
+        cim:Measurement.measurementType
     }
     [] ?property ?object.
 }

@@ -5,6 +5,9 @@ graphdb:
 ontology:
   ontology_schema_query_path: "ontology-schema-query.rq"
   string_enumerations_query_path: "string-enumerations-query.rq"
+tools:
+  autocomplete:
+    property_path: "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>"
 llm:
   azure_endpoint: "https://<placeholder>.openai.azure.com/"
   model_name: "<placeholder>"
@@ -26,6 +29,9 @@ prompts:
     SPARQL queries guidance:
     - Use only the classes and properties provided in the schema and don't invent or guess any.
     - Always try to return human-readable names or labels in addition to IRIs.
+    - A user can search for an object using the significant part of its master resource identifier or the full one.
+    In this case you must not use the autocomplete search tool. If the identifier is 8 characters you must use the predicate `cimex:mridSignificantPart`.
+    If it's 36 characters use `cim:IdentifiedObject.mRID`.
     - If you are answering a question about connectivity, respond with not only the final entry but also the connecting steps e.g. if you are answering about connected substations include ```?substation2 ?substation2Name ?line ?lineName``` if there is a direct cim:Line connecting them.
     Hint: when following connections through lines, filter out duplicate results to ensure you've grabbed a different object
     Hint: "AC or DC Line" refers to the class cim:Line. In general, questions about connections should use the cim:Line or cim:ConnectivityNodeContainer classes.

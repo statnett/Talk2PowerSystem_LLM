@@ -3,8 +3,8 @@ graphdb:
   repository_id: "<placeholder>"
   username: "<placeholder>"
 ontology:
-  ontology_schema_query_path: "ontology-schema-query.rq"
-  string_enumerations_query_path: "string-enumerations-query.rq"
+  ontology_schema_query_path: "queries/ontology-schema-query.rq"
+  string_enumerations_query_path: "queries/string-enumerations-query.rq"
 tools:
   autocomplete:
     property_path: "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>"

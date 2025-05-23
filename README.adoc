@@ -38,19 +38,28 @@ The repository is organized as follows:
 
 === Prerequisites
 
-* Python 3.8 or higher.
-* Required Python packages listed in `requirements.txt`.
-* System dependencies as outlined in the installation guide within `docs/`.
+* You should install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html). `miniconda` will suffice.
 
 === Setup
 
 To set up the project locally, follow these steps:
 
 1. Clone the repository:
++
+[,bash]
+----
+git clone https://github.com/statnett/Talk2PowerSystem_LLM.git
+----
 
-'git clone https://github.com/statnett/Talk2PowerSystem_LLM.git'
-
-
+2. Create a conda environment and install dependencies
++
+[,bash]
+----
+cd src
+conda create --name Talk2PowerSystemLLM --file conda-linux-64.lock
+conda activate Talk2PowerSystemLLM
+poetry install
+----
 
 == License
 

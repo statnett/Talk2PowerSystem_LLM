@@ -1,0 +1,9 @@
+PREFIX cim: <https://cim.ucaiug.io/ns#>
+
+SELECT DISTINCT ?property (GROUP_CONCAT(DISTINCT ?object; SEPARATOR="; ") AS ?unique_objects) {
+    VALUES ?property {
+        cim:Measurement.measurementType
+    }
+    [] ?property ?object.
+}
+GROUP BY ?property

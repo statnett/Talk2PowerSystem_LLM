@@ -26,7 +26,7 @@ def load_config(config_path: str) -> dict:
 
     # Resolve paths relative to config file
     ontology_config = config.get("ontology", {})
-    for key in ["ontology_schema_query_path", "string_enumerations_query_path"]:
+    for key in ["string_enumerations_query_path"]:
         if key in ontology_config:
             rel_path = ontology_config[key]
             abs_path = config_path.parent / rel_path
@@ -67,16 +67,16 @@ def get_talk_to_power_system_agent(
     sparql_query_tool = SparqlQueryTool(
         graph=graph,
     )
-    known_prefixes = graph.get_known_prefixes()
-    ontology_schema_query = Path(config["ontology"]["ontology_schema_query_path"]).read_text()
-    for prefix, namespace in known_prefixes.items():
-        ontology_schema_query = f"PREFIX {prefix}: <{namespace}>\n" + ontology_schema_query
+
+    ontology_schema_file_path = Path(config["ontology"]["ontology_schema_file_path"])
     ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
         graph=graph,
-        ontology_schema_query=ontology_schema_query,
+        ontology_schema_file_path=ontology_schema_file_path,
     )
+
     string_enumerations_query = Path(config["ontology"]["string_enumerations_query_path"]).read_text()
     results = graph.eval_sparql_query(string_enumerations_query)
+    known_prefixes = graph.get_known_prefixes()
     sorted_known_prefixes = OrderedDict(sorted(known_prefixes.items(), key=lambda x: len(x[1]), reverse=True))
     string_enumerations_prompt = ""
     for r in results["results"]["bindings"]:
@@ -86,11 +86,13 @@ def get_talk_to_power_system_agent(
                 shorten_property = shorten_property.replace(namespace, prefix + ":")
                 break
         string_enumerations_prompt += f"""The unique string values of the property {shorten_property} separated with `;` are: {r["unique_objects"]["value"]}. \n"""
+
     autocomplete_search_tool = AutocompleteSearchTool(
         graph=graph,
         limit=5,
         property_path=config["tools"]["autocomplete"]["property_path"],
     )
+
     now_tool = NowTool()
 
     instructions = f"""{config['prompts']['assistant_instructions']}

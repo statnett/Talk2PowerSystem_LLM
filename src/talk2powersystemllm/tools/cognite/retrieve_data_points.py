@@ -1,5 +1,5 @@
 import datetime
-from typing import Type, Union
+from typing import Type
 
 from cognite.client.data_classes.datapoints import Aggregate, DatapointsArray, DatapointsArrayList
 from pydantic import BaseModel, Field
@@ -134,7 +134,7 @@ class RetrieveDataPointsTool(BaseCogniteTool):
         )
 
     @staticmethod
-    def _try_to_parse_as_iso_format(datetime_string: str | None) -> Union[str | datetime.datetime | None]:
+    def _try_to_parse_as_iso_format(datetime_string: str | None) -> str | datetime.datetime | None:
         if datetime_string is None:
             return None
 

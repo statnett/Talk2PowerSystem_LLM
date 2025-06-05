@@ -3,7 +3,7 @@ graphdb:
   repository_id: "<placeholder>"
   username: "<placeholder>"
 ontology:
-  ontology_schema_query_path: "queries/ontology-schema-query.rq"
+  ontology_schema_file_path: "<absolute-path-to>/cim-subset-pretty.ttl"
   string_enumerations_query_path: "queries/string-enumerations-query.rq"
 tools:
   autocomplete:

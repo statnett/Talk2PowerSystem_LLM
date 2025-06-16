@@ -3,7 +3,7 @@ name = "Talk2PowerSystemLLM"
 version = "0.0.0a0"
 description = "Talk to Power System LLM"
 authors = []
-readme = "../README.adoc"
+readme = "README.adoc"
 license = "Apache-2.0"
 repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 
@@ -15,6 +15,14 @@ ttyg = "1.0.0"
 ttyg-evaluation = "1.0.1"
 jupyter = "1.1.1"
 langchain-openai = "0.3.16"
+cognite-sdk = "7.75.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.4.0"
+pytest-cov = "6.1.1"
+
+[tool.poetry.group.test]
+optional = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

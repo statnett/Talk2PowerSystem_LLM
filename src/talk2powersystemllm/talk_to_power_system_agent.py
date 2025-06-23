@@ -5,7 +5,9 @@ from pathlib import Path
 from typing import Optional
 
 import yaml
+from cognite.client import CogniteClient
 from langchain_core.language_models import BaseChatModel
+from langchain_core.tools import BaseTool
 from langchain_openai import AzureChatOpenAI
 from langgraph.graph.graph import CompiledGraph
 from langgraph.prebuilt import create_react_agent
@@ -18,6 +20,8 @@ from ttyg.tools import (
     SparqlQueryTool,
     RetrievalQueryTool,
 )
+
+from talk2powersystemllm.tools import configure_cognite_client, RetrieveDataPointsTool, RetrieveTimeSeriesTool
 
 
 def load_config(config_path: str) -> dict:
@@ -50,16 +54,25 @@ def init_graphdb(graphdb_config: dict) -> GraphDB:
         )
 
 
-def init_llm(config: dict) -> BaseChatModel:
-    model = AzureChatOpenAI(
-        azure_endpoint=config["llm"]["azure_endpoint"],
-        api_version=config["llm"]["api_version"],
-        model=config["llm"]["model_name"],
-        temperature=config["llm"]["temperature"],
-        seed=config["llm"]["seed"],
-        timeout=config["llm"]["timeout"],
+def init_cognite(cognite_config: dict) -> CogniteClient:
+    return configure_cognite_client(
+        cdf_project=cognite_config["cdf_project"],
+        tenant_id=cognite_config["tenant_id"],
+        client_name=cognite_config["client_name"],
+        base_url=cognite_config["base_url"],
+        interactive_client_id=cognite_config["interactive_client_id"]
     )
-    return model
+
+
+def init_llm(llm_config: dict) -> BaseChatModel:
+    return AzureChatOpenAI(
+        azure_endpoint=llm_config["azure_endpoint"],
+        api_version=llm_config["api_version"],
+        model=llm_config["model_name"],
+        temperature=llm_config["temperature"],
+        seed=llm_config["seed"],
+        timeout=llm_config["timeout"],
+    )
 
 
 def get_talk_to_power_system_agent(
@@ -68,25 +81,26 @@ def get_talk_to_power_system_agent(
 ) -> CompiledGraph:
     config = load_config(config_path)
 
-    graph = init_graphdb(config["graphdb"])
+    graphdb = init_graphdb(config["graphdb"])
+
     tools_config = config["tools"]
-    tools = []
+    tools: list[BaseTool] = []
 
     sparql_query_tool = SparqlQueryTool(
-        graph=graph,
+        graph=graphdb,
     )
     tools.append(sparql_query_tool)
 
     ontology_schema_config = tools_config["ontology_schema"]
     ontology_schema_file_path = Path(ontology_schema_config["file_path"])
     ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
-        graph=graph,
+        graph=graphdb,
         ontology_schema_file_path=ontology_schema_file_path,
     )
 
     string_enumerations_query = Path(ontology_schema_config["string_enumerations_query_path"]).read_text()
-    results = graph.eval_sparql_query(string_enumerations_query)
-    known_prefixes = graph.get_known_prefixes()
+    results = graphdb.eval_sparql_query(string_enumerations_query)
+    known_prefixes = graphdb.get_known_prefixes()
     sorted_known_prefixes = OrderedDict(sorted(known_prefixes.items(), key=lambda x: len(x[1]), reverse=True))
     string_enumerations_prompt = ""
     for r in results["results"]["bindings"]:
@@ -106,7 +120,7 @@ def get_talk_to_power_system_agent(
             "sparql_query_template": autocomplete_search_config["sparql_query_template"],
         })
     autocomplete_search_tool = AutocompleteSearchTool(
-        graph=graph,
+        graph=graphdb,
         **autocomplete_search_kwargs,
     )
     tools.append(autocomplete_search_tool)
@@ -122,6 +136,12 @@ def get_talk_to_power_system_agent(
         )
         tools.append(retrieval_query_tool)
 
+    if "cognite" in tools_config:
+        cognite_config = tools_config["cognite"]
+        cognite_client: CogniteClient = init_cognite(cognite_config)
+        tools.append(RetrieveTimeSeriesTool(cognite_client=cognite_client))
+        tools.append(RetrieveDataPointsTool(cognite_client=cognite_client))
+
     tools.append(NowTool())
 
     instructions = f"""{config['prompts']['assistant_instructions']}
@@ -135,7 +155,7 @@ def get_talk_to_power_system_agent(
     {string_enumerations_prompt}
     """
 
-    model = init_llm(config)
+    model = init_llm(config["llm"])
     return create_react_agent(
         model=model,
         tools=tools,

@@ -7,7 +7,7 @@ from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset, find_globa
 
 
 def get_args_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Evaluate Talk to Power System LLM Quality")
+    parser = argparse.ArgumentParser(description="Find minimum limit for retrieval")
     parser.add_argument(
         "--qa-dataset-path",
         dest="qa_dataset_path",

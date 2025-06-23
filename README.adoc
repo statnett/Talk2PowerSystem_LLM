@@ -33,6 +33,7 @@ The repository is organized as follows:
 * `docs/` - Documentation, guides, and technical notes.
 * `tests/` - Unit and integration tests for various modules.
 * `config/` - Configuration files for model parameters and environment settings.
+* `evaluation_results/` - Directory, which holds the evaluation results of the system
 
 == Installation
 

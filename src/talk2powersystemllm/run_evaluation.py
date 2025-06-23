@@ -1,23 +1,21 @@
 import argparse
-import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+import jsonlines
+import yaml
+from langgraph.graph.graph import CompiledGraph
 from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
 from ttyg_evaluation import run_evaluation, compute_aggregations
 
 from .talk_to_power_system_agent import get_talk_to_power_system_agent
+from .utils import load_gsc
 
 
-def load_gsc(path: Path) -> list[dict]:
-    with open(path, "r", encoding="utf-8") as file:
-        return json.load(file)
-
-
-def save_as_json_file(path: Path, obj) -> None:
+def save_as_yaml(path: Path, obj) -> None:
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, indent=2)
+        yaml.dump(obj, f, sort_keys=False)
 
 
 def get_args_parser() -> argparse.ArgumentParser:
@@ -44,29 +42,45 @@ def get_args_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def run_evaluation_on_split(
+        agent: CompiledGraph,
+        gsc_split: list[dict],
+        gsc_split_name: str,
+        results_dir: Path,
+) -> None:
+
+    chat_responses = dict()
+    chat_responses_file = results_dir / f"chat_responses_{gsc_split_name}.jsonl"
+    with jsonlines.open(chat_responses_file, mode="w") as writer:
+        for template in tqdm(gsc_split, desc=f"Processing templates from {gsc_split_name} split"):
+            for question in template["questions"]:
+                chat_response = run_agent_for_evaluation(
+                    agent,
+                    question["id"],
+                    {"messages": [("user", question["nl_question"])]}
+                )
+                chat_responses[question["id"]] = chat_response
+                writer.write(chat_response)
+
+    per_question_eval = run_evaluation(gsc_split, chat_responses)
+    evaluation_results_file = results_dir / f"evaluation_per_question_{gsc_split_name}.yaml"
+    save_as_yaml(evaluation_results_file, per_question_eval)
+    aggregates = compute_aggregations(per_question_eval)
+    aggregation_results = results_dir / f"evaluation_summary_{gsc_split_name}.yaml"
+    save_as_yaml(aggregation_results, aggregates)
+
+
 def main():
     args_parser = get_args_parser()
     args = args_parser.parse_args()
 
-    agent = get_talk_to_power_system_agent(args.chat_config_path)
-    gsc = load_gsc(Path(args.gsc_path))
-
-    chat_responses = dict()
-    for template in tqdm(gsc, desc="Processing templates"):
-        for question in template["qaSet"]:
-            chat_responses[question["question_id"]] = run_agent_for_evaluation(
-                agent,
-                question["question_id"],
-                {"messages": [("user", question["question"])]}
-            )
-
     results_dir = Path(args.results_dir)
-    results_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    per_question_eval = run_evaluation(load_gsc(args.gsc_path), chat_responses)
+    results_dir = results_dir / timestamp
+    results_dir.mkdir(parents=True, exist_ok=True)
 
-    evaluation_results_file = results_dir / f"evaluation_per_question_{timestamp}.json"
-    save_as_json_file(evaluation_results_file, per_question_eval)
-    aggregates = compute_aggregations(per_question_eval)
-    aggregation_results = results_dir / f"evaluation_summary_{timestamp}.json"
-    save_as_json_file(aggregation_results, aggregates)
+    _, dev_split, test_split = load_gsc(Path(args.gsc_path))
+    agent: CompiledGraph = get_talk_to_power_system_agent(args.chat_config_path)
+
+    run_evaluation_on_split(agent, dev_split, "dev", results_dir)
+    run_evaluation_on_split(agent, test_split, "test", results_dir)

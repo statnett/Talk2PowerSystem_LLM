@@ -11,7 +11,7 @@ repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 conda-lock = "3.0.1"
 python = "3.12.10"
 pip = "25.1.1"
-ttyg = "1.0.0"
+ttyg = "1.1.0"
 ttyg-evaluation = "2.1.2"
 jupyter = "1.1.1"
 langchain-openai = "0.3.24"
@@ -22,4 +22,6 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-evaluation = 'talk2powersystemllm.run_evaluation:main'
+evaluation = 'talk2powersystemllm.scripts.run_evaluation:main'
+qa_dataset2rdf = 'talk2powersystemllm.scripts.qa_dataset2rdf:main'
+find_min_retrieval_limit_on_dev = 'talk2powersystemllm.scripts.find_min_retrieval_limit_on_dev:main'

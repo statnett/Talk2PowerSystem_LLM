@@ -16,6 +16,7 @@ from ttyg.tools import (
     NowTool,
     OntologySchemaAndVocabularyTool,
     SparqlQueryTool,
+    RetrievalQueryTool,
 )
 
 
@@ -25,23 +26,28 @@ def load_config(config_path: str) -> dict:
         config = yaml.safe_load(f.read())
 
     # Resolve paths relative to config file
-    ontology_config = config.get("ontology", {})
-    for key in ["string_enumerations_query_path"]:
-        if key in ontology_config:
-            rel_path = ontology_config[key]
-            abs_path = config_path.parent / rel_path
-            ontology_config[key] = str(abs_path.resolve())
+    ontology_schema_config = config["tools"]["ontology_schema"]
+    for key in ontology_schema_config.keys():
+        rel_path = ontology_schema_config[key]
+        abs_path = config_path.parent / rel_path
+        ontology_schema_config[key] = str(abs_path.resolve())
     return config
 
 
-def init_graphdb(config: dict) -> GraphDB:
-    return GraphDB(
-        base_url=config["graphdb"]["base_url"],
-        repository_id=config["graphdb"]["repository_id"],
-        auth_header="Basic " + b64encode(
-            f"{config["graphdb"]["username"]}:{os.environ["GRAPHDB_PASSWORD"]}".encode("ascii")
-        ).decode(),
-    )
+def init_graphdb(graphdb_config: dict) -> GraphDB:
+    if "username" in graphdb_config:
+        return GraphDB(
+            base_url=graphdb_config["base_url"],
+            repository_id=graphdb_config["repository_id"],
+            auth_header="Basic " + b64encode(
+                f"{graphdb_config["username"]}:{os.environ["GRAPHDB_PASSWORD"]}".encode("ascii")
+            ).decode(),
+        )
+    else:
+        return GraphDB(
+            base_url=graphdb_config["base_url"],
+            repository_id=graphdb_config["repository_id"],
+        )
 
 
 def init_llm(config: dict) -> BaseChatModel:
@@ -61,20 +67,24 @@ def get_talk_to_power_system_agent(
         checkpointer: Optional[Checkpointer] = None,
 ) -> CompiledGraph:
     config = load_config(config_path)
-    graph = init_graphdb(config)
-    model = init_llm(config)
+
+    graph = init_graphdb(config["graphdb"])
+    tools_config = config["tools"]
+    tools = []
 
     sparql_query_tool = SparqlQueryTool(
         graph=graph,
     )
+    tools.append(sparql_query_tool)
 
-    ontology_schema_file_path = Path(config["ontology"]["ontology_schema_file_path"])
+    ontology_schema_config = tools_config["ontology_schema"]
+    ontology_schema_file_path = Path(ontology_schema_config["file_path"])
     ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
         graph=graph,
         ontology_schema_file_path=ontology_schema_file_path,
     )
 
-    string_enumerations_query = Path(config["ontology"]["string_enumerations_query_path"]).read_text()
+    string_enumerations_query = Path(ontology_schema_config["string_enumerations_query_path"]).read_text()
     results = graph.eval_sparql_query(string_enumerations_query)
     known_prefixes = graph.get_known_prefixes()
     sorted_known_prefixes = OrderedDict(sorted(known_prefixes.items(), key=lambda x: len(x[1]), reverse=True))
@@ -87,13 +97,32 @@ def get_talk_to_power_system_agent(
                 break
         string_enumerations_prompt += f"""The unique string values of the property {shorten_property} separated with `;` are: {r["unique_objects"]["value"]}. \n"""
 
+    autocomplete_search_config = tools_config["autocomplete_search"]
+    autocomplete_search_kwargs = {
+        "property_path": autocomplete_search_config["property_path"],
+    }
+    if "sparql_query_template" in autocomplete_search_config:
+        autocomplete_search_kwargs.update({
+            "sparql_query_template": autocomplete_search_config["sparql_query_template"],
+        })
     autocomplete_search_tool = AutocompleteSearchTool(
         graph=graph,
-        limit=5,
-        property_path=config["tools"]["autocomplete"]["property_path"],
+        **autocomplete_search_kwargs,
     )
+    tools.append(autocomplete_search_tool)
 
-    now_tool = NowTool()
+    if "retrieval_search" in tools_config:
+        retrieval_search_config = tools_config["retrieval_search"]
+        retrieval_query_tool = RetrievalQueryTool(
+            graph=init_graphdb(retrieval_search_config["graphdb"]),
+            connector_name=retrieval_search_config["connector_name"],
+            name=retrieval_search_config["name"],
+            description=retrieval_search_config["description"],
+            sparql_query_template=retrieval_search_config["sparql_query_template"],
+        )
+        tools.append(retrieval_query_tool)
+
+    tools.append(NowTool())
 
     instructions = f"""{config['prompts']['assistant_instructions']}
 
@@ -105,13 +134,11 @@ def get_talk_to_power_system_agent(
 
     {string_enumerations_prompt}
     """
+
+    model = init_llm(config)
     return create_react_agent(
         model=model,
-        tools=[
-            autocomplete_search_tool,
-            sparql_query_tool,
-            now_tool,
-        ],
+        tools=tools,
         prompt=instructions,
         checkpointer=checkpointer,
     )

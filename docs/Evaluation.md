@@ -7,7 +7,7 @@ cd src/
 conda activate Talk2PowerSystemLLM
 export GRAPHDB_PASSWORD=***
 export AZURE_OPENAI_API_KEY=***
-poetry run evaluation --chat_config_path CHAT_CONFIG_PATH --gsc-path GSC_PATH --results_dir RESULTS_DIR
+poetry run evaluation --chat_config_path CHAT_CONFIG_PATH --qa-dataset-path QA_DATASET_PATH --results_dir RESULTS_DIR
 ```
 
 The results will be saved in the specified `RESULTS_DIR` under a sub-folder with name derived from the current date time, and it will include:

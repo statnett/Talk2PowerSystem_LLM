@@ -9,8 +9,8 @@ from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
 from ttyg_evaluation import run_evaluation, compute_aggregations
 
-from .talk_to_power_system_agent import get_talk_to_power_system_agent
-from .utils import load_gsc
+from talk2powersystemllm.talk_to_power_system_agent import get_talk_to_power_system_agent
+from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset
 
 
 def save_as_yaml(path: Path, obj) -> None:
@@ -19,7 +19,7 @@ def save_as_yaml(path: Path, obj) -> None:
 
 
 def get_args_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Evaluate Chat bot")
+    parser = argparse.ArgumentParser(description="Evaluate Talk to Power System LLM Quality")
     parser.add_argument(
         "--chat_config_path",
         dest="chat_config_path",
@@ -27,10 +27,10 @@ def get_args_parser() -> argparse.ArgumentParser:
         help="Path to the chat config.yaml file",
     )
     parser.add_argument(
-        "--gsc-path",
-        dest="gsc_path",
+        "--qa-dataset-path",
+        dest="qa_dataset_path",
         required=True,
-        help="Path to the gold standard",
+        help="Path to the Q&A dataset serialized in the expected yaml format",
     )
     parser.add_argument(
         "--results_dir",
@@ -44,15 +44,14 @@ def get_args_parser() -> argparse.ArgumentParser:
 
 def run_evaluation_on_split(
         agent: CompiledGraph,
-        gsc_split: list[dict],
-        gsc_split_name: str,
+        split: list[dict],
+        split_name: str,
         results_dir: Path,
 ) -> None:
-
     chat_responses = dict()
-    chat_responses_file = results_dir / f"chat_responses_{gsc_split_name}.jsonl"
+    chat_responses_file = results_dir / f"chat_responses_{split_name}.jsonl"
     with jsonlines.open(chat_responses_file, mode="w") as writer:
-        for template in tqdm(gsc_split, desc=f"Processing templates from {gsc_split_name} split"):
+        for template in tqdm(split, desc=f"Processing templates from {split_name} split"):
             for question in template["questions"]:
                 chat_response = run_agent_for_evaluation(
                     agent,
@@ -62,11 +61,11 @@ def run_evaluation_on_split(
                 chat_responses[question["id"]] = chat_response
                 writer.write(chat_response)
 
-    per_question_eval = run_evaluation(gsc_split, chat_responses)
-    evaluation_results_file = results_dir / f"evaluation_per_question_{gsc_split_name}.yaml"
+    per_question_eval = run_evaluation(split, chat_responses)
+    evaluation_results_file = results_dir / f"evaluation_per_question_{split_name}.yaml"
     save_as_yaml(evaluation_results_file, per_question_eval)
     aggregates = compute_aggregations(per_question_eval)
-    aggregation_results = results_dir / f"evaluation_summary_{gsc_split_name}.yaml"
+    aggregation_results = results_dir / f"evaluation_summary_{split_name}.yaml"
     save_as_yaml(aggregation_results, aggregates)
 
 
@@ -79,7 +78,7 @@ def main():
     results_dir = results_dir / timestamp
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    _, dev_split, test_split = load_gsc(Path(args.gsc_path))
+    _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path))
     agent: CompiledGraph = get_talk_to_power_system_agent(args.chat_config_path)
 
     run_evaluation_on_split(agent, dev_split, "dev", results_dir)

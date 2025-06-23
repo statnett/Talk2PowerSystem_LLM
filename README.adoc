@@ -55,10 +55,17 @@ git clone https://github.com/statnett/Talk2PowerSystem_LLM.git
 +
 [,bash]
 ----
-cd src
 conda create --name Talk2PowerSystemLLM --file conda-linux-64.lock
 conda activate Talk2PowerSystemLLM
 poetry install
+----
+
+== Run tests
+[,bash]
+----
+conda activate Talk2PowerSystemLLM
+poetry install --with test
+poetry run pytest --cov=talk2powersystemllm --cov-report=term-missing tests/unit_tests/
 ----
 
 == License

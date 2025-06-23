@@ -1,17 +1,23 @@
 graphdb:
-  base_url: "<placeholder>"
-  repository_id: "<placeholder>"
-  username: "<placeholder>"
+  base_url: "https://cim.ontotext.com/graphdb"
+  repository_id: "nordic44"
+  username: "admin"
 ontology:
   ontology_schema_file_path: "<absolute-path-to>/cim-subset-pretty.ttl"
   string_enumerations_query_path: "queries/string-enumerations-query.rq"
 tools:
   autocomplete:
     property_path: "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>"
+  cognite:
+    cdf_project: prod
+    tenant_id: a8d61462-f252-44b2-bf6a-d7231960c041
+    client_name: graphwise
+    base_url: https://statnett.cognitedata.com
+    interactive_client_id: 0d448de6-4574-44af-9a3b-2bd0304cfa36
 llm:
-  azure_endpoint: "https://<placeholder>.openai.azure.com/"
-  model_name: "<placeholder>"
-  api_version: "2025-01-01-preview"
+  azure_endpoint: "https://statnett.openai.azure.com/"
+  model_name: "gpt-4.1"
+  api_version: "2024-12-01-preview"
   temperature: 0
   seed: 1
   timeout: 120
@@ -26,7 +32,8 @@ prompts:
       1. Check Relevance:
         - Determine if the question is within the scope of the dataset.
         - If it is out of scope, clearly inform the user (e.g., “That type of data is not available in the current dataset.”).
-      2. Entity Recognition and Resolution:
+      2. If the question is related to electricity prices or power flow, use the time series data to retrieve the information, and do not call the `sparql_query` or `autocomplete_search_tool`.
+      3. Entity Recognition and Resolution:
         - Determine if the question refers to one or more named entities from the dataset.
         - If it does, use the `autocomplete_search_tool` to retrieve their IRIs. Always use their IRIs in SPARQL queries; never refer to named entities by name in the SPARQL queries.
         - Exceptions (do not use `autocomplete_search_tool`):

@@ -3,7 +3,6 @@
 ## Run the evaluation
 
 ```bash
-cd src/
 conda activate Talk2PowerSystemLLM
 export GRAPHDB_PASSWORD=***
 export AZURE_OPENAI_API_KEY=***

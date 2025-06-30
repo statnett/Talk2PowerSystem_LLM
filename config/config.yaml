@@ -5,7 +5,6 @@ graphdb:
 tools:
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
-    string_enumerations_query_path: "ontology/string-enumerations-query.rq"
   autocomplete_search:
     property_path: "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>"
     sparql_query_template: |
@@ -103,3 +102,12 @@ prompts:
         * `xsd:boolean` (e.g., "true"^^xsd:boolean, "false"^^xsd:boolean)
         * `xsd:dateTime` (e.g., "2025-06-18T10:00:00Z"^^xsd:dateTime)
         * `xsd:date` (e.g., "2025-06-18"^^xsd:date)
+
+    The ontology schema to use in SPARQL queries is:
+
+    ```turtle
+    {ontology_schema}
+    ```
+
+    Pay special attention to ``cims:pragmatics`` from the ontology schema. You can find practical information for the classes and properties.
+    Also, for some predicates you can find the unique object values for this predicate (``skos:example`` also gives all possible values).

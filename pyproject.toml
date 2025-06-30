@@ -16,7 +16,7 @@ ttyg-evaluation = "2.1.2"
 jupyter = "1.1.1"
 langchain-openai = "0.3.24"
 jsonlines = "4.0.0"
-cognite-sdk = "7.75.2"
+cognite-sdk = "7.76.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.4.1"

@@ -1,6 +1,5 @@
 import os
 from base64 import b64encode
-from collections import OrderedDict
 from pathlib import Path
 from typing import Optional
 
@@ -98,19 +97,6 @@ def get_talk_to_power_system_agent(
         ontology_schema_file_path=ontology_schema_file_path,
     )
 
-    string_enumerations_query = Path(ontology_schema_config["string_enumerations_query_path"]).read_text()
-    results = graphdb.eval_sparql_query(string_enumerations_query)
-    known_prefixes = graphdb.get_known_prefixes()
-    sorted_known_prefixes = OrderedDict(sorted(known_prefixes.items(), key=lambda x: len(x[1]), reverse=True))
-    string_enumerations_prompt = ""
-    for r in results["results"]["bindings"]:
-        shorten_property = r["property"]["value"]
-        for prefix, namespace in sorted_known_prefixes.items():
-            if shorten_property.startswith(namespace):
-                shorten_property = shorten_property.replace(namespace, prefix + ":")
-                break
-        string_enumerations_prompt += f"""The unique string values of the property {shorten_property} separated with `;` are: {r["unique_objects"]["value"]}. \n"""
-
     autocomplete_search_config = tools_config["autocomplete_search"]
     autocomplete_search_kwargs = {
         "property_path": autocomplete_search_config["property_path"],
@@ -144,16 +130,9 @@ def get_talk_to_power_system_agent(
 
     tools.append(NowTool())
 
-    instructions = f"""{config['prompts']['assistant_instructions']}
-
-    The ontology schema to use in SPARQL queries is:
-
-    ```turtle
-    {ontology_schema_and_vocabulary_tool.schema_graph.serialize(format='turtle')}
-    ```
-
-    {string_enumerations_prompt}
-    """
+    instructions = f"""{config['prompts']['assistant_instructions']}""".replace(
+        "{ontology_schema}", ontology_schema_and_vocabulary_tool.schema_graph.serialize(format='turtle')
+    )
 
     model = init_llm(config["llm"])
     return create_react_agent(

@@ -524,14 +524,14 @@ test = ["pytest"]
 
 [[package]]
 name = "cognite-sdk"
-version = "7.75.2"
+version = "7.76.0"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "cognite_sdk-7.75.2-py3-none-any.whl", hash = "sha256:0118f55d2ded9d10e2bf7102c98e95ab8677db9dca007674be668a38513cf12f"},
-    {file = "cognite_sdk-7.75.2.tar.gz", hash = "sha256:c476c6cf5336012f4561a8883b4674889675dbb7f67e83245d20590d9f4f55ca"},
+    {file = "cognite_sdk-7.76.0-py3-none-any.whl", hash = "sha256:351d43fca8d6a2ed8680686748503fa4064da2585f97e445221fd35d0d182000"},
+    {file = "cognite_sdk-7.76.0.tar.gz", hash = "sha256:6bd3e1fd0002e5d0e089477c009ed356af9111f55cbff05ee08007ccb3fc2e8d"},
 ]
 
 [package.dependencies]
@@ -4550,4 +4550,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "3.12.10"
-content-hash = "5601ff5205587ed94285b4f135a742662aa697fdb3b78c49192892ac9c9ca373"
+content-hash = "304f447559ee32417d153fa2acc8a1f8335c19e8124e07efd835d962cb5cd7ba"

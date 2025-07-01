@@ -50,7 +50,7 @@ tools:
     interactive_client_id: 0d448de6-4574-44af-9a3b-2bd0304cfa36
 llm:
   azure_endpoint: "https://statnett.openai.azure.com/"
-  model_name: "gpt-4.1"
+  model: "gpt-4.1"
   api_version: "2024-12-01-preview"
   temperature: 0
   seed: 1

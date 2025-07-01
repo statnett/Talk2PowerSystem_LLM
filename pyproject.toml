@@ -1,35 +1,42 @@
-[tool.poetry]
+[project]
 name = "Talk2PowerSystemLLM"
 version = "0.0.0a0"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
 license = "Apache-2.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ttyg==1.2.1",
+    "ttyg-evaluation==2.2.0",
+    "jupyter==1.1.1",
+    "langchain-openai==0.3.27",
+    "jsonlines==4.0.0",
+    "cognite-sdk==7.76.0",
+    "pydantic-settings==2.10.1",
+    "PyYAML==6.0.2",
+]
+
+[project.urls]
 repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 
-[tool.poetry.dependencies]
-conda-lock = "3.0.1"
-python = "3.12.10"
-pip = "25.1.1"
-ttyg = "1.1.0"
-ttyg-evaluation = "2.1.2"
-jupyter = "1.1.1"
-langchain-openai = "0.3.24"
-jsonlines = "4.0.0"
-cognite-sdk = "7.76.0"
-
 [tool.poetry.group.test.dependencies]
-pytest = "8.4.1"
-pytest-cov = "6.2.1"
+pytest = "<9,>=8"
+pytest-cov = "<7,>=6"
 
 [tool.poetry.group.test]
 optional = true
 
+[[tool.poetry.source]]
+name = "statnett"
+url = "https://artifactory.statnett.no/artifactory/api/pypi/pypi_statnett_virtual/simple/"
+priority = "supplemental"
+
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.scripts]
+[project.scripts]
 evaluation = 'talk2powersystemllm.scripts.run_evaluation:main'
 qa_dataset2rdf = 'talk2powersystemllm.scripts.qa_dataset2rdf:main'
 find_min_retrieval_limit_on_dev = 'talk2powersystemllm.scripts.find_min_retrieval_limit_on_dev:main'

@@ -9,9 +9,8 @@ from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
 from ttyg_evaluation import run_evaluation, compute_aggregations
 
-from talk2powersystemllm.config import read_config
+from talk2powersystemllm.agent import Talk2PowerSystemAgent
 from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset
-from talk2powersystemllm.talk_to_power_system_agent import get_talk_to_power_system_agent
 
 
 def save_as_yaml(path: Path, obj) -> None:
@@ -80,10 +79,9 @@ def main():
     results_dir.mkdir(parents=True, exist_ok=True)
 
     _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path))
-    config = read_config(
-        Path(args.chat_config_path)
-    )
-    agent: CompiledStateGraph = get_talk_to_power_system_agent(config)
+    agent: CompiledStateGraph = Talk2PowerSystemAgent(
+        Path(args.chat_config_path),
+    ).agent
 
     run_evaluation_on_split(agent, dev_split, "dev", results_dir)
     run_evaluation_on_split(agent, test_split, "test", results_dir)

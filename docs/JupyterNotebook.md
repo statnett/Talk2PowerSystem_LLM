@@ -61,15 +61,17 @@ It should be your home directory.
 - Now you should be able to run the notebook
 - You should change this
 ```
-config = read_config(
-    Path("../../config/cim.ontotext.yaml")
-)
+agent_executor = Talk2PowerSystemAgent(
+    Path("../../config/cim.ontotext.yaml"),
+    checkpointer=InMemorySaver()
+).agent
 ```
 to
 ```
-config = read_config(
-    Path("../../config/rndp.yaml")
-)
+agent_executor = Talk2PowerSystemAgent(
+    Path("../../config/rndp.yaml"),
+    checkpointer=InMemorySaver()
+).agent
 ```
 - The notebook will prompt you for the GraphDB and Azure OpenAI credentials.
   - Graphdb password is shared in Graphwise Keeper, entry `Statnett/[RNDP] GraphDB chatbot user`

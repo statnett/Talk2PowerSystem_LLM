@@ -1,0 +1,6 @@
+
+<urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f> a <https://cim.ucaiug.io/ns#Substation>;
+  <https://cim.ucaiug.io/ns#IdentifiedObject.mRID> "f176961e-9aeb-11e5-91da-b8763fd99c5f";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.name> "KONGSBERG";
+  <https://cim.ucaiug.io/ns#Substation.Region> <urn:uuid:f1769609-9aeb-11e5-91da-b8763fd99c5f>;
+  <https://cim.ucaiug.io/rules#mridSignificantPart> "f176961e" .

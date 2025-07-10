@@ -246,6 +246,7 @@ async def conversations(
 
     # noinspection PyTypeChecker
     for message in agent.agent.stream(input_, runnable_config, stream_mode="updates"):
+        logging.debug(f"Received message {message}")
         if "agent" in message:
             for ai_message in message["agent"]["messages"]:
                 usage_metadata = ai_message.usage_metadata

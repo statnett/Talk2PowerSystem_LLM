@@ -27,6 +27,8 @@ repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 [tool.poetry.group.test.dependencies]
 pytest = "<9,>=8"
 pytest-cov = "<7,>=6"
+requests = "<3,>=2"
+mockserver-client = "0.0.6"
 
 [tool.poetry.group.test]
 optional = true

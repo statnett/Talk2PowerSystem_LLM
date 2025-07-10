@@ -14,8 +14,7 @@ COPY ./pyproject.toml ./poetry.lock ./README.adoc /code/
 ENV POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1
 
-RUN pip install poetry==2.1.3
-RUN poetry install
+RUN pip install poetry==2.1.3 && poetry install
 
 RUN mkdir -p /code/logs && chmod 0777 /code/logs
 

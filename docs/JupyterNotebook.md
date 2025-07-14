@@ -72,7 +72,11 @@ config = read_config(
 )
 ```
 - The notebook will prompt you for the GraphDB and Azure OpenAI credentials.
-  - Graphdb password is shared in Graphwise Keeper, entry `Statnett/[RNDP] GraphDB chatbot user`
+  - Graphdb password can be obtained with:
+```commandline
+cat /srv/rndp/talk2powersystem/chatbot-user-graphdb-password
+```
+from the terminal. It's also shared in Graphwise Keeper, entry `Statnett/[RNDP] GraphDB chatbot user`
   - Azure OpenAI credentials can be obtained with:
 ```commandline
 cat /srv/rndp/talk2powersystem/openai-api-key

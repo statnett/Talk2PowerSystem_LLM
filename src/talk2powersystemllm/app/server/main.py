@@ -14,7 +14,7 @@ from fastapi import FastAPI, Request, Response, Header, status
 from fastapi.responses import HTMLResponse
 from langchain_core.messages import AIMessage, ToolMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
-from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.redis import RedisSaver
 from starlette.responses import JSONResponse
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgent
@@ -24,6 +24,7 @@ from .healthchecks import (
     CogniteHealthchecker,
     HealthChecks,
 )
+from .healthchecks.redis_healthcheck import RedisHealthchecker
 from .logging_config import LoggingConfig
 from .manifest import __sha__, __branch__, __timestamp__, __version__
 from .trouble import get_trouble_html
@@ -48,11 +49,29 @@ gtg_info: GoodToGoInfo = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.LOGGING_YAML_FILE)
 
-memory_saver = InMemorySaver()
-agent = Talk2PowerSystemAgent(
-    settings.AGENT_CONFIG,
-    checkpointer=memory_saver
-)
+redis_password = settings.REDIS_PASSWORD
+redis_auth = ""
+if redis_password:
+    redis_auth = f"{settings.REDIS_USERNAME}:{redis_password.get_secret_value()}@"
+
+with RedisSaver.from_conn_string(
+        f"redis://{redis_auth}{settings.REDIS_HOST}:{settings.REDIS_PORT}",
+        connection_args={
+            'socket_connect_timeout': settings.REDIS_CONNECT_TIMEOUT,
+            'socket_timeout': settings.REDIS_READ_TIMEOUT,
+            'health_check_interval': settings.REDIS_HEALTHCHECK_INTERVAL,
+        },
+        ttl={
+            "default_ttl": settings.REDIS_TTL,
+            "refresh_on_read": settings.REDIS_TTL_REFRESH_ON_READ,
+        }
+) as memory_saver:
+    memory_saver.setup()
+    redis_healthcheck = RedisHealthchecker(memory_saver._redis)
+    agent = Talk2PowerSystemAgent(
+        settings.AGENT_CONFIG,
+        checkpointer=memory_saver
+    )
 graphdb_healthcheck = GraphDBHealthchecker(agent.graphdb_client)
 if agent.cognite_client:
     cognite_healthcheck = CogniteHealthchecker(agent.cognite_client)

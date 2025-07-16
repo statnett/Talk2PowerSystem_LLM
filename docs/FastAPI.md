@@ -7,6 +7,26 @@
 * `AGENT_CONFIG` - REQUIRED - Path to the agent configuration file in yaml format.
   Check [the agent configurations here](./AgentConfig.md).
 
+### Redis
+
+* `REDIS_HOST` - REQUIRED - Redis connection host. For example, `localhost`.
+The connection to Redis is with `redis://` protocol, i.e. TCP socket connection.
+* `REDIS_PORT` - OPTIONAL, DEFAULT=`6379` - Redis connection port.
+* `REDIS_CONNECT_TIMEOUT` - OPTIONAL, DEFAULT=`2` - Redis connect timeout in seconds, must be >= 1.
+* `REDIS_READ_TIMEOUT` - OPTIONAL, DEFAULT=`10` - Redis read timeout in seconds, must be >= 1.
+* `REDIS_HEALTHCHECK_INTERVAL` - OPTIONAL, DEFAULT=`3` - Redis health check interval in seconds, must be >= 1.
+See https://redis.io/docs/latest/develop/clients/redis-py/produsage/#health-checks.
+* `REDIS_USERNAME` - OPTIONAL, DEFAULT=`default` - username for basic authentication to Redis.
+* `REDIS_PASSWORD` - OPTIONAL, none by default - password for basic authentication to Redis.
+
+#### TTL
+
+* `REDIS_TTL` - OPTIONAL, DEFAULT=`60` minutes, integer, must be >= 1 - time to live in minutes.
+* `REDIS_TTL_REFRESH_ON_READ`- OPTIONAL, DEFAULT=`True`, boolean - whether to refresh TTL on read.
+
+The semantics here is as follows: the entire memory for a conversation (all messages) are persisted for `REDIS_TTL` minutes.
+If new messages are added to the conversation or the explain functionality is used, then if `REDIS_TTL_REFRESH_ON_READ=True`, the time to live is refreshed.
+
 ### HealthChecks
 
 * `GTG_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The gtg endpoint refresh interval.
@@ -48,7 +68,15 @@ The `version` information is included in the response from the `/__about` endpoi
 
 ### Run the app locally
 
-Create a `.env` file with sample content
+To run the app locally you need to point it to a running GraphDB, Redis and Azure OpenAI deployment.
+You can use GraphDB from cim.ontotext.com and the Azure OpenAI deployments from Graphwise Azure account (shared in Keeper).
+You need however to run Redis locally. In order to do this you can use the Redis setup from [the dev docker compose setup](../src/talk2powersystemllm/app/dev-docker-compose.yaml).
+```commandline
+docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml up -d redis
+```
+
+There is a ready made chat bot config file you can use ["cim.ontotext.no.cognite.yaml"](../config/cim.ontotext.no.cognite.yaml),
+but you will need to create a `.env` file with sample content
 
 ```
 MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/dummy-manifest.yaml
@@ -56,6 +84,8 @@ LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystem
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/cim.ontotext.no.cognite.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
 TROUBLE_MD_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/trouble.md
+REDIS_HOST=localhost
+REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
 GRAPHDB_PASSWORD=***
 LLM_API_KEY=***
 ```
@@ -67,15 +97,18 @@ uvicorn talk2powersystemllm.app.server.main:app --reload --env-file .env
 
 The API is started on http://127.0.0.1:8000. You can also open the API documentation at http://127.0.0.1:8000/docs.
 
+When you're finished
+
+```commandline
+docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml down -v --remove-orphans
+```
+
 ## Docker image
 
-The docker image starts the app on port 8000 using uvicorn server.
-The number of uvicorn workers is 1 and must not be increased, because for now the chatbot memory is kept into the
-process memory
-and increasing the number of uvicorn workers will create new processes, which will lead to users experience unexpected
-behaviour.
+The docker image starts the app on port 8000 using uvicorn server with 4 [workers](https://fastapi.tiangolo.com/deployment/server-workers/) by default.
+To change the number of workers use the environment variable `WEB_CONCURRENCY`.
 
-File structure:
+### File structure
 
 - `/code`
     - `README.adoc` - required by `poetry` in order to install the dependencies. Copied from
@@ -90,13 +123,39 @@ File structure:
     - `pyproject.toml` - required by `poetry` in order to install the dependencies.
     - `talk2powersystemllm` - python source code.
 
+### Environment variables
+
+- `WEB_CONCURRENCY` - OPTIONAL, DEFAULT = `4` - number of uvicorn worker processes.
+
 ### Build and run locally
 
+To run the image locally you need to point the app to a running GraphDB, Redis and Azure OpenAI deployment.
+You can use GraphDB from cim.ontotext.com and the Azure OpenAI deployments from Graphwise Azure account (shared in Keeper).
+However, you need however to run Redis locally.
+There is a ready made [dev docker compose setup](../src/talk2powersystemllm/app/dev-docker-compose.yaml),
+which uses the chat bot config file ["cim.ontotext.no.cognite.yaml"](../config/cim.ontotext.no.cognite.yaml).
+Create a file `webapp.env` with content
+```
+AGENT_CONFIG=/code/config/cim.ontotext.no.cognite.yaml
+GRAPHDB_PASSWORD=<GRAPHDB_PASSWORD_FROM_KEEPER>
+LLM_API_KEY=<API_KEY_FROM_KEEPER>
+REDIS_HOST=redis
+REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
+```
+You must replace <GRAPHDB_PASSWORD_FROM_KEEPER> and <API_KEY_FROM_KEEPER> with the corresponding secrets from Keeper.
+!!! Any secrets containing a `$` must be escaped by replacing the `$` with `$$`.
+
+Then execute:
 ```commandline
 cp src/talk2powersystemllm/app/dummy-manifest.yaml git-manifest.yaml
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
-docker run -p 8000:8000 -e AGENT_CONFIG=/code/config/cim.ontotext.no.cognite.yaml -e LLM_API_KEY=<API_KEY_FROM_KEEPER> -e GRAPHDB_PASSWORD=<GRAPHDB_PASSWORD_FROM_KEEPER> talk2powersystem
+docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml up -d
 ```
 
-You must escape any `$` signs in the password with `\`!
 The API is started on http://127.0.0.1:8000. You can also open the API documentation at http://127.0.0.1:8000/docs.
+
+When you're finished
+
+```commandline
+docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml down -v --remove-orphans
+```

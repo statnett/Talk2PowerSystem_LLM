@@ -1,3 +1,5 @@
+import logging
+
 from cognite.client import CogniteClient
 
 from .healthchecks import HealthChecks
@@ -30,4 +32,5 @@ class CogniteHealthchecker(metaclass=SingletonMeta):
             )
             return CogniteHealthcheck(status=HealthStatus.OK, message="Cognite can be queried.")
         except Exception as error:
+            logging.error("Exception while querying Cognite", exc_info=error)
             return CogniteHealthcheck(status=HealthStatus.ERROR, message=str(error))

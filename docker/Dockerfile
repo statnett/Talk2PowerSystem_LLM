@@ -18,4 +18,5 @@ RUN pip install poetry==2.1.3 && poetry install
 
 RUN mkdir -p /code/logs && chmod 0777 /code/logs
 
-CMD ["uvicorn", "talk2powersystemllm.app.server.main:app", "--workers", "1", "--host", "0.0.0.0", "--port", "8000"]
+ENV WEB_CONCURRENCY=${WEB_CONCURRENCY:-4}
+CMD exec uvicorn talk2powersystemllm.app.server.main:app --workers "$WEB_CONCURRENCY" --host 0.0.0.0 --port 8000

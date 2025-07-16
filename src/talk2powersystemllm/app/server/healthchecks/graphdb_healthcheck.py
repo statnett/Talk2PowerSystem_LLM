@@ -1,3 +1,5 @@
+import logging
+
 from ttyg.graphdb import GraphDB
 
 from .healthchecks import HealthChecks
@@ -40,4 +42,5 @@ class GraphDBHealthchecker(metaclass=SingletonMeta):
                 status=HealthStatus.OK, message="GraphDB repository can be queried and it's configured correctly."
             )
         except Exception as error:
+            logging.error("Exception while querying GraphDB", exc_info=error)
             return GraphDBHealthcheck(status=HealthStatus.ERROR, message=str(error))

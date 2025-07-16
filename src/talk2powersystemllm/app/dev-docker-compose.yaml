@@ -1,0 +1,31 @@
+services:
+
+  redis:
+      image: redis:8.0.3-alpine
+      container_name: redis
+      command: >
+        redis-server --requirepass DUMMY_REDIS_PASSWORD --appendonly yes --appendfsync everysec --save 300 10 --save 60 10000
+      ports:
+        - "6379:6379"
+      volumes:
+        - redis_data:/data
+
+  talk2powersystem:
+    image: talk2powersystem
+    container_name: talk2powersystem
+    env_file: "../../../webapp.env"
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8000/__health" ]
+      interval: 30s
+      retries: 4
+      start_period: 10s
+      timeout: 20s
+    depends_on:
+      redis:
+        condition: service_started
+
+volumes:
+
+  redis_data:

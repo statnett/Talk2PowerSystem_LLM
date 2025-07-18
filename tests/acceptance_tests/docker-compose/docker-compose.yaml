@@ -9,6 +9,16 @@ services:
       LOG_LEVEL: "DEBUG"
       SERVER_PORT: 1080
 
+  redis:
+      image: redis:8.0.3-alpine
+      container_name: redis
+      command: >
+        redis-server --requirepass DUMMY_REDIS_PASSWORD --appendonly yes --appendfsync everysec --save 300 10 --save 60 10000
+      ports:
+        - "6379"
+      volumes:
+        - redis_data:/data
+
   graphdb:
     image: graphdb
     container_name: graphdb
@@ -28,6 +38,8 @@ services:
     environment:
       - AGENT_CONFIG=/code/config/agent.yaml
       - LLM_API_KEY=FAKE_API_KEY
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
     ports:
       - "8000"
     volumes:
@@ -44,6 +56,8 @@ services:
         condition: service_healthy
       mock-server:
         condition: service_started
+      redis:
+        condition: service_started
 
   talk2powersystem-acceptance-tests:
     image: talk2powersystem-acceptance-tests
@@ -51,3 +65,7 @@ services:
     depends_on:
       talk2powersystem:
         condition: service_healthy
+
+volumes:
+
+  redis_data:

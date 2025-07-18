@@ -59,28 +59,71 @@ class AcceptanceTestsApp(TestCase):
     def test_health(self) -> None:
         response = requests.get(HEALTH_ENDPOINT, timeout=(2, 10))
         actual_response_json = self.validate_response_and_return_json_body(response)
-        expected_response_json = {
-            "status": "OK",
-            "healthChecks": [
-                {
-                    "status": "OK",
-                    "severity": "HIGH",
-                    "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
-                    "name": "GraphDB Health Check",
-                    "type": "graphdb",
-                    "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
-                    "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                    "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
-                    "message": "GraphDB repository can be queried and it's configured correctly."
-                }
-            ]
-        }
-
-        self.assertEqual(expected_response_json, actual_response_json)
+        self.assertEqual(2, len(actual_response_json))
+        self.assertTrue("status" in actual_response_json)
+        self.assertEqual("OK", actual_response_json["status"])
+        self.assertTrue("healthChecks" in actual_response_json)
+        self.assertEqual(2, len(actual_response_json["healthChecks"]))
+        self.assertTrue(
+            {
+                "status": "OK",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
+                "name": "GraphDB Health Check",
+                "type": "graphdb",
+                "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
+                "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
+                "message": "GraphDB repository can be queried and it's configured correctly."
+            } in actual_response_json["healthChecks"]
+        )
+        self.assertTrue(
+            {
+                "status": "OK",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
+                "name": "Redis Health Check",
+                "type": "redis",
+                "impact": "Redis is inaccessible and the chat bot can't function",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#redis-health-check-status-is-not-ok",
+                "description": "Checks if Redis can be queried.",
+                "message": "Redis can be queried."
+            } in actual_response_json["healthChecks"]
+        )
 
         response = requests.get(HEALTH_ENDPOINT, headers={"X-Request-Id": "test"}, timeout=(2, 10))
         actual_response_json = self.validate_response_and_return_json_body(response, expected_x_request_id="test")
-        self.assertEqual(expected_response_json, actual_response_json)
+        self.assertEqual(2, len(actual_response_json))
+        self.assertTrue("status" in actual_response_json)
+        self.assertEqual("OK", actual_response_json["status"])
+        self.assertTrue("healthChecks" in actual_response_json)
+        self.assertEqual(2, len(actual_response_json["healthChecks"]))
+        self.assertTrue(
+            {
+                "status": "OK",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
+                "name": "GraphDB Health Check",
+                "type": "graphdb",
+                "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
+                "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
+                "message": "GraphDB repository can be queried and it's configured correctly."
+            } in actual_response_json["healthChecks"]
+        )
+        self.assertTrue(
+            {
+                "status": "OK",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
+                "name": "Redis Health Check",
+                "type": "redis",
+                "impact": "Redis is inaccessible and the chat bot can't function",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#redis-health-check-status-is-not-ok",
+                "description": "Checks if Redis can be queried.",
+                "message": "Redis can be queried."
+            } in actual_response_json["healthChecks"]
+        )
 
     def test_about(self) -> None:
         response = requests.get(ABOUT_ENDPOINT, timeout=(2, 10))
@@ -556,7 +599,7 @@ class AcceptanceTestsApp(TestCase):
                     ]
                 },
                 {
-                    "content": "${json-unit.ignore-element}", # the actual now tool is called and this changes
+                    "content": "${json-unit.ignore-element}",  # the actual now tool is called and this changes
                     "role": "tool",
                     "tool_call_id": "now_call_1",
                 }

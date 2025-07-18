@@ -22,11 +22,13 @@ It doesn't provide functionalities for:
 - creating, updating or deleting chat bots
 - conversations / chats histories
 
+The chat bot memory is persisted in Redis.
+
 #### Context Diagram
 
-Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI and optionally on Cognite.
+Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI, Redis and optionally on Cognite.
 
-<img src="https://lucid.app/publicSegments/view/8921ec1d-3179-4090-b136-88ab8f350444/image.jpeg" alt="context-diagram" style="width: 1000px; height: auto;">
+![context-diagram](https://lucid.app/publicSegments/view/f29659b5-21c1-4b8b-b91b-b8b2d4eea769/image.jpeg)
 
 #### Important Endpoints
 
@@ -444,31 +446,42 @@ Sample Response Body:
 
 ```json
 {
-  "status": "OK",
-  "healthChecks": [
-    {
-      "status": "OK",
-      "severity": "HIGH",
-      "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
-      "name": "Cognite Health Check",
-      "type": "cognite",
-      "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
-      "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
-      "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
-      "message": "Cognite can be queried."
-    },
-    {
-      "status": "OK",
-      "severity": "HIGH",
-      "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
-      "name": "GraphDB Health Check",
-      "type": "graphdb",
-      "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
-      "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
-      "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
-      "message": "GraphDB repository can be queried and it's configured correctly."
-    }
-  ]
+    "status": "OK",
+    "healthChecks": [
+        {
+            "status": "OK",
+            "severity": "HIGH",
+            "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
+            "name": "Redis Health Check",
+            "type": "redis",
+            "impact": "Redis is inaccessible and the chat bot can't function",
+            "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
+            "description": "Checks if Redis can be queried.",
+            "message": "Redis can be queried."
+        },
+        {
+            "status": "OK",
+            "severity": "HIGH",
+            "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
+            "name": "Cognite Health Check",
+            "type": "cognite",
+            "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
+            "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
+            "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
+            "message": "Cognite can be queried."
+        },
+        {
+            "status": "OK",
+            "severity": "HIGH",
+            "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
+            "name": "GraphDB Health Check",
+            "type": "graphdb",
+            "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+            "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
+            "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
+            "message": "GraphDB repository can be queried and it's configured correctly."
+        }
+    ]
 }
 ```
 
@@ -590,6 +603,7 @@ experienced with the following:
 * GraphDB
 * Cognite
 * Azure OpenAI
+* Redis
 
 ## Resolving Known Issues
 
@@ -611,6 +625,14 @@ Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-
 
 Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
 
+#### Redis health check status is not OK
+
+Most probable cause: ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
+
+#### Users are experiencing slow responses
+
+Most probable cause: ["Mis-configurations"](#mis-configurations)
+
 ### Causes
 
 This section lists the causes of known issues and provides solutions.
@@ -621,10 +643,9 @@ This section lists the causes of known issues and provides solutions.
 
 - Make sure GraphDB is reachable from the app host.
 - Make sure GraphDB credentials are correct.
-- Make
-  sure [GraphDB autocomplete index is enabled](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html).
-- Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/10.0/rdf-rank.html) is computed and
-  up-to-date. The status must be `COMPUTED`.
+- Make sure GraphDB timeouts are configured correctly according to the network performance.
+- Make sure [GraphDB autocomplete index is enabled](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html).
+- Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/10.0/rdf-rank.html) is computed and up-to-date. The status must be `COMPUTED`.
 
 ##### Verification
 
@@ -642,3 +663,30 @@ This section lists the causes of known issues and provides solutions.
 
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
 - Check the response body of the `__health` endpoint, Cognite health check must have status `OK`.
+
+#### Redis can't be queried or is mis-configured
+
+##### Solution
+
+- Make sure Redis is reachable from the app host.
+- Make sure Redis connect and read timeouts are configured correctly.
+- Make sure Redis credentials are correct.
+
+##### Verification
+
+- Check the response status code of the `__gtg` endpoint, it must be `200`.
+- Check the response body of the `__health` endpoint, Redis health check must have status `OK`.
+
+#### Mis-configurations
+
+##### Solution
+
+- Make sure GraphDB timeouts are configured correctly according to the network performance.
+- Make sure Redis connect and read timeouts are configured correctly.
+- Make sure the application is not hitting [Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
+If this is the case, they must be increased. 
+- Make sure the number of uvicorn [workers](https://fastapi.tiangolo.com/deployment/server-workers/) is configured according to the number of parallel users of the system.
+
+##### Verification
+
+Users no longer report slow responses

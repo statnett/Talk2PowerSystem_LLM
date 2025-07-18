@@ -1,6 +1,9 @@
 graphdb:
   base_url: "https://cim.ontotext.com/graphdb"
   repository_id: "nordic44"
+  connect_timeout: 2
+  read_timeout: 10
+  sparql_timeout: 15
   username: "admin"
 tools:
   ontology_schema:
@@ -24,6 +27,9 @@ tools:
     graphdb:
       base_url: "http://localhost:7200"
       repository_id: "qa_dataset"
+      connect_timeout: 2
+      read_timeout: 10
+      sparql_timeout: 15
     connector_name: "qa_dataset"
     name: sample_sparql_queries
     description: Given a user question obtain sample SPARQL queries, which can be used to answer the question

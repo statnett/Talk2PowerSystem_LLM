@@ -31,6 +31,9 @@ class GraphDBSettings(BaseSettings):
 
     base_url: str
     repository_id: str
+    connect_timeout: int = Field(default=2, ge=1)
+    read_timeout: int = Field(default=10, ge=1)
+    sparql_timeout: int = Field(default=15, ge=1)
     username: str | None = None
     password: SecretStr | None = None
 
@@ -131,19 +134,20 @@ def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
 
 
 def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDB:
+    kwargs = {
+        "base_url": graphdb_settings.base_url,
+        "repository_id": graphdb_settings.repository_id,
+        "connect_timeout": graphdb_settings.connect_timeout,
+        "read_timeout": graphdb_settings.read_timeout,
+        "sparql_timeout": graphdb_settings.sparql_timeout,
+    }
     if graphdb_settings.username:
-        return GraphDB(
-            base_url=graphdb_settings.base_url,
-            repository_id=graphdb_settings.repository_id,
-            auth_header="Basic " + b64encode(
+        kwargs.update({
+            "auth_header": "Basic " + b64encode(
                 f"{graphdb_settings.username}:{graphdb_settings.password.get_secret_value()}".encode("ascii")
-            ).decode(),
-        )
-    else:
-        return GraphDB(
-            base_url=graphdb_settings.base_url,
-            repository_id=graphdb_settings.repository_id,
-        )
+            ).decode()
+        })
+    return GraphDB(**kwargs)
 
 
 def init_cognite(cognite_settings: CogniteSettings) -> CogniteClient:

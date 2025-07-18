@@ -27,8 +27,26 @@ jobs:
           conda activate Talk2PowerSystemLLM
           poetry install --no-interaction --with test
 
-      - name: Run tests
+      - name: Run unit tests
         shell: bash -l {0}
         run: |
           conda activate Talk2PowerSystemLLM
           poetry run pytest --cov=talk2powersystemllm --cov-report=term-missing tests/unit_tests/
+
+      - name: Build Docker images for acceptance tests
+        run: |
+          cp src/talk2powersystemllm/app/dummy-manifest.yaml git-manifest.yaml
+
+          docker buildx build --file docker/Dockerfile --tag talk2powersystem .
+          docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
+          docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
+
+      - name: Run acceptance tests
+        run: |
+          docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+
+      - name: Always clean up Docker Compose
+        if: always()
+        run: |
+          docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
+          rm git-manifest.yaml

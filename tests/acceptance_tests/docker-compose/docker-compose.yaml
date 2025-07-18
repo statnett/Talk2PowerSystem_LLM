@@ -1,0 +1,53 @@
+services:
+
+  mock-server:
+    image: mockserver/mockserver:5.15.0
+    container_name: mock-server
+    ports:
+      - "1080"
+    environment:
+      LOG_LEVEL: "DEBUG"
+      SERVER_PORT: 1080
+
+  graphdb:
+    image: graphdb
+    container_name: graphdb
+    ports:
+      - "7200"
+    healthcheck:
+      test: >
+        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'query=ASK { _:s <http://www.ontotext.com/plugins/autocomplete#enabled> ?o }' http://localhost:7200/repositories/nordic44 | grep -q true
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 120s
+
+  talk2powersystem:
+    image: talk2powersystem
+    container_name: talk2powersystem
+    environment:
+      - AGENT_CONFIG=/code/config/agent.yaml
+      - LLM_API_KEY=FAKE_API_KEY
+    ports:
+      - "8000"
+    volumes:
+      - ./logs:/code/logs
+      - ./agent.yaml:/code/config/agent.yaml
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8000/__health" ]
+      interval: 30s
+      retries: 4
+      start_period: 10s
+      timeout: 20s
+    depends_on:
+      graphdb:
+        condition: service_healthy
+      mock-server:
+        condition: service_started
+
+  talk2powersystem-acceptance-tests:
+    image: talk2powersystem-acceptance-tests
+    container_name: talk2powersystem-acceptance-tests
+    depends_on:
+      talk2powersystem:
+        condition: service_healthy

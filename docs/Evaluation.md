@@ -9,6 +9,8 @@ export LLM_API_KEY=***
 poetry run evaluation --chat_config_path FULL_PATH_TO_CHAT_CONFIG --qa-dataset-path QA_DATASET_PATH --results_dir RESULTS_DIR
 ```
 
+You must escape any `$` signs in the password with `\`!
+
 The results will be saved in the specified `RESULTS_DIR` under a sub-folder with name derived from the current date time, and it will include:
 
 - `chat_responses_dev.jsonl` - JSON lines file containing the chat responses on the dev split.

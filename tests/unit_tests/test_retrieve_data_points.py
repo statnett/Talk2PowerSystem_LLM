@@ -122,26 +122,26 @@ def test_try_to_parse_as_iso_format_valid_iso_format() -> None:
             tzinfo=datetime.timezone.utc,
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30-04:00") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14+4, minute=30, second=30,
+            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30,
             tzinfo=datetime.timezone.utc
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123-04:00") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14+4, minute=30, second=30, microsecond=123000,
+            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30, microsecond=123000,
             tzinfo=datetime.timezone.utc
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30-0400") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14+4, minute=30, second=30,
+            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30,
             tzinfo=datetime.timezone.utc
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123-0400") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14+4, minute=30, second=30, microsecond=123000,
+            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30, microsecond=123000,
             tzinfo=datetime.timezone.utc
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30-04") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14+4, minute=30, second=30,
+            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30,
             tzinfo=datetime.timezone.utc
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123-04") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14+4, minute=30, second=30, microsecond=123000,
+            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30, microsecond=123000,
             tzinfo=datetime.timezone.utc
         )

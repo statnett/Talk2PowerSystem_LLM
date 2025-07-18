@@ -1,0 +1,51 @@
+version: 1
+disable_existing_loggers: False
+formatters:
+  default:
+    format: '[%(asctime)s] [%(threadName)s] [%(name)s] %(levelname)s - %(x_request_id)s - %(message)s'
+filters:
+  xRequestIdFilter:
+    (): talk2powersystemllm.app.server.x_request_id_logging_filter.XRequestIdFilter
+handlers:
+  main_log_file:
+    formatter: default
+    class: logging.handlers.TimedRotatingFileHandler
+    filename: /code/logs/main.log
+    when: midnight    # Rotate at midnight
+    interval: 1       # Rotate every day
+    backupCount: 30   # Keep logs for 30 days
+    filters: [ xRequestIdFilter ]
+  access_log_file:
+    formatter: default
+    class: logging.handlers.TimedRotatingFileHandler
+    filename: /code/logs/access.log
+    when: midnight
+    interval: 1
+    backupCount: 30
+    filters: [ xRequestIdFilter ]
+  uvicorn_log_file:
+    formatter: default
+    class: logging.handlers.TimedRotatingFileHandler
+    filename: /code/logs/uvicorn.log
+    when: midnight
+    interval: 1
+    backupCount: 30
+    filters: [ xRequestIdFilter ]
+  console:
+    formatter: default
+    class: logging.StreamHandler
+    stream: ext://sys.stdout
+    filters: [ xRequestIdFilter ]
+loggers:
+  uvicorn.error:
+    level: INFO
+    handlers: [ console, uvicorn_log_file ]
+    propagate: no
+  uvicorn.access:
+    level: INFO
+    handlers: [ console, access_log_file ]
+    propagate: no
+root:
+  level: INFO
+  handlers: [ console, main_log_file ]
+  propagate: no

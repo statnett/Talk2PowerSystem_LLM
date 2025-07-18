@@ -1,0 +1,31 @@
+graphdb:
+  base_url: "http://graphdb:7200"
+  repository_id: "nordic44"
+tools:
+  ontology_schema:
+    file_path: "ontology/cim-subset-pretty.ttl"
+  autocomplete_search:
+    property_path: "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>"
+    sparql_query_template: |
+      PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
+      PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+      PREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>
+      SELECT ?iri ?name ?class ?rank {{
+          ?iri auto:query "{query}" ;
+              {property_path} ?name ;
+              {filter_clause}
+              sesame:directType ?class;
+              rank:hasRDFRank5 ?rank.
+      }}
+      ORDER BY DESC(?rank)
+      LIMIT {limit}
+llm:
+  azure_endpoint: "http://mock-server:1080"
+  model: "gpt-4.1"
+  api_version: "2024-12-01-preview"
+  temperature: 0
+  seed: 1
+  timeout: 120
+prompts:
+  assistant_instructions: |
+    Mocked responses. Prompt doesn't matter.

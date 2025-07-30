@@ -5,7 +5,10 @@ v0.1.0, 2025-02-24
 
 == Overview
 
-Large-Language Model (LLM) part of Talk2PowerSystem (Talk2PowerSystem_LLM) is a core component of the Talk2PowerSystem project, providing all the necessary coding and scripting to support the integration and operation of a Large-Language Model (LLM). This project focuses on enabling robust LLM functionalities, including data preprocessing, model training, inference, and seamless integration with other parts of the Talk2PowerSystem ecosystem.
+Large-Language Model (LLM) part of Talk2PowerSystem (Talk2PowerSystem_LLM) is a core component of the Talk2PowerSystem
+project, providing all the necessary coding and scripting to support the integration and operation of a Large-Language
+Model (LLM). This project focuses on enabling robust LLM functionalities, including data preprocessing, model training,
+inference, and seamless integration with other parts of the Talk2PowerSystem ecosystem.
 
 == Features
 
@@ -33,13 +36,15 @@ The repository is organized as follows:
 * `docs/` - Documentation, guides, and technical notes.
 * `tests/` - Unit and integration tests for various modules.
 * `config/` - Configuration files for model parameters and environment settings.
-* `evaluation_results/` - Directory, which holds the evaluation results of the system
+* `evaluation_results/` - Directory, which holds the evaluation results of the system.
+* `helm-chart/` - Directory, which holds resources for easier deployment on Kubernetes environments.
 
 == Installation
 
 === Prerequisites
 
-* You should install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html). `miniconda` will suffice.
+* You should install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html). `miniconda`
+will suffice.
 
 === Setup
 

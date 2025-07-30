@@ -1,0 +1,464 @@
+###############################################################################
+# Main configuration file.                                                    #
+# To override single property use --set                                       #
+# To override multiple, provide another values-override.yaml with the -f flag #
+# See https://helm.sh/docs/chart_template_guide/values_files/                 #
+###############################################################################
+
+#########################
+# Global Configurations #
+#########################
+
+global:
+  # Overrides image.registry
+  # Can be used to override it globally when using umbrella charts.
+  imageRegistry: ""
+
+  # Inserts additional pull secret references together along with any from .Values.image.pullSecrets
+  # Can be used to override it globally when using umbrella charts.
+  # Values are processed as Helm templates.
+  # Ref: https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets
+  #
+  # Example:
+  # imagePullSecrets:
+  #   - name: my-pull-secret
+  imagePullSecrets: []
+
+  # The default domain suffix of the Kubernetes cluster
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+  clusterDomain: cluster.local
+
+###########################
+# Metadata Configurations #
+###########################
+
+# Overrides the name of the chart affecting the names of the resources.
+nameOverride: ""
+
+# Overrides the naming of all resources, effectively removing the chart's name and the release name prefix.
+# This override takes precedence over anything in .Values.nameOverride
+fullnameOverride: ""
+
+# Overrides the deployment namespace in case of multi-namespace deployments, for example when using umbrella charts
+# where some sub-charts should be deployed in different namespaces.
+# This affects every resource deployed by this chart.
+# The default value is .Release.Namespace, if left unspecified.
+namespaceOverride: ""
+
+# Additional common labels to add to all resources fo the application.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+#
+# Example:
+# labels:
+#   foo: bar
+#   some-label: {{ .Values.someValue }}
+labels: {}
+
+# Additional common annotations to add to all resources for the application.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+#
+# Example:
+# annotations:
+#   foo: bar
+#   some-annotation: {{ .Values.someValue }}
+annotations: {}
+
+########################
+# Image Configurations #
+########################
+
+# Ref: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  # The registry that hosts the application image.
+  registry: ghcr.io
+
+  # The repository name of the application image.
+  repository: t2ps-chatbot-llm
+
+  # Image tag that corresponds to the version of application.
+  # By default, the chart uses .Chart.AppVersion to construct the full image name.
+  # Use this to override the value from .Chart.AppVersion and effectively deploy a custom version.
+  tag: ""
+
+  # Expected SHA256 digest of the used image, e.g. "sha256@abc"
+  # Use the digest to make sure you are always deploying the exact same application image.
+  # Defining it would override .Chart.AppVersion and image.tag
+  digest: ""
+
+  # Defines the policy for pulling images
+  # Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  pullPolicy: IfNotPresent
+
+  # Secrets for pulling the application Docker image from secured registries.
+  # Values are processed as Helm templates.
+  # Ref: https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets
+  #
+  # Example:
+  # pullSecrets:
+  #   - name: my-pull-secret
+  pullSecrets: []
+
+##########################
+# Scaling Configurations #
+##########################
+
+# Number of application pods to be deployed.
+replicas: 1
+
+##############################
+# Application Configurations #
+##############################
+
+# Application runtime configuration settings.
+configuration:
+
+  # Agent configurations overrides. They will be applied over the default configuration.
+  # Ref: /files/default-agent.yaml and /templates/agent-configuration.yaml
+  agent:
+    graphdb:
+      base_url: "https://rndpsvc.statnett.no/graphdb"
+      repository_id: "nordic44"
+      username: "chatbot"
+    llm:
+      azure_endpoint: "https://rndp-openai.openai.azure.com"
+      model: "gpt-4.1"
+      api_version: "2024-02-01"
+
+  # Key-value pairs to be added to the configuration-properties ConfigMap.
+  # Ref: /docs/FastAPI.md or src/talk2powersystemllm/app/server/config.py
+  #
+  # Example:
+  # properties:
+  #   AGENT_CONFIG: /path/to/agent.yaml
+  properties:
+    AGENT_CONFIG: /code/config/agent.yaml
+
+  # Additional runtime configuration provided as explicit ConfigMap and/or Secret resources.
+  #
+  # Example:
+  # extraProperties:
+  #   existingConfigmap: my-config-properties
+  #   existingSecret: my-secret-properties
+  extraProperties:
+    # Reference to an existing ConfigMap resource containing configurations properties.
+    existingConfigmap: ""
+    # Reference to an existing Secret resource containing sensitive configurations properties.
+    existingSecret: t2ps-chatbot-llm-secret-properties
+
+##########################
+# Ingress Configurations #
+##########################
+
+# Configurations for the default Ingress resource.
+#
+# The default Ingress in this chart makes no assumptions of what Ingress controller is being used, it's up to the user
+# to define any specific annotations required by the controller implementation in the cluster.
+#
+# Ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  # Toggles the deployment of the default Ingress resource.
+  enabled: false
+
+  # Specifies the ingress controller implementation that will control this Ingress resource.
+  # Not defining this would result in using the default ingress controller in the cluster, if there is one.
+  className: ""
+
+  # Additional labels to append to the Ingress resource.
+  # Values are processed as Helm templates.
+  labels: {}
+
+  # Additional annotations to append to the Ingress resource.
+  # Values are processed as Helm templates.
+  annotations: {}
+
+  # List of hostnames to added to the Ingress resource.
+  # Values are processed as Helm templates.
+  hosts: []
+
+  # Configures SSL termination on Ingress level.
+  # Ref: https://kubernetes.github.io/ingress-nginx/examples/tls-termination/
+  tls: []
+
+##########################
+# Service Configurations #
+##########################
+
+# Configurations for application Service.
+# Ref: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # Enables or disables the Service deployment
+  enabled: true
+
+  # Additional labels to append to the Service resource.
+  # Values are processed as Helm templates.
+  labels: {}
+
+  # Additional annotations to append to the Service resource.
+  # Values are processed as Helm templates.
+  annotations: {}
+
+  # Service type
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+
+  # Ports exposed by the Service.
+  # Note: If you want to add additional ports, use .Values.service.extraPorts.
+  ports:
+    # Port mapped to application HTTP API.
+    http: 8000
+
+  # Exposes the Service on a specific node port on the host machine when "serviceType: NodePort"
+  # If left undefined, K8S will pick a random port from the node port range of the cluster.
+  nodePort: ""
+
+  # Defines the policy for treating external ingress traffic.
+  # By default, Cluster does not preserve client IPs. Change to Local to preserve them.
+  # See https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  externalTrafficPolicy: ""
+
+  # NodePort used by external load balancers when the external traffic policy is set to Local.
+  # By default, Kubernetes will assign a random port, use this to override it.
+  healthCheckNodePort: ""
+
+  # Defines the class that should select a particular load balancer implementation.
+  # By default, Kubernetes will assign the cluster default implementation, use this to override it.
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-class
+  loadBalancerClass: ""
+
+  # Source IP ranges for restricting external ingress traffic
+  loadBalancerSourceRanges: []
+
+  # External IP addresses at which the Service will be exposed
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  externalIPs: []
+
+  # Additional ports to expose with the Service.
+  extraPorts: []
+
+###################################
+# Security Context Configurations #
+###################################
+
+# Defines privilege and access control settings for all containers in the Pod.
+# Values are processed as Helm templates.
+# See https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+podSecurityContext: {}
+
+# Defines privilege and access control settings for the container running the application.
+# Values are processed as Helm templates.
+# See https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+securityContext: {}
+
+########################################
+# Pod Disruption Budget Configurations #
+########################################
+
+# Configurations for default Pod Disruption Budget.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets
+podDisruptionBudget:
+  # Enable/disable a Pod Disruption Budget creation
+  enabled: true
+
+  # Minimum number/percentage of pods that should remain scheduled
+  minAvailable: ""
+
+  # Maximum number/percentage of pods that may be made unavailable
+  maxUnavailable: 1
+
+##################################
+# Service Account Configurations #
+##################################
+
+# Configurations for the default ServiceAccount for the application.
+# The application by itself has no need to communicate with the Kubernetes API, but the service account tokens can be used
+# as ODIC federated web identity tokens for authentication in cloud APIs.
+# Ref: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created for application.
+  create: false
+
+  # The name of the ServiceAccount to use.
+  #
+  # There are three cases to be aware of when using this:
+  # - If not set and create is true, a name is generated using the fullname template
+  # - If set and create is true, it will use the provided name when creating the ServiceAccount
+  # - If set but create is false, it will use the provided ServiceAccount.
+  name: ""
+
+  # If .Values.serviceAccount.create is true, insert additional annotations to the created ServiceAccount.
+  # Values are processed as Helm templates.
+  annotations: {}
+
+##########################
+# Resource Configuration #
+##########################
+
+# Resource configurations for the containers.
+#
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
+resources:
+  requests:
+    memory: 256Mi
+  limits:
+    memory: 1Gi
+
+#########################
+# Probes Configurations #
+#########################
+
+# Configurations for the container startup probe.
+startupProbe:
+  httpGet:
+    path: /__gtg
+    port: http
+  failureThreshold: 30
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+# Configurations for the container readiness probe.
+readinessProbe:
+  httpGet:
+    path: /__gtg
+    port: http
+  initialDelaySeconds: 5
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+# Configurations for the container liveness probe.
+livenessProbe:
+  httpGet:
+    path: /__gtg
+    port: http
+  initialDelaySeconds: 60
+  timeoutSeconds: 5
+  periodSeconds: 10
+
+#############################
+# Deployment Configurations #
+#############################
+
+# The deployment strategy to use to replace existing pods with new ones.
+strategy:
+  # Type of deployment. Can be "Recreate" or "RollingUpdate".
+  type: RollingUpdate
+
+# The number of old ReplicaSets to retain to allow rollback.
+# This is a pointer to distinguish between explicit zero and not specified.
+# Ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit
+revisionHistoryLimit: 10
+
+# The maximum time in seconds for a deployment to make progress before it is considered to be failed.
+# The deployment controller will continue to process failed deployments and a condition with a ProgressDeadlineExceeded
+# reason will be surfaced in the deployment status. Note that progress will not be estimated during the time a
+# deployment is paused.
+# Ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#failed-deployment
+progressDeadlineSeconds: 600
+
+# Grace period in seconds before terminating the Pods.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+terminationGracePeriodSeconds: 120
+
+# Toggles the auto mounting of API credentials token into the Pods.
+# Enable this if you need to contact either the API server or need web identity credentials for federated authentication
+# in cloud APIs.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting
+automountServiceAccountToken: false
+
+# Overrides the default Kubernetes scheduler.
+# See https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/#specify-schedulers-for-pods
+schedulerName: ""
+
+# Overrides the Pod's DNS settings.
+# Ref: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-dns-config
+dnsConfig: {}
+
+# Defines the Pod's policy for DNS resolution.
+# Ref: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+dnsPolicy: ""
+
+# Name of an existing PriorityClass to assign, defining the importance of the pods compared to other pods in the
+# cluster.
+# Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
+priorityClassName: ""
+
+# Additional labels to add to the Pod definition.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# Additional annotations to add to the Pod definition.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+
+# Additional volumes to be set for the application Pod.
+# Values are processed as Helm templates.
+extraVolumes: []
+
+# Additional volume mounts to be set for the application containers.
+# Values are processed as Helm templates.
+extraVolumeMounts: []
+
+# Additional environment variables to be set for the application containers.
+# Values are processed as Helm templates.
+extraEnvFrom: []
+
+# Additional environment variables to be set for the application containers.
+# Values are processed as Helm templates.
+extraEnv: []
+
+# Additional init containers to be inserted after the provisioning init containers.
+# Values are processed as Helm templates.
+extraInitContainers: []
+
+# Additional container ports to expose.
+extraContainerPorts: {}
+
+#############################
+# Scheduling Configurations #
+#############################
+
+# Selector labels to match when selecting nodes.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
+# See https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/
+nodeSelector: {}
+
+# Node and pod affinity & anti affinity configurations for constraining the Pod scheduling.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
+# List of taint tolerations.
+# Values are processed as Helm templates.
+# Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+tolerations: []
+
+#################################
+# Additional Kubernetes Objects #
+#################################
+
+# Additional objects to insert along with the release.
+# Values are processed as Helm templates with tpl function.
+# Ref: https://helm.sh/docs/howto/charts_tips_and_tricks/#using-the-tpl-function
+extraObjects: []
+
+#################################
+# --- External Dependencies --- #
+#################################
+
+########################
+# Redis Configurations #
+########################
+
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    existingSecret: redis-secret-properties
+    existingSecretPasswordKey: redis-password
+    usePasswordFiles: false

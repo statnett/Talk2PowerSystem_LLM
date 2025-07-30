@@ -176,3 +176,8 @@ cython_debug/
 
 # Manifest file
 git-manifest.yaml
+
+# Helm
+helm-chart/output.yaml
+helm-chart/charts
+helm-chart/*.tgz

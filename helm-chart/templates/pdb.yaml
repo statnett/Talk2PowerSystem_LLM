@@ -1,0 +1,23 @@
+{{- if .Values.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "t2ps-chatbot-llm.fullname" . }}
+  namespace: {{ include "t2ps-chatbot-llm.namespace" . }}
+  labels:
+    {{- include "t2ps-chatbot-llm.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  {{- end }}
+  {{- if or .Values.podDisruptionBudget.maxUnavailable ( not .Values.podDisruptionBudget.minAvailable ) }}
+  maxUnavailable: {{ .Values.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "t2ps-chatbot-llm.selectorLabels" . | nindent 6 }}
+{{- end }}

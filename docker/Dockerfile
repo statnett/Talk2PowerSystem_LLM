@@ -1,3 +1,7 @@
+# TODO:
+#   - Talk with Neli about the vulnerabilities in this image
+#   - Can we use multistage here, one for building the dependencies and application, and second stage to run the app
+#   - Application system requirements
 FROM python:3.12
 
 WORKDIR /code

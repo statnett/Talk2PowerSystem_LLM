@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "t2ps-chatbot-llm.fullname" . }}
+  namespace: {{ include "t2ps-chatbot-llm.namespace" . }}
+  labels:
+    {{- include "t2ps-chatbot-llm.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicas }}
+  strategy:
+    {{- toYaml .Values.strategy | nindent 4 }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
+  selector:
+    matchLabels:
+      {{- include "t2ps-chatbot-llm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "t2ps-chatbot-llm.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      serviceAccountName: {{ include "t2ps-chatbot-llm.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
+      {{- if .Values.schedulerName }}
+      schedulerName: {{ .Values.schedulerName }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      {{- if or .Values.global.imagePullSecrets .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- include "t2ps-chatbot-llm.combinedImagePullSecrets" . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "t2ps-chatbot-llm.fullname.agent.config" . }}
+          configMap:
+            name: {{ include "t2ps-chatbot-llm.fullname.agent.config" . }}
+      {{- with .Values.extraVolumes }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity: {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.extraInitContainers }}
+      initContainers:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ include "t2ps-chatbot-llm.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.ports.http }}
+              protocol: TCP
+          {{- with .Values.extraContainerPorts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "t2ps-chatbot-llm.fullname.config.properties" . }}
+          {{- if .Values.configuration.extraProperties.existingConfigmap }}
+            - configMapRef:
+                name: {{ .Values.configuration.extraProperties.existingConfigmap }}          
+          {{- end }}
+          {{- if .Values.configuration.extraProperties.existingSecret }}
+            - secretRef:
+                name: {{ .Values.configuration.extraProperties.existingSecret }}          
+          {{- end }}
+          {{- with .Values.extraEnvFrom }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          {{- with .Values.extraEnv }}
+          env: {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: {{ include "t2ps-chatbot-llm.fullname.agent.config" . }}
+              mountPath: /code/config/agent.yaml
+              subPath: agent.yaml
+          {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe: {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe: {{- toYaml . | nindent 12 }}
+          {{- end }}

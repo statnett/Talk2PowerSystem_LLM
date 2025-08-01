@@ -108,6 +108,16 @@ prompts:
         * `xsd:boolean` (e.g., "true"^^xsd:boolean, "false"^^xsd:boolean)
         * `xsd:dateTime` (e.g., "2025-06-18T10:00:00Z"^^xsd:dateTime)
         * `xsd:date` (e.g., "2025-06-18"^^xsd:date)
+      Literal term equality: Two literals are term-equal (the same RDF literal) if and only if the two lexical forms, the two datatype IRIs, and the two language tags (if any) compare equal, character by character. 
+      Thus, two literals can have the same value without being the same RDF term. For example:
+        "1"^^xs:integer
+        "01"^^xs:integer
+      denote the same value, but are not the same literal RDF terms and are not term-equal because their lexical form differs.
+      Hence, you must always use this pattern, when comparing literals 
+        ``
+          ?subject ?predicate ?object.
+          FILTER (?object = <value-with-xsd-datatype>)
+        ``
 
     The ontology schema to use in SPARQL queries is:
 

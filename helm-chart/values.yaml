@@ -75,7 +75,7 @@ image:
   registry: ghcr.io
 
   # The repository name of the application image.
-  repository: t2ps-chatbot-llm
+  repository: statnett/Talk2PowerSystem_LLM
 
   # Image tag that corresponds to the version of application.
   # By default, the chart uses .Chart.AppVersion to construct the full image name.
@@ -295,14 +295,16 @@ serviceAccount:
 # Resource Configuration #
 ##########################
 
+# TODO: Speak with Neli about resource requirements.
+
 # Resource configurations for the containers.
 #
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
 resources:
   requests:
-    memory: 256Mi
-  limits:
     memory: 1Gi
+  limits:
+    memory: 2Gi
 
 #########################
 # Probes Configurations #

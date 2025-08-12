@@ -75,7 +75,7 @@ image:
   registry: ghcr.io
 
   # The repository name of the application image.
-  repository: statnett/Talk2PowerSystem_LLM
+  repository: statnett/talk2powersystem_llm
 
   # Image tag that corresponds to the version of application.
   # By default, the chart uses .Chart.AppVersion to construct the full image name.
@@ -122,9 +122,9 @@ configuration:
       repository_id: "nordic44"
       username: "chatbot"
     llm:
-      azure_endpoint: "https://rndp-openai.openai.azure.com"
+      azure_endpoint: "https://statnett.openai.azure.com/"
       model: "gpt-4.1"
-      api_version: "2024-02-01"
+      api_version: "2024-12-01-preview"
 
   # Key-value pairs to be added to the configuration-properties ConfigMap.
   # Ref: /docs/FastAPI.md or src/talk2powersystemllm/app/server/config.py
@@ -464,3 +464,13 @@ redis:
     existingSecret: redis-secret-properties
     existingSecretPasswordKey: redis-password
     usePasswordFiles: false
+  commonConfiguration: |-
+    # Additional modules loading
+    loadmodule /opt/bitnami/redis/lib/redis/modules/redisearch.so
+    loadmodule /opt/bitnami/redis/lib/redis/modules/rejson.so
+    # Enables AOF https://redis.io/topics/persistence#append-only-file
+    appendonly yes
+    # Flush data every second https://redis.io/topics/persistence#how-durable-is-the-append-only-file
+    appendfsync everysec
+    # Enable snapshotting https://redis.io/topics/persistence#snapshotting
+    save 60 1000

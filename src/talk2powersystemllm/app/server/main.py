@@ -136,7 +136,7 @@ async def __is_healthy():
         return True
 
     for health_check in health_info.healthChecks:
-        if health_check.status != HealthStatus.OK and health_check.severity == Severity.HIGH:
+        if health_check.status == HealthStatus.ERROR and health_check.severity == Severity.HIGH:
             return False
 
     return True

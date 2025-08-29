@@ -1,6 +1,6 @@
 import logging
 
-from ttyg.graphdb import GraphDB
+from ttyg.graphdb import GraphDB, GraphDBRdfRankStatus
 
 from .healthchecks import HealthChecks
 from ..singleton import SingletonMeta
@@ -31,13 +31,16 @@ class GraphDBHealthchecker(metaclass=SingletonMeta):
         try:
             self.__graphdb_client.eval_sparql_query("ASK { ?s ?p ?o }", validation=False)
             if not self.__graphdb_client.autocomplete_is_enabled():
-                return GraphDBHealthcheck(
-                    status=HealthStatus.WARNING, message="Autocomplete index is not enabled. Please, enabled it."
-                )
-            if not self.__graphdb_client.rdf_rank_is_computed():
-                return GraphDBHealthcheck(
-                    status=HealthStatus.WARNING, message="RDF rank is not computed or outdated. Please, compute it."
-                )
+                warning_message = "GraphDB Autocomplete index is not enabled. It should be enabled."
+                logging.warning(warning_message)
+                return GraphDBHealthcheck(status=HealthStatus.WARNING, message=warning_message)
+
+            rdf_rank_status = self.__graphdb_client.get_rdf_rank_status()
+            if rdf_rank_status != GraphDBRdfRankStatus.COMPUTED:
+                warning_message = (f"The RDF Rank status of the repository is \"{rdf_rank_status.name}\". "
+                                   f"It should be \"COMPUTED\".")
+                logging.warning(warning_message)
+                return GraphDBHealthcheck(status=HealthStatus.WARNING, message=warning_message)
             return GraphDBHealthcheck(
                 status=HealthStatus.OK, message="GraphDB repository can be queried and it's configured correctly."
             )

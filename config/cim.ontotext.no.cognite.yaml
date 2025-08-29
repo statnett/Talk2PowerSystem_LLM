@@ -1,6 +1,6 @@
 graphdb:
   base_url: "https://cim.ontotext.com/graphdb"
-  repository_id: "nordic44"
+  repository_id: "cim"
   connect_timeout: 2
   read_timeout: 10
   sparql_timeout: 15

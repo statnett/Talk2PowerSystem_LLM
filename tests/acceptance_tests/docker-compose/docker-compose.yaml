@@ -26,7 +26,7 @@ services:
       - "7200"
     healthcheck:
       test: >
-        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'query=ASK { _:s <http://www.ontotext.com/plugins/autocomplete#enabled> ?o }' http://localhost:7200/repositories/nordic44 | grep -q true
+        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'query=ASK { _:s <http://www.ontotext.com/plugins/autocomplete#enabled> ?o }' http://localhost:7200/repositories/cim | grep -q true
       interval: 40s
       timeout: 30s
       retries: 3

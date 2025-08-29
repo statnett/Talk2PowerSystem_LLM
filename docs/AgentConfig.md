@@ -5,7 +5,7 @@ The configuration is expected in yaml format. Below is given a "full" example wi
 ```yaml
 graphdb:
   base_url: "https://cim.ontotext.com/graphdb"
-  repository_id: "nordic44"
+  repository_id: "cim"
   connect_timeout: 2
   read_timeout: 10
   sparql_timeout: 15

@@ -1,6 +1,6 @@
 FROM ontotext/graphdb:10.8.8
-RUN mkdir -p /opt/graphdb/dist/data/repositories/nordic44
-COPY tests/acceptance_tests/docker-compose/config.ttl /opt/graphdb/dist/data/repositories/nordic44/
+RUN mkdir -p /opt/graphdb/dist/data/repositories/cim
+COPY tests/acceptance_tests/docker-compose/config.ttl /opt/graphdb/dist/data/repositories/cim/
 COPY tests/acceptance_tests/docker-compose/run.sh /run.sh
 COPY tests/acceptance_tests/docker-compose/statements.ttl /
 ENTRYPOINT ["bash", "/run.sh"]

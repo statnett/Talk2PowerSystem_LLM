@@ -1,5 +1,5 @@
 #! /bin/bash
-REPOSITORY_ID="nordic44"
+REPOSITORY_ID="cim"
 GRAPHDB_URI="http://localhost:7200/"
 
 echo -e "\nUsing GraphDB: ${GRAPHDB_URI}"

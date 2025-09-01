@@ -42,8 +42,6 @@ It should be your home directory.
   - Execute:
     ```commandline
     cd Talk2PowerSystem_LLM
-    python3 -m venv .venv
-    source .venv/bin/activate
     ```
   - Change the priority of the `statnett` mirroring repository from `supplemental` to `primary` using `nano` text editor:
     ```commandline
@@ -51,12 +49,14 @@ It should be your home directory.
     ```
   - Then:
     ```commandline
+    poetry env use python3.12
     poetry lock
     poetry install
-    python -m ipykernel install --user --name=venv --display-name "venv"
+    source $(poetry env info --path)/bin/activate
+    python -m ipykernel install --user --name=talk2powersystemllm-py3.12 --display-name "talk2powersystemllm-py3.12"
     ```
 - From the file browser navigate to the notebook, it's under `src/jupyter_notebooks/Talk2PowerSystem.ipynb`.
-- From the top right corner switch the kernel to `venv` from the dropdown and click `Select`:
+- From the top right corner switch the kernel to `talk2powersystemllm-py3.12` from the dropdown and click `Select`:
 ![kernel.png](images/kernel.png)
 - Now you should be able to run the notebook
 - You should change this

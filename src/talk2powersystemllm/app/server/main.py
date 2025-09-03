@@ -10,14 +10,26 @@ from typing import Annotated
 
 import fastapi
 import uvicorn
-from fastapi import FastAPI, Request, Response, Header, status
+from fastapi import (
+    FastAPI,
+    Request,
+    Response,
+    Header,
+    status,
+    Depends,
+)
 from fastapi.responses import HTMLResponse
-from langchain_core.messages import AIMessage, ToolMessage, HumanMessage
+from langchain_core.messages import (
+    AIMessage,
+    ToolMessage,
+    HumanMessage,
+)
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import RedisSaver
 from starlette.responses import JSONResponse
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgent
+from .auth import conditional_security
 from .config import settings
 from .healthchecks import (
     GraphDBHealthchecker,
@@ -26,7 +38,12 @@ from .healthchecks import (
 )
 from .healthchecks.redis_healthcheck import RedisHealthchecker
 from .logging_config import LoggingConfig
-from .manifest import __sha__, __branch__, __timestamp__, __version__
+from .manifest import (
+    __sha__,
+    __branch__,
+    __timestamp__,
+    __version__,
+)
 from .trouble import get_trouble_html
 from ..models import (
     ChatRequest,
@@ -41,35 +58,36 @@ from ..models import (
     GoodToGoStatus,
     HealthStatus,
     Severity,
+    AuthConfig,
 )
 
 API_DESCRIPTION = "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot"
 # noinspection PyTypeChecker
 gtg_info: GoodToGoInfo = None
 ctx_request = ContextVar("request", default=None)
-LoggingConfig.config_logger(settings.LOGGING_YAML_FILE)
+LoggingConfig.config_logger(settings.logging_yaml_file)
 
-redis_password = settings.REDIS_PASSWORD
+redis_password = settings.redis.password
 redis_auth = ""
 if redis_password:
-    redis_auth = f"{settings.REDIS_USERNAME}:{redis_password.get_secret_value()}@"
+    redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
 
 with RedisSaver.from_conn_string(
-        f"redis://{redis_auth}{settings.REDIS_HOST}:{settings.REDIS_PORT}",
+        f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}",
         connection_args={
-            'socket_connect_timeout': settings.REDIS_CONNECT_TIMEOUT,
-            'socket_timeout': settings.REDIS_READ_TIMEOUT,
-            'health_check_interval': settings.REDIS_HEALTHCHECK_INTERVAL,
+            'socket_connect_timeout': settings.redis.connect_timeout,
+            'socket_timeout': settings.redis.read_timeout,
+            'health_check_interval': settings.redis.healthcheck_interval,
         },
         ttl={
-            "default_ttl": settings.REDIS_TTL,
-            "refresh_on_read": settings.REDIS_TTL_REFRESH_ON_READ,
+            "default_ttl": settings.redis.ttl,
+            "refresh_on_read": settings.redis.ttl_refresh_on_read,
         }
 ) as memory_saver:
     memory_saver.setup()
     redis_healthcheck = RedisHealthchecker(memory_saver._redis)
     agent = Talk2PowerSystemAgent(
-        settings.AGENT_CONFIG,
+        settings.agent_config,
         checkpointer=memory_saver
     )
 graphdb_healthcheck = GraphDBHealthchecker(agent.graphdb_client)
@@ -85,7 +103,7 @@ async def lifespan(_: FastAPI):
     async def scheduled_gtg_update():
         while True:
             await update_gtg_info()
-            await asyncio.sleep(settings.GTG_REFRESH_INTERVAL)
+            await asyncio.sleep(settings.gtg_refresh_interval)
 
     scheduled_gtg_update_task = asyncio.create_task(scheduled_gtg_update())
     await update_gtg_info()
@@ -105,9 +123,9 @@ app = FastAPI(
     title="Talk2PowerSystem Chat Bot Application",
     description=API_DESCRIPTION,
     version=__version__,
-    docs_url=settings.DOCS_URL,
+    docs_url=settings.docs_url,
     redoc_url=None,
-    root_path=settings.ROOT_PATH,
+    root_path=settings.root_path,
     lifespan=lifespan,
 )
 
@@ -222,6 +240,28 @@ async def about(x_request_id: Annotated[str | None, Header()] = None):
 
 
 # noinspection PyUnusedLocal
+@app.get(
+    "/rest/authentication/config",
+    summary="Exposes auth config settings",
+    tags=["Auth"],
+    response_model=AuthConfig,
+    response_model_exclude_unset=True,
+    response_model_exclude_none=True,
+)
+async def get_auth_config(
+        x_request_id: Annotated[str | None, Header()] = None,
+) -> AuthConfig:
+    return AuthConfig(
+        enabled=settings.security.enabled,
+        clientId=settings.security.client_id,
+        authority=settings.security.authority,
+        logout=settings.security.logout,
+        loginRedirect=settings.security.login_redirect,
+        logoutRedirect=settings.security.logout_redirect,
+    )
+
+
+# noinspection PyUnusedLocal
 @app.post(
     "/rest/chat/conversations",
     summary="Starts a new conversation or adds message to an existing conversation",
@@ -236,7 +276,17 @@ async def about(x_request_id: Annotated[str | None, Header()] = None):
                     },
                 }
             }
-        }
+        },
+        401: {
+            "description": "Unauthorized",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Not authenticated"
+                    },
+                }
+            }
+        },
     },
     response_model=ChatResponse,
     response_model_exclude_unset=True,
@@ -245,6 +295,7 @@ async def about(x_request_id: Annotated[str | None, Header()] = None):
 async def conversations(
         request: ChatRequest,
         x_request_id: Annotated[str | None, Header()] = None,
+        claims=Depends(conditional_security),
 ) -> ChatResponse:
     conversation_id = request.conversation_id
     if conversation_id:
@@ -334,7 +385,17 @@ async def message_not_found_error_handler(_, exc: MessageNotFound):
                     },
                 }
             }
-        }
+        },
+        401: {
+            "description": "Unauthorized",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Not authenticated"
+                    },
+                }
+            }
+        },
     },
     response_model=ExplainResponse,
     response_model_exclude_unset=True,
@@ -343,6 +404,7 @@ async def message_not_found_error_handler(_, exc: MessageNotFound):
 async def explain(
         request: ExplainRequest,
         x_request_id: Annotated[str | None, Header()] = None,
+        claims=Depends(conditional_security),
 ) -> ExplainResponse:
     conversation_id, message_id = request.conversation_id, request.message_id
     checkpoint = memory_saver.get({"configurable": {"thread_id": conversation_id}})

@@ -19,6 +19,7 @@ GTG_ENDPOINT = API_ENDPOINT + "__gtg"
 HEALTH_ENDPOINT = API_ENDPOINT + "__health"
 ABOUT_ENDPOINT = API_ENDPOINT + "__about"
 TROUBLE_ENDPOINT = API_ENDPOINT + "__trouble"
+SECURITY_CONFIG_ENDPOINT = API_ENDPOINT + "/rest/authentication/config"
 CONVERSATION_ENDPOINT = API_ENDPOINT + "/rest/chat/conversations"
 EXPLAIN_ENDPOINT = API_ENDPOINT + "/rest/chat/conversations/explain"
 
@@ -158,6 +159,17 @@ class AcceptanceTestsApp(TestCase):
         response = requests.get(TROUBLE_ENDPOINT, headers={"X-Request-Id": "test"}, timeout=(2, 10))
         self.assertEqual(200, response.status_code)
         self.assertEqual("test", response.headers.get("X-Request-Id"))
+
+    def test_security_config(self) -> None:
+        response = requests.get(SECURITY_CONFIG_ENDPOINT, timeout=(2, 10))
+        actual_response_json = self.validate_response_and_return_json_body(response)
+        self.assertTrue("enabled" in actual_response_json)
+        self.assertEqual(False, actual_response_json["enabled"])
+
+        response = requests.get(SECURITY_CONFIG_ENDPOINT, headers={"X-Request-Id": "test"}, timeout=(2, 10))
+        actual_response_json = self.validate_response_and_return_json_body(response, expected_x_request_id="test")
+        self.assertTrue("enabled" in actual_response_json)
+        self.assertEqual(False, actual_response_json["enabled"])
 
     def test_conversation_endpoint_conversation_not_found(self) -> None:
         request_json = {

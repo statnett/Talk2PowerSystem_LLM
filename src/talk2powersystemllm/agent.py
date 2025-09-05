@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from cognite.client import CogniteClient
 from langchain_core.language_models import BaseChatModel
 from langchain_core.tools import BaseTool
 from langchain_openai import AzureChatOpenAI
@@ -21,7 +20,11 @@ from ttyg.tools import (
     SparqlQueryTool,
 )
 
-from talk2powersystemllm.tools import configure_cognite_client, RetrieveDataPointsTool, RetrieveTimeSeriesTool
+from talk2powersystemllm.tools import (
+    CogniteSession,
+    RetrieveDataPointsTool,
+    RetrieveTimeSeriesTool,
+)
 
 
 class GraphDBSettings(BaseSettings):
@@ -69,21 +72,21 @@ class CogniteSettings(BaseModel):
         "env_prefix": "COGNITE_",
     }
 
-    cdf_project: str
-    tenant_id: str
-    client_name: str
     base_url: str
+    project: str = "prod"
+    client_name: str = "talk2powersystem"
+    token_file_path: Path | None = None
     interactive_client_id: str | None = None
-    client_id: str | None = None
-    client_secret: SecretStr | None = None
+    tenant_id: str | None = None
 
     @classmethod
     @model_validator(mode="after")
     def check_credentials(cls, values: Any) -> Any:
-        if values.client_id and values.interactive_client_id:
-            raise ValueError("Both client_id and interactive_client_id for Cognite are provided. Set only one of them!")
-        if values.client_id and not values.client_secret:
-            raise ValueError("Client secret for Cognite is not set!")
+        if values.token_file_path and values.interactive_client_id:
+            raise ValueError("Both token_file_path and interactive_client_id for Cognite are provided. "
+                             "Set only one of them!")
+        if values.interactive_client_id and not values.tenant_id:
+            raise ValueError("Tenant id is required!")
         return values
 
 
@@ -150,13 +153,14 @@ def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDB:
     return GraphDB(**kwargs)
 
 
-def init_cognite(cognite_settings: CogniteSettings) -> CogniteClient:
-    return configure_cognite_client(
-        cdf_project=cognite_settings.cdf_project,
-        tenant_id=cognite_settings.tenant_id,
-        client_name=cognite_settings.client_name,
+def init_cognite(cognite_settings: CogniteSettings) -> CogniteSession:
+    return CogniteSession(
         base_url=cognite_settings.base_url,
+        client_name=cognite_settings.client_name,
+        project=cognite_settings.project,
+        token_file_path=cognite_settings.token_file_path,
         interactive_client_id=cognite_settings.interactive_client_id,
+        tenant_id=cognite_settings.tenant_id,
     )
 
 
@@ -175,7 +179,7 @@ def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
 class Talk2PowerSystemAgent:
     agent: CompiledStateGraph
     graphdb_client: GraphDB
-    cognite_client: CogniteClient | None = None
+    cognite_session: CogniteSession | None = None
     model: BaseChatModel
 
     def __init__(
@@ -226,9 +230,9 @@ class Talk2PowerSystemAgent:
 
         if tools_settings.cognite:
             cognite_settings = tools_settings.cognite
-            self.cognite_client = init_cognite(cognite_settings)
-            tools.append(RetrieveTimeSeriesTool(cognite_client=self.cognite_client))
-            tools.append(RetrieveDataPointsTool(cognite_client=self.cognite_client))
+            self.cognite_session = init_cognite(cognite_settings)
+            tools.append(RetrieveTimeSeriesTool(cognite_session=self.cognite_session))
+            tools.append(RetrieveDataPointsTool(cognite_session=self.cognite_session))
 
         tools.append(NowTool())
 

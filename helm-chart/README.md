@@ -22,7 +22,6 @@ kubectl --namespace t2ps-chatbot create secret generic t2ps-chatbot-llm-secret-p
         --from-literal=REDIS_USERNAME=XXXXXXX \
         --from-literal=REDIS_PASSWORD=XXXXXXX \
         --from-literal=LLM_API_KEY=XXXXXXX \
-        --from-literal=COGNITE_CLIENT_SECRET=XXXXXXX
 ```
 
 ### Run

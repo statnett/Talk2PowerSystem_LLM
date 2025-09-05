@@ -759,7 +759,7 @@ This section lists the causes of known issues and provides solutions.
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
 - Make sure Redis connect and read timeouts are configured correctly.
 - Make sure the application is not hitting [Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
-If this is the case, they must be increased. 
+If it does, in the application logs there will be messages containing `429 Too Many Requests`. If this is the case, the rate limits must be increased. 
 - Make sure the number of uvicorn [workers](https://fastapi.tiangolo.com/deployment/server-workers/) is configured according to the number of parallel users of the system.
 
 ##### Verification

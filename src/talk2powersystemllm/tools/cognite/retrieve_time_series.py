@@ -53,7 +53,7 @@ class RetrieveTimeSeriesTool(BaseCogniteTool):
                     else:
                         advanced_filter = advanced_filter | filters.Equals(["metadata", "mrid"], item)
 
-        return self.cognite_client.time_series.list(
+        return self.cognite_session.client().time_series.list(
             limit=limit,
             advanced_filter=advanced_filter
         )

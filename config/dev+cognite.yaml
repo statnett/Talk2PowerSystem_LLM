@@ -23,37 +23,10 @@ tools:
       }}
       ORDER BY DESC(?rank)
       LIMIT {limit}
-  retrieval_search:
-    graphdb:
-      base_url: "http://localhost:7200"
-      repository_id: "qa_dataset"
-      connect_timeout: 2
-      read_timeout: 10
-      sparql_timeout: 15
-    connector_name: "qa_dataset"
-    name: sample_sparql_queries
-    description: Given a user question obtain sample SPARQL queries, which can be used to answer the question
-    sparql_query_template: |
-      PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>
-      PREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>
-      PREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>
-      SELECT ?question ?query {{
-          [] a retr-index:{connector_name} ;
-            retr:query "{query}" ;
-            retr:limit {limit} ;
-            retr:entities ?entity .
-          ?entity retr:score ?score;
-            qa:nl_question ?question;
-            qa:sparql_query ?query.
-          FILTER (?score > {score})
-      }}
-      ORDER BY DESC(?score)
   cognite:
-    cdf_project: prod
-    tenant_id: a8d61462-f252-44b2-bf6a-d7231960c041
-    client_name: graphwise
     base_url: https://statnett.cognitedata.com
     interactive_client_id: 0d448de6-4574-44af-9a3b-2bd0304cfa36
+    tenant_id: a8d61462-f252-44b2-bf6a-d7231960c041
 llm:
   azure_endpoint: "https://statnett.openai.azure.com/"
   model: "gpt-4.1"
@@ -72,8 +45,7 @@ prompts:
       1. Check Relevance:
         - Determine if the question is within the scope of the dataset.
         - If it is out of scope, clearly inform the user (e.g., “That type of data is not available in the current dataset.”).
-      2. If the question is related to electricity prices or power flow, use the time series data to retrieve the information, and do not call the `sparql_query` or `autocomplete_search_tool`.
-      3. Entity Recognition and Resolution:
+      2. Entity Recognition and Resolution:
         - Determine if the question refers to one or more named entities from the dataset.
         - If it does, use the `autocomplete_search_tool` to retrieve their IRIs. Always use their IRIs in SPARQL queries; never refer to named entities by name in the SPARQL queries.
         - Exception - do not use the `autocomplete_search_tool`, when an entity is referred by identifier. Valid identifiers are:
@@ -83,13 +55,6 @@ prompts:
         In order to validate whether or not a sequence is a valid identifier, you must always use the `sparql_query` to find the entity and the entity class.
         If the query returns no results, this means that this is a number sequence, and not a valid entity identifier.
         This means you are mistaken, and should proceed with the next steps.
-      4. Retrieve sample SPARQL queries:
-         Given a specific user question you must always use the `sample_sparql_queries` tool, which will return similar questions and their corresponding SPARQL queries, which you must use for guidance.
-         Retrieve at least 10 similar questions. You must replace in the given user question:
-        - the identified named entities form the previous step with their corresponding classes without the prefix.
-          Since an entity can belong to multiple classes, you must replace it with all of its classes from the hierarchy without the prefixes, separated with | and wrapped in brackets <>.
-          For example, `<Substation|EquipmentContainer|ConnectivityNodeContainer|PowerSystemResource|IdentifiedObject>`
-        - dates and numbers in the question must also be replaced with a placeholder, like <float>, <integer>, <date>, etc.
 
     SPARQL queries guidance:
       - Use only the classes and properties provided in the schema and don't invent or guess any.

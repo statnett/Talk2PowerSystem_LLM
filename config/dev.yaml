@@ -23,12 +23,6 @@ tools:
       }}
       ORDER BY DESC(?rank)
       LIMIT {limit}
-  cognite:
-    cdf_project: prod
-    tenant_id: a8d61462-f252-44b2-bf6a-d7231960c041
-    client_name: graphwise
-    base_url: https://statnett.cognitedata.com
-    interactive_client_id: 0d448de6-4574-44af-9a3b-2bd0304cfa36
 llm:
   azure_endpoint: "https://statnett.openai.azure.com/"
   model: "gpt-4.1"
@@ -47,8 +41,7 @@ prompts:
       1. Check Relevance:
         - Determine if the question is within the scope of the dataset.
         - If it is out of scope, clearly inform the user (e.g., “That type of data is not available in the current dataset.”).
-      2. If the question is related to electricity prices or power flow, use the time series data to retrieve the information, and do not call the `sparql_query` or `autocomplete_search_tool`.
-      3. Entity Recognition and Resolution:
+      2. Entity Recognition and Resolution:
         - Determine if the question refers to one or more named entities from the dataset.
         - If it does, use the `autocomplete_search_tool` to retrieve their IRIs. Always use their IRIs in SPARQL queries; never refer to named entities by name in the SPARQL queries.
         - Exception - do not use the `autocomplete_search_tool`, when an entity is referred by identifier. Valid identifiers are:

@@ -54,11 +54,11 @@ tools:
       }}
       ORDER BY DESC(?score)
   cognite:
-    cdf_project: prod
-    tenant_id: a8d61462-f252-44b2-bf6a-d7231960c041
-    client_name: graphwise
     base_url: https://statnett.cognitedata.com
+    client_name: talk2powersystem
+    project: prod
     interactive_client_id: 0d448de6-4574-44af-9a3b-2bd0304cfa36
+    tenant_id: a8d61462-f252-44b2-bf6a-d7231960c041
 llm:
   azure_endpoint: "https://statnett.openai.azure.com/"
   model: "gpt-4.1"
@@ -151,13 +151,14 @@ we create a local environment using a docker compose setup.
 
 ### `tools.cognite` - OPTIONAL - if not present, the `Cognite Query Tools` won't be present
 
-- `tools.cognite.cdf_project` - REQUIRED - Cognite Data Fusion project name.
-- `tools.cognite.tenant_id` - REQUIRED - Azure tenant ID.
-- `tools.cognite.client_name` - REQUIRED - Name of the client for logging purposes.
-- `tools.cognite.base_url` - REQUIRED - Base URL for the Cognite API.
+- `tools.cognite.base_url` - REQUIRED - Base URL for the Cognite API. For example, `https://statnett.cognitedata.com`.
+- `tools.cognite.project` - OPTIONAL, DEFAULT=`prod` - Cognite Data Fusion project name.
+One of `dev1`, `dev2`, `dev3`, `test`, `prod` according to [CDF access from RNDP](https://github.com/statnett/Talk2PowerSystem_PM/wiki/CDF-access-from-RNDP).
+- `tools.cognite.client_name` - OPTIONAL, DEFAULT=`talk2powersystem` - Name of the client for logging purposes.
 - `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used.
-  Otherwise, `tools.cognite.client_id` and the environment variable `COGNITE_CLIENT_SECRET` must be provided for client
-  credentials authentication.
+  Otherwise, `tools.cognite.token_file_path` must be provided for client credentials authentication.
+- `tools.cognite.tenant_id` - REQUIRED iff `tools.cognite.interactive_client_id` is present - Azure tenant ID. For example, `a8d61462-f252-44b2-bf6a-d7231960c041`.
+- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the cognite token file. For example, `/var/run/secrets/microsoft.com/entra/cognite`.
 
 ## `llm`
 
@@ -179,5 +180,3 @@ we create a local environment using a docker compose setup.
 
 - `LLM_API_KEY` - REQUIRED - Azure OpenAI deployment API key for authentication
 - `GRAPHDB_PASSWORD` - REQUIRED, iff `graphdb.username` is set - Password for the GraphDB user
-- `COGNITE_CLIENT_SECRET` - REQUIRED, iff `tools.cognite` is present, and `tools.cognite.interactive_client_id` is not
-  set - Client secret for client credentials authentication.

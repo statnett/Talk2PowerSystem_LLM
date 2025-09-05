@@ -62,7 +62,7 @@ It should be your home directory.
 - You should change this
 ```
 agent_executor = Talk2PowerSystemAgent(
-    Path("../../config/cim.ontotext.yaml"),
+    Path("../../config/dev+cognite.yaml"),
     checkpointer=InMemorySaver()
 ).agent
 ```

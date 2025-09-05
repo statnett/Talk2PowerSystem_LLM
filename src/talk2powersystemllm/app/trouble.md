@@ -24,6 +24,8 @@ It doesn't provide functionalities for:
 
 The chat bot memory is persisted in Redis.
 
+The application can be secured using OpenID.
+
 #### Context Diagram
 
 Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI, Redis and optionally on Cognite.
@@ -32,15 +34,13 @@ Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI, Redis an
 
 #### Important Endpoints
 
-##### POST /rest/chat/conversations
+##### GET /rest/authentication/config
 
-Starts a new conversation or adds message to an existing conversation
+Exposes authentication configuration settings used by the UI
 
 Request Headers:
 
 - X-Request-Id - version 4 UUID, which can be used to correlate HTTP requests between clients, services and service dependencies; optional, if not provided, it will be automatically generated and returned as a response header
-
-- Content-Type - "application/json"
 
 - Accept - "application/json"
 
@@ -54,7 +54,78 @@ Response Status Codes:
 
 - 200 - Successful Response
 
+Response Body JSON Schema:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "clientId": {
+      "type": "string"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "logout": {
+      "type": "string"
+    },
+    "loginRedirect": {
+      "type": "string"
+    },
+    "logoutRedirect": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "enabled"
+  ]
+}
+```
+
+Sample Response Body:
+
+```json
+{
+  "enabled": true,
+  "clientId": "6f8c5e30-b4b4-4b78-bdba-0ac5f5947fb6",
+  "authority": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875",
+  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/logout",
+  "loginRedirect": "http://localhost:3000",
+  "logoutRedirect": "http://localhost:3000/login"
+}
+```
+
+##### POST /rest/chat/conversations
+
+Starts a new conversation or adds message to an existing conversation
+
+Request Headers:
+
+- X-Request-Id - version 4 UUID, which can be used to correlate HTTP requests between clients, services and service dependencies; optional, if not provided, it will be automatically generated and returned as a response header
+
+- Content-Type - "application/json"
+
+- Accept - "application/json"
+
+- Authorization - "Bearer <token\>" 
+
+Response Headers:
+
+- X-Request-Id - Same as the Request Header "X-Request-Id"; auto generated version 4 UUID, if the request didn't include it
+
+- Content-Type - "application/json"
+
+Response Status Codes:
+
+- 200 - Successful Response
+
 - 400 - Conversation not found
+
+- 401 - Unauthorized
 
 - 422 - Validation Error
 
@@ -210,6 +281,8 @@ Request Headers:
 
 - Accept - "application/json"
 
+- Authorization - "Bearer <token\>" 
+
 Response Headers:
 
 - X-Request-Id - Same as the Request Header "X-Request-Id"; auto generated version 4 UUID, if the request didn't include it
@@ -221,6 +294,8 @@ Response Status Codes:
 - 200 - Successful Response 
 
 - 400 - Conversation or message not found
+
+- 401 - Unauthorized
 
 - 422 - Validation error
 

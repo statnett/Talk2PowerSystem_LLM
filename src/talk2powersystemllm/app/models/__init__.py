@@ -1,3 +1,4 @@
+from .auth import AuthConfig
 from .models import (
     ChatRequest,
     Usage,

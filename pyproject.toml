@@ -20,6 +20,8 @@ dependencies = [
     "fastapi==0.116.1",
     "toml==0.10.2",
     "markdown==3.8.2",
+    "python-jose[cryptography] (==3.5.0)",
+    "cachetools==6.2.0",
 ]
 
 [project.urls]

@@ -49,4 +49,4 @@ jobs:
         if: always()
         run: |
           docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
-          rm git-manifest.yaml
+          rm -f git-manifest.yaml

@@ -91,8 +91,8 @@ with RedisSaver.from_conn_string(
         checkpointer=memory_saver
     )
 graphdb_healthcheck = GraphDBHealthchecker(agent.graphdb_client)
-if agent.cognite_client:
-    cognite_healthcheck = CogniteHealthchecker(agent.cognite_client)
+if agent.cognite_session:
+    cognite_healthcheck = CogniteHealthchecker(agent.cognite_session)
 trouble_html = get_trouble_html()
 
 

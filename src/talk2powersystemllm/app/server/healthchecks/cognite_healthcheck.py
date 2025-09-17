@@ -1,7 +1,6 @@
 import logging
 
-from cognite.client import CogniteClient
-
+from talk2powersystemllm.tools import CogniteSession
 from .healthchecks import HealthChecks
 from ..singleton import SingletonMeta
 from ...models import HealthCheck, Severity, HealthStatus
@@ -20,14 +19,14 @@ class CogniteHealthcheck(HealthCheck):
 class CogniteHealthchecker(metaclass=SingletonMeta):
     def __init__(
             self,
-            cognite_client: CogniteClient,
+            cognite_session: CogniteSession,
     ):
-        self.__cognite_client = cognite_client
+        self.__cognite_session = cognite_session
         HealthChecks().add(self)
 
     async def health(self) -> CogniteHealthcheck:
         try:
-            self.__cognite_client.time_series.list(
+            self.__cognite_session.client().time_series.list(
                 limit=1
             )
             return CogniteHealthcheck(status=HealthStatus.OK, message="Cognite can be queried.")

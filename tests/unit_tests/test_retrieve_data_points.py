@@ -1,11 +1,11 @@
 import datetime
+from unittest.mock import MagicMock
 
 import pytest
-from cognite.client import CogniteClient
 from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client.testing import monkeypatch_cognite_client
 
-from talk2powersystemllm.tools import RetrieveDataPointsTool
+from talk2powersystemllm.tools import RetrieveDataPointsTool, CogniteSession
 
 
 @pytest.mark.parametrize(
@@ -17,9 +17,10 @@ from talk2powersystemllm.tools import RetrieveDataPointsTool
 )
 def test_correct_format_end(end: str) -> None:
     with monkeypatch_cognite_client() as c_mock:
-        client = CogniteClient()
+        mock_session = MagicMock(spec=CogniteSession)
+        mock_session.client.return_value = c_mock
 
-        tool = RetrieveDataPointsTool(cognite_client=client)
+        tool = RetrieveDataPointsTool(cognite_session=mock_session)
         tool._run(
             external_id="external_id",
             end=end,
@@ -37,9 +38,10 @@ def test_correct_format_end(end: str) -> None:
 )
 def test_correct_format_start(start: str) -> None:
     with monkeypatch_cognite_client() as c_mock:
-        client = CogniteClient()
+        mock_session = MagicMock(spec=CogniteSession)
+        mock_session.client.return_value = c_mock
 
-        tool = RetrieveDataPointsTool(cognite_client=client)
+        tool = RetrieveDataPointsTool(cognite_session=mock_session)
         tool._run(
             external_id="external_id",
             start=start
@@ -53,9 +55,10 @@ def test_external_id_doesnt_exist() -> None:
         c_mock.time_series.data.retrieve_arrays.side_effect = CogniteNotFoundError(
             not_found=["external_id"],
         )
-        client = CogniteClient()
+        mock_session = MagicMock(spec=CogniteSession)
+        mock_session.client.return_value = c_mock
 
-        tool = RetrieveDataPointsTool(cognite_client=client)
+        tool = RetrieveDataPointsTool(cognite_session=mock_session)
         with pytest.raises(CogniteNotFoundError) as exc:
             tool._run(
                 external_id="external_id",
@@ -81,18 +84,20 @@ def test_external_id_doesnt_exist() -> None:
     ],
 )
 def test_try_to_parse_as_iso_format_invalid_iso_format(dt: str | None) -> None:
-    with monkeypatch_cognite_client():
-        client = CogniteClient()
+    with monkeypatch_cognite_client() as c_mock:
+        mock_session = MagicMock(spec=CogniteSession)
+        mock_session.client.return_value = c_mock
 
-        tool = RetrieveDataPointsTool(cognite_client=client)
+        tool = RetrieveDataPointsTool(cognite_session=mock_session)
         assert tool._try_to_parse_as_iso_format(dt) == dt
 
 
 def test_try_to_parse_as_iso_format_valid_iso_format() -> None:
-    with monkeypatch_cognite_client():
-        client = CogniteClient()
+    with monkeypatch_cognite_client() as c_mock:
+        mock_session = MagicMock(spec=CogniteSession)
+        mock_session.client.return_value = c_mock
 
-        tool = RetrieveDataPointsTool(cognite_client=client)
+        tool = RetrieveDataPointsTool(cognite_session=mock_session)
         assert tool._try_to_parse_as_iso_format("2025-06-04") == datetime.datetime(
             year=2025, month=6, day=4,
             tzinfo=datetime.timezone.utc

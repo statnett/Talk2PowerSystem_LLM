@@ -64,6 +64,18 @@ This information is included in the response from the `/__about` endpoint.
 
 The `version` information is included in the response from the `/__about` endpoint.
 
+### Security
+
+* `SECURITY_ENABLED` - OPTIONAL, DEFAULT=False, Exposed to the UI - Indicates if security is enabled.
+* `SECURITY_CLIENT_ID` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The registered application (client) ID.
+* `SECURITY_AUTHORITY` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The authority URL used for authentication.
+* `SECURITY_LOGOUT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The logout endpoint URL.
+* `SECURITY_LOGIN_REDIRECT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The URL to redirect to after a successful login.
+* `SECURITY_LOGOUT_REDIRECT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The URL to redirect to after logout.
+* `SECURITY_OIDC_DISCOVERY_URL` - OPTIONAL, DEFAULT=`{SECURITY_AUTHORITY}/v2.0/.well-known/openid-configuration` - OpenID Connect Discovery URL.
+* `SECURITY_TTL` - OPTIONAL, DEFAULT=`86400` seconds (24 hours), must be >= 1 - Indicates how many seconds to cache the public keys and the issuer obtained from the OpenID Configuration endpoint.
+According to [the Azure documentation](https://learn.microsoft.com/en-us/entra/identity-platform/access-tokens) a reasonable frequency to check for updates to the public keys used by Microsoft Entra ID is every 24 hours.
+
 ## Development
 
 ### Run the app locally

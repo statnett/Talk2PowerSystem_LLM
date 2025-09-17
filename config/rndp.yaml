@@ -23,6 +23,9 @@ tools:
       }}
       ORDER BY DESC(?rank)
       LIMIT {limit}
+  cognite:
+    base_url: https://statnett.cognitedata.com
+    token_file_path: /var/run/secrets/microsoft.com/entra/cognite
 llm:
   azure_endpoint: "https://rndp-openai.openai.azure.com"
   model: "gpt-4.1"
@@ -33,7 +36,9 @@ llm:
 prompts:
   assistant_instructions: |
     Role & Objective:
-      You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data.
+      You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data, including:
+        - A power grid model
+        - Time-series data for power generation and consumption, and electricity prices
 
     General Reasoning Flow:
       1. Check Relevance:

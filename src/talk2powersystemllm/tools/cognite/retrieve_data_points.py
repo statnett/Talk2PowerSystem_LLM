@@ -124,7 +124,7 @@ class RetrieveDataPointsTool(BaseCogniteTool):
     ) -> DatapointsArray | DatapointsArrayList | None:
         start = self._try_to_parse_as_iso_format(start)
         end = self._try_to_parse_as_iso_format(end)
-        return self.cognite_client.time_series.data.retrieve_arrays(
+        return self.cognite_session.client().time_series.data.retrieve_arrays(
             external_id=external_id,
             limit=limit,
             start=start,

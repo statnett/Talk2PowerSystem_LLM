@@ -46,7 +46,7 @@ services:
       - ./logs:/code/logs
       - ./agent.yaml:/code/config/agent.yaml
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8000/__health" ]
+      test: [ "CMD", "python3", "-c", "import sys,urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/__gtg').status == 200 else sys.exit(1)" ]
       interval: 30s
       retries: 4
       start_period: 10s

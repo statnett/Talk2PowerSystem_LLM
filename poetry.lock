@@ -807,6 +807,18 @@ files = [
 ]
 
 [[package]]
+name = "graphrag-eval"
+version = "5.0.0"
+description = "For assessing question answering systems' final answers and intermediate steps, against a given set of questions, reference answers and steps."
+optional = false
+python-versions = "<3.13,>=3.12"
+groups = ["main"]
+files = [
+    {file = "graphrag_eval-5.0.0-py3-none-any.whl", hash = "sha256:5af994f4ef79baf772ec31210ed5a490b8948b6f233447fbf536e0875bef5363"},
+    {file = "graphrag_eval-5.0.0.tar.gz", hash = "sha256:d92b641c8f0c6fa1c2efee815b6d86554ad28fb1804b79190b00a1b135effb93"},
+]
+
+[[package]]
 name = "h11"
 version = "0.16.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -3916,31 +3928,19 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "1.7.0"
+version = "1.8.0"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-1.7.0-py3-none-any.whl", hash = "sha256:682e6b238035cf39421660e93eee4cffc9c94104c5df101ec8aed1ee72f1cc50"},
-    {file = "ttyg-1.7.0.tar.gz", hash = "sha256:83d4f22fd9f94f0607e7e0679e82f5435a0de0934cd9f1a97b49aaa525177642"},
+    {file = "ttyg-1.8.0-py3-none-any.whl", hash = "sha256:88ddecaf3260de41836e056ae3af7608406991be58c72d33ca25fca5846ffcfb"},
+    {file = "ttyg-1.8.0.tar.gz", hash = "sha256:de847d21ff1bc8e4bcb0964923fa075fbfb7280da9dc52f8d2106df8f839280c"},
 ]
 
 [package.dependencies]
 langgraph = "0.6.6"
 sparqlwrapper = "2.0.0"
-
-[[package]]
-name = "ttyg-evaluation"
-version = "2.2.0"
-description = "Talk to Your Graph (TTYG) Evaluation is a Python module for evaluating whether LLM agents correctly orchestrate and invoke available tools to answer user questions, based on a Q&A dataset with tool call expectations."
-optional = false
-python-versions = "<3.13,>=3.12"
-groups = ["main"]
-files = [
-    {file = "ttyg_evaluation-2.2.0-py3-none-any.whl", hash = "sha256:1ca5c0fa50dfefb176fe9d36981f53e12b29e221b183856c6c16046b0d309ac4"},
-    {file = "ttyg_evaluation-2.2.0.tar.gz", hash = "sha256:e763748a8bcc5bb646d104621e0522e51294d0c96c11506349c7d351d84e7f44"},
-]
 
 [[package]]
 name = "types-python-dateutil"
@@ -4604,4 +4604,4 @@ cffi = ["cffi (>=1.17) ; python_version >= \"3.13\" and platform_python_implemen
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "592afb118d37a32c7e716ec31c4210af886c1ceda98d6b9a2f9a275e48515473"
+content-hash = "d4d8ac1f7e0c206bbd496c9310d800eca0d97cbd9c35ac2e3c3a3d7892ebfcb3"

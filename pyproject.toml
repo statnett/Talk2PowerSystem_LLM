@@ -7,7 +7,7 @@ readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==1.7.0",
+    "ttyg==1.7.1",
     "ttyg-evaluation==2.2.0",
     "jupyter==1.1.1",
     "langchain-openai==0.3.32",
@@ -49,3 +49,4 @@ build-backend = "poetry.core.masonry.api"
 evaluation = 'talk2powersystemllm.scripts.run_evaluation:main'
 qa_dataset2rdf = 'talk2powersystemllm.scripts.qa_dataset2rdf:main'
 find_min_retrieval_limit_on_dev = 'talk2powersystemllm.scripts.find_min_retrieval_limit_on_dev:main'
+benchmark_graphdb_ttyg = 'talk2powersystemllm.scripts.benchmark_graphdb_ttyg:main'

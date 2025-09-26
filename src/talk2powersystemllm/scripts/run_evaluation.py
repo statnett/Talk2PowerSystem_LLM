@@ -1,13 +1,15 @@
 import argparse
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import jsonlines
 import yaml
+from graphrag_eval import run_evaluation, compute_aggregates
 from langgraph.graph.state import CompiledStateGraph
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_result
 from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
-from graphrag_eval import run_evaluation, compute_aggregates
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgent
 from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset
@@ -62,13 +64,9 @@ def run_evaluation_on_split(
     with jsonlines.open(chat_responses_file, mode="w") as writer:
         for template in tqdm(split, desc=f"Processing templates from {split_name} split"):
             for question in template["questions"]:
-                chat_response = run_agent_for_evaluation(
-                    agent,
-                    question["id"],
-                    {"messages": [("user", question["question_text"])]}
-                )
+                chat_response = run_agent(agent, question)
                 writer.write(chat_response)
-                chat_responses_actual_answers[question["id"]] = chat_response.pop("actual_answer")
+                chat_responses_actual_answers[question["id"]] = chat_response.pop("actual_answer", None)
                 chat_responses[question["id"]] = chat_response
 
     per_question_eval = run_evaluation(split, chat_responses)
@@ -79,6 +77,30 @@ def run_evaluation_on_split(
     aggregates = compute_aggregates(per_question_eval)
     aggregation_results = results_dir / f"evaluation_summary_{split_name}.yaml"
     save_as_yaml(aggregation_results, aggregates)
+
+
+def is_error_response(response: dict[str, Any]) -> bool:
+    """Return True if the response indicates an error (i.e., we should retry)."""
+    return "status" in response and response["status"] == "error"
+
+
+@retry(
+    retry=retry_if_result(is_error_response),
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=1, min=1, max=60)
+)
+def run_agent(agent: CompiledStateGraph, question: dict) -> dict[str, Any]:
+    chat_response = run_agent_for_evaluation(
+        agent,
+        question["id"],
+        {"messages": [("user", question["question_text"])]}
+    )
+    if "status" in chat_response and chat_response["status"] == "error":
+        print(
+            f"Warning: The chat response for the question with id {question['id']} "
+            f"is {chat_response["error"]}"
+        )
+    return chat_response
 
 
 def main():

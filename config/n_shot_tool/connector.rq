@@ -7,12 +7,12 @@ INSERT DATA {
     {
       "fieldName": "text",
       "propertyChain": [
-        "https://www.statnett.no/Talk2PowerSystem/qa#nl_question"
+        "https://www.statnett.no/Talk2PowerSystem/qa#question"
       ]
     }
   ],
   "types": [
-    "https://www.statnett.no/Talk2PowerSystem/qa#Question"
+    "https://www.statnett.no/Talk2PowerSystem/qa#Paraphrase"
   ],
   "retrievalUrl": "http://retrieval-plugin:8080/OpenAIDocument",
   "retrievalBearerToken": "DUMMY"

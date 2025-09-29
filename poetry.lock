@@ -808,15 +808,18 @@ files = [
 
 [[package]]
 name = "graphrag-eval"
-version = "5.0.0"
+version = "5.0.2"
 description = "For assessing question answering systems' final answers and intermediate steps, against a given set of questions, reference answers and steps."
 optional = false
 python-versions = "<3.13,>=3.12"
 groups = ["main"]
 files = [
-    {file = "graphrag_eval-5.0.0-py3-none-any.whl", hash = "sha256:5af994f4ef79baf772ec31210ed5a490b8948b6f233447fbf536e0875bef5363"},
-    {file = "graphrag_eval-5.0.0.tar.gz", hash = "sha256:d92b641c8f0c6fa1c2efee815b6d86554ad28fb1804b79190b00a1b135effb93"},
+    {file = "graphrag_eval-5.0.2-py3-none-any.whl", hash = "sha256:ff1760e27966b08e26de0c27d7398cf2a5a361f67f7cf7d89612c8f79fab9e05"},
+    {file = "graphrag_eval-5.0.2.tar.gz", hash = "sha256:e424e62324cf2e2b5e24637ac0b21cb137dc077fcb51da8c18af19c7a9686042"},
 ]
+
+[package.extras]
+openai = ["langevals (==0.1.*)", "langevals-ragas (>=0.1.12,<0.2.0)", "openai (>=1.97.0,<2.0.0)"]
 
 [[package]]
 name = "h11"
@@ -4604,4 +4607,4 @@ cffi = ["cffi (>=1.17) ; python_version >= \"3.13\" and platform_python_implemen
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "d4d8ac1f7e0c206bbd496c9310d800eca0d97cbd9c35ac2e3c3a3d7892ebfcb3"
+content-hash = "d9ed0ae234b3e4c2d655dccf67424c3a179a5ca3e4a23199d69f9df18159ec63"

@@ -43,7 +43,7 @@ tools:
             retr:limit {limit} ;
             retr:entities ?entity .
           ?entity retr:score ?score;
-            qa:nl_question ?question;
+            qa:question ?question;
             qa:sparql_query ?query.
           FILTER (?score > {score})
       }}

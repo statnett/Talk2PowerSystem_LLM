@@ -27,13 +27,13 @@ def find_global_min_limit(graphdb: GraphDB, split: list[dict], max_limit: int) -
     for template in split:
         for question in template["questions"]:
             question_id = question["id"]
-            nl_question = question["nl_question"]
+            question_text = question["question"]
 
-            entities = retrieve(graphdb, nl_question, limit)
+            entities = retrieve(graphdb, question_text, limit)
 
             while question_id not in entities:
                 limit += 1
-                entities = retrieve(graphdb, nl_question, limit)
+                entities = retrieve(graphdb, question_text, limit)
 
                 if limit == max_limit:
                     print(f"Warning. Reached maximum limit.")

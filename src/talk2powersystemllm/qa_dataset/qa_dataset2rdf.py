@@ -1,15 +1,51 @@
+import re
+
 from rdflib import Graph, URIRef, Namespace, RDF, Literal
 
 
-def parameter_to_placeholder(parameter: str) -> str:
-    """
-    Examples:
-    $ObjectIdentity(0, cim:SubGeographicalRegion) will be replaced with <SubGeographicalRegion>
-    $ValueFilter(cim:GeneratingUnit, cim:GeneratingUnit.maxOperatingP, xsd:float) will be replaced with <float>
-    """
-    replacement = parameter[(parameter.rindex(",") + 1):-1]
-    replacement = replacement[(replacement.index(":") + 1):]
-    return f"<{replacement}>"
+def replace_object_identity(match):
+    # match group looks like: "0, cim:SynchronousMachineOperatingMode"
+    text = match.group(1).strip()
+    return f"<<<{text}>>>"
+
+
+def replace_value_filter(match):
+    # match group looks like: "cim:GeneratingUnit, cim:GeneratingUnit.maxOperatingP, xsd:float"
+    parts = match.group(1).split(",")
+    if parts:
+        return f"<<<{parts[-1].split(':')[-1].strip()}>>>"
+    return match.group(0)
+
+
+def transform_paraphrase(paraphrase: str) -> str:
+    paraphrase = re.sub(r"\$ObjectIdentity\((.*?)\)", replace_object_identity, paraphrase)
+    return re.sub(r"\$ValueFilter\((.*?)\)", replace_value_filter, paraphrase)
+
+
+def transform_sparql(sparql_query: str) -> str:
+    sparql_query = re.sub(r"{\$ObjectIdentity\((.*?)\)}", replace_object_identity, sparql_query)
+    return re.sub(r"{\$ValueFilter\((.*?)\)}", replace_value_filter, sparql_query)
+
+
+def verify_unique_placeholders(text: str) -> bool:
+    # Find all <<< >>> placeholders
+    placeholders = re.findall(r'<<<(.*?)>>>', text)
+
+    # Check uniqueness
+    unique_placeholders = set(placeholders)
+
+    if len(placeholders) == len(unique_placeholders):
+        return True
+    else:
+        print("❌ Duplicate placeholders found:")
+        print(text)
+        seen = set()
+        for ph in placeholders:
+            if ph in seen:
+                print(f"   - {ph}")
+            else:
+                seen.add(ph)
+        return False
 
 
 def build_qa_dataset_graph(split):
@@ -21,65 +57,13 @@ def build_qa_dataset_graph(split):
     for template in split:
         template_iri = URIRef(f"Template_{template['template_id']}", base_ns)
         graph.add((template_iri, RDF.type, qa_dataset_ns.Template))
+        sparql_template = template["sparql_template"]
 
-        for question in template["questions"]:
-            question_iri = URIRef(f"Question_{question['id']}", base_ns)
-            graph.add((question_iri, RDF.type, qa_dataset_ns.Question))
-            graph.add((template_iri, qa_dataset_ns.question, question_iri))
-
-            nl_question = question["nl_question"]
-            parameter_bindings = question["parameter_bindings"]
-
-            for parameter, binding in parameter_bindings.items():
-                if parameter.startswith("$ObjectIdentity"):
-                    if not binding.startswith("urn:uuid:"):
-                        if binding in nl_question:
-                            if nl_question.index(binding) != nl_question.rindex(binding):
-                                raise Exception
-                            nl_question = nl_question.replace(binding, parameter_to_placeholder(parameter))
-                        else:
-                            binding = binding[binding.rindex(".") + 1:]
-                            if binding in nl_question:
-                                if nl_question.index(binding) != nl_question.rindex(binding):
-                                    raise Exception
-                                nl_question = nl_question.replace(binding, parameter_to_placeholder(parameter))
-                            else:
-                                raise Exception
-                    else:
-                        if binding in nl_question:
-                            if nl_question.index(binding) != nl_question.rindex(binding):
-                                raise Exception
-                            nl_question = nl_question.replace(binding, parameter_to_placeholder(parameter))
-                        else:
-                            binding = binding.replace("urn:uuid:", "")
-                            iri_discovery_steps = [
-                                step
-                                for steps in question["expected_steps"]
-                                for step in steps
-                                if step["name"] == "iri_discovery"
-                            ]
-                            iri_discovery_output_to_step = {
-                                step["output"].replace("urn:uuid:", ""): step
-                                for step in iri_discovery_steps
-                            }
-                            iri_discovery_step = iri_discovery_output_to_step[binding]
-                            iri_discovery_query = iri_discovery_step["args"]["query"]
-                            if iri_discovery_query in nl_question:
-                                nl_question = nl_question.replace(
-                                    iri_discovery_query, parameter_to_placeholder(parameter)
-                                )
-
-            for parameter, binding in parameter_bindings.items():
-                if parameter.startswith("$ValueFilter"):
-                    if binding in nl_question:
-                        if nl_question.index(binding) != nl_question.rindex(binding):
-                            raise Exception
-                        nl_question = nl_question.replace(binding, parameter_to_placeholder(parameter))
-                    else:
-                        raise Exception
-
-            graph.add((question_iri, qa_dataset_ns.nl_question, Literal(nl_question)))
-            sparql_query_step = question["expected_steps"][-1][0]
-            sparql_query = sparql_query_step["args"]["query"]
-            graph.add((question_iri, qa_dataset_ns.sparql_query, Literal(sparql_query)))
+        for n, paraphrase in enumerate(template["paraphrases"]):
+            paraphrase_iri = URIRef(f"Paraphrase_{template['template_id']}_{n}", base_ns)
+            graph.add((paraphrase_iri, RDF.type, qa_dataset_ns.Paraphrase))
+            graph.add((template_iri, qa_dataset_ns.paraphrase, paraphrase_iri))
+            graph.add((paraphrase_iri, qa_dataset_ns.question, Literal(transform_paraphrase(paraphrase))))
+            verify_unique_placeholders(transform_paraphrase(paraphrase))
+            graph.add((paraphrase_iri, qa_dataset_ns.sparql_query, Literal(transform_sparql(sparql_template))))
     return graph

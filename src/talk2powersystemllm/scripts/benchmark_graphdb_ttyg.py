@@ -9,11 +9,11 @@ from pathlib import Path
 
 import requests
 import yaml
+from graphrag_eval import run_evaluation, compute_aggregates
 from pydantic import SecretStr, Field, model_validator
 from pydantic_settings import BaseSettings
 from tqdm import tqdm
 from ttyg.graphdb import GraphDB
-from ttyg_evaluation import run_evaluation, compute_aggregations
 
 from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset
 
@@ -31,6 +31,14 @@ def get_args_parser() -> argparse.ArgumentParser:
         dest="qa_dataset_path",
         required=True,
         help="Path to the Q&A dataset serialized in the expected yaml format",
+    )
+    parser.add_argument(
+        "--n_templates",
+        dest="n_templates",
+        type=int,
+        required=False,
+        default=50,
+        help="Limit the number of templates",
     )
     parser.add_argument(
         "--results_dir",
@@ -195,10 +203,11 @@ def run_evaluation_on_split(
                     writer,
                     graphdb_settings,
                     question["id"],
-                    question["nl_question"],
+                    question["question_text"],
                 )
 
     graphdb_client = init_graphdb(graphdb_settings)
+    chat_responses_actual_answers = dict()
     chat_responses = dict()
     with open(gdb_responses_file, encoding="utf-8") as reader:
         lines = reader.readlines()
@@ -216,7 +225,7 @@ def run_evaluation_on_split(
 
             explain_response_body = json.loads(responses_for_question[4])
             query_methods = explain_response_body["queryMethods"]
-            tools_calls = []
+            actual_steps = []
             for query_method in query_methods:
                 if query_method["errorOutput"] is not None:
                     status = "error"
@@ -230,7 +239,7 @@ def run_evaluation_on_split(
                     name, args = "sparql_query", {"query": query_method["rawQuery"]}
                 elif query_method["name"] == "autocomplete_iri_discovery_search":
                     name, args = "autocomplete_search", json.loads(query_method["rawQuery"])
-                tools_calls.append({
+                actual_steps.append({
                     "name": name,
                     "args": args,
                     "id": str(uuid.uuid4()),
@@ -238,20 +247,22 @@ def run_evaluation_on_split(
                     "output": json.dumps(output),
                 })
 
+            chat_responses_actual_answers[question_id] = messages[-1]["message"]
             chat_responses[question_id] = {
                 "question_id": question_id,
                 "input_tokens": usage["promptTokens"],
                 "output_tokens": usage["completionTokens"],
                 "total_tokens": usage["totalTokens"],
                 "elapsed_sec": float(elapsed_sec),
-                "tools_calls": tools_calls,
-                "answer": messages[-1]["message"]
+                "actual_steps": actual_steps,
             }
 
     per_question_eval = run_evaluation(split, chat_responses)
+    for question_eval in per_question_eval:
+        question_eval["actual_answer"] = chat_responses_actual_answers[question_eval["question_id"]]
     evaluation_results_file = results_dir / f"evaluation_per_question_{split_name}.yaml"
     save_as_yaml(evaluation_results_file, per_question_eval)
-    aggregates = compute_aggregations(per_question_eval)
+    aggregates = compute_aggregates(per_question_eval)
     aggregation_results = results_dir / f"evaluation_summary_{split_name}.yaml"
     save_as_yaml(aggregation_results, aggregates)
 
@@ -269,7 +280,7 @@ def main():
     results_dir = results_dir / timestamp
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path))
+    _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path), n_templates=args.n_templates)
 
     run_evaluation_on_split(graphdb_settings, dev_split, "dev", results_dir)
     run_evaluation_on_split(graphdb_settings, test_split, "test", results_dir)

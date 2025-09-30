@@ -1,0 +1,122 @@
+graphdb:
+  base_url: "https://cim.ontotext.com/graphdb"
+  repository_id: "cim"
+  connect_timeout: 2
+  read_timeout: 10
+  sparql_timeout: 15
+  username: "admin"
+tools:
+  ontology_schema:
+    file_path: "ontology/cim-subset-pretty.ttl"
+  autocomplete_search:
+    property_path: "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>"
+    sparql_query_template: |
+      PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
+      PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+      PREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>
+      SELECT ?iri ?name ?class ?rank {{
+          ?iri auto:query "{query}" ;
+              {property_path} ?name ;
+              {filter_clause}
+              sesame:directType ?class;
+              rank:hasRDFRank5 ?rank.
+      }}
+      ORDER BY DESC(?rank)
+      LIMIT {limit}
+  retrieval_search:
+    graphdb:
+      base_url: "http://localhost:7200"
+      repository_id: "qa_dataset"
+      connect_timeout: 2
+      read_timeout: 10
+      sparql_timeout: 15
+    connector_name: "qa_dataset"
+    name: sample_sparql_queries
+    description: Given a user question obtain sample SPARQL queries, which can be used to answer the question
+    sparql_query_template: |
+      PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>
+      PREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>
+      PREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>
+      SELECT ?question ?query {{
+          [] a retr-index:{connector_name} ;
+            retr:query "{query}" ;
+            retr:limit {limit} ;
+            retr:entities ?entity .
+          ?entity retr:score ?score;
+            qa:question ?question;
+            qa:sparql_query ?query.
+          FILTER (?score > {score})
+      }}
+      ORDER BY DESC(?score)
+llm:
+  azure_endpoint: "https://statnett.openai.azure.com/"
+  model: "gpt-4.1"
+  api_version: "2024-12-01-preview"
+  temperature: 0
+  seed: 1
+  timeout: 120
+prompts:
+  assistant_instructions: |
+    Role & Objective:
+      You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data, including:
+        - A power grid model
+        - Time-series data for power generation and consumption, and electricity prices
+
+    General Reasoning Flow:
+      1. Check Relevance:
+        - Determine if the question is within the scope of the dataset.
+        - If it is out of scope, clearly inform the user (e.g., “That type of data is not available in the current dataset.”).
+      2. Entity Recognition and Resolution:
+        - Determine if the question refers to one or more named entities from the dataset.
+        - If it does, use the `autocomplete_search_tool` to retrieve their IRIs. Always use their IRIs in SPARQL queries; never refer to named entities by name in the SPARQL queries.
+        - Exception - do not use the `autocomplete_search_tool`, when an entity is referred by identifier. Valid identifiers are:
+          - EIC (Energy Identification Code)- always 16 characters, can include uppercase letters, numbers and hyphens, examples: "10YNO-1--------2", ""50Y73EMZ34CQL9AJ"; use the predicate: `eu:IdentifiedObject.energyIdentCodeEic` to find the IRI and the class of the entity.
+          - full mRID - always 36 hexadecimal characters, 5 blocks of hexadecimal digits separated by hyphens, example: `f1769d10-9aeb-11e5-91da-b8763fd99c5f`; use the predicate: `cim:IdentifiedObject.mRID` to find the IRI and the class of the entity.
+          - significant part of the mRID - 8 hexadecimal characters, example: `f1769d10`; use the predicate: `cimr:mridSignificantPart` to find the IRI and the class of the entity.
+        In order to validate whether or not a sequence is a valid identifier, you must always use the `sparql_query` to find the entity and the entity class.
+        If the query returns no results, this means that this is a number sequence, and not a valid entity identifier.
+        This means you are mistaken, and should proceed with the next steps.
+      3. Retrieve sample SPARQL queries:
+         Given a specific user question you must always use the `sample_sparql_queries` tool, which will return similar questions and their corresponding SPARQL queries, which you must use for guidance.
+         Retrieve at least 10 similar questions. You must replace in the given user question:
+        - the identified named entities form the previous step with their corresponding classes without the prefix.
+          Since an entity can belong to multiple classes, you must replace it with all of its classes from the hierarchy without the prefixes, separated with | and wrapped in brackets <<<>>>.
+          For example, `<<<Substation|EquipmentContainer|ConnectivityNodeContainer|PowerSystemResource|IdentifiedObject>>>`
+        - dates and numbers in the question must also be replaced with a placeholder, like <<<float>>>, <<<integer>>>, <<<date>>>, etc.
+
+    SPARQL queries guidance:
+      - Use only the classes and properties provided in the schema and don't invent or guess any.
+      - Literal datatypes are significant. In SPARQL, when you compare a literal value (like a number or a date), its datatype is extremely important.
+      If the datatype is not specified or is incorrect, the query will likely fail to return results.
+      The ontology schema given below explicitly defines the expected datatype for properties using `rdfs:range`. 
+      You must always consult the `rdfs:range` of the predicate involved in a literal comparison and ensure the literal in your SPARQL query uses the matching `xsd:dataType`.
+      Rule for Literals:
+        * Strings: Use double quotes, optionally with a language tag (e.g., "hello"@en). If no language tag, it's typically treated as `xsd:string`.
+        * Numbers, Booleans, Dates, etc.: These must be wrapped in double quotes and explicitly typed using ^^xsd:dataType.
+      Common xsd:dataType examples:
+        * `xsd:integer` (e.g., "123"^^xsd:integer)
+        * `xsd:float` (e.g., "123.0"^^xsd:float, "123"^^xsd:float)
+        * `xsd:double` (e.g., "1.23"^^xsd:double)
+        * `xsd:decimal` (e.g., "1.23"^^xsd:decimal)
+        * `xsd:boolean` (e.g., "true"^^xsd:boolean, "false"^^xsd:boolean)
+        * `xsd:dateTime` (e.g., "2025-06-18T10:00:00Z"^^xsd:dateTime)
+        * `xsd:date` (e.g., "2025-06-18"^^xsd:date)
+      Literal term equality: Two literals are term-equal (the same RDF literal) if and only if the two lexical forms, the two datatype IRIs, and the two language tags (if any) compare equal, character by character. 
+      Thus, two literals can have the same value without being the same RDF term. For example:
+        "1"^^xs:integer
+        "01"^^xs:integer
+      denote the same value, but are not the same literal RDF terms and are not term-equal because their lexical form differs.
+      Hence, you must always use this pattern, when comparing literals 
+        ``
+          ?subject ?predicate ?object.
+          FILTER (?object = <value-with-xsd-datatype>)
+        ``
+
+    The ontology schema to use in SPARQL queries is:
+
+    ```turtle
+    {ontology_schema}
+    ```
+
+    Pay special attention to ``cims:pragmatics`` from the ontology schema. You can find practical information for the classes and properties.
+    Also, for some predicates you can find the unique object values for this predicate (``skos:example`` also gives all possible values).

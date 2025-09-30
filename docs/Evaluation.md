@@ -58,4 +58,4 @@ export LLM_API_KEY=***
 poetry run evaluation --chat_config_path FULL_PATH_TO_CHAT_CONFIG --qa-dataset-path QA_DATASET_PATH --results_dir RESULTS_DIR --n_templates MAX_NUMBER_OF_TEMPLATES_FOR_DEV_AND_TEST
 ```
 
-where FULL_PATH_TO_CHAT_CONFIG_PATH is the full path to the [dev+retrieval+cognite.yaml](../config/dev+retrieval+cognite.yaml)
+where FULL_PATH_TO_CHAT_CONFIG_PATH is the full path to the [dev+retrieval.yaml](../config/dev+retrieval.yaml)

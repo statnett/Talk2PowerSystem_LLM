@@ -3,8 +3,12 @@ name: tests
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'helm-chart/**'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'helm-chart/**'
 
 jobs:
   test:

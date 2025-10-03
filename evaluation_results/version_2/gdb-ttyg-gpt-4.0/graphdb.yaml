@@ -1,0 +1,7 @@
+base_url: "https://cim.ontotext.com/graphdb"
+repository_id: "cim"
+connect_timeout: 120
+read_timeout: 3600
+sparql_timeout: 3600
+ttyg_agent_id: "81f512ce-bc03-4c6a-a6b0-47040c9a6fb1"
+username: "admin"

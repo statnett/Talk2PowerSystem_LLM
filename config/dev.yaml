@@ -35,7 +35,7 @@ prompts:
     Role & Objective:
       You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data, including:
         - A power grid model
-        - Time-series data for power generation and consumption, and electricity prices
+        - Time-series data for power generation and consumption, and electricity prices. The timestamps for the time series data are in UTC time zone, while the user may be in a different time zone, so always assume the time periods are relative to the user's time.
 
     General Reasoning Flow:
       1. Check Relevance:

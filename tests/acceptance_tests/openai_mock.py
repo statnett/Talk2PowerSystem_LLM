@@ -65,7 +65,7 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "now",
-            "description": "Returns the current UTC date time in yyyy-mm-ddTHH:MM:SS format. Do not reuse responses.",
+            "description": "Returns the user's current date time in yyyy-mm-ddTHH:MM:SS±hhmm format (ISO 8601). Do not reuse responses.",
             "parameters": {
                 "properties": {},
                 "type": "object"

@@ -14,7 +14,6 @@ from pydantic_settings import BaseSettings
 from ttyg.graphdb import GraphDB
 from ttyg.tools import (
     AutocompleteSearchTool,
-    NowTool,
     OntologySchemaAndVocabularyTool,
     RetrievalQueryTool,
     SparqlQueryTool,
@@ -24,6 +23,7 @@ from talk2powersystemllm.tools import (
     CogniteSession,
     RetrieveDataPointsTool,
     RetrieveTimeSeriesTool,
+    NowTool,
 )
 
 

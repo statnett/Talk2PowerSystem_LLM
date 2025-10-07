@@ -2,6 +2,7 @@ import datetime
 from typing import Type
 
 from cognite.client.data_classes.datapoints import Aggregate, DatapointsArray, DatapointsArrayList
+from cognite.client.exceptions import CogniteNotFoundError
 from pydantic import BaseModel, Field
 from ttyg.utils import timeit
 
@@ -124,14 +125,17 @@ class RetrieveDataPointsTool(BaseCogniteTool):
     ) -> DatapointsArray | DatapointsArrayList | None:
         start = self._try_to_parse_as_iso_format(start)
         end = self._try_to_parse_as_iso_format(end)
-        return self.cognite_session.client().time_series.data.retrieve_arrays(
-            external_id=external_id,
-            limit=limit,
-            start=start,
-            end=end,
-            aggregates=aggregates,
-            granularity=granularity,
-        )
+        try:
+            return self.cognite_session.client().time_series.data.retrieve_arrays(
+                external_id=external_id,
+                limit=limit,
+                start=start,
+                end=end,
+                aggregates=aggregates,
+                granularity=granularity,
+            )
+        except CogniteNotFoundError as e:
+            raise ValueError(str(e))
 
     @staticmethod
     def _try_to_parse_as_iso_format(datetime_string: str | None) -> str | datetime.datetime | None:

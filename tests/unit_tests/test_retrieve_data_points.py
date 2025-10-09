@@ -59,7 +59,7 @@ def test_external_id_doesnt_exist() -> None:
         mock_session.client.return_value = c_mock
 
         tool = RetrieveDataPointsTool(cognite_session=mock_session)
-        with pytest.raises(CogniteNotFoundError) as exc:
+        with pytest.raises(ValueError) as exc:
             tool._run(
                 external_id="external_id",
             )

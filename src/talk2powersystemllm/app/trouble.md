@@ -101,7 +101,7 @@ Sample Response Body:
 
 ##### POST /rest/chat/conversations
 
-Starts a new conversation or adds message to an existing conversation
+Starts a new conversation or adds a message to an existing conversation.
 
 Request Headers:
 
@@ -112,6 +112,8 @@ Request Headers:
 - Accept - "application/json"
 
 - Authorization - "Bearer <token\>" 
+
+- X-User-Datetime - The date and time at which the message was originated, in ISO 8601 format: ``yyyy-mm-ddTHH:MM:SS±hhmm``
 
 Response Headers:
 

@@ -60,6 +60,7 @@ from ..models import (
     Severity,
     AuthConfig,
 )
+from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
 
 API_DESCRIPTION = "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot"
 # noinspection PyTypeChecker
@@ -295,8 +296,11 @@ async def get_auth_config(
 async def conversations(
         request: ChatRequest,
         x_request_id: Annotated[str | None, Header()] = None,
+        x_user_datetime: Annotated[str | None, Header()] = None,
         claims=Depends(conditional_security),
 ) -> ChatResponse:
+    user_datetime_ctx.set(x_user_datetime)
+
     conversation_id = request.conversation_id
     if conversation_id:
         checkpoint = memory_saver.get({"configurable": {"thread_id": conversation_id}})

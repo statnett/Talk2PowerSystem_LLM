@@ -33,7 +33,8 @@ class RetrieveTimeSeriesTool(BaseCogniteTool):
         )
 
     name: str = "retrieve_time_series"
-    description: str = "Retrieve one or more time series. Optionally, the time series can be filtered by mrid."
+    description: str = ("Retrieve one or more time series. Optionally, the time series can be filtered by mrid to fetch"
+                        " the corresponding external_id.")
     args_schema: Type[BaseModel] = ArgumentsSchema
 
     @timeit

@@ -1,15 +1,12 @@
 import asyncio
 import logging
-import platform
 import sys
 import time
 import uuid
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
-from typing import Annotated
+from typing import Annotated, Any
 
-import fastapi
-import uvicorn
 from fastapi import (
     FastAPI,
     Request,
@@ -19,6 +16,7 @@ from fastapi import (
     Depends,
 )
 from fastapi.responses import HTMLResponse
+from importlib_resources import files
 from langchain_core.messages import (
     AIMessage,
     ToolMessage,
@@ -26,9 +24,19 @@ from langchain_core.messages import (
 )
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import RedisSaver
+from rdflib import Graph, Namespace
 from starlette.responses import JSONResponse
+from ttyg.tools import AutocompleteSearchTool
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgent
+from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
+from .about import (
+    __version__,
+    __timestamp__,
+    __branch__,
+    __sha__,
+    __dependencies__,
+)
 from .auth import conditional_security
 from .config import settings
 from .healthchecks import (
@@ -38,12 +46,6 @@ from .healthchecks import (
 )
 from .healthchecks.redis_healthcheck import RedisHealthchecker
 from .logging_config import LoggingConfig
-from .manifest import (
-    __sha__,
-    __branch__,
-    __timestamp__,
-    __version__,
-)
 from .trouble import get_trouble_html
 from ..models import (
     ChatRequest,
@@ -59,12 +61,20 @@ from ..models import (
     HealthStatus,
     Severity,
     AuthConfig,
+    AboutInfo,
+    AboutOntologyInfo,
+    AboutDatasetInfo,
+    AboutGraphDBInfo,
+    AboutAgentInfo,
+    AboutLLMInfo,
+    AboutBackendInfo,
 )
-from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
 
 API_DESCRIPTION = "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot"
 # noinspection PyTypeChecker
 gtg_info: GoodToGoInfo = None
+# noinspection PyTypeChecker
+about_info: AboutInfo = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.logging_yaml_file)
 
@@ -106,18 +116,34 @@ async def lifespan(_: FastAPI):
             await update_gtg_info()
             await asyncio.sleep(settings.gtg_refresh_interval)
 
+    async def scheduled_about_update():
+        while True:
+            await update_about_info()
+            await asyncio.sleep(settings.about_refresh_interval)
+
     scheduled_gtg_update_task = asyncio.create_task(scheduled_gtg_update())
+    scheduled_about_update_task = asyncio.create_task(scheduled_about_update())
+
     await update_gtg_info()
+    await update_about_info()
+
     logging.info("Application is running")
 
     yield
 
     logging.info("Destroying the application")
     scheduled_gtg_update_task.cancel()
+    scheduled_about_update_task.cancel()
+
     try:
         await scheduled_gtg_update_task
     except asyncio.CancelledError:
         logging.info("Scheduled gtg update task stopped cleanly")
+
+    try:
+        await scheduled_about_update_task
+    except asyncio.CancelledError:
+        logging.info("Scheduled about update task stopped cleanly")
 
 
 app = FastAPI(
@@ -220,24 +246,149 @@ async def trouble(x_request_id: Annotated[str | None, Header()] = None):
     return HTMLResponse(content=trouble_html)
 
 
+async def update_about_info() -> None:
+    logging.info("Updating about info")
+
+    global about_info
+
+    if about_info:
+        about_info.ontologies = get_about_ontologies()
+        about_info.datasets = get_about_datasets()
+        about_info.graphdb = get_about_graphdb()
+    else:
+        about_ontologies = get_about_ontologies()
+        about_datasets = get_about_datasets()
+        about_graphdb = get_about_graphdb()
+        about_agent = get_about_agent()
+        about_backend = get_about_backend()
+
+        about_info = AboutInfo(
+            ontologies=about_ontologies,
+            datasets=about_datasets,
+            graphdb=about_graphdb,
+            agent=about_agent,
+            backend=about_backend,
+        )
+
+
+def get_about_ontologies() -> list[AboutOntologyInfo]:
+    query = files("talk2powersystemllm.app.server.queries").joinpath("about_ontologies_query.rq").read_text()
+    query_results, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    ontologies: list[AboutOntologyInfo] = []
+    for binding in query_results["results"]["bindings"]:
+        ontologies.append(AboutOntologyInfo(
+            uri=binding["uri"]["value"],
+            name=binding["name"]["value"] if "name" in binding else None,
+            version=binding["version"]["value"] if "version" in binding else None,
+            date=binding["date"]["value"] if "date" in binding else None,
+        ))
+    return ontologies
+
+
+def get_about_datasets() -> list[AboutDatasetInfo]:
+    query = files("talk2powersystemllm.app.server.queries").joinpath("about_datasets_query.rq").read_text()
+    query_results, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    datasets: list[AboutDatasetInfo] = []
+    for binding in query_results["results"]["bindings"]:
+        datasets.append(AboutDatasetInfo(
+            uri=binding["uri"]["value"],
+            name=binding["name"]["value"] if "name" in binding else None,
+            date=binding["date"]["value"] if "date" in binding else None,
+        ))
+    return datasets
+
+
+def get_about_graphdb() -> AboutGraphDBInfo:
+    query = files("talk2powersystemllm.app.server.queries").joinpath("about_graphdb_query.rq").read_text()
+    query_results, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    schema_graph = Graph().parse(
+        data=query_results,
+        format="turtle",
+    )
+    onto = Namespace("http://www.ontotext.com/")
+    return AboutGraphDBInfo(
+        baseUrl=agent.settings.graphdb.base_url,
+        repository=agent.settings.graphdb.repository_id,
+        version=list(schema_graph.objects(onto.SI_has_Revision, None))[0].value,
+        numberOfExplicitTriples=list(schema_graph.objects(onto.SI_number_of_explicit_triples, None))[0].value,
+        numberOfTriples=list(schema_graph.objects(onto.SI_number_of_triples, None))[0].value,
+        autocompleteIndexStatus=agent.graphdb_client.get_autocomplete_status(),
+        rdfRankStatus=agent.graphdb_client.get_rdf_rank_status(),
+    )
+
+
+def get_about_agent() -> AboutAgentInfo:
+    tools: dict[str, dict[str, Any]] = dict()
+    tools["sparql_query"] = {"enabled": True}
+    tools["autocomplete_search"] = {
+        "enabled": True,
+        "property_path": agent.settings.tools.autocomplete_search.property_path,
+    }
+    if agent.settings.tools.autocomplete_search.sparql_query_template:
+        tools["autocomplete_search"].update({
+            "sparql_query_template": agent.settings.tools.autocomplete_search.sparql_query_template,
+        })
+    else:
+        tool: AutocompleteSearchTool = [tool for tool in agent.tools if tool.name == "autocomplete_search"][0]
+        tools["autocomplete_search"].update({
+            "sparql_query_template": tool.sparql_query_template
+        })
+    tools["sample_sparql_queries"] = {"enabled": True if agent.settings.tools.retrieval_search else False}
+    if agent.settings.tools.retrieval_search:
+        tools["sample_sparql_queries"].update({
+            "sparql_query_template": agent.settings.tools.retrieval_search.sparql_query_template,
+            "connector_name": agent.settings.tools.retrieval_search.connector_name,
+        })
+    tools["retrieve_data_points"] = {"enabled": True if agent.settings.tools.cognite else False}
+    tools["retrieve_time_series"] = {"enabled": True if agent.settings.tools.cognite else False}
+    if agent.settings.tools.cognite:
+        tools["retrieve_data_points"].update({
+            "base_url": agent.settings.tools.cognite.base_url,
+            "project": agent.settings.tools.cognite.project,
+            "client_name": agent.settings.tools.cognite.client_name,
+        })
+        tools["retrieve_time_series"].update({
+            "base_url": agent.settings.tools.cognite.base_url,
+            "project": agent.settings.tools.cognite.project,
+            "client_name": agent.settings.tools.cognite.client_name,
+        })
+    tools["now"] = {"enabled": True}
+    return AboutAgentInfo(
+        assistantInstructions=agent.settings.prompts.assistant_instructions,
+        llm=AboutLLMInfo(
+            type=agent.settings.llm.type,
+            model=agent.settings.llm.model,
+            temperature=agent.settings.llm.temperature,
+            seed=agent.settings.llm.seed,
+        ),
+        tools=tools,
+    )
+
+
+def get_about_backend() -> AboutBackendInfo:
+    return AboutBackendInfo(
+        description=API_DESCRIPTION,
+        version=__version__,
+        buildDate=__timestamp__,
+        buildBranch=__branch__,
+        gitSHA=__sha__,
+        pythonVersion=sys.version,
+        dependencies=__dependencies__,
+    )
+
+
 # noinspection PyUnusedLocal
 @app.get(
     "/__about",
     summary="Describes the application and provides build info about the component",
     tags=["Health-Check"],
+    response_model=AboutInfo,
+    response_model_exclude_unset=True,
+    response_model_exclude_none=True,
 )
-async def about(x_request_id: Annotated[str | None, Header()] = None):
-    return {
-        "description": API_DESCRIPTION,
-        "version": __version__,
-        "buildDate": __timestamp__,
-        "buildBranch": __branch__,
-        "gitSHA": __sha__,
-        "pythonVersion": platform.python_version(),
-        "systemVersion": sys.version,
-        "fastApiVersion": fastapi.__version__,
-        "uvicornVersion": uvicorn.__version__,
-    }
+async def about(x_request_id: Annotated[str | None, Header()] = None) -> AboutInfo:
+    global about_info
+    return about_info
 
 
 # noinspection PyUnusedLocal

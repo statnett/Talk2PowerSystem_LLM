@@ -1006,6 +1006,26 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "importlib-resources"
+version = "6.5.2"
+description = "Read resources from Python packages"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "importlib_resources-6.5.2-py3-none-any.whl", hash = "sha256:789cfdc3ed28c78b67a06acb8126751ced69a3d5f79c095a98298cd8a760ccec"},
+    {file = "importlib_resources-6.5.2.tar.gz", hash = "sha256:185f87adef5bcc288449d98fb4fba07cea78bc036455dd44c5fc4a2fe78fed2c"},
+]
+
+[package.extras]
+check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1) ; sys_platform != \"cygwin\""]
+cover = ["pytest-cov"]
+doc = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
+enabler = ["pytest-enabler (>=2.2)"]
+test = ["jaraco.test (>=5.4)", "pytest (>=6,!=8.1.*)", "zipp (>=3.17)"]
+type = ["pytest-mypy"]
+
+[[package]]
 name = "iniconfig"
 version = "2.1.0"
 description = "brain-dead simple config-ini parsing"
@@ -4042,14 +4062,14 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "1.8.2"
+version = "1.9.1"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-1.8.2-py3-none-any.whl", hash = "sha256:e9e5aa95535f0a854daf23d9e371bf381172a0b9ce0e08b2e660e02ede58ac98"},
-    {file = "ttyg-1.8.2.tar.gz", hash = "sha256:b2c266673045366cc2104c6983f1d260a455b35be9671607749d7750df12b9a5"},
+    {file = "ttyg-1.9.1-py3-none-any.whl", hash = "sha256:9bf221bb25d86075a03e9d7a9c325cd5ed97d77e35630785639669bbd8fdddcb"},
+    {file = "ttyg-1.9.1.tar.gz", hash = "sha256:162d533b9dba829804edff34d1aa2af5c32639513a20290d7336bd14b8b46f0c"},
 ]
 
 [package.dependencies]
@@ -4718,4 +4738,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "e76b09053ded196e404d401483462d0a33cff7cbd07bea0de5a4e64b885b3501"
+content-hash = "a3c3adb0d96a10278d082f407622f0a522b28ff8e554cb77122198e07b149057"

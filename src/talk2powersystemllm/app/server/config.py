@@ -89,7 +89,9 @@ class AppSettings(BaseSettings):
     redis: RedisSettings
     security: SecuritySettings = SecuritySettings()
     gtg_refresh_interval: int | None = Field(default=30, ge=1,
-                                             description="The gtg endpoint refresh interval in seconds")
+                                             description="The __gtg endpoint refresh interval in seconds")
+    about_refresh_interval: int | None = Field(default=30, ge=1,
+                                             description="The __about endpoint refresh interval in seconds")
     trouble_md_path: Path | None = "/code/trouble.md"
     docs_url: str | None = "/docs"
     root_path: str | None = "/"

@@ -1,6 +1,10 @@
 import logging
 
-from ttyg.graphdb import GraphDB, GraphDBRdfRankStatus
+from ttyg.graphdb import (
+    GraphDB,
+    GraphDBRdfRankStatus,
+    GraphDBAutocompleteStatus,
+)
 
 from .healthchecks import HealthChecks
 from ..singleton import SingletonMeta
@@ -15,8 +19,8 @@ class GraphDBHealthcheck(HealthCheck):
     impact: str = "Chat bot won't be able to query GraphDB or tools may not function as expected."
     troubleshooting: str = "#graphdb-health-check-status-is-not-ok"
     description: str = (
-        "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and "
-        "RDF rank is computed.")
+        "Checks if GraphDB repository can be queried. Also checks that the status of the autocomplete index is READY, "
+        "and the RDF rank status is COMPUTED.")
 
 
 class GraphDBHealthchecker(metaclass=SingletonMeta):
@@ -30,8 +34,10 @@ class GraphDBHealthchecker(metaclass=SingletonMeta):
     async def health(self) -> GraphDBHealthcheck:
         try:
             self.__graphdb_client.eval_sparql_query("ASK { ?s ?p ?o }", validation=False)
-            if not self.__graphdb_client.autocomplete_is_enabled():
-                warning_message = "GraphDB Autocomplete index is not enabled. It should be enabled."
+            autocomplete_status = self.__graphdb_client.get_autocomplete_status()
+            if autocomplete_status != GraphDBAutocompleteStatus.READY:
+                warning_message = (f"The Autocomplete index status of the repository is \"{autocomplete_status.name}\". "
+                                   f"It should be \"READY\".")
                 logging.warning(warning_message)
                 return GraphDBHealthcheck(status=HealthStatus.WARNING, message=warning_message)
 

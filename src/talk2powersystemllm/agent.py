@@ -209,10 +209,10 @@ class Talk2PowerSystemAgent:
             path_to_yaml_config: Path,
             checkpointer: Checkpointer | None = None,
     ):
-        settings = read_config(path_to_yaml_config)
-        self.graphdb_client = init_graphdb(settings.graphdb)
+        self.settings = read_config(path_to_yaml_config)
+        self.graphdb_client = init_graphdb(self.settings.graphdb)
 
-        tools_settings = settings.tools
+        tools_settings = self.settings.tools
         tools: list[BaseTool] = []
 
         sparql_query_tool = SparqlQueryTool(
@@ -258,11 +258,11 @@ class Talk2PowerSystemAgent:
 
         tools.append(NowTool())
 
-        instructions = f"""{settings.prompts.assistant_instructions}""".replace(
+        instructions = f"""{self.settings.prompts.assistant_instructions}""".replace(
             "{ontology_schema}", ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle")
         )
 
-        self.model = init_llm(settings.llm)
+        self.model = init_llm(self.settings.llm)
         self.agent = create_react_agent(
             model=self.model,
             tools=tools,

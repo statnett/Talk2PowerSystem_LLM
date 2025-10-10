@@ -26,9 +26,11 @@ from langchain_core.messages import (
 )
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import RedisSaver
+from rdflib import Graph, Namespace
 from starlette.responses import JSONResponse
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgent
+from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
 from .auth import conditional_security
 from .config import settings
 from .healthchecks import (
@@ -60,7 +62,6 @@ from ..models import (
     Severity,
     AuthConfig,
 )
-from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
 
 API_DESCRIPTION = "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot"
 # noinspection PyTypeChecker
@@ -227,16 +228,116 @@ async def trouble(x_request_id: Annotated[str | None, Header()] = None):
     tags=["Health-Check"],
 )
 async def about(x_request_id: Annotated[str | None, Header()] = None):
+    query = """PREFIX onto: <http://www.ontotext.com/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+select * from onto:explicit {
+  ?uri a owl:Ontology;
+    dct:title|rdfs:label ?name;
+    owl:versionInfo ?version ;
+    dct:modified ?date ;
+} order by ?name"""
+    res, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    ontologies = []
+    for binding in res["results"]["bindings"]:
+        ontologies.append({
+            "name": binding["name"]["value"],
+            "uri": binding["uri"]["value"],
+            "version": binding["version"]["value"],
+            "date": binding["date"]["value"],
+        })
+
+    query = """PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX onto: <http://www.ontotext.com/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+select distinct ?uri ?name ?date from onto:explicit {
+  ?uri a dcat:Dataset
+  {select ?uri (sample(substr(str(?dateTime),1,10)) as ?date) {?uri a dcat:Dataset; dct:issued ?dateTime} group by ?uri}
+  optional {?uri dct:title ?title} 
+  optional {?uri dct:description ?descr}
+  bind(coalesce(?title,?descr) as ?name)
+} order by ?name"""
+    res, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    datasets = []
+    for binding in res["results"]["bindings"]:
+        datasets.append({
+            "name": binding["name"]["value"],
+            "uri": binding["uri"]["value"],
+            "date": binding["date"]["value"],
+        })
+
+    query = """PREFIX dcat: <http://www.w3.org/ns/dcat#>
+    PREFIX onto: <http://www.ontotext.com/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX dct: <http://purl.org/dc/terms/>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    select distinct ?uri ?name ?date from onto:explicit {
+      ?uri a dcat:Dataset
+      {select ?uri (sample(substr(str(?dateTime),1,10)) as ?date) {?uri a dcat:Dataset; dct:issued ?dateTime} group by ?uri}
+      optional {?uri dct:title ?title} 
+      optional {?uri dct:description ?descr}
+      bind(coalesce(?title,?descr) as ?name)
+    } order by ?name"""
+    res, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    for binding in res["results"]["bindings"]:
+        datasets.append({
+            "name": binding["name"]["value"],
+            "uri": binding["uri"]["value"],
+            "date": binding["date"]["value"],
+        })
+    query = """PREFIX onto: <http://www.ontotext.com/>
+describe onto:SYSINFO from onto:SYSINFO"""
+    res, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+
+    schema_graph = Graph().parse(
+        data=res,
+        format="turtle",
+    )
+    onto = Namespace("http://www.ontotext.com/")
+
     return {
-        "description": API_DESCRIPTION,
-        "version": __version__,
-        "buildDate": __timestamp__,
-        "buildBranch": __branch__,
-        "gitSHA": __sha__,
-        "pythonVersion": platform.python_version(),
-        "systemVersion": sys.version,
-        "fastApiVersion": fastapi.__version__,
-        "uvicornVersion": uvicorn.__version__,
+        "ontologies": ontologies,
+        "datasets": datasets,
+        "graphdb": {
+            "version": list(schema_graph.objects(onto.SI_has_Revision, None))[0].value,
+            "number_of_explicit_triples": list(schema_graph.objects(onto.SI_number_of_explicit_triples, None))[0].value,
+            "number_of_triples": list(schema_graph.objects(onto.SI_number_of_triples, None))[0].value,
+            "autocomplete": agent.graphdb_client.autocomplete_is_enabled(),
+            "rdf_rank_status": agent.graphdb_client.get_rdf_rank_status(),
+            "base_url": agent.settings.graphdb.base_url,
+            "repository": agent.settings.graphdb.repository_id,
+        },
+        "agent": {
+            "assistant_instructions": agent.settings.prompts.assistant_instructions,
+            "llm": {
+                "type": agent.settings.llm.type,
+                "model": agent.settings.llm.model,
+                "temperature": agent.settings.llm.temperature,
+                "seed": agent.settings.llm.seed,
+            },
+            "tools": {
+                "sparql_query_tool": "enabled",
+                "autocomplete_search_tool": "enabled",
+                "sample_sparql_queries": "enabled" if agent.settings.tools.retrieval_search else "disabled",
+                "retrieve_data_points": "enabled" if agent.settings.tools.cognite else "disabled",
+                "retrieve_time_series": "enabled" if agent.settings.tools.cognite else "disabled",
+                "now": "enabled",
+            }
+        },
+        "backend": {
+            "description": API_DESCRIPTION,
+            "version": __version__,
+            "buildDate": __timestamp__,
+            "buildBranch": __branch__,
+            "gitSHA": __sha__,
+            "pythonVersion": platform.python_version(),
+            "systemVersion": sys.version,
+            "fastApiVersion": fastapi.__version__,
+            "uvicornVersion": uvicorn.__version__,
+        }
     }
 
 

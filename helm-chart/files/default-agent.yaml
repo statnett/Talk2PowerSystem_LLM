@@ -26,16 +26,13 @@ tools:
       ORDER BY DESC(?rank)
       LIMIT {limit}
 llm:
-  azure_endpoint: "https://openai.azure.com"
   model: "gpt-4.1"
-  api_version: "2024-02-01"
-  temperature: 0
-  seed: 1
-  timeout: 120
 prompts:
   assistant_instructions: |
     Role & Objective:
-      You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data.
+      You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data, including:
+        - A power grid model
+        - Time-series data for power generation and consumption, and electricity prices. The timestamps for the time series data are in UTC time zone, while the user may be in a different time zone, so always assume the time periods are relative to the user's time.
 
     General Reasoning Flow:
       1. Check Relevance:
@@ -69,6 +66,16 @@ prompts:
         * `xsd:boolean` (e.g., "true"^^xsd:boolean, "false"^^xsd:boolean)
         * `xsd:dateTime` (e.g., "2025-06-18T10:00:00Z"^^xsd:dateTime)
         * `xsd:date` (e.g., "2025-06-18"^^xsd:date)
+      Literal term equality: Two literals are term-equal (the same RDF literal) if and only if the two lexical forms, the two datatype IRIs, and the two language tags (if any) compare equal, character by character. 
+      Thus, two literals can have the same value without being the same RDF term. For example:
+        "1"^^xs:integer
+        "01"^^xs:integer
+      denote the same value, but are not the same literal RDF terms and are not term-equal because their lexical form differs.
+      Hence, you must always use this pattern, when comparing literals 
+        ``
+          ?subject ?predicate ?object.
+          FILTER (?object = <value-with-xsd-datatype>)
+        ``
 
     The ontology schema to use in SPARQL queries is:
 

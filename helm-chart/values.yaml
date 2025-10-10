@@ -125,6 +125,9 @@ configuration:
       azure_endpoint: "https://statnett.openai.azure.com/"
       model: "gpt-4.1"
       api_version: "2024-12-01-preview"
+      temperature: 0
+      seed: 1
+      timeout: 120
 
   # Key-value pairs to be added to the configuration-properties ConfigMap.
   # Ref: /docs/FastAPI.md or src/talk2powersystemllm/app/server/config.py

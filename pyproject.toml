@@ -1,6 +1,6 @@
 [project]
 name = "Talk2PowerSystemLLM"
-version = "0.0.0a0"
+version = "1.1.0rc1"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
@@ -47,6 +47,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project.scripts]
 evaluation = 'talk2powersystemllm.scripts.run_evaluation:main'
+n-shot-tool-analysis = 'talk2powersystemllm.scripts.n_shot_tool_analysis:main'
 qa_dataset2rdf = 'talk2powersystemllm.scripts.qa_dataset2rdf:main'
 find_min_retrieval_limit_on_dev = 'talk2powersystemllm.scripts.find_min_retrieval_limit_on_dev:main'
 benchmark_graphdb_ttyg = 'talk2powersystemllm.scripts.benchmark_graphdb_ttyg:main'

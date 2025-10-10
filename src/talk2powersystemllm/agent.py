@@ -1,11 +1,11 @@
 from base64 import b64encode
+from enum import Enum
 from pathlib import Path
-from typing import Any
 
 import yaml
 from langchain_core.language_models import BaseChatModel
 from langchain_core.tools import BaseTool
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import AzureChatOpenAI, ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.prebuilt import create_react_agent
 from langgraph.types import Checkpointer
@@ -40,14 +40,13 @@ class GraphDBSettings(BaseSettings):
     username: str | None = None
     password: SecretStr | None = None
 
-    @classmethod
     @model_validator(mode="after")
-    def check_password_required_if_username(cls, values: Any) -> Any:
-        username = values.username
-        password = values.password
+    def check_password_required_if_username(self) -> "GraphDBSettings":
+        username = self.username
+        password = self.password
         if username and not password:
             raise ValueError("password is required if username is provided")
-        return values
+        return self
 
 
 class OntologySchemaSettings(BaseModel):
@@ -79,15 +78,14 @@ class CogniteSettings(BaseModel):
     interactive_client_id: str | None = None
     tenant_id: str | None = None
 
-    @classmethod
     @model_validator(mode="after")
-    def check_credentials(cls, values: Any) -> Any:
-        if values.token_file_path and values.interactive_client_id:
+    def check_credentials(self) -> "CogniteSettings":
+        if self.token_file_path and self.interactive_client_id:
             raise ValueError("Both token_file_path and interactive_client_id for Cognite are provided. "
                              "Set only one of them!")
-        if values.interactive_client_id and not values.tenant_id:
+        if self.interactive_client_id and not self.tenant_id:
             raise ValueError("Tenant id is required!")
-        return values
+        return self
 
 
 class ToolsSettings(BaseModel):
@@ -97,18 +95,33 @@ class ToolsSettings(BaseModel):
     cognite: CogniteSettings | None = None
 
 
+class LLMType(Enum):
+    openai = "openai"
+    azure_openai = "azure_openai"
+
+
 class LLMSettings(BaseSettings):
     model_config = {
         "env_prefix": "LLM_",
     }
 
-    azure_endpoint: str
+    type: LLMType = LLMType.azure_openai
     model: str
-    api_version: str
+    azure_endpoint: str | None = None
+    api_version: str | None = None
     temperature: float = Field(default=0, ge=0.0, le=2.0)
     seed: int = Field(default=1)
     timeout: int = Field(default=120, gt=0.0)
     api_key: SecretStr
+
+    @model_validator(mode="after")
+    def check_required_if_properties(self) -> "LLMSettings":
+        if self.type == LLMType.azure_openai:
+            if not self.azure_endpoint:
+                raise ValueError("azure_endpoint is required!")
+            if not self.api_version:
+                raise ValueError("api_version is required!")
+        return self
 
 
 class PromptsSettings(BaseModel):
@@ -165,15 +178,24 @@ def init_cognite(cognite_settings: CogniteSettings) -> CogniteSession:
 
 
 def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
-    return AzureChatOpenAI(
-        azure_endpoint=llm_settings.azure_endpoint,
-        api_version=llm_settings.api_version,
-        model=llm_settings.model,
-        temperature=llm_settings.temperature,
-        seed=llm_settings.seed,
-        timeout=llm_settings.timeout,
-        api_key=llm_settings.api_key,
-    )
+    if llm_settings.type == LLMType.azure_openai:
+        return AzureChatOpenAI(
+            azure_endpoint=llm_settings.azure_endpoint,
+            api_version=llm_settings.api_version,
+            model=llm_settings.model,
+            temperature=llm_settings.temperature,
+            seed=llm_settings.seed,
+            timeout=llm_settings.timeout,
+            api_key=llm_settings.api_key,
+        )
+    else:
+        return ChatOpenAI(
+            model=llm_settings.model,
+            temperature=llm_settings.temperature,
+            seed=llm_settings.seed,
+            timeout=llm_settings.timeout,
+            api_key=llm_settings.api_key,
+        )
 
 
 class Talk2PowerSystemAgent:

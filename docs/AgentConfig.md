@@ -1,6 +1,6 @@
 # Talk2PowerSystem Agent Config
 
-The configuration is expected in yaml format. Below is given a "full" example with all existing keys
+The configuration is expected in yaml format. Below is given an example:
 
 ```yaml
 graphdb:
@@ -162,10 +162,11 @@ One of `dev1`, `dev2`, `dev3`, `test`, `prod` according to [CDF access from RNDP
 
 ## `llm`
 
-- `llm.azure_endpoint` - REQUIRED - Azure OpenAI API endpoint.
-- `llm.model` - REQUIRED - Azure OpenAI deployment name. The API key must be provided using the environment variable
-  `LLM_API_KEY`.
-- `llm.api_version` - REQUIRED - API version for Azure OpenAI.
+- `llm.type` - OPTIONAL, DEFAULT=`azure_openai`, can be `openai` or `azure_openai` - The LLM deployment type.
+- `llm.model` - REQUIRED - Azure OpenAI deployment name, if `llm.type=azure_openai`; otherwise the model name.
+The API key must be provided using the environment variable `LLM_API_KEY`.
+- `llm.azure_endpoint` - OPTIONAL, REQUIRED, iff `llm.type=azure_openai` - Azure OpenAI API endpoint.
+- `llm.api_version` - OPTIONAL, REQUIRED, iff `llm.type=azure_openai` - API version for Azure OpenAI.
 - `llm.temperature` - OPTIONAL, DEFAULT=`0`, float value greater than or equal to 0, and less than or equal to 2 -
   Sampling temperature for the LLM. Lower values indicate more deterministic results.
 - `llm.seed` - OPTIONAL, DEFAULT=`1`, integer - Random seed for reproducibility.
@@ -178,5 +179,5 @@ One of `dev1`, `dev2`, `dev3`, `test`, `prod` according to [CDF access from RNDP
 
 ## Environment variables / Secrets
 
-- `LLM_API_KEY` - REQUIRED - Azure OpenAI deployment API key for authentication
+- `LLM_API_KEY` - REQUIRED - API key for authentication to Azure OpenAI or OpenAI
 - `GRAPHDB_PASSWORD` - REQUIRED, iff `graphdb.username` is set - Password for the GraphDB user

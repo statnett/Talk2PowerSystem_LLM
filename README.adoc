@@ -43,8 +43,7 @@ The repository is organized as follows:
 
 === Prerequisites
 
-* You should install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html). `miniconda`
-will suffice.
+* You should install https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html[conda]. `miniconda` will suffice.
 
 === Setup
 
@@ -86,6 +85,23 @@ docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraph
 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
 ----
+
+== Versioning
+
+The chat bot releases follow the https://semver.org/[Semantic Versioning Standard].
+
+Steps to release (from the main branch):
+
+. `conda activate Talk2PowerSystemLLM`
+. `poetry version <major|minor|patch>`. For more options, check https://python-poetry.org/docs/cli/#version[poetry documentation].
+. `git add pyproject.toml`
+. `git commit -m "Bumping version from <previous-version> to <current-version>"`
+. `git push -u origin main`
+. Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface]. The tag and the release title must match the version from poetry!
+. `poetry version prepatch`
+. `git add pyproject.toml`
+. `git commit -m "Bumping version from <previous-version> to <current-version>"`
+. `git push -u origin main`
 
 == License
 

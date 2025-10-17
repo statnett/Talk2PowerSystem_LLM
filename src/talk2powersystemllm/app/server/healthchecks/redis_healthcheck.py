@@ -28,7 +28,7 @@ class RedisHealthchecker(metaclass=SingletonMeta):
 
     async def health(self) -> RedisHealthcheck:
         try:
-            self.__redis_client.ping()
+            await self.__redis_client.ping()
             return RedisHealthcheck(status=HealthStatus.OK, message="Redis can be queried.")
         except Exception as error:
             logging.error("Exception while pinging Redis", exc_info=error)

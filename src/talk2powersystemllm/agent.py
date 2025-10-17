@@ -209,16 +209,16 @@ class Talk2PowerSystemAgent:
             path_to_yaml_config: Path,
             checkpointer: Checkpointer | None = None,
     ):
-        settings = read_config(path_to_yaml_config)
-        self.graphdb_client = init_graphdb(settings.graphdb)
+        self.settings = read_config(path_to_yaml_config)
+        self.graphdb_client = init_graphdb(self.settings.graphdb)
 
-        tools_settings = settings.tools
-        tools: list[BaseTool] = []
+        tools_settings = self.settings.tools
+        self.tools: list[BaseTool] = []
 
         sparql_query_tool = SparqlQueryTool(
             graph=self.graphdb_client,
         )
-        tools.append(sparql_query_tool)
+        self.tools.append(sparql_query_tool)
 
         ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
             graph=self.graphdb_client,
@@ -237,7 +237,7 @@ class Talk2PowerSystemAgent:
             graph=self.graphdb_client,
             **autocomplete_search_kwargs,
         )
-        tools.append(autocomplete_search_tool)
+        self.tools.append(autocomplete_search_tool)
 
         if tools_settings.retrieval_search:
             retrieval_search_settings = tools_settings.retrieval_search
@@ -248,24 +248,24 @@ class Talk2PowerSystemAgent:
                 description=retrieval_search_settings.description,
                 sparql_query_template=retrieval_search_settings.sparql_query_template,
             )
-            tools.append(retrieval_query_tool)
+            self.tools.append(retrieval_query_tool)
 
         if tools_settings.cognite:
             cognite_settings = tools_settings.cognite
             self.cognite_session = init_cognite(cognite_settings)
-            tools.append(RetrieveTimeSeriesTool(cognite_session=self.cognite_session))
-            tools.append(RetrieveDataPointsTool(cognite_session=self.cognite_session))
+            self.tools.append(RetrieveTimeSeriesTool(cognite_session=self.cognite_session))
+            self.tools.append(RetrieveDataPointsTool(cognite_session=self.cognite_session))
 
-        tools.append(NowTool())
+        self.tools.append(NowTool())
 
-        instructions = f"""{settings.prompts.assistant_instructions}""".replace(
+        instructions = f"""{self.settings.prompts.assistant_instructions}""".replace(
             "{ontology_schema}", ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle")
         )
 
-        self.model = init_llm(settings.llm)
+        self.model = init_llm(self.settings.llm)
         self.agent = create_react_agent(
             model=self.model,
-            tools=tools,
+            tools=self.tools,
             prompt=instructions,
             checkpointer=checkpointer,
         )

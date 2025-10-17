@@ -29,7 +29,8 @@ If new messages are added to the conversation or the explain functionality is us
 
 ### HealthChecks
 
-* `GTG_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The gtg endpoint refresh interval.
+* `GTG_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The `__gtg` endpoint refresh interval.
+* `ABOUT_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The `__about` endpoint refresh interval.
 * `TROUBLE_MD_PATH` - OPTIONAL, default = `/code/trouble.md` - Path to the `trouble.md` file
 
 ### Documentation

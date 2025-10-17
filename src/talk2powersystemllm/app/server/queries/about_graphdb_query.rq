@@ -1,0 +1,4 @@
+PREFIX onto: <http://www.ontotext.com/>
+
+DESCRIBE onto:SYSINFO
+FROM onto:SYSINFO

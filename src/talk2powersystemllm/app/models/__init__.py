@@ -9,6 +9,13 @@ from .models import (
     ExplainResponse,
 )
 from .troubleshooting import (
+    AboutAgentInfo,
+    AboutBackendInfo,
+    AboutDatasetInfo,
+    AboutGraphDBInfo,
+    AboutLLMInfo,
+    AboutOntologyInfo,
+    AboutInfo,
     GoodToGoInfo,
     GoodToGoStatus,
     HealthCheck,

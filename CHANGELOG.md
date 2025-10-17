@@ -1,3 +1,16 @@
+Next release
+============
+
+### New features
+
+* [#236](https://github.com/statnett/Talk2PowerSystem_PM/issues/236): Update response from the `__about` endpoint to serve the required data for the components information page
+
+### Improvements
+
+* [#236](https://github.com/statnett/Talk2PowerSystem_PM/issues/236): Run the agent in async mode, so that other endpoints and tasks don't block
+
+###################
+
 1.1.0rc1
 ============
 

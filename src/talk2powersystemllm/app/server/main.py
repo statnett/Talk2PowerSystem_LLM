@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import sys
 import time
@@ -7,6 +6,7 @@ from contextlib import asynccontextmanager
 from contextvars import ContextVar
 from typing import Annotated, Any
 
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import (
     FastAPI,
     Request,
@@ -23,7 +23,7 @@ from langchain_core.messages import (
     HumanMessage,
 )
 from langchain_core.runnables import RunnableConfig
-from langgraph.checkpoint.redis import RedisSaver
+from langgraph.checkpoint.redis import AsyncRedisSaver
 from rdflib import Graph, Namespace
 from starlette.responses import JSONResponse
 from ttyg.tools import AutocompleteSearchTool
@@ -75,75 +75,63 @@ API_DESCRIPTION = "Talk2PowerSystem Chat Bot Application provides functionality 
 gtg_info: GoodToGoInfo = None
 # noinspection PyTypeChecker
 about_info: AboutInfo = None
+# noinspection PyTypeChecker
+agent: Talk2PowerSystemAgent = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.logging_yaml_file)
-
-redis_password = settings.redis.password
-redis_auth = ""
-if redis_password:
-    redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
-
-with RedisSaver.from_conn_string(
-        f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}",
-        connection_args={
-            'socket_connect_timeout': settings.redis.connect_timeout,
-            'socket_timeout': settings.redis.read_timeout,
-            'health_check_interval': settings.redis.healthcheck_interval,
-        },
-        ttl={
-            "default_ttl": settings.redis.ttl,
-            "refresh_on_read": settings.redis.ttl_refresh_on_read,
-        }
-) as memory_saver:
-    memory_saver.setup()
-    redis_healthcheck = RedisHealthchecker(memory_saver._redis)
-    agent = Talk2PowerSystemAgent(
-        settings.agent_config,
-        checkpointer=memory_saver
-    )
-graphdb_healthcheck = GraphDBHealthchecker(agent.graphdb_client)
-if agent.cognite_session:
-    cognite_healthcheck = CogniteHealthchecker(agent.cognite_session)
 trouble_html = get_trouble_html()
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     logging.info("Starting the application")
+    global agent
 
-    async def scheduled_gtg_update():
-        while True:
-            await update_gtg_info()
-            await asyncio.sleep(settings.gtg_refresh_interval)
+    redis_password = settings.redis.password
+    redis_auth = ""
+    if redis_password:
+        redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
+    async with AsyncRedisSaver.from_conn_string(
+            redis_url=f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}",
+            connection_args={
+                'socket_connect_timeout': settings.redis.connect_timeout,
+                'socket_timeout': settings.redis.read_timeout,
+                'health_check_interval': settings.redis.healthcheck_interval,
+            },
+            ttl={
+                "default_ttl": settings.redis.ttl,
+                "refresh_on_read": settings.redis.ttl_refresh_on_read,
+            }
+    ) as memory_saver:
 
-    async def scheduled_about_update():
-        while True:
-            await update_about_info()
-            await asyncio.sleep(settings.about_refresh_interval)
+        await memory_saver.asetup()
+        RedisHealthchecker(memory_saver._redis)
+        agent = Talk2PowerSystemAgent(
+            settings.agent_config,
+            checkpointer=memory_saver
+        )
 
-    scheduled_gtg_update_task = asyncio.create_task(scheduled_gtg_update())
-    scheduled_about_update_task = asyncio.create_task(scheduled_about_update())
+        GraphDBHealthchecker(agent.graphdb_client)
+        if agent.cognite_session:
+            CogniteHealthchecker(agent.cognite_session)
 
-    await update_gtg_info()
-    await update_about_info()
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(update_gtg_info, 'interval', seconds=settings.gtg_refresh_interval)
+        scheduler.add_job(update_about_info, 'interval', seconds=settings.about_refresh_interval)
 
-    logging.info("Application is running")
+        scheduler.start()
+        app.state.scheduler = scheduler
 
-    yield
+        await update_gtg_info()
+        await update_about_info()
 
-    logging.info("Destroying the application")
-    scheduled_gtg_update_task.cancel()
-    scheduled_about_update_task.cancel()
+        logging.info("Application is running")
 
-    try:
-        await scheduled_gtg_update_task
-    except asyncio.CancelledError:
-        logging.info("Scheduled gtg update task stopped cleanly")
+        yield
 
-    try:
-        await scheduled_about_update_task
-    except asyncio.CancelledError:
-        logging.info("Scheduled about update task stopped cleanly")
+        logging.info("Destroying the application")
+        scheduler.shutdown()
+        logging.info("Scheduler is stopped")
 
 
 app = FastAPI(
@@ -454,7 +442,7 @@ async def conversations(
 
     conversation_id = request.conversation_id
     if conversation_id:
-        checkpoint = memory_saver.get({"configurable": {"thread_id": conversation_id}})
+        checkpoint = await agent.agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
         if not checkpoint:
             raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")
     else:
@@ -470,7 +458,7 @@ async def conversations(
     messages = []
 
     # noinspection PyTypeChecker
-    for message in agent.agent.stream(input_, runnable_config, stream_mode="updates"):
+    async for message in agent.agent.astream(input_, runnable_config, stream_mode="updates"):
         logging.debug(f"Received message {message}")
         if "agent" in message:
             for ai_message in message["agent"]["messages"]:
@@ -562,7 +550,7 @@ async def explain(
         claims=Depends(conditional_security),
 ) -> ExplainResponse:
     conversation_id, message_id = request.conversation_id, request.message_id
-    checkpoint = memory_saver.get({"configurable": {"thread_id": conversation_id}})
+    checkpoint = await agent.agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
 
     if not checkpoint:
         raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")

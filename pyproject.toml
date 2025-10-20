@@ -1,27 +1,29 @@
 [project]
 name = "Talk2PowerSystemLLM"
-version = "1.1.0rc1"
+version = "1.1.0a0"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==1.8.2",
+    "ttyg==1.9.1",
     "graphrag-eval==5.1.2",
     "jupyter==1.1.1",
     "langchain-openai==0.3.32",
-    "langgraph-checkpoint-redis==0.1.1",
+    "langgraph-checkpoint-redis==0.1.2",
     "jsonlines==4.0.0",
     "cognite-sdk==7.86.0",
     "pydantic-settings==2.10.1",
     "PyYAML==6.0.2",
     "uvicorn[standard] (==0.35.0)",
     "fastapi==0.116.1",
+    "APScheduler==3.11.0",
     "toml==0.10.2",
     "markdown==3.8.2",
     "python-jose[cryptography] (==3.5.0)",
     "cachetools==6.2.0",
+    "importlib_resources==6.5.2",
 ]
 
 [project.urls]
@@ -47,7 +49,6 @@ build-backend = "poetry.core.masonry.api"
 
 [project.scripts]
 evaluation = 'talk2powersystemllm.scripts.run_evaluation:main'
-n-shot-tool-analysis = 'talk2powersystemllm.scripts.n_shot_tool_analysis:main'
 qa_dataset2rdf = 'talk2powersystemllm.scripts.qa_dataset2rdf:main'
 find_min_retrieval_limit_on_dev = 'talk2powersystemllm.scripts.find_min_retrieval_limit_on_dev:main'
 benchmark_graphdb_ttyg = 'talk2powersystemllm.scripts.benchmark_graphdb_ttyg:main'

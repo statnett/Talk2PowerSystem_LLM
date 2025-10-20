@@ -1,0 +1,23 @@
+PREFIX onto: <http://www.ontotext.com/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?uri ?name ?version ?date
+FROM onto:explicit {
+    ?uri a owl:Ontology.
+    OPTIONAL {
+        ?uri dct:title ?title
+    }
+    OPTIONAL {
+        ?uri rdfs:label ?label
+    }
+    OPTIONAL {
+        ?uri owl:versionInfo ?version
+    }
+    OPTIONAL {
+        ?uri dct:modified ?date
+    }
+    BIND(COALESCE(?title, ?label) AS ?name)
+}
+ORDER BY ?name

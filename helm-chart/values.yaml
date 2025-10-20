@@ -122,9 +122,7 @@ configuration:
       repository_id: "nordic44"
       username: "chatbot"
     llm:
-      azure_endpoint: "https://statnett.openai.azure.com/"
       model: "gpt-4.1"
-      api_version: "2024-12-01-preview"
       temperature: 0
       seed: 1
       timeout: 120
@@ -247,12 +245,18 @@ service:
 # Defines privilege and access control settings for all containers in the Pod.
 # Values are processed as Helm templates.
 # See https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
-podSecurityContext: {}
+podSecurityContext:
+  runAsNonRoot: true
 
 # Defines privilege and access control settings for the container running the application.
 # Values are processed as Helm templates.
 # See https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
-securityContext: {}
+securityContext:
+  runAsNonRoot: true
+  privileged: false
+  allowPrivilegeEscalation: false
+  runAsUser: 10001
+  runAsGroup: 10001
 
 ########################################
 # Pod Disruption Budget Configurations #
@@ -387,6 +391,16 @@ dnsPolicy: ""
 # cluster.
 # Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/
 priorityClassName: ""
+
+# Overrides the default container command.
+# Use only for troubleshooting!
+# See https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/
+command: []
+
+# Overrides the default container command's arguments.
+# Use only for troubleshooting!
+# See https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/
+args: []
 
 # Additional labels to add to the Pod definition.
 # Values are processed as Helm templates.

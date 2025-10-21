@@ -93,12 +93,12 @@ The chat bot releases follow the https://semver.org/[Semantic Versioning Standar
 Steps to release (from the main branch):
 
 . `conda activate Talk2PowerSystemLLM`
-. `poetry version <major|minor|patch>`. For more options, check https://python-poetry.org/docs/cli/#version[poetry documentation].
+. `poetry version <major|minor|patch>`.
 . `git add pyproject.toml`
 . `git commit -m "Bumping version from <previous-version> to <current-version>"`
 . `git push -u origin main`
 . Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface]. The tag and the release title must match the version from poetry!
-. `poetry version prepatch`
+. Edit the `version` in `pyproject.toml` - increase the `patch` and add `-dev0` after it. For example, if the version is `1.1.123`, the new version must be `1.1.124-dev0`.
 . `git add pyproject.toml`
 . `git commit -m "Bumping version from <previous-version> to <current-version>"`
 . `git push -u origin main`

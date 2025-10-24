@@ -1,2 +1,4 @@
 = Known Issues
 The following are know issues:
+
+- SPARQL queries executed against GraphDB don't use a connection pool

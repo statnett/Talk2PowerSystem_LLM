@@ -3285,14 +3285,14 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "rdflib"
-version = "7.2.1"
+version = "7.3.0"
 description = "RDFLib is a Python library for working with RDF, a simple yet powerful language for representing information."
 optional = false
 python-versions = ">=3.8.1"
 groups = ["main"]
 files = [
-    {file = "rdflib-7.2.1-py3-none-any.whl", hash = "sha256:1a175bc1386a167a42fbfaba003bfa05c164a2a3ca3cb9c0c97f9c9638ca6ac2"},
-    {file = "rdflib-7.2.1.tar.gz", hash = "sha256:cf9b7fa25234e8925da8b1fb09700f8349b5f0f100e785fb4260e737308292ac"},
+    {file = "rdflib-7.3.0-py3-none-any.whl", hash = "sha256:501e29710f1f7f8e5a0b075483050ef512da5130d97f255bd57789424d18e643"},
+    {file = "rdflib-7.3.0.tar.gz", hash = "sha256:2da6a5d3d0da2d095dd7de49e388db1c97542efc035bda4000c154d2b6cf8a6e"},
 ]
 
 [package.dependencies]
@@ -4090,14 +4090,14 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "1.9.1"
+version = "1.9.2"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-1.9.1-py3-none-any.whl", hash = "sha256:9bf221bb25d86075a03e9d7a9c325cd5ed97d77e35630785639669bbd8fdddcb"},
-    {file = "ttyg-1.9.1.tar.gz", hash = "sha256:162d533b9dba829804edff34d1aa2af5c32639513a20290d7336bd14b8b46f0c"},
+    {file = "ttyg-1.9.2-py3-none-any.whl", hash = "sha256:cca23b021a48e0c3b879b30514dde0d2b92d9bc29e31d626aff32229ee038988"},
+    {file = "ttyg-1.9.2.tar.gz", hash = "sha256:9f49116ac94da1234fadf5d549864e28a270615e0c596e644894b35e38135c81"},
 ]
 
 [package.dependencies]
@@ -4797,4 +4797,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "73c3a27e8392db3739f6edea53304a89114076a6a5f0fb7c378c8778c68de787"
+content-hash = "212fa38d813949b3bc852282b334b210d11546ce4fb9cf0f2ab93406ef437706"

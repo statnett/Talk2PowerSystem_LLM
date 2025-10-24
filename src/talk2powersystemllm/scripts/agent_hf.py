@@ -262,6 +262,7 @@ class Talk2PowerSystemAgent:
             "{ontology_schema}",
             ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle"),
         )
+        self.instructions = instructions
         if settings.llm.provider and settings.llm.provider == "hugging_face":
             self.model = init_OpenAI_llm(settings.llm)
         else:

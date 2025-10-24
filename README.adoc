@@ -78,7 +78,7 @@ poetry run pytest --cov=talk2powersystemllm --cov-report=term-missing tests/unit
 === Acceptance tests
 [,bash]
 ----
-cp src/talk2powersystemllm/app/dummy-manifest.yaml git-manifest.yaml
+bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .

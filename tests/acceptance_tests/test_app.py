@@ -1,5 +1,6 @@
 import random
 import re
+from datetime import datetime
 from unittest import TestCase
 
 import requests
@@ -264,11 +265,20 @@ LIMIT {limit}
         )
         self.assertTrue("version" in actual_response_json["backend"])
         self.assertTrue("buildDate" in actual_response_json["backend"])
-        self.assertEqual("2024-01-09T13:31:49Z", actual_response_json["backend"]["buildDate"])
+        self.assertIsNotNone(actual_response_json["backend"]["buildDate"])
+        self.assertTrue(actual_response_json["backend"]["buildDate"].strip())
+        build_date = actual_response_json["backend"]["buildDate"]
+        try:
+            parsed = datetime.strptime(build_date, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            self.fail(f"String '{build_date}' is not a valid ISO 8601 UTC timestamp (YYYY-MM-DDTHH:MM:SSZ)")
+        self.assertIsInstance(parsed, datetime)
         self.assertTrue("buildBranch" in actual_response_json["backend"])
-        self.assertEqual("COOL-BRANCH-NAME", actual_response_json["backend"]["buildBranch"])
+        self.assertIsNotNone(actual_response_json["backend"]["buildBranch"])
+        self.assertTrue(actual_response_json["backend"]["buildBranch"].strip())
         self.assertTrue("gitSHA" in actual_response_json["backend"])
-        self.assertEqual("a730751ac055a4f2dad3dc3e5658bb1bf30ff412", actual_response_json["backend"]["gitSHA"])
+        self.assertIsNotNone(actual_response_json["backend"]["gitSHA"])
+        self.assertTrue(actual_response_json["backend"]["gitSHA"].strip())
         self.assertTrue("pythonVersion" in actual_response_json["backend"])
         self.assertTrue("dependencies" in actual_response_json["backend"])
 

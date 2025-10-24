@@ -1,5 +1,6 @@
 import random
 import re
+from datetime import datetime
 from unittest import TestCase
 
 import requests
@@ -74,7 +75,8 @@ class AcceptanceTestsApp(TestCase):
                 "type": "graphdb",
                 "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
+                "description": "Checks if GraphDB repository can be queried. Also checks that the status of "
+                               "the autocomplete index is READY, and the RDF rank status is COMPUTED.",
                 "message": "GraphDB repository can be queried and it's configured correctly."
             } in actual_response_json["healthChecks"]
         )
@@ -108,7 +110,8 @@ class AcceptanceTestsApp(TestCase):
                 "type": "graphdb",
                 "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
+                "description": "Checks if GraphDB repository can be queried. Also checks that the status of "
+                               "the autocomplete index is READY, and the RDF rank status is COMPUTED.",
                 "message": "GraphDB repository can be queried and it's configured correctly."
             } in actual_response_json["healthChecks"]
         )
@@ -126,30 +129,167 @@ class AcceptanceTestsApp(TestCase):
             } in actual_response_json["healthChecks"]
         )
 
+    def verify_about_response(self, actual_response_json: dict) -> None:
+        self.assertTrue("ontologies" in actual_response_json)
+        self.assertEqual(3, len(actual_response_json["ontologies"]))
+        self.assertEqual(
+            "https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology", actual_response_json["ontologies"][0]["uri"]
+        )
+        self.assertEqual(
+            "https://ap-voc.cim4.eu/AssessedElement#Ontology", actual_response_json["ontologies"][1]["uri"]
+        )
+        self.assertEqual(
+            "Assessed Element Vocabulary", actual_response_json["ontologies"][1]["name"]
+        )
+        self.assertEqual(
+            "2.3.1", actual_response_json["ontologies"][1]["version"]
+        )
+        self.assertEqual(
+            "2024-09-07", actual_response_json["ontologies"][1]["date"]
+        )
+        self.assertEqual(
+            "https://cim.ucaiug.io/rules#", actual_response_json["ontologies"][2]["uri"]
+        )
+        self.assertEqual(
+            "CIM Inferred Extension Ontology", actual_response_json["ontologies"][2]["name"]
+        )
+        self.assertEqual(
+            "1.1", actual_response_json["ontologies"][2]["version"]
+        )
+        self.assertEqual(
+            "2025-08-13", actual_response_json["ontologies"][2]["date"]
+        )
+
+        self.assertTrue("datasets" in actual_response_json)
+        self.assertEqual(3, len(actual_response_json["datasets"]))
+        self.assertEqual(
+            "urn:uuid:f1d9a88d-0ff5-4e4b-9d6a-c353fe8232c3", actual_response_json["datasets"][0]["uri"]
+        )
+        self.assertEqual(
+            "urn:uuid:5ad50f29-f3e5-4cf9-8519-cef17d71f8de", actual_response_json["datasets"][1]["uri"]
+        )
+        self.assertEqual(
+            "DIGIN10-30-GeographicalRegion_RD", actual_response_json["datasets"][1]["name"]
+        )
+        self.assertEqual(
+            "2022-04-01", actual_response_json["datasets"][1]["date"]
+        )
+        self.assertEqual(
+            "urn:uuid:5b6a8b13-4c20-4147-8ed6-7249e303e647", actual_response_json["datasets"][2]["uri"]
+        )
+        self.assertEqual(
+            "State Variable (SV) part of the Nordic 44-bus synthetic test model "
+            "developed by Statnett SF of the Nordic region.",
+            actual_response_json["datasets"][2]["name"]
+        )
+        self.assertTrue(actual_response_json["datasets"][2]["date"] in ("2025-02-14", "2025-06-14"))
+
+        self.assertTrue("graphdb" in actual_response_json)
+        self.assertTrue("baseUrl" in actual_response_json["graphdb"])
+        self.assertEqual("http://graphdb:7200", actual_response_json["graphdb"]["baseUrl"])
+        self.assertTrue("repository" in actual_response_json["graphdb"])
+        self.assertEqual("cim", actual_response_json["graphdb"]["repository"])
+        self.assertTrue("version" in actual_response_json["graphdb"])
+        self.assertTrue("numberOfExplicitTriples" in actual_response_json["graphdb"])
+        self.assertTrue("numberOfTriples" in actual_response_json["graphdb"])
+        self.assertTrue("autocompleteIndexStatus" in actual_response_json["graphdb"])
+        self.assertEqual("READY", actual_response_json["graphdb"]["autocompleteIndexStatus"])
+        self.assertTrue("rdfRankStatus" in actual_response_json["graphdb"])
+        self.assertEqual("COMPUTED", actual_response_json["graphdb"]["rdfRankStatus"])
+
+        self.assertTrue("agent" in actual_response_json)
+        self.assertTrue("assistantInstructions" in actual_response_json["agent"])
+        self.assertEqual(
+            "Mocked responses. Prompt doesn't matter.\n",
+            actual_response_json["agent"]["assistantInstructions"]
+        )
+        self.assertTrue("llm" in actual_response_json["agent"])
+        self.assertTrue("type" in actual_response_json["agent"]["llm"])
+        self.assertEqual("azure_openai", actual_response_json["agent"]["llm"]["type"])
+        self.assertTrue("model" in actual_response_json["agent"]["llm"])
+        self.assertEqual("gpt-4.1", actual_response_json["agent"]["llm"]["model"])
+        self.assertTrue("temperature" in actual_response_json["agent"]["llm"])
+        self.assertEqual(0, actual_response_json["agent"]["llm"]["temperature"])
+        self.assertTrue("seed" in actual_response_json["agent"]["llm"])
+        self.assertEqual(1, actual_response_json["agent"]["llm"]["seed"])
+        self.assertTrue("tools" in actual_response_json["agent"])
+        self.assertTrue("sparql_query" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["sparql_query"])
+        self.assertTrue(actual_response_json["agent"]["tools"]["sparql_query"]["enabled"])
+        self.assertTrue("autocomplete_search" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["autocomplete_search"])
+        self.assertTrue(actual_response_json["agent"]["tools"]["autocomplete_search"]["enabled"])
+        self.assertTrue("property_path" in actual_response_json["agent"]["tools"]["autocomplete_search"])
+        self.assertEqual(
+            "<https://cim.ucaiug.io/ns#IdentifiedObject.name> | "
+            "<https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | "
+            "<https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn>",
+            actual_response_json["agent"]["tools"]["autocomplete_search"]["property_path"]
+        )
+        self.assertTrue("sparql_query_template" in actual_response_json["agent"]["tools"]["autocomplete_search"])
+        self.assertEqual(
+            """PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
+PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
+PREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>
+SELECT ?iri ?name ?class ?rank {{
+    ?iri auto:query "{query}" ;
+        {property_path} ?name ;
+        {filter_clause}
+        sesame:directType ?class;
+        rank:hasRDFRank5 ?rank.
+}}
+ORDER BY DESC(?rank)
+LIMIT {limit}
+""",
+            actual_response_json["agent"]["tools"]["autocomplete_search"]["sparql_query_template"]
+        )
+        self.assertTrue("sample_sparql_queries" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["sample_sparql_queries"])
+        self.assertFalse(actual_response_json["agent"]["tools"]["sample_sparql_queries"]["enabled"])
+        self.assertTrue("retrieve_data_points" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["retrieve_data_points"])
+        self.assertFalse(actual_response_json["agent"]["tools"]["retrieve_data_points"]["enabled"])
+        self.assertTrue("retrieve_time_series" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["retrieve_time_series"])
+        self.assertFalse(actual_response_json["agent"]["tools"]["retrieve_time_series"]["enabled"])
+        self.assertTrue("now" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["now"])
+        self.assertTrue(actual_response_json["agent"]["tools"]["now"]["enabled"])
+
+        self.assertTrue("backend" in actual_response_json)
+        self.assertTrue("description" in actual_response_json["backend"])
+        self.assertEqual(
+            "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the "
+            "Talk2PowerSystem Chat bot",
+            actual_response_json["backend"]["description"]
+        )
+        self.assertTrue("version" in actual_response_json["backend"])
+        self.assertTrue("buildDate" in actual_response_json["backend"])
+        self.assertIsNotNone(actual_response_json["backend"]["buildDate"])
+        self.assertTrue(actual_response_json["backend"]["buildDate"].strip())
+        build_date = actual_response_json["backend"]["buildDate"]
+        try:
+            parsed = datetime.strptime(build_date, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            self.fail(f"String '{build_date}' is not a valid ISO 8601 UTC timestamp (YYYY-MM-DDTHH:MM:SSZ)")
+        self.assertIsInstance(parsed, datetime)
+        self.assertTrue("buildBranch" in actual_response_json["backend"])
+        self.assertIsNotNone(actual_response_json["backend"]["buildBranch"])
+        self.assertTrue(actual_response_json["backend"]["buildBranch"].strip())
+        self.assertTrue("gitSHA" in actual_response_json["backend"])
+        self.assertIsNotNone(actual_response_json["backend"]["gitSHA"])
+        self.assertTrue(actual_response_json["backend"]["gitSHA"].strip())
+        self.assertTrue("pythonVersion" in actual_response_json["backend"])
+        self.assertTrue("dependencies" in actual_response_json["backend"])
+
     def test_about(self) -> None:
         response = requests.get(ABOUT_ENDPOINT, timeout=(2, 10))
         actual_response_json = self.validate_response_and_return_json_body(response)
-        self.assertTrue("description" in actual_response_json)
-        self.assertTrue("version" in actual_response_json)
-        self.assertTrue("buildDate" in actual_response_json)
-        self.assertTrue("buildBranch" in actual_response_json)
-        self.assertTrue("gitSHA" in actual_response_json)
-        self.assertTrue("pythonVersion" in actual_response_json)
-        self.assertTrue("systemVersion" in actual_response_json)
-        self.assertTrue("fastApiVersion" in actual_response_json)
-        self.assertTrue("uvicornVersion" in actual_response_json)
+        self.verify_about_response(actual_response_json)
 
         response = requests.get(ABOUT_ENDPOINT, headers={"X-Request-Id": "test"}, timeout=(2, 10))
         actual_response_json = self.validate_response_and_return_json_body(response, expected_x_request_id="test")
-        self.assertTrue("description" in actual_response_json)
-        self.assertTrue("version" in actual_response_json)
-        self.assertTrue("buildDate" in actual_response_json)
-        self.assertTrue("buildBranch" in actual_response_json)
-        self.assertTrue("gitSHA" in actual_response_json)
-        self.assertTrue("pythonVersion" in actual_response_json)
-        self.assertTrue("systemVersion" in actual_response_json)
-        self.assertTrue("fastApiVersion" in actual_response_json)
-        self.assertTrue("uvicornVersion" in actual_response_json)
+        self.verify_about_response(actual_response_json)
 
     def test_trouble(self) -> None:
         response = requests.get(TROUBLE_ENDPOINT, timeout=(2, 10))

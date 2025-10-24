@@ -29,7 +29,8 @@ If new messages are added to the conversation or the explain functionality is us
 
 ### HealthChecks
 
-* `GTG_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The gtg endpoint refresh interval.
+* `GTG_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The `__gtg` endpoint refresh interval.
+* `ABOUT_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The `__about` endpoint refresh interval.
 * `TROUBLE_MD_PATH` - OPTIONAL, default = `/code/trouble.md` - Path to the `trouble.md` file
 
 ### Documentation
@@ -91,7 +92,7 @@ There is a ready made chat bot config file you can use ["dev.yaml"](../config/de
 but you will need to create a `.env` file with sample content
 
 ```
-MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/dummy-manifest.yaml
+MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
 LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
@@ -159,7 +160,7 @@ You must replace <GRAPHDB_PASSWORD_FROM_KEEPER> and <API_KEY_FROM_KEEPER> with t
 
 Then execute:
 ```commandline
-cp src/talk2powersystemllm/app/dummy-manifest.yaml git-manifest.yaml
+bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml up -d
 ```

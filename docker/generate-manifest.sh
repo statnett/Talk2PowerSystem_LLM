@@ -2,7 +2,7 @@ set -ex
 
 rm -f git-manifest.yaml
 
-BRANCH=$(echo "${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}")
+BRANCH=$(echo "${GITHUB_REF_NAME:-${GITHUB_HEAD_REF}}")
 if [ -z "$BRANCH" ]; then
   BRANCH=$(git branch --show-current)
 fi

@@ -61,7 +61,6 @@ llm:
   provider: hugging_face
 prompts:
   assistant_instructions: |
-    Reasoning: low
     Role & Objective:
       You are a natural language querying assistant. Your goal is to answer users' questions related to electricity data, including:
         - A power grid model

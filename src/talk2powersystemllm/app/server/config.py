@@ -21,6 +21,10 @@ class SecuritySettings(BaseSettings):
         default=None,
         description="OpenID Connect Discovery URL."
     )
+    audience: str | None = Field(
+        default=None,
+        description="The expected audience of the security tokens"
+    )
     ttl: int = Field(
         default=86400,
         ge=1,
@@ -48,9 +52,10 @@ class SecuritySettings(BaseSettings):
     @model_validator(mode="after")
     def check_required_fields_and_set_default_oidc_discovery_url(self) -> "SecuritySettings":
         if self.enabled and ((not self.client_id) or (not self.authority)
-                             or (not self.logout) or (not self.login_redirect) or (not self.logout_redirect)):
+                             or (not self.logout) or (not self.login_redirect) or (not self.logout_redirect)
+                             or (not self.audience)):
             raise ValueError("If security is enabled, the following fields are required: "
-                             "client_id, authority, logout, login_redirect, logout_redirect!")
+                             "client_id, authority, logout, login_redirect, logout_redirect, audience!")
         if self.enabled and not self.oidc_discovery_url:
             self.oidc_discovery_url = (
                     self.authority.rstrip("/") + "/v2.0/.well-known/openid-configuration"

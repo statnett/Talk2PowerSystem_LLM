@@ -56,7 +56,7 @@ def verify_jwt(token: str):
         return jwt.decode(
             token,
             jwks_keys,
-            audience=f"api://{settings.security.client_id}",
+            audience=settings.security.audience,
             issuer=issuer,
         )
     except ExpiredSignatureError as e:
@@ -71,7 +71,7 @@ def verify_jwt(token: str):
 
 
 async def conditional_security(
-        credentials=Security(security_scheme)
+    credentials=Security(security_scheme)
 ):
     if settings.security.enabled:
         if not credentials:

@@ -1,4 +1,9 @@
-Next release
+1.2.0-rc3
+============
+
+* [#198](https://github.com/statnett/Talk2PowerSystem_PM/issues/198): Introduce a new security configuration for the expected audience of the tokens
+
+1.2.0-rc2
 ============
 
 ### New features
@@ -8,6 +13,10 @@ Next release
 ### Improvements
 
 * [#236](https://github.com/statnett/Talk2PowerSystem_PM/issues/236): Run the agent in async mode, so that other endpoints and tasks don't block
+
+### Bug fixes
+
+* [#252](https://github.com/statnett/Talk2PowerSystem_PM/issues/252): Fix GraphDB client execution of multiple SPARQL queries in parallel
 
 ###################
 

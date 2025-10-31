@@ -479,14 +479,14 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-sdk"
-version = "7.86.0"
+version = "7.88.0"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "cognite_sdk-7.86.0-py3-none-any.whl", hash = "sha256:9b0a66ebfc8838d9a665bc61a52e5875f943ce85fc05b9aba24be137f8f1f5f0"},
-    {file = "cognite_sdk-7.86.0.tar.gz", hash = "sha256:0349efb349550fe8f37308a44703006a3e2b30e92cc73145bce63686a1800068"},
+    {file = "cognite_sdk-7.88.0-py3-none-any.whl", hash = "sha256:16443b139dd56d1cbf6233fc33dfc81b974e1f82bf8bdd7e23770aa195e7774f"},
+    {file = "cognite_sdk-7.88.0.tar.gz", hash = "sha256:290eb8bb557706dcc428f897eb496bac9569bb46c87bc4124ec8e9795d794e3f"},
 ]
 
 [package.dependencies]
@@ -4090,14 +4090,14 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "1.9.3"
+version = "1.10.0"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-1.9.3-py3-none-any.whl", hash = "sha256:5a2b4f0c8fc63ac8463b0c971554924b5b3cf079983a48727db07a572b21ae8e"},
-    {file = "ttyg-1.9.3.tar.gz", hash = "sha256:af8c9bb0a17ba3b2515ca3e8770a9ea903a635644d83a7b44f89f5ccde50ac52"},
+    {file = "ttyg-1.10.0-py3-none-any.whl", hash = "sha256:91d227cc2ddba49f3a5d939c3d130214a6b4ecf5e359fbc85d7cc4bad4c7cf57"},
+    {file = "ttyg-1.10.0.tar.gz", hash = "sha256:af815fced8629ee34b2f090686285aea15f44a14db63eb60783eea3795db7b8a"},
 ]
 
 [package.dependencies]
@@ -4797,4 +4797,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "7f1e75bede55a1e447d0816e11542dc8268a80037eb948e7a88abfff6af472b1"
+content-hash = "6e44ccb0e5dc14612dfcbfb19fbd42cc3e26bd57d0b53f2e858b63185f8d421d"

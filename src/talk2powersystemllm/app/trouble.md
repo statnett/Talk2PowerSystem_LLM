@@ -1536,9 +1536,9 @@ This section lists the causes of known issues and provides solutions.
 ##### Solution
 
 - Make sure GraphDB is reachable from the app host.
-- Make sure GraphDB credentials are correct.
+- Make sure GraphDB credentials are correct. The application needs read access.
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
-- Make sure [GraphDB autocomplete index is enabled](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html).
+- Make sure [GraphDB autocomplete index status](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html) is `READY`.
 - Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/10.0/rdf-rank.html) is computed and up-to-date. The status must be `COMPUTED`.
 
 ##### Verification

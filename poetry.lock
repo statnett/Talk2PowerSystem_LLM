@@ -890,14 +890,14 @@ files = [
 
 [[package]]
 name = "graphrag-eval"
-version = "5.1.2"
+version = "5.2.0"
 description = "For assessing question answering systems' final answers and intermediate steps, against a given set of questions, reference answers and steps."
 optional = false
 python-versions = "<3.13,>=3.12"
 groups = ["main"]
 files = [
-    {file = "graphrag_eval-5.1.2-py3-none-any.whl", hash = "sha256:fe97fb7e4578e4cf9ad62cae2c96d478030867fbea33b7075c4458a92634f67c"},
-    {file = "graphrag_eval-5.1.2.tar.gz", hash = "sha256:f5c87c78e4d3de675f85cd4e76b4913656add689758a83677051ac6e1fe65a9e"},
+    {file = "graphrag_eval-5.2.0-py3-none-any.whl", hash = "sha256:dd13d4451003d216368bf3326e06d2bded2ab4b2f0907bbd007fa483cb03d6da"},
+    {file = "graphrag_eval-5.2.0.tar.gz", hash = "sha256:da12dd801f0b60794c64eab7f40c82b7649ee62c7810e76b24b0d5bec7b34358"},
 ]
 
 [package.extras]
@@ -4797,4 +4797,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "7339b27a273756d3185d8a08ab7e57e762c427c4fe9fe800f93a7de3db0dd92e"
+content-hash = "7f1e75bede55a1e447d0816e11542dc8268a80037eb948e7a88abfff6af472b1"

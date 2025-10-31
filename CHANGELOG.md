@@ -2,6 +2,7 @@ Next release
 ============
 
 * [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `cognite-sdk` from `7.86.0` to `7.88.0`
+* [#256](https://github.com/statnett/Talk2PowerSystem_PM/issues/256): Update query for the datasets information served from `__about` endpoint
 
 1.2.0-rc4
 ============

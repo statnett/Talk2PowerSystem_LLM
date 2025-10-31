@@ -74,6 +74,7 @@ The `version` information is included in the response from the `/__about` endpoi
 * `SECURITY_LOGIN_REDIRECT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The URL to redirect to after a successful login.
 * `SECURITY_LOGOUT_REDIRECT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The URL to redirect to after logout.
 * `SECURITY_OIDC_DISCOVERY_URL` - OPTIONAL, DEFAULT=`{SECURITY_AUTHORITY}/v2.0/.well-known/openid-configuration` - OpenID Connect Discovery URL.
+* `SECURITY_AUDIENCE` - REQUIRED iff `SECURITY_ENABLED=True` - The expected audience of the security tokens.
 * `SECURITY_TTL` - OPTIONAL, DEFAULT=`86400` seconds (24 hours), must be >= 1 - Indicates how many seconds to cache the public keys and the issuer obtained from the OpenID Configuration endpoint.
 According to [the Azure documentation](https://learn.microsoft.com/en-us/entra/identity-platform/access-tokens) a reasonable frequency to check for updates to the public keys used by Microsoft Entra ID is every 24 hours.
 
@@ -92,7 +93,7 @@ There is a ready made chat bot config file you can use ["dev.yaml"](../config/de
 but you will need to create a `.env` file with sample content
 
 ```
-MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/dummy-manifest.yaml
+MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
 LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
@@ -160,7 +161,7 @@ You must replace <GRAPHDB_PASSWORD_FROM_KEEPER> and <API_KEY_FROM_KEEPER> with t
 
 Then execute:
 ```commandline
-cp src/talk2powersystemllm/app/dummy-manifest.yaml git-manifest.yaml
+bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml up -d
 ```

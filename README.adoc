@@ -78,7 +78,7 @@ poetry run pytest --cov=talk2powersystemllm --cov-report=term-missing tests/unit
 === Acceptance tests
 [,bash]
 ----
-cp src/talk2powersystemllm/app/dummy-manifest.yaml git-manifest.yaml
+bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
@@ -89,8 +89,12 @@ docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down
 == Versioning
 
 The chat bot releases follow the https://semver.org/[Semantic Versioning Standard].
+However, `poetry` follows the https://peps.python.org/pep-0440/[PEP 440 Standard], so in order to create a pre-release we need to do update the version manually.
+The official releases versions are in the form of `major.minor.patch`.
+The pre-releases versions are in the form of `major.minor.patch-rc<N>`.
+The development versions are in the form of `major.minor.patch-dev0`.
 
-Steps to release (from the main branch):
+Steps to create an official release (from the main branch):
 
 . `conda activate Talk2PowerSystemLLM`
 . `poetry version <major|minor|patch>`.
@@ -98,10 +102,27 @@ Steps to release (from the main branch):
 . `git commit -m "Bumping version from <previous-version> to <current-version>"`
 . `git push -u origin main`
 . Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface]. The tag and the release title must match the version from poetry!
-. Edit the `version` in `pyproject.toml` - increase the `patch` and add `-dev0` after it. For example, if the version is `1.1.123`, the new version must be `1.1.124-dev0`.
+. Edit the `version` in `pyproject.toml` - increase the `patch` and add `-dev0` after it. For example, if the version is `2.0.0`, the next version must be `2.0.1-dev0`.
 . `git add pyproject.toml`
 . `git commit -m "Bumping version from <previous-version> to <current-version>"`
 . `git push -u origin main`
+
+Steps to create a pre-release (from the main branch):
+
+. `conda activate Talk2PowerSystemLLM`
+. Edit the `version` in `pyproject.toml` - If the current version is a pre-release version, then you must increase the release candidate number.
+For example, if the current version is `1.2.0-rc1`, the next version must be `1.2.0-rc2`.
+If the current version is a development version, then the next pre-release version must follow the semantic versioning convention on how to increment the major,
+minor and patch parts of the version and add `-rc1` at the end.
+For example, if the current version is `1.1.0-dev0` and the next release will be a major one, the next version must be `2.0.0-rc1`.
+. `git add pyproject.toml`
+. `git commit -m "Bumping version from <previous-version> to <current-version>"`
+. `git push -u origin main`
+. Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface]. The tag and the release title must match the version from poetry!
+
+We release changes on demand. First, we create pre-releases, then we deploy them, and test the changes.
+Until the changes don't meet the acceptance criteria, new pre-releases are created with fixes.
+If the changes meet the acceptance criteria, an official release is created, which is deployed.
 
 == License
 

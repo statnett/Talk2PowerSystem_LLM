@@ -4,12 +4,10 @@
 
 ```bash
 conda activate Talk2PowerSystemLLM
-export GRAPHDB_PASSWORD=***
 export LLM_API_KEY=***
 poetry run evaluation --chat_config_path FULL_PATH_TO_CHAT_CONFIG --qa-dataset-path QA_DATASET_PATH --results_dir RESULTS_DIR --n_templates MAX_NUMBER_OF_TEMPLATES_FOR_DEV_AND_TEST
 ```
 
-You must escape any `$` signs in the password with `\`!
 Also, make sure to point to the latest `cim-subset-pretty.ttl` in the chatbot config.
 The file is copy/pasted from [the Talk2PowerSystem repository](https://github.com/statnett/Talk2PowerSystem/blob/main/data/subset-ontology/cim-subset-pretty-ontology.ttl).
 
@@ -53,7 +51,6 @@ The `qa_dataset.ttl` is automatically loaded into the repository.
 
 - Run the evaluation with
 ```bash
-export GRAPHDB_PASSWORD=***
 export LLM_API_KEY=***
 poetry run evaluation --chat_config_path FULL_PATH_TO_CHAT_CONFIG --qa-dataset-path QA_DATASET_PATH --results_dir RESULTS_DIR --n_templates MAX_NUMBER_OF_TEMPLATES_FOR_DEV_AND_TEST
 ```

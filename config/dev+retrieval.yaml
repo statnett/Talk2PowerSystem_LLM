@@ -4,7 +4,6 @@ graphdb:
   connect_timeout: 2
   read_timeout: 10
   sparql_timeout: 15
-  username: "admin"
 tools:
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"

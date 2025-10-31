@@ -3,14 +3,12 @@
 ## Run the chatbot on your developer machine using a Jupyter notebook
 
 ```bash
-conda create --name Talk2PowerSystemLLM --file conda-linux-64.lock
 conda activate Talk2PowerSystemLLM
 poetry install
 jupyter notebook
 ```
 
-The notebook will prompt you for the GraphDB and Azure OpenAI credentials.
-  - Graphdb password is shared in Graphwise Keeper, entry `DATA/CIM/CIM GraphDB`
+The notebook will prompt you for Azure OpenAI credentials.
   - Azure OpenAI credentials are shared in Graphwise Keeper, entry `Statnett/Graphwise Azure Statnett Deployment GPT4.1`
 
 ## Run the chatbot on the RNDP environment using a Jupyter notebook
@@ -58,7 +56,10 @@ It should be your home directory.
 - From the file browser navigate to the notebook, it's under `src/jupyter_notebooks/Talk2PowerSystem.ipynb`.
 - From the top right corner switch the kernel to `talk2powersystemllm-py3.12` from the dropdown and click `Select`:
 ![kernel.png](images/kernel.png)
-- Now you should be able to run the notebook
+- You should un-commend this
+```
+# set_env("GRAPHDB_PASSWORD")
+```
 - You should change this
 ```
 agent_executor = Talk2PowerSystemAgent(
@@ -73,7 +74,8 @@ agent_executor = Talk2PowerSystemAgent(
     checkpointer=InMemorySaver()
 ).agent
 ```
-- The notebook will prompt you for the GraphDB and Azure OpenAI credentials.
+- Now you can run the notebook
+- It will prompt you for the GraphDB and Azure OpenAI credentials.
   - Graphdb password can be obtained with:
 ```commandline
 cat /srv/rndp/talk2powersystem/chatbot-user-graphdb-password

@@ -1,3 +1,8 @@
+Next release
+============
+
+* [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `cognite-sdk` from `7.86.0` to `7.88.0`
+
 1.2.0-rc4
 ============
 

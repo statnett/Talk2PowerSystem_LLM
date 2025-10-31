@@ -7,17 +7,33 @@ SELECT ?uri ?name ?version ?date
 FROM onto:explicit {
     ?uri a owl:Ontology.
     OPTIONAL {
-        ?uri dct:title ?title
+        SELECT ?uri (SAMPLE(?t) AS ?title) {
+            ?uri a owl:Ontology;
+            dct:title ?t
+        }
+        GROUP BY ?uri
     }
     OPTIONAL {
-        ?uri rdfs:label ?label
+        SELECT ?uri (SAMPLE(?l) AS ?label) {
+            ?uri a owl:Ontology;
+            rdfs:label ?l
+        }
+        GROUP BY ?uri
     }
     OPTIONAL {
-        ?uri owl:versionInfo ?version
+        SELECT ?uri (SAMPLE(?v) AS ?version) {
+            ?uri a owl:Ontology;
+            owl:versionInfo ?v
+        }
+        GROUP BY ?uri
     }
     OPTIONAL {
-        ?uri dct:modified ?date
+        SELECT ?uri (SAMPLE(?d) AS ?date) {
+            ?uri a owl:Ontology;
+            dct:modified ?d
+        }
+        GROUP BY ?uri
     }
     BIND(COALESCE(?title, ?label) AS ?name)
 }
-ORDER BY ?name
+ORDER BY ?uri

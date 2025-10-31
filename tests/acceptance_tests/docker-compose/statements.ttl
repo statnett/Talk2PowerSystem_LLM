@@ -20,6 +20,11 @@
 
 <urn:uuid:f1d9a88d-0ff5-4e4b-9d6a-c353fe8232c3> a dcat:Dataset .
 
+<urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4> a dcat:Dataset;
+  dct:description "DIGIN10 CGMES v3.0 Base Voltage Reference model"@en, "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Low Voltage 1 (LV1) Boundary Model"@en;
+  dct:issued "2022-04-01T08:55:55"^^<http://www.w3.org/2001/XMLSchema#date> , "2022-04-06T11:32:55"^^<http://www.w3.org/2001/XMLSchema#date>;
+  dct:title "DIGIN10-30-BaseVoltage_RD", "DIGIN10-30-MV1-LV1_BM" .
+
 <https://ap-voc.cim4.eu/AssessedElement#Ontology> a owl:Ontology;
   dct:modified "2024-09-07"^^<http://www.w3.org/2001/XMLSchema#date>;
   dct:title "Assessed Element Vocabulary"@en;
@@ -31,3 +36,9 @@
   owl:versionInfo "1.1" .
 
 <https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology> a owl:Ontology.
+
+<https://ap-voc.cim4.eu/SecurityAnalysisResult#Ontology> a owl:Ontology;
+  dct:modified "2024-09-07"^^<http://www.w3.org/2001/XMLSchema#date>, "2024-09-08"^^<http://www.w3.org/2001/XMLSchema#date>;
+  dct:title "Security Analysis Result Vocabulary"@en, "Security Analysis Result Vocabulary 2"@en;
+  rdfs:label "Security Analysis Result Vocabulary 3", "Security Analysis Result Vocabulary 4";
+  owl:versionInfo "2.4", "2.3" .

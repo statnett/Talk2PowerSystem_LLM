@@ -13,11 +13,20 @@ FROM onto:explicit {
         GROUP BY ?uri
     }
     OPTIONAL {
-        ?uri dct:title ?title
+        SELECT ?uri (SAMPLE(?t) AS ?title) {
+            ?uri a dcat:Dataset;
+            dct:title ?t
+        }
+        GROUP BY ?uri
     }
     OPTIONAL {
-        ?uri dct:description ?descr
+        SELECT ?uri (SAMPLE(?d) AS ?description) {
+            ?uri a dcat:Dataset;
+            dct:description ?d.
+            FILTER(LANG(?d) != "no")
+        }
+        GROUP BY ?uri
     }
-    BIND(COALESCE(?title, ?descr) AS ?name)
+    BIND(IF(BOUND(?title), CONCAT(?title, IF(BOUND(?description), ": ", ""), ?description), ?description) AS ?name)
 }
-ORDER BY ?name
+ORDER BY ?uri

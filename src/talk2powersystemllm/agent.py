@@ -136,6 +136,12 @@ class Talk2PowerSystemAgentSettings(BaseSettings):
 
 
 def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
+    def merge_dicts(base: dict, override: dict) -> dict:
+        merged = base.copy()
+        for k, v in override.items():
+            merged[k] = v
+        return merged
+
     config_path = Path(path_to_yaml_config).resolve()
 
     # Resolve paths relative to config file
@@ -146,6 +152,13 @@ def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
     rel_path = ontology_schema_config["file_path"]
     abs_path = config_path.parent / rel_path
     ontology_schema_config["file_path"] = str(abs_path.resolve())
+
+    # Copy GraphDB base configuration to the retrieval search configuration
+    if "retrieval_search" in config["tools"]:
+        config["tools"]["retrieval_search"]["graphdb"] = merge_dicts(
+            config["graphdb"],
+            config["tools"]["retrieval_search"]["graphdb"]
+        )
     return Talk2PowerSystemAgentSettings(**config)
 
 
@@ -205,9 +218,9 @@ class Talk2PowerSystemAgent:
     model: BaseChatModel
 
     def __init__(
-            self,
-            path_to_yaml_config: Path,
-            checkpointer: Checkpointer | None = None,
+        self,
+        path_to_yaml_config: Path,
+        checkpointer: Checkpointer | None = None,
     ):
         self.settings = read_config(path_to_yaml_config)
         self.graphdb_client = init_graphdb(self.settings.graphdb)

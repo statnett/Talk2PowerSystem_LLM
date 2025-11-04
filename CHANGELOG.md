@@ -1,3 +1,8 @@
+Next release
+============
+
+* [#251](https://github.com/statnett/Talk2PowerSystem_PM/issues/251): Change N-Shot tool configuration to default to the base GraphDB
+
 1.2.0-rc4
 ============
 

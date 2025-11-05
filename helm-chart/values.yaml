@@ -116,6 +116,7 @@ configuration:
 
   # Agent configurations overrides. They will be applied over the default configuration.
   # Ref: /files/default-agent.yaml and /templates/agent-configuration.yaml
+  # Note, when configuration.agentOverride.configmap is set, the current settings will be ignored.
   agent:
     graphdb:
       base_url: "https://rndpsvc.statnett.no/graphdb"
@@ -126,6 +127,15 @@ configuration:
       temperature: 0
       seed: 1
       timeout: 120
+
+  # Allows provisioning of a new agent configurations.
+  # When the configmap is set, the above configuration.agent settings will be ignored.
+  agentOverride:
+    # Reference to an existing ConfigMap resource containing the agent configuration.
+    configmap: ""
+    # The path where the agent configuration will be mounted.
+    # The path should be set for the configuration.properties.AGENT_CONFIG as well.
+    mountPath: /code/config/agent.yaml
 
   # Key-value pairs to be added to the configuration-properties ConfigMap.
   # Ref: /docs/FastAPI.md or src/talk2powersystemllm/app/server/config.py

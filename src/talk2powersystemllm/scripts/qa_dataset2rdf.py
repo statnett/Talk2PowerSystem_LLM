@@ -29,9 +29,9 @@ def main():
 
     graph = build_qa_dataset_graph(train_split + dev_split)
 
-    output_file = Path(args.output_folder) / "qa_dataset.ttl"
+    output_file = Path(args.output_folder) / "qa_dataset.trig"
     graph.serialize(
         output_file,
-        format="turtle",
+        format="trig",
         encoding="utf-8",
     )

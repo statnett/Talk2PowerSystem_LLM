@@ -30,11 +30,7 @@ tools:
       LIMIT {limit}
   retrieval_search:
     graphdb:
-      base_url: "http://localhost:7200"
       repository_id: "qa_dataset"
-      connect_timeout: 2
-      read_timeout: 10
-      sparql_timeout: 15
     connector_name: "qa_dataset"
     name: sample_sparql_queries
     description: Given a user question obtain sample SPARQL queries, which can be used to answer the question
@@ -49,7 +45,7 @@ tools:
             retr:entities ?entity .
           ?entity retr:score ?score;
             qa:question ?question;
-            qa:sparql_query ?query.
+            qa:querySparql ?query.
           FILTER (?score > {score})
       }}
       ORDER BY DESC(?score)
@@ -137,17 +133,11 @@ LIMIT {limit}
 
 #### `tools.retrieval_search.graphdb`
 
-When Weaviate, Ontotext Embedding API and Ontotext Retrieval Plugin API are deployed on the RNDP environment or on the
-CIM environment,
-these must be removed and should be the same as the ones from `graphdb`.
-However, for the time being and for the purposes of the experiments we keep these separate, i.e.
-we create a local environment using a docker compose setup.
-
-- `tools.retrieval_search.graphdb.base_url` - REQUIRED - Base URL of the GraphDB server.
 - `tools.retrieval_search.graphdb.repository_id` - REQUIRED - Repository ID in GraphDB to query against.
-- `tools.retrieval_search.graphdb.connect_timeout` - OPTIONAL, DEFAULT=`2` - Connect timeout in seconds for calls to GraphDB REST API, must be >= 1.
-- `tools.retrieval_search.graphdb.read_timeout` - OPTIONAL, DEFAULT=`10` - Read timeout in seconds for calls to GraphDB REST API, must be >= 1.
-- `tools.retrieval_search.graphdb.sparql_timeout` - OPTIONAL, DEFAULT=`15` - Timeout in seconds for calls to the SPARQL endpoint, must be >= 1.
+- `tools.retrieval_search.graphdb.base_url` - OPTIONAL, defaults to `graphdb.base_url` - Base URL of the GraphDB server.
+- `tools.retrieval_search.graphdb.connect_timeout` - OPTIONAL, defaults to `graphdb.connect_timeout` - Connect timeout in seconds for calls to GraphDB REST API, must be >= 1.
+- `tools.retrieval_search.graphdb.read_timeout` - OPTIONAL, defaults to `graphdb.read_timeout` - Read timeout in seconds for calls to GraphDB REST API, must be >= 1.
+- `tools.retrieval_search.graphdb.sparql_timeout` - OPTIONAL, defaults to `graphdb.sparql_timeout` - Timeout in seconds for calls to the SPARQL endpoint, must be >= 1.
 
 ### `tools.cognite` - OPTIONAL - if not present, the `Cognite Query Tools` won't be present
 

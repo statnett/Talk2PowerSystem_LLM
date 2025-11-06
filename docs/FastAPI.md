@@ -100,7 +100,6 @@ PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
 TROUBLE_MD_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/trouble.md
 REDIS_HOST=localhost
 REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
-GRAPHDB_PASSWORD=***
 LLM_API_KEY=***
 ```
 
@@ -151,13 +150,11 @@ which uses the chat bot config file ["dev+retrieval.yaml"](../config/dev+retriev
 Create a file `webapp.env` with content
 ```
 AGENT_CONFIG=/code/config/dev+retrieval.yaml
-GRAPHDB_PASSWORD=<GRAPHDB_PASSWORD_FROM_KEEPER>
 LLM_API_KEY=<API_KEY_FROM_KEEPER>
 REDIS_HOST=redis
 REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
 ```
-You must replace <GRAPHDB_PASSWORD_FROM_KEEPER> and <API_KEY_FROM_KEEPER> with the corresponding secrets from Keeper.
-!!! Any secrets containing a `$` must be escaped by replacing the `$` with `$$`.
+You must replace <API_KEY_FROM_KEEPER> with the corresponding secret from Keeper.
 
 Then execute:
 ```commandline

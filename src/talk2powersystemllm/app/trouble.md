@@ -1356,7 +1356,7 @@ Sample Response Body:
       },
       "sample_sparql_queries": {
         "enabled": true,
-        "sparql_query_template": "PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>\nPREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>\nPREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>\nSELECT ?question ?query {{\n    [] a retr-index:{connector_name} ;\n      retr:query \"{query}\" ;\n      retr:limit {limit} ;\n      retr:entities ?entity .\n    ?entity retr:score ?score;\n      qa:question ?question;\n      qa:sparql_query ?query.\n    FILTER (?score > {score})\n}}\nORDER BY DESC(?score)\n",
+        "sparql_query_template": "PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>\nPREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>\nPREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>\nSELECT ?question ?query {{\n    [] a retr-index:{connector_name} ;\n      retr:query \"{query}\" ;\n      retr:limit {limit} ;\n      retr:entities ?entity .\n    ?entity retr:score ?score;\n      qa:question ?question;\n      qa:querySparql ?query.\n    FILTER (?score > {score})\n}}\nORDER BY DESC(?score)\n",
         "connector_name": "qa_dataset"
       },
       "retrieve_data_points": {
@@ -1536,7 +1536,7 @@ This section lists the causes of known issues and provides solutions.
 ##### Solution
 
 - Make sure GraphDB is reachable from the app host.
-- Make sure GraphDB credentials are correct. The application needs read only access.
+- Make sure GraphDB credentials are correct. The application needs read access.
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
 - Make sure [GraphDB autocomplete index status](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html) is `READY`.
 - Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/10.0/rdf-rank.html) is computed and up-to-date. The status must be `COMPUTED`.

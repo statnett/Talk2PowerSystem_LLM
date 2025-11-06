@@ -8,8 +8,9 @@ poetry install
 jupyter notebook
 ```
 
+Open the notebook `src/jupyter_notebooks/Talk2PowerSystem.ipynb` and run its cells.
 The notebook will prompt you for Azure OpenAI credentials.
-  - Azure OpenAI credentials are shared in Graphwise Keeper, entry `Statnett/Graphwise Azure Statnett Deployment GPT4.1`
+Azure OpenAI credentials are shared in Graphwise Keeper, entry `Statnett/Graphwise Azure Statnett Deployment GPT4.1`
 
 ## Run the chatbot on the RNDP environment using a Jupyter notebook
 
@@ -53,28 +54,10 @@ It should be your home directory.
     source $(poetry env info --path)/bin/activate
     python -m ipykernel install --user --name=talk2powersystemllm-py3.12 --display-name "talk2powersystemllm-py3.12"
     ```
-- From the file browser navigate to the notebook, it's under `src/jupyter_notebooks/Talk2PowerSystem.ipynb`.
+- From the file browser navigate to the notebook `src/jupyter_notebooks/Talk2PowerSystem_RNDP.ipynb`.
 - From the top right corner switch the kernel to `talk2powersystemllm-py3.12` from the dropdown and click `Select`:
 ![kernel.png](images/kernel.png)
-- You should un-commend this
-```
-# set_env("GRAPHDB_PASSWORD")
-```
-- You should change this
-```
-agent_executor = Talk2PowerSystemAgent(
-    Path("../../config/dev+cognite.yaml"),
-    checkpointer=InMemorySaver()
-).agent
-```
-to
-```
-agent_executor = Talk2PowerSystemAgent(
-    Path("../../config/rndp.yaml"),
-    checkpointer=InMemorySaver()
-).agent
-```
-- Now you can run the notebook
+- Run the notebook's cells
 - It will prompt you for the GraphDB and Azure OpenAI credentials.
   - Graphdb password can be obtained with:
 ```commandline

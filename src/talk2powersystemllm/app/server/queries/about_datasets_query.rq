@@ -1,10 +1,15 @@
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
-PREFIX onto: <http://www.ontotext.com/>
 PREFIX dct: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?uri ?name ?date
-FROM onto:explicit {
+SELECT ?uri ?name ?date {
     ?uri a dcat:Dataset
+    OPTIONAL {
+        ?uri dct:description ?name.
+        FILTER(lang(?name) != "no")
+    }
+    OPTIONAL {
+        ?uri dct:title ?name.
+    }
     OPTIONAL {
         SELECT ?uri (SAMPLE(SUBSTR(STR(?dateTime), 1, 10)) AS ?date) {
             ?uri a dcat:Dataset;
@@ -12,21 +17,5 @@ FROM onto:explicit {
         }
         GROUP BY ?uri
     }
-    OPTIONAL {
-        SELECT ?uri (SAMPLE(?t) AS ?title) {
-            ?uri a dcat:Dataset;
-            dct:title ?t
-        }
-        GROUP BY ?uri
-    }
-    OPTIONAL {
-        SELECT ?uri (SAMPLE(?d) AS ?description) {
-            ?uri a dcat:Dataset;
-            dct:description ?d.
-            FILTER(LANG(?d) != "no")
-        }
-        GROUP BY ?uri
-    }
-    BIND(IF(BOUND(?title), CONCAT(?title, IF(BOUND(?description), ": ", ""), ?description), ?description) AS ?name)
 }
-ORDER BY ?uri
+ORDER BY ?name

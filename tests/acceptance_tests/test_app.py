@@ -131,94 +131,44 @@ class AcceptanceTestsApp(TestCase):
 
     def verify_about_response(self, actual_response_json: dict) -> None:
         self.assertTrue("ontologies" in actual_response_json)
-        self.assertEqual(4, len(actual_response_json["ontologies"]))
-        self.assertEqual(
-            "https://ap-voc.cim4.eu/AssessedElement#Ontology", actual_response_json["ontologies"][0]["uri"]
-        )
-        self.assertEqual(
-            "Assessed Element Vocabulary", actual_response_json["ontologies"][0]["name"]
-        )
-        self.assertEqual(
-            "2.3.1", actual_response_json["ontologies"][0]["version"]
-        )
-        self.assertEqual(
-            "2024-09-07", actual_response_json["ontologies"][0]["date"]
-        )
-        self.assertEqual(
-            "https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology", actual_response_json["ontologies"][1]["uri"]
-        )
-        self.assertEqual(
-            "https://ap-voc.cim4.eu/SecurityAnalysisResult#Ontology", actual_response_json["ontologies"][2]["uri"]
-        )
-        self.assertTrue(
-            actual_response_json["ontologies"][2]["name"] in (
-                "Security Analysis Result Vocabulary", "Security Analysis Result Vocabulary 2",
-                "Security Analysis Result Vocabulary 3", "Security Analysis Result Vocabulary 4"
-            ),
-        )
-        self.assertTrue(
-            actual_response_json["ontologies"][2]["version"] in ("2.3", "2.4")
-        )
-        self.assertTrue(
-            actual_response_json["ontologies"][2]["date"] in ("2024-09-08", "2024-09-07")
-        )
-        self.assertEqual(
-            "https://cim.ucaiug.io/rules#", actual_response_json["ontologies"][3]["uri"]
-        )
-        self.assertEqual(
-            "CIM Inferred Extension Ontology", actual_response_json["ontologies"][3]["name"]
-        )
-        self.assertEqual(
-            "1.1", actual_response_json["ontologies"][3]["version"]
-        )
-        self.assertEqual(
-            "2025-08-13", actual_response_json["ontologies"][3]["date"]
-        )
+        actual_ontologies = actual_response_json["ontologies"]
+        self.assertEqual(3, len(actual_ontologies))
+        self.assertEqual("https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology", actual_ontologies[0]["uri"])
+        self.assertEqual("https://ap-voc.cim4.eu/AssessedElement#Ontology", actual_ontologies[1]["uri"])
+        self.assertEqual("Assessed Element Vocabulary", actual_ontologies[1]["name"])
+        self.assertEqual("2.3.1", actual_ontologies[1]["version"])
+        self.assertEqual("2024-09-07", actual_ontologies[1]["date"])
+        self.assertEqual("https://cim.ucaiug.io/rules#", actual_ontologies[2]["uri"])
+        self.assertEqual("CIM Inferred Extension Ontology", actual_ontologies[2]["name"])
+        self.assertEqual("1.1", actual_ontologies[2]["version"])
+        self.assertEqual("2025-08-13", actual_ontologies[2]["date"])
 
         self.assertTrue("datasets" in actual_response_json)
-        self.assertEqual(4, len(actual_response_json["datasets"]))
+        actual_datasets = actual_response_json["datasets"]
+        self.assertEqual(6, len(actual_datasets))
+        self.assertEqual("urn:uuid:f1d9a88d-0ff5-4e4b-9d6a-c353fe8232c3", actual_datasets[0]["uri"])
+        self.assertEqual("urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4", actual_datasets[1]["uri"])
+        self.assertEqual("DIGIN10 CGMES v3.0 Base Voltage Reference model", actual_datasets[1]["name"])
+        self.assertTrue(actual_datasets[1]["date"] in ("2022-04-01", "2022-04-06"))
+        self.assertEqual("urn:uuid:5ad50f29-f3e5-4cf9-8519-cef17d71f8de", actual_datasets[2]["uri"])
+        self.assertEqual("DIGIN10 CGMES v3.0 Geographical Region Reference model", actual_datasets[2]["name"])
+        self.assertEqual("2022-04-01", actual_datasets[2]["date"])
+        self.assertEqual("urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4", actual_datasets[3]["uri"])
         self.assertEqual(
-            "urn:uuid:5ad50f29-f3e5-4cf9-8519-cef17d71f8de", actual_response_json["datasets"][0]["uri"]
+            "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Low Voltage 1 (LV1) Boundary Model",
+            actual_datasets[3]["name"]
         )
+        self.assertTrue(actual_datasets[3]["date"] in ("2022-04-01", "2022-04-06"))
+        self.assertEqual("urn:uuid:971c4254-5365-4aaf-8fa6-02658b3f8e05", actual_datasets[4]["uri"])
+        self.assertEqual("Geospartial GridCapacity MAS1", actual_datasets[4]["name"])
+        self.assertEqual("2023-02-21", actual_datasets[4]["date"])
+        self.assertEqual("urn:uuid:5b6a8b13-4c20-4147-8ed6-7249e303e647", actual_datasets[5]["uri"])
         self.assertEqual(
-            "DIGIN10-30-GeographicalRegion_RD: DIGIN10 CGMES v3.0 Geographical Region Reference model",
-            actual_response_json["datasets"][0]["name"]
+            "State Variable (SV) part of the Nordic 44-bus synthetic test model developed by Statnett SF "
+            "of the Nordic region.",
+            actual_datasets[5]["name"]
         )
-        self.assertEqual(
-            "2022-04-01", actual_response_json["datasets"][0]["date"]
-        )
-        self.assertEqual(
-            "urn:uuid:5b6a8b13-4c20-4147-8ed6-7249e303e647", actual_response_json["datasets"][1]["uri"]
-        )
-        self.assertEqual(
-            "State Variable (SV) part of the Nordic 44-bus synthetic test model "
-            "developed by Statnett SF of the Nordic region.",
-            actual_response_json["datasets"][1]["name"]
-        )
-        self.assertTrue(actual_response_json["datasets"][1]["date"] in ("2025-02-14", "2025-06-14"))
-        self.assertEqual(
-            "urn:uuid:f1d9a88d-0ff5-4e4b-9d6a-c353fe8232c3", actual_response_json["datasets"][2]["uri"]
-        )
-        self.assertEqual(
-            "urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4", actual_response_json["datasets"][3]["uri"]
-        )
-        self.assertTrue(
-            actual_response_json["datasets"][3]["name"].startswith(
-                "DIGIN10-30-BaseVoltage_RD: "
-            ) or
-            actual_response_json["datasets"][3]["name"].startswith(
-                "DIGIN10-30-MV1-LV1_BM: "
-            )
-        )
-        self.assertTrue(
-            actual_response_json["datasets"][3]["name"].endswith(
-                ": DIGIN10 CGMES v3.0 Base Voltage Reference model"
-            ) or
-            actual_response_json["datasets"][3]["name"].endswith(
-                ": DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Low Voltage 1 (LV1) Boundary Model"
-            )
-        )
-        self.assertTrue(actual_response_json["datasets"][3]["date"] in ("2022-04-01", "2022-04-06"))
+        self.assertEqual("2025-02-14", actual_datasets[5]["date"])
 
         self.assertTrue("graphdb" in actual_response_json)
         self.assertTrue("baseUrl" in actual_response_json["graphdb"])

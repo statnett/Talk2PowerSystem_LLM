@@ -1,7 +1,8 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dct:  <http://purl.org/dc/terms/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f> a <https://cim.ucaiug.io/ns#Substation>;
   <https://cim.ucaiug.io/ns#IdentifiedObject.mRID> "f176961e-9aeb-11e5-91da-b8763fd99c5f";
@@ -11,34 +12,33 @@
 
 <urn:uuid:5b6a8b13-4c20-4147-8ed6-7249e303e647> a dcat:Dataset;
   dct:description "State Variable (SV) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.";
-  dct:issued "2025-02-14"^^<http://www.w3.org/2001/XMLSchema#date> , "2025-06-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  dct:issued "2025-02-14"^^xsd:date .
 
 <urn:uuid:5ad50f29-f3e5-4cf9-8519-cef17d71f8de> a dcat:Dataset;
   dct:description "DIGIN10 CGMES v3.0 Geographical Region Reference model"@en;
-  dct:issued "2022-04-01T08:55:55"^^<http://www.w3.org/2001/XMLSchema#date>;
+  dct:issued "2022-04-01T08:55:55"^^xsd:date;
   dct:title "DIGIN10-30-GeographicalRegion_RD" .
 
 <urn:uuid:f1d9a88d-0ff5-4e4b-9d6a-c353fe8232c3> a dcat:Dataset .
 
 <urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4> a dcat:Dataset;
   dct:description "DIGIN10 CGMES v3.0 Base Voltage Reference model"@en, "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Low Voltage 1 (LV1) Boundary Model"@en;
-  dct:issued "2022-04-01T08:55:55"^^<http://www.w3.org/2001/XMLSchema#date> , "2022-04-06T11:32:55"^^<http://www.w3.org/2001/XMLSchema#date>;
+  dct:issued "2022-04-01T08:55:55"^^xsd:date, "2022-04-06T11:32:55"^^xsd:date;
   dct:title "DIGIN10-30-BaseVoltage_RD", "DIGIN10-30-MV1-LV1_BM" .
 
+<urn:uuid:971c4254-5365-4aaf-8fa6-02658b3f8e05> a dcat:Dataset;
+  dct:description "Geospartial GridCapacity MAS1"@en, "Stedsdata Nettkapasitet MAS1"@no;
+  dct:issued "2023-02-21T08:08:00.000Z"^^xsd:dateTime;
+  dct:title "DIGIN10-30-WattApp-GL" .
+
 <https://ap-voc.cim4.eu/AssessedElement#Ontology> a owl:Ontology;
-  dct:modified "2024-09-07"^^<http://www.w3.org/2001/XMLSchema#date>;
+  dct:modified "2024-09-07"^^xsd:date;
   dct:title "Assessed Element Vocabulary"@en;
   owl:versionInfo "2.3.1" .
 
 <https://cim.ucaiug.io/rules#> a owl:Ontology;
-  dct:modified "2025-08-13"^^<http://www.w3.org/2001/XMLSchema#date>;
+  dct:modified "2025-08-13"^^xsd:date;
   rdfs:label "CIM Inferred Extension Ontology";
   owl:versionInfo "1.1" .
 
 <https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology> a owl:Ontology.
-
-<https://ap-voc.cim4.eu/SecurityAnalysisResult#Ontology> a owl:Ontology;
-  dct:modified "2024-09-07"^^<http://www.w3.org/2001/XMLSchema#date>, "2024-09-08"^^<http://www.w3.org/2001/XMLSchema#date>;
-  dct:title "Security Analysis Result Vocabulary"@en, "Security Analysis Result Vocabulary 2"@en;
-  rdfs:label "Security Analysis Result Vocabulary 3", "Security Analysis Result Vocabulary 4";
-  owl:versionInfo "2.4", "2.3" .

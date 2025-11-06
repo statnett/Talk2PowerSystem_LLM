@@ -1,3 +1,9 @@
+Next release
+============
+
+* [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `ttyg` from `1.9.3` to `1.10.0`, so that the chat bot can run without admin access to GraphDB
+* [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `cognite-sdk` from `7.86.0` to `7.88.0`
+
 1.2.0-rc4
 ============
 

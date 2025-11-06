@@ -7,13 +7,13 @@ readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==1.9.3",
+    "ttyg==1.10.0",
     "graphrag-eval==5.2.0",
     "jupyter==1.1.1",
     "langchain-openai==0.3.32",
     "langgraph-checkpoint-redis==0.1.2",
     "jsonlines==4.0.0",
-    "cognite-sdk==7.86.0",
+    "cognite-sdk==7.88.0",
     "pydantic-settings==2.10.1",
     "PyYAML==6.0.2",
     "uvicorn[standard] (==0.35.0)",

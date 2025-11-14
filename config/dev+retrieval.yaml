@@ -38,7 +38,8 @@ tools:
             retr:limit {limit} ;
             retr:entities ?entity .
           ?entity retr:score ?score;
-            qa:question ?question;
+            qa:question ?question.
+          ?template qa:paraphrase ?entity;
             qa:querySparql ?query.
           FILTER (?score > {score})
       }}

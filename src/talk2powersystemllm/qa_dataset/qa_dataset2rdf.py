@@ -58,6 +58,7 @@ def build_qa_dataset_graph(split):
         template_iri = URIRef(f"Template_{template['template_id']}", base_ns)
         graph.add((template_iri, RDF.type, qa_dataset_ns.Template))
         sparql_template = template["sparql_template"]
+        graph.add((template_iri, qa_dataset_ns.querySparql, Literal(transform_sparql(sparql_template))))
 
         for n, paraphrase in enumerate(template["paraphrases"]):
             paraphrase_iri = URIRef(f"Paraphrase_{template['template_id']}_{n}", base_ns)
@@ -65,5 +66,5 @@ def build_qa_dataset_graph(split):
             graph.add((template_iri, qa_dataset_ns.paraphrase, paraphrase_iri))
             graph.add((paraphrase_iri, qa_dataset_ns.question, Literal(transform_paraphrase(paraphrase))))
             verify_unique_placeholders(transform_paraphrase(paraphrase))
-            graph.add((paraphrase_iri, qa_dataset_ns.querySparql, Literal(transform_sparql(sparql_template))))
+
     return graph

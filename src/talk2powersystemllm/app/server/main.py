@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from contextvars import ContextVar
 from typing import Annotated, Any
 
+import msal
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import (
     FastAPI,
@@ -14,6 +15,7 @@ from fastapi import (
     Header,
     status,
     Depends,
+    HTTPException,
 )
 from fastapi.responses import HTMLResponse
 from importlib_resources import files
@@ -28,7 +30,7 @@ from rdflib import Graph, Namespace
 from starlette.responses import JSONResponse
 from ttyg.tools import AutocompleteSearchTool
 
-from talk2powersystemllm.agent import Talk2PowerSystemAgent
+from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
 from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
 from .about import (
     __version__,
@@ -41,7 +43,6 @@ from .auth import conditional_security
 from .config import settings
 from .healthchecks import (
     GraphDBHealthchecker,
-    CogniteHealthchecker,
     HealthChecks,
 )
 from .healthchecks.redis_healthcheck import RedisHealthchecker
@@ -76,7 +77,7 @@ gtg_info: GoodToGoInfo = None
 # noinspection PyTypeChecker
 about_info: AboutInfo = None
 # noinspection PyTypeChecker
-agent: Talk2PowerSystemAgent = None
+agent_factory: Talk2PowerSystemAgentFactory = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.logging_yaml_file)
 trouble_html = get_trouble_html()
@@ -85,35 +86,32 @@ trouble_html = get_trouble_html()
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     logging.info("Starting the application")
-    global agent
+    global agent_factory
 
     redis_password = settings.redis.password
     redis_auth = ""
     if redis_password:
         redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
     async with AsyncRedisSaver.from_conn_string(
-            redis_url=f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}",
-            connection_args={
-                'socket_connect_timeout': settings.redis.connect_timeout,
-                'socket_timeout': settings.redis.read_timeout,
-                'health_check_interval': settings.redis.healthcheck_interval,
-            },
-            ttl={
-                "default_ttl": settings.redis.ttl,
-                "refresh_on_read": settings.redis.ttl_refresh_on_read,
-            }
+        redis_url=f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}",
+        connection_args={
+            'socket_connect_timeout': settings.redis.connect_timeout,
+            'socket_timeout': settings.redis.read_timeout,
+            'health_check_interval': settings.redis.healthcheck_interval,
+        },
+        ttl={
+            "default_ttl": settings.redis.ttl,
+            "refresh_on_read": settings.redis.ttl_refresh_on_read,
+        }
     ) as memory_saver:
-
         await memory_saver.asetup()
         RedisHealthchecker(memory_saver._redis)
-        agent = Talk2PowerSystemAgent(
+        agent_factory = Talk2PowerSystemAgentFactory(
             settings.agent_config,
             checkpointer=memory_saver
         )
 
-        GraphDBHealthchecker(agent.graphdb_client)
-        if agent.cognite_session:
-            CogniteHealthchecker(agent.cognite_session)
+        GraphDBHealthchecker(agent_factory.graphdb_client)
 
         scheduler = AsyncIOScheduler()
         scheduler.add_job(update_gtg_info, 'interval', seconds=settings.gtg_refresh_interval)
@@ -211,9 +209,9 @@ async def health(request: Request = None, x_request_id: Annotated[str | None, He
     }
 )
 async def gtg(
-        response: Response,
-        x_request_id: Annotated[str | None, Header()] = None,
-        cache: bool = True,
+    response: Response,
+    x_request_id: Annotated[str | None, Header()] = None,
+    cache: bool = True,
 ):
     if not cache:
         await update_gtg_info()
@@ -261,7 +259,7 @@ async def update_about_info() -> None:
 
 def get_about_ontologies() -> list[AboutOntologyInfo]:
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_ontologies_query.rq").read_text()
-    query_results, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(query, validation=False)
     ontologies: list[AboutOntologyInfo] = []
     for binding in query_results["results"]["bindings"]:
         ontologies.append(AboutOntologyInfo(
@@ -275,7 +273,7 @@ def get_about_ontologies() -> list[AboutOntologyInfo]:
 
 def get_about_datasets() -> list[AboutDatasetInfo]:
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_datasets_query.rq").read_text()
-    query_results, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(query, validation=False)
     datasets: list[AboutDatasetInfo] = []
     for binding in query_results["results"]["bindings"]:
         datasets.append(AboutDatasetInfo(
@@ -288,20 +286,20 @@ def get_about_datasets() -> list[AboutDatasetInfo]:
 
 def get_about_graphdb() -> AboutGraphDBInfo:
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_graphdb_query.rq").read_text()
-    query_results, _ = agent.graphdb_client.eval_sparql_query(query, validation=False)
+    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(query, validation=False)
     schema_graph = Graph().parse(
         data=query_results,
         format="turtle",
     )
     onto = Namespace("http://www.ontotext.com/")
     return AboutGraphDBInfo(
-        baseUrl=agent.settings.graphdb.base_url,
-        repository=agent.settings.graphdb.repository_id,
+        baseUrl=agent_factory.settings.graphdb.base_url,
+        repository=agent_factory.settings.graphdb.repository_id,
         version=list(schema_graph.objects(onto.SI_has_Revision, None))[0].value,
         numberOfExplicitTriples=list(schema_graph.objects(onto.SI_number_of_explicit_triples, None))[0].value,
         numberOfTriples=list(schema_graph.objects(onto.SI_number_of_triples, None))[0].value,
-        autocompleteIndexStatus=agent.graphdb_client.get_autocomplete_status(),
-        rdfRankStatus=agent.graphdb_client.get_rdf_rank_status(),
+        autocompleteIndexStatus=agent_factory.graphdb_client.get_autocomplete_status(),
+        rdfRankStatus=agent_factory.graphdb_client.get_rdf_rank_status(),
     )
 
 
@@ -310,44 +308,44 @@ def get_about_agent() -> AboutAgentInfo:
     tools["sparql_query"] = {"enabled": True}
     tools["autocomplete_search"] = {
         "enabled": True,
-        "property_path": agent.settings.tools.autocomplete_search.property_path,
+        "property_path": agent_factory.settings.tools.autocomplete_search.property_path,
     }
-    if agent.settings.tools.autocomplete_search.sparql_query_template:
+    if agent_factory.settings.tools.autocomplete_search.sparql_query_template:
         tools["autocomplete_search"].update({
-            "sparql_query_template": agent.settings.tools.autocomplete_search.sparql_query_template,
+            "sparql_query_template": agent_factory.settings.tools.autocomplete_search.sparql_query_template,
         })
     else:
-        tool: AutocompleteSearchTool = [tool for tool in agent.tools if tool.name == "autocomplete_search"][0]
+        tool: AutocompleteSearchTool = [tool for tool in agent_factory.tools if tool.name == "autocomplete_search"][0]
         tools["autocomplete_search"].update({
             "sparql_query_template": tool.sparql_query_template
         })
-    tools["sample_sparql_queries"] = {"enabled": True if agent.settings.tools.retrieval_search else False}
-    if agent.settings.tools.retrieval_search:
+    tools["sample_sparql_queries"] = {"enabled": True if agent_factory.settings.tools.retrieval_search else False}
+    if agent_factory.settings.tools.retrieval_search:
         tools["sample_sparql_queries"].update({
-            "sparql_query_template": agent.settings.tools.retrieval_search.sparql_query_template,
-            "connector_name": agent.settings.tools.retrieval_search.connector_name,
+            "sparql_query_template": agent_factory.settings.tools.retrieval_search.sparql_query_template,
+            "connector_name": agent_factory.settings.tools.retrieval_search.connector_name,
         })
-    tools["retrieve_data_points"] = {"enabled": True if agent.settings.tools.cognite else False}
-    tools["retrieve_time_series"] = {"enabled": True if agent.settings.tools.cognite else False}
-    if agent.settings.tools.cognite:
+    tools["retrieve_data_points"] = {"enabled": True if agent_factory.settings.tools.cognite else False}
+    tools["retrieve_time_series"] = {"enabled": True if agent_factory.settings.tools.cognite else False}
+    if agent_factory.settings.tools.cognite:
         tools["retrieve_data_points"].update({
-            "base_url": agent.settings.tools.cognite.base_url,
-            "project": agent.settings.tools.cognite.project,
-            "client_name": agent.settings.tools.cognite.client_name,
+            "base_url": agent_factory.settings.tools.cognite.base_url,
+            "project": agent_factory.settings.tools.cognite.project,
+            "client_name": agent_factory.settings.tools.cognite.client_name,
         })
         tools["retrieve_time_series"].update({
-            "base_url": agent.settings.tools.cognite.base_url,
-            "project": agent.settings.tools.cognite.project,
-            "client_name": agent.settings.tools.cognite.client_name,
+            "base_url": agent_factory.settings.tools.cognite.base_url,
+            "project": agent_factory.settings.tools.cognite.project,
+            "client_name": agent_factory.settings.tools.cognite.client_name,
         })
     tools["now"] = {"enabled": True}
     return AboutAgentInfo(
-        assistantInstructions=agent.settings.prompts.assistant_instructions,
+        assistantInstructions=agent_factory.settings.prompts.assistant_instructions,
         llm=AboutLLMInfo(
-            type=agent.settings.llm.type,
-            model=agent.settings.llm.model,
-            temperature=agent.settings.llm.temperature,
-            seed=agent.settings.llm.seed,
+            type=agent_factory.settings.llm.type,
+            model=agent_factory.settings.llm.model,
+            temperature=agent_factory.settings.llm.temperature,
+            seed=agent_factory.settings.llm.seed,
         ),
         tools=tools,
     )
@@ -389,7 +387,7 @@ async def about(x_request_id: Annotated[str | None, Header()] = None) -> AboutIn
     response_model_exclude_none=True,
 )
 async def get_auth_config(
-        x_request_id: Annotated[str | None, Header()] = None,
+    x_request_id: Annotated[str | None, Header()] = None,
 ) -> AuthConfig:
     return AuthConfig(
         enabled=settings.security.enabled,
@@ -399,6 +397,33 @@ async def get_auth_config(
         loginRedirect=settings.security.login_redirect,
         logoutRedirect=settings.security.logout_redirect,
     )
+
+
+if settings.security.enabled and agent_factory.settings.tools.cognite:
+    if not agent_factory.settings.tools.cognite.client_secret:
+        raise ValueError(
+            "Cognite client secret must be provided in order to register the Cognite tools, "
+            "when the security is enabled."
+        )
+    confidential_app = msal.ConfidentialClientApplication(
+        settings.security.client_id,
+        authority=settings.security.authority,
+        client_credential=agent_factory.settings.tools.cognite.client_secret,
+    )
+
+
+    def exchange_obo_for_cognite(user_access_token: str) -> dict:
+        # Try cache first (MSAL keeps an in-memory cache by default)
+        result = confidential_app.acquire_token_on_behalf_of(
+            user_assertion=user_access_token,
+            scopes=[f"{agent_factory.settings.tools.cognite.base_url}/.default", "offline_access"],
+        )
+        if "access_token" not in result:
+            error_message = (f"Failed to obtain OBO token for Cognite, error: {result.get("error")}, "
+                             f"description: {result.get("error_description")}")
+            logging.error(error_message)
+            raise HTTPException(status_code=401, detail=error_message)
+        return result
 
 
 # noinspection PyUnusedLocal
@@ -433,16 +458,24 @@ async def get_auth_config(
     response_model_exclude_none=True,
 )
 async def conversations(
-        request: ChatRequest,
-        x_request_id: Annotated[str | None, Header()] = None,
-        x_user_datetime: Annotated[str | None, Header()] = None,
-        claims=Depends(conditional_security),
+    request: ChatRequest,
+    x_request_id: Annotated[str | None, Header()] = None,
+    x_user_datetime: Annotated[str | None, Header()] = None,
+    authorization: Annotated[str | None, Header()] = None,
+    claims=Depends(conditional_security),
 ) -> ChatResponse:
+    cognite_obo_token = None
+    if settings.security.enabled and agent_factory.settings.tools.cognite.client_secret:
+        token_result = exchange_obo_for_cognite(authorization)
+        cognite_obo_token = token_result["access_token"]
+
+    agent = agent_factory.get_agent(cognite_obo_token)
+
     user_datetime_ctx.set(x_user_datetime)
 
     conversation_id = request.conversation_id
     if conversation_id:
-        checkpoint = await agent.agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
+        checkpoint = await agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
         if not checkpoint:
             raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")
     else:
@@ -458,7 +491,7 @@ async def conversations(
     messages = []
 
     # noinspection PyTypeChecker
-    async for message in agent.agent.astream(input_, runnable_config, stream_mode="updates"):
+    async for message in agent.astream(input_, runnable_config, stream_mode="updates"):
         logging.debug(f"Received message {message}")
         if "agent" in message:
             for ai_message in message["agent"]["messages"]:
@@ -545,12 +578,12 @@ async def message_not_found_error_handler(_, exc: MessageNotFound):
     response_model_exclude_none=True,
 )
 async def explain(
-        request: ExplainRequest,
-        x_request_id: Annotated[str | None, Header()] = None,
-        claims=Depends(conditional_security),
+    request: ExplainRequest,
+    x_request_id: Annotated[str | None, Header()] = None,
+    claims=Depends(conditional_security),
 ) -> ExplainResponse:
     conversation_id, message_id = request.conversation_id, request.message_id
-    checkpoint = await agent.agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
+    checkpoint = await agent_factory.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
 
     if not checkpoint:
         raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")

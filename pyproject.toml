@@ -13,7 +13,7 @@ dependencies = [
     "langchain-openai==0.3.32",
     "langgraph-checkpoint-redis==0.1.2",
     "jsonlines==4.0.0",
-    "cognite-sdk==7.88.0",
+    "cognite-sdk==7.89.0",
     "pydantic-settings==2.10.1",
     "PyYAML==6.0.2",
     "uvicorn[standard] (==0.35.0)",
@@ -22,6 +22,7 @@ dependencies = [
     "toml==0.10.2",
     "markdown==3.8.2",
     "python-jose[cryptography] (==3.5.0)",
+    "msal==1.34.0",
     "cachetools==6.2.0",
     "importlib_resources==6.5.2",
 ]

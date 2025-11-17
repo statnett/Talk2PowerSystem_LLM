@@ -1511,7 +1511,7 @@ Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-
 
 Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
 
-#### Cognite health check status is not OK
+#### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search` are failing
 
 Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
 

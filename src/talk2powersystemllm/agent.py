@@ -77,12 +77,22 @@ class CogniteSettings(BaseModel):
     token_file_path: Path | None = None
     interactive_client_id: str | None = None
     tenant_id: str | None = None
+    client_secret: str | None = None
 
     @model_validator(mode="after")
     def check_credentials(self) -> "CogniteSettings":
-        if self.token_file_path and self.interactive_client_id:
-            raise ValueError("Both token_file_path and interactive_client_id for Cognite are provided. "
-                             "Set only one of them!")
+        if self.client_secret:
+            if self.token_file_path:
+                raise ValueError("Both token_file_path and client_secret for Cognite are provided. "
+                                 "Set only one of them!")
+            elif self.interactive_client_id:
+                raise ValueError("Both interactive_client_id and client_secret for Cognite are provided. "
+                                 "Set only one of them!")
+        elif self.token_file_path:
+            if self.interactive_client_id:
+                raise ValueError("Both token_file_path and interactive_client_id for Cognite are provided. "
+                                 "Set only one of them!")
+
         if self.interactive_client_id and not self.tenant_id:
             raise ValueError("Tenant id is required!")
         return self
@@ -179,7 +189,7 @@ def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDB:
     return GraphDB(**kwargs)
 
 
-def init_cognite(cognite_settings: CogniteSettings) -> CogniteSession:
+def init_cognite(cognite_settings: CogniteSettings, obo_token: str | None = None) -> CogniteSession:
     return CogniteSession(
         base_url=cognite_settings.base_url,
         client_name=cognite_settings.client_name,
@@ -187,6 +197,7 @@ def init_cognite(cognite_settings: CogniteSettings) -> CogniteSession:
         token_file_path=cognite_settings.token_file_path,
         interactive_client_id=cognite_settings.interactive_client_id,
         tenant_id=cognite_settings.tenant_id,
+        obo_token=obo_token,
     )
 
 
@@ -211,11 +222,13 @@ def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
         )
 
 
-class Talk2PowerSystemAgent:
-    agent: CompiledStateGraph
+class Talk2PowerSystemAgentFactory:
+    settings: Talk2PowerSystemAgentSettings
     graphdb_client: GraphDB
-    cognite_session: CogniteSession | None = None
+    checkpointer: Checkpointer | None = None
     model: BaseChatModel
+    instructions: str
+    tools: list[BaseTool]
 
     def __init__(
         self,
@@ -224,6 +237,7 @@ class Talk2PowerSystemAgent:
     ):
         self.settings = read_config(path_to_yaml_config)
         self.graphdb_client = init_graphdb(self.settings.graphdb)
+        self.checkpointer = checkpointer
 
         tools_settings = self.settings.tools
         self.tools: list[BaseTool] = []
@@ -232,11 +246,6 @@ class Talk2PowerSystemAgent:
             graph=self.graphdb_client,
         )
         self.tools.append(sparql_query_tool)
-
-        ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
-            graph=self.graphdb_client,
-            ontology_schema_file_path=tools_settings.ontology_schema.file_path,
-        )
 
         autocomplete_search_settings = tools_settings.autocomplete_search
         autocomplete_search_kwargs = {
@@ -263,22 +272,28 @@ class Talk2PowerSystemAgent:
             )
             self.tools.append(retrieval_query_tool)
 
-        if tools_settings.cognite:
-            cognite_settings = tools_settings.cognite
-            self.cognite_session = init_cognite(cognite_settings)
-            self.tools.append(RetrieveTimeSeriesTool(cognite_session=self.cognite_session))
-            self.tools.append(RetrieveDataPointsTool(cognite_session=self.cognite_session))
-
         self.tools.append(NowTool())
 
-        instructions = f"""{self.settings.prompts.assistant_instructions}""".replace(
+        ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
+            graph=self.graphdb_client,
+            ontology_schema_file_path=tools_settings.ontology_schema.file_path,
+        )
+        self.instructions = f"""{self.settings.prompts.assistant_instructions}""".replace(
             "{ontology_schema}", ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle")
         )
 
         self.model = init_llm(self.settings.llm)
-        self.agent = create_react_agent(
+
+    def get_agent(self, cognite_obo_token: str | None = None) -> CompiledStateGraph:
+        tools = self.tools.copy()
+        if self.settings.tools.cognite:
+            cognite_settings = self.settings.tools.cognite
+            cognite_session = init_cognite(cognite_settings, cognite_obo_token)
+            tools.append(RetrieveTimeSeriesTool(cognite_session=cognite_session))
+            tools.append(RetrieveDataPointsTool(cognite_session=cognite_session))
+        return create_react_agent(
             model=self.model,
-            tools=self.tools,
-            prompt=instructions,
-            checkpointer=checkpointer,
+            tools=tools,
+            prompt=self.instructions,
+            checkpointer=self.checkpointer,
         )

@@ -11,7 +11,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_resul
 from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
 
-from talk2powersystemllm.agent import Talk2PowerSystemAgent
+from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
 from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset
 
 
@@ -113,9 +113,9 @@ def main():
     results_dir.mkdir(parents=True, exist_ok=True)
 
     _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path), n_templates=args.n_templates)
-    agent: CompiledStateGraph = Talk2PowerSystemAgent(
+    agent: CompiledStateGraph = Talk2PowerSystemAgentFactory(
         Path(args.chat_config_path),
-    ).agent
+    ).get_agent()
 
     run_evaluation_on_split(agent, dev_split, "dev", results_dir)
     run_evaluation_on_split(agent, test_split, "test", results_dir)

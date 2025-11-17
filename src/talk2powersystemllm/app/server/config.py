@@ -58,7 +58,7 @@ class SecuritySettings(BaseSettings):
                              "client_id, authority, logout, login_redirect, logout_redirect, audience!")
         if self.enabled and not self.oidc_discovery_url:
             self.oidc_discovery_url = (
-                    self.authority.rstrip("/") + "/v2.0/.well-known/openid-configuration"
+                self.authority.rstrip("/") + "/v2.0/.well-known/openid-configuration"
             )
         return self
 
@@ -96,7 +96,7 @@ class AppSettings(BaseSettings):
     gtg_refresh_interval: int | None = Field(default=30, ge=1,
                                              description="The __gtg endpoint refresh interval in seconds")
     about_refresh_interval: int | None = Field(default=30, ge=1,
-                                             description="The __about endpoint refresh interval in seconds")
+                                               description="The __about endpoint refresh interval in seconds")
     trouble_md_path: Path | None = "/code/trouble.md"
     docs_url: str | None = "/docs"
     root_path: str | None = "/"

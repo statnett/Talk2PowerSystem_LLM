@@ -1,6 +1,7 @@
 from base64 import b64encode
 from enum import Enum
 from pathlib import Path
+from typing import Any
 
 import yaml
 from langchain_core.language_models import BaseChatModel
@@ -81,17 +82,11 @@ class CogniteSettings(BaseModel):
 
     @model_validator(mode="after")
     def check_credentials(self) -> "CogniteSettings":
-        if self.client_secret:
-            if self.token_file_path:
-                raise ValueError("Both token_file_path and client_secret for Cognite are provided. "
-                                 "Set only one of them!")
-            elif self.interactive_client_id:
-                raise ValueError("Both interactive_client_id and client_secret for Cognite are provided. "
-                                 "Set only one of them!")
-        elif self.token_file_path:
-            if self.interactive_client_id:
-                raise ValueError("Both token_file_path and interactive_client_id for Cognite are provided. "
-                                 "Set only one of them!")
+        def exactly_one_is_not_none(*args: Any) -> bool:
+            return sum(a is not None for a in args) == 1
+
+        if not exactly_one_is_not_none(self.client_secret, self.token_file_path, self.interactive_client_id):
+            raise ValueError("Pass exactly one of 'client_secret', 'token_file_path' or 'interactive_client_id'!")
 
         if self.interactive_client_id and not self.tenant_id:
             raise ValueError("Tenant id is required!")

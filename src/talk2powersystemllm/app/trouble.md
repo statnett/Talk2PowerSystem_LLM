@@ -539,17 +539,6 @@ Sample Response Body:
         {
             "status": "OK",
             "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
-            "name": "Cognite Health Check",
-            "type": "cognite",
-            "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
-            "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
-            "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
-            "message": "Cognite can be queried."
-        },
-        {
-            "status": "OK",
-            "severity": "HIGH",
             "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
             "name": "GraphDB Health Check",
             "type": "graphdb",
@@ -1408,19 +1397,17 @@ Sample Response Body:
 The `ontologies`, `datasets` and `graphdb` sections are updated on a scheduled basis (30 seconds by default). The `agent` and `backend` sections are static and initialized at the start of the application, since the data don't change at run time.
 The SPARQL query, which fetches the `ontologies` data is
 ```
-PREFIX onto: <http://www.ontotext.com/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-SELECT ?uri ?name ?version ?date
-FROM onto:explicit {
+SELECT ?uri ?name ?date ?version {
     ?uri a owl:Ontology.
     OPTIONAL {
-        ?uri dct:title ?title
+        ?uri rdfs:label ?name
     }
     OPTIONAL {
-        ?uri rdfs:label ?label
+        ?uri dct:title ?name
     }
     OPTIONAL {
         ?uri owl:versionInfo ?version
@@ -1428,19 +1415,23 @@ FROM onto:explicit {
     OPTIONAL {
         ?uri dct:modified ?date
     }
-    BIND(COALESCE(?title, ?label) AS ?name)
 }
 ORDER BY ?name
 ```
 The SPARQL query, which fetches the `datasets` data is
 ```
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
-PREFIX onto: <http://www.ontotext.com/>
 PREFIX dct: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?uri ?name ?date
-FROM onto:explicit {
+SELECT ?uri ?name ?date {
     ?uri a dcat:Dataset
+    OPTIONAL {
+        ?uri dct:description ?name.
+        FILTER(lang(?name) != "no")
+    }
+    OPTIONAL {
+        ?uri dct:title ?name.
+    }
     OPTIONAL {
         SELECT ?uri (SAMPLE(SUBSTR(STR(?dateTime), 1, 10)) AS ?date) {
             ?uri a dcat:Dataset;
@@ -1448,13 +1439,6 @@ FROM onto:explicit {
         }
         GROUP BY ?uri
     }
-    OPTIONAL {
-        ?uri dct:title ?title
-    }
-    OPTIONAL {
-        ?uri dct:description ?descr
-    }
-    BIND(COALESCE(?title, ?descr) AS ?name)
 }
 ORDER BY ?name
 ```
@@ -1497,6 +1481,7 @@ experienced with the following:
 * GraphDB
 * Cognite
 * Azure OpenAI
+* OpenID, Microsoft Entra ID
 * Redis
 
 ## Resolving Known Issues
@@ -1510,10 +1495,6 @@ Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-
 #### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search` are failing
 
 Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
-
-#### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search` are failing
-
-Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
 
 #### Calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing
 
@@ -1551,12 +1532,21 @@ This section lists the causes of known issues and provides solutions.
 ##### Solution
 
 - Make sure Cognite is reachable from the app host.
-- Make sure Cognite credentials are correct.
+- Make sure the application security is enabled, otherwise Cognite won't be accessible.
+- Make sure that in the application configuration in Azure `user impersonation` for Cognite is set under API permissions and is approved.
+- Make sure the property `tools.cognite.client_secret` is set and has a correct value. To create / obtain it you (or your Azure admin) must:
+    1. Go to the Azure Portal → Microsoft Entra ID → App registrations → Your FastAPI Backend App
+    2. In the left menu, choose Certificates & secrets
+    3. Under Client secrets, click ➕ New client secret
+    4. Give it a description and choose an expiry (6 months, 12 months, custom)
+    5. Click Add
+    Azure will show you:
+        - Value – this is your actual secret (copy it now → you can’t view it later)
+        - Secret ID – an internal reference (not needed in code)
 
 ##### Verification
 
-- Check the response status code of the `__gtg` endpoint, it must be `200`.
-- Check the response body of the `__health` endpoint, Cognite health check must have status `OK`.
+Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
 
 #### Redis can't be queried or is mis-configured
 

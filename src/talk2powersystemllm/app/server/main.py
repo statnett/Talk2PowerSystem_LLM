@@ -410,17 +410,22 @@ if settings.security.enabled and agent_factory.settings.tools.cognite:
         authority=settings.security.authority,
         client_credential=agent_factory.settings.tools.cognite.client_secret,
     )
+    COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default", "offline_access"]
 
 
     def exchange_obo_for_cognite(user_access_token: str) -> dict:
-        # Try cache first (MSAL keeps an in-memory cache by default)
+        result = confidential_app.acquire_token_silent(COGNITE_SCOPES, account=None)
+        if result:
+            logging.debug("Cognite token acquired.")
+            return result["access_token"]
+
+        logging.debug("Acquiring token for Cognite using OBO.")
         result = confidential_app.acquire_token_on_behalf_of(
             user_assertion=user_access_token,
-            scopes=[f"{agent_factory.settings.tools.cognite.base_url}/.default", "offline_access"],
+            scopes=COGNITE_SCOPES,
         )
         if "access_token" not in result:
-            error_message = (f"Failed to obtain OBO token for Cognite, error: {result.get("error")}, "
-                             f"description: {result.get("error_description")}")
+            error_message = f"Failed to obtain OBO token for Cognite: {result}"
             logging.error(error_message)
             raise HTTPException(status_code=401, detail=error_message)
         return result

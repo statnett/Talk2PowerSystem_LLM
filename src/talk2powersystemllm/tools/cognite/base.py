@@ -43,11 +43,7 @@ class CogniteSession:
         """
 
         if obo_token:
-            credentials = OAuthInteractive(
-                authority_url=f"https://login.microsoftonline.com/{tenant_id}",
-                client_id=interactive_client_id,
-                scopes=[f"{base_url}/.default"],
-            )
+            credentials = CredentialProvider.load({"token": obo_token})
         elif token_file_path:
             self._token_file_path = token_file_path
             credentials = self._refresh()

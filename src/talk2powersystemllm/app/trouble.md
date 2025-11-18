@@ -1408,19 +1408,17 @@ Sample Response Body:
 The `ontologies`, `datasets` and `graphdb` sections are updated on a scheduled basis (30 seconds by default). The `agent` and `backend` sections are static and initialized at the start of the application, since the data don't change at run time.
 The SPARQL query, which fetches the `ontologies` data is
 ```
-PREFIX onto: <http://www.ontotext.com/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-SELECT ?uri ?name ?version ?date
-FROM onto:explicit {
+SELECT ?uri ?name ?date ?version {
     ?uri a owl:Ontology.
     OPTIONAL {
-        ?uri dct:title ?title
+        ?uri rdfs:label ?name
     }
     OPTIONAL {
-        ?uri rdfs:label ?label
+        ?uri dct:title ?name
     }
     OPTIONAL {
         ?uri owl:versionInfo ?version
@@ -1428,19 +1426,23 @@ FROM onto:explicit {
     OPTIONAL {
         ?uri dct:modified ?date
     }
-    BIND(COALESCE(?title, ?label) AS ?name)
 }
 ORDER BY ?name
 ```
 The SPARQL query, which fetches the `datasets` data is
 ```
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
-PREFIX onto: <http://www.ontotext.com/>
 PREFIX dct: <http://purl.org/dc/terms/>
 
-SELECT DISTINCT ?uri ?name ?date
-FROM onto:explicit {
+SELECT ?uri ?name ?date {
     ?uri a dcat:Dataset
+    OPTIONAL {
+        ?uri dct:description ?name.
+        FILTER(lang(?name) != "no")
+    }
+    OPTIONAL {
+        ?uri dct:title ?name.
+    }
     OPTIONAL {
         SELECT ?uri (SAMPLE(SUBSTR(STR(?dateTime), 1, 10)) AS ?date) {
             ?uri a dcat:Dataset;
@@ -1448,13 +1450,6 @@ FROM onto:explicit {
         }
         GROUP BY ?uri
     }
-    OPTIONAL {
-        ?uri dct:title ?title
-    }
-    OPTIONAL {
-        ?uri dct:description ?descr
-    }
-    BIND(COALESCE(?title, ?descr) AS ?name)
 }
 ORDER BY ?name
 ```

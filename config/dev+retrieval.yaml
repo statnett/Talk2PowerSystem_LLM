@@ -32,18 +32,22 @@ tools:
       PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>
       PREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>
       PREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>
-      SELECT ?question ?query {{
-          [] a retr-index:{connector_name} ;
-            retr:query "{query}" ;
-            retr:limit {limit} ;
-            retr:entities ?entity .
-          ?entity retr:score ?score;
-            qa:question ?question.
-          ?template qa:paraphrase ?entity;
-            qa:querySparql ?query.
-          FILTER (?score > {score})
+      SELECT (REPLACE(GROUP_CONCAT(?q; separator="@"), "(.*?)@.*", "$1") AS ?question) ?query {{
+          SELECT ?q ?query ?score {{
+              [] a retr-index:{connector_name} ;
+                  retr:query "{query}" ;
+                  retr:limit 100;
+                  retr:entities ?entity .
+              ?entity retr:score ?score;
+                  qa:question ?q.
+              ?template qa:paraphrase ?entity;
+                  qa:querySparql ?query.
+              FILTER (?score > {score})
+          }}
+          ORDER BY DESC(?score)
       }}
-      ORDER BY DESC(?score)
+      GROUP BY ?query
+      LIMIT {limit}
 llm:
   azure_endpoint: "https://statnett.openai.azure.com/"
   model: "gpt-4.1"

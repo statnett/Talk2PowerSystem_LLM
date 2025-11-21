@@ -64,7 +64,8 @@ def build_qa_dataset_graph(split):
             paraphrase_iri = URIRef(f"Paraphrase_{template['template_id']}_{n}", base_ns)
             graph.add((paraphrase_iri, RDF.type, qa_dataset_ns.Paraphrase))
             graph.add((template_iri, qa_dataset_ns.paraphrase, paraphrase_iri))
-            graph.add((paraphrase_iri, qa_dataset_ns.question, Literal(transform_paraphrase(paraphrase))))
-            verify_unique_placeholders(transform_paraphrase(paraphrase))
+            transformed_paraphrase = transform_paraphrase(paraphrase)
+            verify_unique_placeholders(transformed_paraphrase)
+            graph.add((paraphrase_iri, qa_dataset_ns.question, Literal(transformed_paraphrase)))
 
     return graph

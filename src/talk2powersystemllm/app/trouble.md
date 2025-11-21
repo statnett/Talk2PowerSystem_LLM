@@ -1356,7 +1356,7 @@ Sample Response Body:
       },
       "sample_sparql_queries": {
         "enabled": true,
-        "sparql_query_template": "PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>\nPREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>\nPREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>\nSELECT ?question ?query {{\n    [] a retr-index:{connector_name} ;\n      retr:query \"{query}\" ;\n      retr:limit {limit} ;\n      retr:entities ?entity .\n    ?entity retr:score ?score;\n      qa:question ?question.\n    ?template qa:paraphrase ?entity;\n      qa:querySparql ?query.\n    FILTER (?score > {score})\n}}\nORDER BY DESC(?score)\n",
+        "sparql_query_template": "PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>\nPREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>\nPREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>\nSELECT (REPLACE(GROUP_CONCAT(?q; separator=\"@\"), \"(.*?)@.*\", \"$1\") AS ?question) ?query {{\n    SELECT ?q ?query ?score {{\n        [] a retr-index:{connector_name} ;\n            retr:query \"{query}\" ;\n            retr:limit 100;\n            retr:entities ?entity .\n        ?entity retr:score ?score;\n            qa:question ?q.\n        ?template qa:paraphrase ?entity;\n            qa:querySparql ?query.\n        FILTER (?score > {score})\n    }}\n    ORDER BY DESC(?score)\n}}\nGROUP BY ?query\nLIMIT {limit}\n",
         "connector_name": "qa_dataset"
       },
       "retrieve_data_points": {

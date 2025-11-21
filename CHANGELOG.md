@@ -3,7 +3,7 @@ Next release
 
 * [#256](https://github.com/statnett/Talk2PowerSystem_PM/issues/256): Update the queries for the ontologies and datasets information served from the `__about` endpoint
 * [#251](https://github.com/statnett/Talk2PowerSystem_PM/issues/251): Change N-Shot tool configuration to default to the base GraphDB
-* [#251](https://github.com/statnett/Talk2PowerSystem_PM/issues/251): Change N-Shot tool configuration SPARQL query template
+* [#276](https://github.com/statnett/Talk2PowerSystem_PM/issues/276): Change N-Shot tool configuration SPARQL query template, so that it outputs unique SPARQL queries
 * [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `ttyg` from `1.9.3` to `1.10.0`, so that the chat bot can run without admin access to GraphDB
 * [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `cognite-sdk` from `7.86.0` to `7.88.0`
 

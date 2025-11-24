@@ -1,4 +1,4 @@
-Next release
+1.3.0-rc1
 ============
 
 * [#256](https://github.com/statnett/Talk2PowerSystem_PM/issues/256): Update the queries for the ontologies and datasets information served from the `__about` endpoint

@@ -38,18 +38,22 @@ tools:
       PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>
       PREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>
       PREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>
-      SELECT ?question ?query {{
-          [] a retr-index:{connector_name} ;
-            retr:query "{query}" ;
-            retr:limit {limit} ;
-            retr:entities ?entity .
-          ?entity retr:score ?score;
-            qa:question ?question.
-          ?template qa:paraphrase ?entity;
-            qa:querySparql ?query.
-          FILTER (?score > {score})
+      SELECT (REPLACE(GROUP_CONCAT(?q; separator="@"), "(.*?)@.*", "$1") AS ?question) ?query {{
+          SELECT ?q ?query ?score {{
+              [] a retr-index:{connector_name} ;
+                  retr:query "{query}" ;
+                  retr:limit 100;
+                  retr:entities ?entity .
+              ?entity retr:score ?score;
+                  qa:question ?q.
+              ?template qa:paraphrase ?entity;
+                  qa:querySparql ?query.
+              FILTER (?score > {score})
+          }}
+          ORDER BY DESC(?score)
       }}
-      ORDER BY DESC(?score)
+      GROUP BY ?query
+      LIMIT {limit}
   cognite:
     base_url: https://statnett.cognitedata.com
     client_name: talk2powersystem
@@ -146,11 +150,11 @@ LIMIT {limit}
 - `tools.cognite.project` - OPTIONAL, DEFAULT=`prod` - Cognite Data Fusion project name.
 One of `dev1`, `dev2`, `dev3`, `test`, `prod` according to [CDF access from RNDP](https://github.com/statnett/Talk2PowerSystem_PM/wiki/CDF-access-from-RNDP).
 - `tools.cognite.client_name` - OPTIONAL, DEFAULT=`talk2powersystem` - Name of the client for logging purposes.
-- `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used (local run of Jupyter Notebook).
+- `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used (when you run on a dev machine the backend app with uvicorn or the Jupyter Notebook).
   Otherwise, `tools.cognite.token_file_path` or `tools.cognite.client_secret` must be provided.
 - `tools.cognite.tenant_id` - REQUIRED iff `tools.cognite.interactive_client_id` is present - Azure tenant ID. For example, `a8d61462-f252-44b2-bf6a-d7231960c041`.
-- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the cognite token file (run of Jupyter Notebook on RNDP). For example, `/var/run/secrets/microsoft.com/entra/cognite`.
-* `tools.cognite.client_secret` - OPTIONAL - Client secret for the Cognite confidential application (running from the backend app).
+- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the cognite token file (used when you run the Jupyter Notebook on RNDP). For example, `/var/run/secrets/microsoft.com/entra/cognite`.
+* `tools.cognite.client_secret` - OPTIONAL - Client secret for the Cognite confidential application (used for the backend app running on RNDP).
 
 ## `llm`
 

@@ -78,6 +78,10 @@ gtg_info: GoodToGoInfo = None
 about_info: AboutInfo = None
 # noinspection PyTypeChecker
 agent_factory: Talk2PowerSystemAgentFactory = None
+# noinspection PyTypeChecker
+confidential_app: msal.ConfidentialClientApplication = None
+# noinspection PyTypeChecker
+COGNITE_SCOPES: list[str] = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.logging_yaml_file)
 trouble_html = get_trouble_html()
@@ -87,6 +91,8 @@ trouble_html = get_trouble_html()
 async def lifespan(_: FastAPI):
     logging.info("Starting the application")
     global agent_factory
+    global confidential_app
+    global COGNITE_SCOPES
 
     redis_password = settings.redis.password
     redis_auth = ""
@@ -110,6 +116,18 @@ async def lifespan(_: FastAPI):
             settings.agent_config,
             checkpointer=memory_saver
         )
+        if settings.security.enabled and agent_factory.settings.tools.cognite:
+            if not agent_factory.settings.tools.cognite.client_secret:
+                raise ValueError(
+                    "Cognite client secret must be provided in order to register the Cognite tools, "
+                    "when the security is enabled."
+                )
+            confidential_app = msal.ConfidentialClientApplication(
+                settings.security.client_id,
+                authority=settings.security.authority,
+                client_credential=agent_factory.settings.tools.cognite.client_secret,
+            )
+            COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default", "offline_access"]
 
         GraphDBHealthchecker(agent_factory.graphdb_client)
 
@@ -399,36 +417,22 @@ async def get_auth_config(
     )
 
 
-if settings.security.enabled and agent_factory.settings.tools.cognite:
-    if not agent_factory.settings.tools.cognite.client_secret:
-        raise ValueError(
-            "Cognite client secret must be provided in order to register the Cognite tools, "
-            "when the security is enabled."
-        )
-    confidential_app = msal.ConfidentialClientApplication(
-        settings.security.client_id,
-        authority=settings.security.authority,
-        client_credential=agent_factory.settings.tools.cognite.client_secret,
+def exchange_obo_for_cognite(user_access_token: str) -> dict:
+    result = confidential_app.acquire_token_silent(COGNITE_SCOPES, account=None)
+    if result:
+        logging.debug("Cognite token acquired.")
+        return result["access_token"]
+
+    logging.debug("Acquiring token for Cognite using OBO.")
+    result = confidential_app.acquire_token_on_behalf_of(
+        user_assertion=user_access_token,
+        scopes=COGNITE_SCOPES,
     )
-    COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default", "offline_access"]
-
-
-    def exchange_obo_for_cognite(user_access_token: str) -> dict:
-        result = confidential_app.acquire_token_silent(COGNITE_SCOPES, account=None)
-        if result:
-            logging.debug("Cognite token acquired.")
-            return result["access_token"]
-
-        logging.debug("Acquiring token for Cognite using OBO.")
-        result = confidential_app.acquire_token_on_behalf_of(
-            user_assertion=user_access_token,
-            scopes=COGNITE_SCOPES,
-        )
-        if "access_token" not in result:
-            error_message = f"Failed to obtain OBO token for Cognite: {result}"
-            logging.error(error_message)
-            raise HTTPException(status_code=401, detail=error_message)
-        return result
+    if "access_token" not in result:
+        error_message = f"Failed to obtain OBO token for Cognite: {result}"
+        logging.error(error_message)
+        raise HTTPException(status_code=401, detail=error_message)
+    return result
 
 
 # noinspection PyUnusedLocal

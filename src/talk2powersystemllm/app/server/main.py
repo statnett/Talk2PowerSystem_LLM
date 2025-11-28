@@ -127,7 +127,7 @@ async def lifespan(_: FastAPI):
                 authority=settings.security.authority,
                 client_credential=agent_factory.settings.tools.cognite.client_secret,
             )
-            COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default", "offline_access"]
+            COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default"]
 
         GraphDBHealthchecker(agent_factory.graphdb_client)
 
@@ -410,6 +410,8 @@ async def get_auth_config(
     return AuthConfig(
         enabled=settings.security.enabled,
         clientId=settings.security.client_id,
+        frontendAppClientId=settings.security.frontend_app_client_id,
+        scopes=["openid", "profile", f"{settings.security.audience}/.default"],
         authority=settings.security.authority,
         logout=settings.security.logout,
         loginRedirect=settings.security.login_redirect,
@@ -474,7 +476,7 @@ async def conversations(
     claims=Depends(conditional_security),
 ) -> ChatResponse:
     cognite_obo_token = None
-    if settings.security.enabled and agent_factory.settings.tools.cognite.client_secret:
+    if settings.security.enabled and agent_factory.settings.tools.cognite and agent_factory.settings.tools.cognite.client_secret:
         token_result = exchange_obo_for_cognite(authorization)
         cognite_obo_token = token_result["access_token"]
 

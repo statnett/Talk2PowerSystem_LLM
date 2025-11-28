@@ -15,7 +15,7 @@ from .config import settings
 security_scheme = HTTPBearer(auto_error=False)
 
 
-def get_jwks_uri_and_issuer() -> tuple[str, str]:
+def get_jwks_uri() -> str:
     try:
         oid_config = requests.get(settings.security.oidc_discovery_url)
         oid_config.raise_for_status()
@@ -29,15 +29,13 @@ def get_jwks_uri_and_issuer() -> tuple[str, str]:
     json_response_body = oid_config.json()
     if "jwks_uri" not in json_response_body:
         raise HTTPException(status_code=500, detail="jwks_uri not found in the OpenID Configuration")
-    if "issuer" not in json_response_body:
-        raise HTTPException(status_code=500, detail="issuer not found in the OpenID Configuration")
 
-    return json_response_body["jwks_uri"], json_response_body["issuer"]
+    return json_response_body["jwks_uri"]
 
 
 @cached(cache=TTLCache(maxsize=1, ttl=settings.security.ttl))
-def get_jwks_keys_and_issuer() -> tuple[dict, str]:
-    jwks_uri, issuer = get_jwks_uri_and_issuer()
+def get_jwks_keys() -> dict:
+    jwks_uri = get_jwks_uri()
     try:
         keys = requests.get(jwks_uri)
         keys.raise_for_status()
@@ -47,17 +45,17 @@ def get_jwks_keys_and_issuer() -> tuple[dict, str]:
             exc_info=err
         )
         raise HTTPException(status_code=500, detail="Fail to get issuer keys")
-    return keys.json(), issuer
+    return keys.json()
 
 
 def verify_jwt(token: str):
-    jwks_keys, issuer = get_jwks_keys_and_issuer()
+    jwks_keys = get_jwks_keys()
     try:
         return jwt.decode(
             token,
             jwks_keys,
             audience=settings.security.audience,
-            issuer=issuer,
+            issuer=settings.security.issuer,
         )
     except ExpiredSignatureError as e:
         logging.warning("Expired Signature", exc_info=e)

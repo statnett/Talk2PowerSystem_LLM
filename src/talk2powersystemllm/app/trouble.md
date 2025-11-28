@@ -67,6 +67,17 @@ Response Body JSON Schema:
     "clientId": {
       "type": "string"
     },
+    "frontendAppClientId": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
     "authority": {
       "type": "string"
     },
@@ -91,11 +102,17 @@ Sample Response Body:
 ```json
 {
   "enabled": true,
-  "clientId": "6f8c5e30-b4b4-4b78-bdba-0ac5f5947fb6",
+  "clientId": "7b9f2087-68f1-45fe-a21d-023daedd4047",
+  "frontendAppClientId": "10acd638-f239-4aa2-8186-761512253325",
+  "scopes": [
+    "openid",
+    "profile",
+    "api://7b9f2087-68f1-45fe-a21d-023daedd4047/.default"
+  ],
   "authority": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875",
-  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/logout",
-  "loginRedirect": "http://localhost:3000",
-  "logoutRedirect": "http://localhost:3000/login"
+  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/v2.0/logout",
+  "loginRedirect": "http://localhost:3000/",
+  "logoutRedirect": "http://localhost:3000/"
 }
 ```
 

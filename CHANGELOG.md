@@ -1,3 +1,8 @@
+Next release
+============
+
+* [#278](https://github.com/statnett/Talk2PowerSystem_PM/issues/278): Update the version of `graphrag-eval` from `5.2.0` to `5.3.1`
+
 1.3.0-rc1
 ============
 

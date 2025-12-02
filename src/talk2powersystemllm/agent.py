@@ -3,11 +3,13 @@ from enum import Enum
 from pathlib import Path
 
 import yaml
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
 from langchain_core.language_models import BaseChatModel
 from langchain_core.tools import BaseTool
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
-from langgraph.prebuilt import create_react_agent
 from langgraph.types import Checkpointer
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings
@@ -211,6 +213,19 @@ def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
         )
 
 
+@wrap_tool_call
+def handle_tool_errors(request, handler):
+    """Handle tool execution errors with custom messages."""
+    try:
+        return handler(request)
+    except Exception as e:
+        # Return a custom error message to the model
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({str(e)})",
+            tool_call_id=request.tool_call["id"]
+        )
+
+
 class Talk2PowerSystemAgent:
     agent: CompiledStateGraph
     graphdb_client: GraphDB
@@ -276,9 +291,10 @@ class Talk2PowerSystemAgent:
         )
 
         self.model = init_llm(self.settings.llm)
-        self.agent = create_react_agent(
+        self.agent = create_agent(
             model=self.model,
             tools=self.tools,
-            prompt=instructions,
+            system_prompt=instructions,
             checkpointer=checkpointer,
+            middleware=[handle_tool_errors],
         )

@@ -2,7 +2,8 @@ import datetime
 from typing import Type
 
 from cognite.client.data_classes.datapoints import Aggregate, DatapointsArray, DatapointsArrayList
-from cognite.client.exceptions import CogniteNotFoundError
+from langchain_core.callbacks import CallbackManagerForToolRun
+from langchain_core.tools import ToolException
 from pydantic import BaseModel, Field
 from ttyg.utils import timeit
 
@@ -115,17 +116,18 @@ class RetrieveDataPointsTool(BaseCogniteTool):
 
     @timeit
     def _run(
-            self,
-            external_id: str | list[str],
-            limit: int | None = None,
-            start: str | None = None,
-            end: str | None = None,
-            aggregates: Aggregate | list[Aggregate] | None = None,
-            granularity: str | None = None,
+        self,
+        external_id: str | list[str],
+        limit: int | None = None,
+        start: str | None = None,
+        end: str | None = None,
+        aggregates: Aggregate | list[Aggregate] | None = None,
+        granularity: str | None = None,
+        run_manager: CallbackManagerForToolRun | None = None,
     ) -> DatapointsArray | DatapointsArrayList | None:
-        start = self._try_to_parse_as_iso_format(start)
-        end = self._try_to_parse_as_iso_format(end)
         try:
+            start = self._try_to_parse_as_iso_format(start)
+            end = self._try_to_parse_as_iso_format(end)
             return self.cognite_session.client().time_series.data.retrieve_arrays(
                 external_id=external_id,
                 limit=limit,
@@ -134,8 +136,8 @@ class RetrieveDataPointsTool(BaseCogniteTool):
                 aggregates=aggregates,
                 granularity=granularity,
             )
-        except CogniteNotFoundError as e:
-            raise ValueError(str(e))
+        except Exception as e:
+            raise ToolException(str(e))
 
     @staticmethod
     def _try_to_parse_as_iso_format(datetime_string: str | None) -> str | datetime.datetime | None:

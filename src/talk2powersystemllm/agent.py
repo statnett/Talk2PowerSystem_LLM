@@ -4,8 +4,6 @@ from pathlib import Path
 
 import yaml
 from langchain.agents import create_agent
-from langchain.agents.middleware import wrap_tool_call
-from langchain.messages import ToolMessage
 from langchain_core.language_models import BaseChatModel
 from langchain_core.tools import BaseTool
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
@@ -213,19 +211,6 @@ def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
         )
 
 
-@wrap_tool_call
-def handle_tool_errors(request, handler):
-    """Handle tool execution errors with custom messages."""
-    try:
-        return handler(request)
-    except Exception as e:
-        # Return a custom error message to the model
-        return ToolMessage(
-            content=f"Tool error: Please check your input and try again. ({str(e)})",
-            tool_call_id=request.tool_call["id"]
-        )
-
-
 class Talk2PowerSystemAgent:
     agent: CompiledStateGraph
     graphdb_client: GraphDB
@@ -296,5 +281,4 @@ class Talk2PowerSystemAgent:
             tools=self.tools,
             system_prompt=instructions,
             checkpointer=checkpointer,
-            middleware=[handle_tool_errors],
         )

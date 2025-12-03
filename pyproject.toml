@@ -1,6 +1,6 @@
 [project]
 name = "Talk2PowerSystemLLM"
-version = "1.3.1-dev0"
+version = "1.4.0-rc1"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
@@ -22,6 +22,7 @@ dependencies = [
     "toml==0.10.2",
     "markdown==3.10",
     "python-jose[cryptography] (==3.5.0)",
+    "msal==1.34.0",
     "cachetools==6.2.2",
     "importlib_resources==6.5.2",
 ]

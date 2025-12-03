@@ -3,11 +3,11 @@ from enum import Enum
 from pathlib import Path
 
 import yaml
+from langchain.agents import create_agent
 from langchain_core.language_models import BaseChatModel
 from langchain_core.tools import BaseTool
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
-from langgraph.prebuilt import create_react_agent
 from langgraph.types import Checkpointer
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings
@@ -276,9 +276,9 @@ class Talk2PowerSystemAgent:
         )
 
         self.model = init_llm(self.settings.llm)
-        self.agent = create_react_agent(
+        self.agent = create_agent(
             model=self.model,
             tools=self.tools,
-            prompt=instructions,
+            system_prompt=instructions,
             checkpointer=checkpointer,
         )

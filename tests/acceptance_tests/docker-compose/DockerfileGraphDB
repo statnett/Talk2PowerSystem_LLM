@@ -1,4 +1,4 @@
-FROM ontotext/graphdb:10.8.8
+FROM ontotext/graphdb:10.8.11
 RUN mkdir -p /opt/graphdb/dist/data/repositories/cim
 COPY tests/acceptance_tests/docker-compose/config.ttl /opt/graphdb/dist/data/repositories/cim/
 COPY tests/acceptance_tests/docker-compose/run.sh /run.sh

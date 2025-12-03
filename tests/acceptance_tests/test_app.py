@@ -502,7 +502,7 @@ LIMIT {limit}
                     ]
                 },
                 {
-                    "content": "Error: ValueError('The following prefixes are undefined: cim')\n Please fix your mistakes.",
+                    "content": "The following prefixes are undefined: cim",
                     "role": "tool",
                     "tool_call_id": "sparql_query_call_1"
                 }
@@ -564,7 +564,7 @@ LIMIT {limit}
                         "args": {
                             "query": "SELECT * { ?substation a cim:Substation }"
                         },
-                        "errorOutput": "Error: ValueError('The following prefixes are undefined: cim')\n Please fix your mistakes."
+                        "errorOutput": "The following prefixes are undefined: cim"
                     }
                 ]
             },

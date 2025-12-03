@@ -4,6 +4,7 @@ from unittest.mock import MagicMock
 import pytest
 from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client.testing import monkeypatch_cognite_client
+from langchain_core.tools import ToolException
 
 from talk2powersystemllm.tools import RetrieveDataPointsTool, CogniteSession
 
@@ -59,7 +60,7 @@ def test_external_id_doesnt_exist() -> None:
         mock_session.client.return_value = c_mock
 
         tool = RetrieveDataPointsTool(cognite_session=mock_session)
-        with pytest.raises(ValueError) as exc:
+        with pytest.raises(ToolException) as exc:
             tool._run(
                 external_id="external_id",
             )

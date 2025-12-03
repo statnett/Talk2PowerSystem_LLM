@@ -90,3 +90,4 @@ class BaseCogniteTool(BaseTool, metaclass=ABCMeta):
 
     cognite_session: CogniteSession
     """The Cognite Session"""
+    handle_tool_error: bool = True

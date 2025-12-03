@@ -1,6 +1,8 @@
 from typing import Type
 
 from cognite.client.data_classes import filters
+from langchain_core.callbacks import CallbackManagerForToolRun
+from langchain_core.tools import ToolException
 from pydantic import BaseModel, Field
 from ttyg.utils import timeit
 
@@ -39,22 +41,26 @@ class RetrieveTimeSeriesTool(BaseCogniteTool):
 
     @timeit
     def _run(
-            self,
-            limit: int | None = 25,
-            mrid: str | list[str] | None = None,
+        self,
+        limit: int | None = 25,
+        mrid: str | list[str] | None = None,
+        run_manager: CallbackManagerForToolRun | None = None,
     ) -> str:
-        advanced_filter = None
-        if mrid is not None:
-            if isinstance(mrid, str):
-                advanced_filter = filters.Equals(["metadata", "mrid"], mrid)
-            else:
-                for idx, item in enumerate(mrid):
-                    if idx == 0:
-                        advanced_filter = filters.Equals(["metadata", "mrid"], item)
-                    else:
-                        advanced_filter = advanced_filter | filters.Equals(["metadata", "mrid"], item)
+        try:
+            advanced_filter = None
+            if mrid is not None:
+                if isinstance(mrid, str):
+                    advanced_filter = filters.Equals(["metadata", "mrid"], mrid)
+                else:
+                    for idx, item in enumerate(mrid):
+                        if idx == 0:
+                            advanced_filter = filters.Equals(["metadata", "mrid"], item)
+                        else:
+                            advanced_filter = advanced_filter | filters.Equals(["metadata", "mrid"], item)
 
-        return self.cognite_session.client().time_series.list(
-            limit=limit,
-            advanced_filter=advanced_filter
-        )
+            return self.cognite_session.client().time_series.list(
+                limit=limit,
+                advanced_filter=advanced_filter
+            )
+        except Exception as e:
+            raise ToolException(str(e))

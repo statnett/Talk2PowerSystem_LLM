@@ -492,7 +492,7 @@ async def conversations(
     else:
         conversation_id = "thread_" + str(uuid.uuid4())
 
-    logging.info(f"Adding message \"{request.question}\" to conversation with id {conversation_id}")
+    logging.info(f"Conversation {conversation_id}: Input \"{request.question}\"")
     runnable_config = RunnableConfig(configurable={"thread_id": conversation_id})
     input_ = {"messages": [{"role": "user", "content": request.question}]}
 
@@ -502,10 +502,10 @@ async def conversations(
     messages = []
 
     # noinspection PyTypeChecker
-    async for message in agent.astream(input_, runnable_config, stream_mode="updates"):
-        logging.debug(f"Received message {message}")
-        if "agent" in message:
-            for ai_message in message["agent"]["messages"]:
+    async for output in agent.astream(input_, runnable_config, stream_mode="updates"):
+        logging.info(f"Conversation {conversation_id}: Output {output}")
+        if "model" in output and "messages" in output["model"]:
+            for ai_message in output["model"]["messages"]:
                 usage_metadata = ai_message.usage_metadata
                 input_tokens, output_tokens, total_tokens = usage_metadata["input_tokens"], usage_metadata[
                     "output_tokens"], usage_metadata["total_tokens"]
@@ -522,8 +522,8 @@ async def conversations(
                         ),
                     )
 
-    logging.debug(
-        f"Elapsed time: {time.time() - start:.2f} seconds"
+    logging.info(
+        f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"
     )
 
     return ChatResponse(

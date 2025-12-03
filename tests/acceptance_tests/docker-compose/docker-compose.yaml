@@ -38,6 +38,7 @@ services:
     environment:
       - AGENT_CONFIG=/code/config/agent.yaml
       - LLM_API_KEY=FAKE_API_KEY
+      - DIAGRAMS_PATH=/app/diagrams
       - REDIS_HOST=redis
       - REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
     ports:
@@ -45,6 +46,7 @@ services:
     volumes:
       - ./logs:/code/logs
       - ./agent.yaml:/code/config/agent.yaml
+      - ./diagrams:/app/diagrams:ro
     healthcheck:
       test: [ "CMD", "python3", "-c", "import sys,urllib.request; sys.exit(0) if urllib.request.urlopen('http://localhost:8000/__gtg').status == 200 else sys.exit(1)" ]
       interval: 30s

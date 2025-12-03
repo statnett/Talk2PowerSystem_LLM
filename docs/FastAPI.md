@@ -6,6 +6,8 @@
 
 * `AGENT_CONFIG` - REQUIRED - Path to the agent configuration file in yaml format.
   Check [the agent configurations here](./AgentConfig.md).
+* `DIAGRAMS_PATH` - REQUIRED - Path to the static diagrams. 
+Should point to a copy of [this folder](https://github.com/statnett/Talk2PowerSystem/tree/main/diagram/svg).
 
 ### Redis
 
@@ -94,6 +96,7 @@ but you will need to create a `.env` file with sample content
 
 ```
 MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
+DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/tests/acceptance_tests/docker-compose/diagrams
 LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev+retrieval.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
@@ -150,9 +153,11 @@ which uses the chat bot config file ["dev+retrieval.yaml"](../config/dev+retriev
 Create a file `webapp.env` with content
 ```
 AGENT_CONFIG=/code/config/dev+retrieval.yaml
+DIAGRAMS_PATH=/app/diagrams
 LLM_API_KEY=<API_KEY_FROM_KEEPER>
 REDIS_HOST=redis
 REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
+WEB_CONCURRENCY=10
 ```
 You must replace <API_KEY_FROM_KEEPER> with the corresponding secret from Keeper.
 

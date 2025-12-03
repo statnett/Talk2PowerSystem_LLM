@@ -64,6 +64,23 @@ TOOLS = [
     {
         "type": "function",
         "function": {
+            "name": "display_graphics",
+            "description": "Returns the diagram specified by the IRI",
+            "parameters": {
+                "properties": {
+                    "iri": {
+                        "description": "The IRI of the diagram",
+                        "type": "string"
+                    }
+                },
+                "required": ["iri"],
+                "type": "object"
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "now",
             "description": "Returns the user's current date time in yyyy-mm-ddTHH:MM:SS±hhmm format (ISO 8601). Do not reuse responses.",
             "parameters": {
@@ -91,12 +108,12 @@ def mock_openai_reset() -> None:
 
 
 def mock_openai(
-        n_times: int,
-        request_messages: list,
-        response_prompt_tokens: int,
-        response_completion_tokens: int,
-        response_content: str | None = None,
-        response_tool_calls: list | None = None,
+    n_times: int,
+    request_messages: list,
+    response_prompt_tokens: int,
+    response_completion_tokens: int,
+    response_content: str | None = None,
+    response_tool_calls: list | None = None,
 ) -> None:
     MOCK_OPENAI_CLIENT.expect(
         request=openai_request(
@@ -137,10 +154,10 @@ def openai_request(request_messages: list) -> dict:
 
 
 def openai_response(
-        prompt_tokens: int,
-        completion_tokens: int,
-        content: str | None = None,
-        tool_calls: list | None = None,
+    prompt_tokens: int,
+    completion_tokens: int,
+    content: str | None = None,
+    tool_calls: list | None = None,
 ) -> dict:
     finish_reason = "stop"
     message: dict = {

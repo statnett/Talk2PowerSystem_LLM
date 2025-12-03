@@ -1,6 +1,9 @@
 Next release
 ============
 
+* [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Display svg diagrams
+* [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Show the accumulated tokens for the individual messages
+* [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Update the version of `ttyg` from `2.1.0` to `3.0.0`
 * [#278](https://github.com/statnett/Talk2PowerSystem_PM/issues/278): Update the version of `graphrag-eval` from `5.2.0` to `5.3.1`
 
 1.3.0-rc1

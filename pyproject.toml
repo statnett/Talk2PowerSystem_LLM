@@ -7,7 +7,7 @@ readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==2.1.0",
+    "ttyg==3.0.0",
     "graphrag-eval==5.3.1",
     "jupyter==1.1.1",
     "langchain-openai==1.1.0",

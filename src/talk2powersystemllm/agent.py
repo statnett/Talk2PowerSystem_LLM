@@ -23,6 +23,7 @@ from talk2powersystemllm.tools import (
     CogniteSession,
     RetrieveDataPointsTool,
     RetrieveTimeSeriesTool,
+    GraphicsTool,
     NowTool,
 )
 
@@ -58,6 +59,10 @@ class AutocompleteSearchSettings(BaseModel):
     sparql_query_template: str | None = None
 
 
+class DisplayGraphicsSettings(BaseModel):
+    sparql_query_template: str
+
+
 class RetrievalSearchSettings(BaseModel):
     graphdb: GraphDBSettings
     connector_name: str
@@ -91,6 +96,7 @@ class CogniteSettings(BaseModel):
 class ToolsSettings(BaseModel):
     ontology_schema: OntologySchemaSettings
     autocomplete_search: AutocompleteSearchSettings
+    display_graphics: DisplayGraphicsSettings | None = None
     retrieval_search: RetrievalSearchSettings | None = None
     cognite: CogniteSettings | None = None
 
@@ -251,6 +257,7 @@ class Talk2PowerSystemAgent:
             **autocomplete_search_kwargs,
         )
         self.tools.append(autocomplete_search_tool)
+        self.tools.append(GraphicsTool(graph=self.graphdb_client))
 
         if tools_settings.retrieval_search:
             retrieval_search_settings = tools_settings.retrieval_search

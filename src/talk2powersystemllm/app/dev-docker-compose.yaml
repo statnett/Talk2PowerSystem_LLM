@@ -25,6 +25,8 @@ services:
     depends_on:
       redis:
         condition: service_started
+    volumes:
+      - ../../../tests/acceptance_tests/docker-compose/diagrams:/app/diagrams:ro
 
 volumes:
 

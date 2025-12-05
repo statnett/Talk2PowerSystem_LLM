@@ -4202,14 +4202,14 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "2.1.0"
+version = "3.0.0"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-2.1.0-py3-none-any.whl", hash = "sha256:47513ac3270375d1548d5c7d2149a0589d912d8bfae83194647d0acc00b6e622"},
-    {file = "ttyg-2.1.0.tar.gz", hash = "sha256:1daec6deaaf12e80ade41eb22c3864f68230e30a381ea30515841d391a77f76d"},
+    {file = "ttyg-3.0.0-py3-none-any.whl", hash = "sha256:af0eda1a8195c389a34d4ecf116966411e611e01cf4067a34e21bb5253ea4cc4"},
+    {file = "ttyg-3.0.0.tar.gz", hash = "sha256:47088a5afb56a6ec188889f4f8542ddeab4791a5bab47be95713fa1ab1996071"},
 ]
 
 [package.dependencies]
@@ -4929,4 +4929,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "8bed9c9181476a2f05a85c5b3036a7170860042fff937d0f0f47b924b719893a"
+content-hash = "0b19cbebabeae17f0f22915bddee2588cb7fa2f838448263a65d969fa19661f0"

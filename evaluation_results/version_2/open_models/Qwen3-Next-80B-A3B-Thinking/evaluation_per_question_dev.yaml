@@ -8902,6 +8902,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - powersystemresource
+      matches: call_heanhsdbqhrh2963q8ftqg0t
   status: success
   actual_steps:
   - name: sparql_query
@@ -8943,7 +8944,7 @@
       results\": {\n    \"bindings\": [\n      {\n        \"name\": {\n          \"\
       type\": \"literal\",\n          \"value\": \"ENGENE VT3\"\n        }\n     \
       \ }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 359706
   output_tokens: 6241
   total_tokens: 365947
@@ -12464,6 +12465,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: call_o7wa442217cnqeh9rao6ahqr
   status: success
   actual_steps:
   - name: sparql_query
@@ -12526,7 +12528,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"300\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 444233
   output_tokens: 4274
   total_tokens: 448507
@@ -20779,6 +20781,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: call_427albz9j964x35y9kpnz3nt
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -20877,7 +20880,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"300\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 269210
   output_tokens: 4188
   total_tokens: 273398

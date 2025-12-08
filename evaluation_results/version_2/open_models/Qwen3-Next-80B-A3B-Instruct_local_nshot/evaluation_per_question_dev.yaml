@@ -4385,6 +4385,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_76309a54b335f4f77419fc7fe165828e
   question_id: question_30de2cdc73d2f35a9a068c27deca013a
@@ -4890,6 +4892,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_ff474dc65baff0a11c03ffd8f64fd7cb
   question_id: question_17f44477629b5b50ddf797cbe7f79b5e
@@ -5392,6 +5396,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_a046cf93fa575aa42af2e7ffb09fba1b
   question_id: question_94e6c3353c518a33f7f685d10cc163a3
@@ -6892,6 +6898,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - stagetrigger
+      matches: chatcmpl-tool-41a1d011196d409bb91a7bfe8536a9aa
   status: success
   actual_steps:
   - name: sparql_query
@@ -6923,7 +6930,7 @@
       results\": {\n    \"bindings\": [\n      {\n        \"gate\": {\n          \"\
       type\": \"uri\",\n          \"value\": \"urn:uuid:1238f3dd-6c26-488b-9067-d885d80903ba\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 262387
   output_tokens: 541
   total_tokens: 262928
@@ -6961,6 +6968,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - stagetrigger
+      matches: chatcmpl-tool-7c2d4458ba3e43b097b9d2bc71c80888
   status: success
   actual_steps:
   - name: sparql_query
@@ -7000,7 +7008,7 @@
       results\": {\n    \"bindings\": [\n      {\n        \"stage\": {\n         \
       \ \"type\": \"uri\",\n          \"value\": \"urn:uuid:cdb8c7f6-28ff-4cec-ba1b-0992ec445e2f\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 349477
   output_tokens: 496
   total_tokens: 349973
@@ -8155,6 +8163,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - equivalentinjection
+      matches: chatcmpl-tool-a65f8f5529764c0da3a986a8bb0ee6c2
   status: success
   actual_steps:
   - name: sparql_query
@@ -8201,7 +8210,7 @@
       \  \"results\": {\n    \"bindings\": [\n      {\n        \"terminal\": {\n \
       \         \"type\": \"uri\",\n          \"value\": \"urn:uuid:e190ae57-ed18-f340-90c2-ddbbfe168ed8\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 262923
   output_tokens: 561
   total_tokens: 263484
@@ -8609,6 +8618,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_0e58a15d35560f390d8b530d3d5f21f0
   question_id: question_069561dbb399f6f7f77876b1ad86691f
@@ -8648,6 +8659,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_d793a7af0d3dc195095c7bd870003eb9
   question_id: question_c2f6befac342c17e6c0213765c7c3f9f
@@ -11884,6 +11897,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_bb5ba6e5dc93d86eb8097f2050eee8b4
   question_id: question_0044ff15e4bc94ede6c69de8f694667c
@@ -12541,6 +12556,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_0e6302c814316f3423ce3a14c2af971c
   question_id: question_f068149fae0f7c857e0f5135c644f5bb
@@ -12574,6 +12591,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-bea1af8c816540adac591f7d0cf0ca12
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -12618,7 +12636,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"300\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 349748
   output_tokens: 644
   total_tokens: 350392
@@ -13883,7 +13901,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - connectivitynode
-      matches: chatcmpl-tool-089b792ef68d4a0b81f348222e6c1f45
+      matches: chatcmpl-tool-890fdd06a9e140af97a393681a77b665
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -14292,6 +14310,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_062b43c5792b70f0703571f662fe4ac9
   question_id: question_6808266dd5c4694591b1905d3b387b25
@@ -18026,6 +18046,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-a4012e2d50454f129744ce6e81d88dc2
   status: success
   actual_steps:
   - name: sparql_query
@@ -18118,7 +18139,7 @@
     status: success
     output: "{\n  \"head\": {\n    \"vars\": [\n      \"voltageLevel\"\n    ]\n  },\n\
       \  \"results\": {\n    \"bindings\": []\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 705515
   output_tokens: 1617
   total_tokens: 707132
@@ -18166,6 +18187,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-eabe4586e7f2459693db7282a7464ad0
   status: success
   actual_steps:
   - name: sparql_query
@@ -18207,7 +18229,7 @@
     status: success
     output: "{\n  \"head\": {\n    \"vars\": [\n      \"voltageLevel\"\n    ]\n  },\n\
       \  \"results\": {\n    \"bindings\": []\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 263007
   output_tokens: 717
   total_tokens: 263724
@@ -18455,6 +18477,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-c7f00f6600904d3eb689679802c3150e
   status: success
   actual_steps:
   - name: sparql_query
@@ -18496,7 +18519,7 @@
       \     }\n      },\n      {\n        \"class\": {\n          \"type\": \"uri\"\
       ,\n          \"value\": \"https://cim.ucaiug.io/rules#EquipmentOrContainer\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 349930
   output_tokens: 898
   total_tokens: 350828
@@ -20131,6 +20154,8 @@
     increase the limit by setting the `recursion_limit` config key.
 
     For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/GRAPH_RECURSION_LIMIT'
+  actual_steps: []
+  steps_score: 0.0
   actual_answer: null
 - template_id: template_list_cd9b8d62ffcbd8bb6e7e2bf1f02c4970
   question_id: question_abf89122e481994d7c6e5c0177ca963d

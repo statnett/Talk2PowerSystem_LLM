@@ -722,6 +722,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - regulatingcontrol
+      matches: chatcmpl-tool-2436248aea07477eaf268682b756bc22
   status: success
   actual_steps:
   - name: sparql_query
@@ -914,7 +915,7 @@
       \  \"results\": {\n    \"bindings\": [\n      {\n        \"terminal\": {\n \
       \         \"type\": \"uri\",\n          \"value\": \"urn:uuid:2dd90171-bdfb-11e5-94fa-c8f73332c8f4\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 979409
   output_tokens: 2153
   total_tokens: 981562
@@ -1127,7 +1128,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - regulatingcontrol
-      matches: chatcmpl-tool-0c7dc142e22046ddbe97319da19da999
+      matches: chatcmpl-tool-36e264f6af64485ab3c45d1d638ba5a3
   status: success
   actual_steps:
   - name: sparql_query
@@ -1289,7 +1290,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - regulatingcontrol
-      matches: chatcmpl-tool-b2127ad93b7d40faa3d9fe3dd07b4f6e
+      matches: chatcmpl-tool-196f801888fc489088c16f4c436d3da8
   status: success
   actual_steps:
   - name: sparql_query
@@ -4618,7 +4619,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - identifiedobject
-      matches: chatcmpl-tool-e7d1192ce23e4e7aa44e275cd0819fc3
+      matches: chatcmpl-tool-4c03fc59f4a249fbaf41f189f4d8d1d4
   status: success
   actual_steps:
   - name: sparql_query
@@ -6062,6 +6063,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - identifiedobject
+      matches: chatcmpl-tool-c0debe416e8c4cbeb15b5b328068d21a
   status: success
   actual_steps:
   - name: sparql_query
@@ -6254,7 +6256,7 @@
       \n        },\n        \"mrid\": {\n          \"type\": \"literal\",\n      \
       \    \"value\": \"f1769c74-9aeb-11e5-91da-b8763fd99c5f\"\n        }\n      }\n\
       \    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 532733
   output_tokens: 2493
   total_tokens: 535226
@@ -7454,6 +7456,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - disconnector
+      matches: chatcmpl-tool-dcf887aa185444699c8ef117cc9b45b8
   status: success
   actual_steps:
   - name: sparql_query
@@ -7544,7 +7547,7 @@
       : \"urn:uuid:1ac100c3-7a71-4b22-b32c-47fd73c3d01a\"\n        },\n        \"\
       disconnectorName\": {\n          \"type\": \"literal\",\n          \"value\"\
       : \"FROLAND 132 EN1 AD_S\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 439096
   output_tokens: 944
   total_tokens: 440040
@@ -7814,7 +7817,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - disconnector
-      matches: chatcmpl-tool-c376f38154dc409ba4bb8aa831779efb
+      matches: chatcmpl-tool-a8f29f64b93a4e1888366bec138b2268
   status: success
   actual_steps:
   - name: sparql_query
@@ -7966,6 +7969,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - disconnector
+      matches: chatcmpl-tool-6578d125e0794385beb6291e76bf596f
   status: success
   actual_steps:
   - name: sparql_query
@@ -8131,7 +8135,7 @@
       : \"urn:uuid:a450fac1-80a9-cd4d-aa26-0223af980b17\"\n        },\n        \"\
       equipmentName\": {\n          \"type\": \"literal\",\n          \"value\": \"\
       ENGENE 132 T1 SD_S\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 1060559
   output_tokens: 2297
   total_tokens: 1062856
@@ -8184,7 +8188,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - disconnector
-      matches: chatcmpl-tool-6e5ef544ec0f47fa9de4b4eef6e93906
+      matches: chatcmpl-tool-893b687f1cd0442fbf16f97c86e1eace
   status: success
   actual_steps:
   - name: sparql_query
@@ -11688,6 +11692,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - overheadwireinfo
+      matches: chatcmpl-tool-40081891c74c4fe48769dd1608634bd3
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -11915,7 +11920,7 @@
       \        \"value\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#float\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"0.659\"\n      \
       \  }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 1071871
   output_tokens: 2950
   total_tokens: 1074821
@@ -12049,7 +12054,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - topologicalisland
-      matches: chatcmpl-tool-f43af2431bc84244909d56714d3c57b3
+      matches: chatcmpl-tool-ed58f0464c5b4d1792876033aa032f98
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -13965,6 +13970,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - stagetrigger
+      matches: chatcmpl-tool-7f6d46e1933646fdb7547ca8df86fcc6
   status: success
   actual_steps:
   - name: sparql_query
@@ -14102,7 +14108,7 @@
       \n        },\n        \"stageTriggerClass\": {\n          \"type\": \"uri\"\
       ,\n          \"value\": \"https://cim4.eu/ns/nc#StageTrigger\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 618545
   output_tokens: 1835
   total_tokens: 620380
@@ -14172,6 +14178,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - stagetrigger
+      matches: chatcmpl-tool-084f1e1159a7458ab3323763d4008afd
   status: success
   actual_steps:
   - name: sparql_query
@@ -14228,7 +14235,7 @@
       \n        },\n        \"stageName\": {\n          \"type\": \"literal\",\n \
       \         \"value\": \"S1 KRISTIAN300 VL\"\n        }\n      }\n    ]\n  }\n\
       }"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 437740
   output_tokens: 937
   total_tokens: 438677
@@ -14457,6 +14464,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - powersystemresource
+      matches: chatcmpl-tool-bb3f3f2694e94d6785a28b1afd4206e6
   status: success
   actual_steps:
   - name: sparql_query
@@ -14683,7 +14691,7 @@
       value\": \"https://cim.ucaiug.io/rules#EquipmentOrContainer\"\n        },\n\
       \        \"name\": {\n          \"type\": \"literal\",\n          \"value\"\
       : \"ENGENE VT1\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 981046
   output_tokens: 2909
   total_tokens: 983955
@@ -23644,7 +23652,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - breaker
-      matches: chatcmpl-tool-e904deee4db84da1907c3786d1c6112d
+      matches: chatcmpl-tool-476977d2bc334ff5b3696c711b62ea74
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -23922,7 +23930,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - breaker
-      matches: chatcmpl-tool-13a166f95f2a4cc5a18ea4bf521ab12f
+      matches: chatcmpl-tool-f5cf80932cff41c6b0e6bc404003df76
   status: success
   actual_steps:
   - name: sparql_query
@@ -24387,6 +24395,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-ead3e5b49e124a24a5c749e8b1cb9874
   status: success
   actual_steps:
   - name: sparql_query
@@ -24469,7 +24478,7 @@
       \      },\n      {\n        \"nominalVoltage\": {\n          \"datatype\": \"\
       http://www.w3.org/2001/XMLSchema#integer\",\n          \"type\": \"literal\"\
       ,\n          \"value\": \"300\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 527660
   output_tokens: 1572
   total_tokens: 529232
@@ -24513,6 +24522,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-c5d674c2b2d74ea39b77d5b4a448bf16
   status: success
   actual_steps:
   - name: sparql_query
@@ -24664,7 +24674,7 @@
       : {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\",\n\
       \          \"type\": \"literal\",\n          \"value\": \"420\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 618440
   output_tokens: 1286
   total_tokens: 619726
@@ -24707,7 +24717,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-2359f73ef7334366969d74d119e238ca
+      matches: chatcmpl-tool-3d1ca71631cd48cba9c049d3804b5f1b
   status: success
   actual_steps:
   - name: sparql_query
@@ -31639,6 +31649,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-156c170c0545446f866d03084443a52c
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -32043,7 +32054,7 @@
       : {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\",\n\
       \          \"type\": \"literal\",\n          \"value\": \"420\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 1007418
   output_tokens: 2161
   total_tokens: 1009579
@@ -32105,6 +32116,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-4acf3e9e1ada417eba4d0217d9fd6662
   status: success
   actual_steps:
   - name: sparql_query
@@ -32403,7 +32415,7 @@
       : {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\",\n\
       \          \"type\": \"literal\",\n          \"value\": \"132\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 899525
   output_tokens: 2350
   total_tokens: 901875
@@ -32450,6 +32462,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-ee05cd8725f045e7922ef15ccad9743c
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -32794,7 +32807,7 @@
       : {\n          \"type\": \"uri\",\n          \"value\": \"urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4\"\
       \n        },\n        \"baseVoltageName\": {\n          \"type\": \"literal\"\
       ,\n          \"value\": \"AC-420kV\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 640212
   output_tokens: 1142
   total_tokens: 641354
@@ -32843,6 +32856,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-eec6997aa584438db98c8e97735ece04
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -33198,7 +33212,7 @@
       \      },\n      {\n        \"baseVoltageValue\": {\n          \"datatype\"\
       : \"http://www.w3.org/2001/XMLSchema#integer\",\n          \"type\": \"literal\"\
       ,\n          \"value\": \"300\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 1006821
   output_tokens: 3361
   total_tokens: 1010182
@@ -33257,7 +33271,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-2656aaced1e541e6832ed0f29acfe59e
+      matches: chatcmpl-tool-a9ffd5c8aff746539b3f387225472594
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -33920,6 +33934,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - basevoltage
+      matches: chatcmpl-tool-fede6893b6ec4836ac11e6d4d0e165d1
   status: success
   actual_steps:
   - name: sparql_query
@@ -34205,7 +34220,7 @@
       \n        },\n        \"baseVoltageValue\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#double\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"4.0E-1\"\n     \
       \   }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 1082319
   output_tokens: 3310
   total_tokens: 1085629
@@ -35594,6 +35609,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - aclinesegment
+      matches: chatcmpl-tool-c7de0292bcaf4438abe403baa941b2f2
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -35850,7 +35866,7 @@
       \n        },\n        \"lineSegmentName\": {\n          \"type\": \"literal\"\
       ,\n          \"value\": \"420HJALTA-RINGHALS 1\"\n        }\n      }\n    ]\n\
       \  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 267872
   output_tokens: 732
   total_tokens: 268604
@@ -38696,6 +38712,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-03ec6c47644c4861af69bcedfdfd52b8
   status: success
   actual_steps:
   - name: sparql_query
@@ -38788,7 +38805,7 @@
       \n        },\n        \"class\": {\n          \"type\": \"uri\",\n         \
       \ \"value\": \"https://cim.ucaiug.io/ns#VoltageLevel\"\n        }\n      }\n\
       \    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 618507
   output_tokens: 1883
   total_tokens: 620390
@@ -38848,6 +38865,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-519bb3305e904701a6e5a810c93a759f
   status: success
   actual_steps:
   - name: sparql_query
@@ -38901,7 +38919,7 @@
     status: success
     output: "{\n  \"head\": {\n    \"vars\": [\n      \"voltageLevel\"\n    ]\n  },\n\
       \  \"results\": {\n    \"bindings\": []\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 351255
   output_tokens: 813
   total_tokens: 352068
@@ -39010,6 +39028,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-4ef9a3acd476454ba4b54324cf639a6b
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -39225,7 +39244,7 @@
       \n        }\n      },\n      {\n        \"voltageLevelName\": {\n          \"\
       type\": \"literal\",\n          \"value\": \"VYBORG  420\"\n        }\n    \
       \  }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 709445
   output_tokens: 2246
   total_tokens: 711691
@@ -39310,6 +39329,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - voltagelevel
+      matches: chatcmpl-tool-5b8d87d1dbbc4a0f9536de75284c5746
   status: success
   actual_steps:
   - name: sparql_query
@@ -39532,7 +39552,7 @@
       ,\n          \"value\": \"FROLAND 132 EN Ba1\"\n        },\n        \"containedEntityType\"\
       : {\n          \"type\": \"uri\",\n          \"value\": \"https://cim.ucaiug.io/rules#EquipmentOrContainer\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 355330
   output_tokens: 1010
   total_tokens: 356340
@@ -41468,6 +41488,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - bay
+      matches: chatcmpl-tool-278bfa3f2afe44bb83d3c562c4e2014d
   status: success
   actual_steps:
   - name: sparql_query
@@ -41752,7 +41773,7 @@
       \   \"value\": \"TELEMA2 04 Ba24\"\n        }\n      },\n      {\n        \"\
       bayName\": {\n          \"type\": \"literal\",\n          \"value\": \"NEDENES\
       \  04LC1\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 717892
   output_tokens: 1529
   total_tokens: 719421
@@ -42181,6 +42202,7 @@
       output_media_type: application/sparql-results+json
       required_columns:
       - subgeographicalregion
+      matches: chatcmpl-tool-f86722cac02c446bbab581296585b110
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -42305,7 +42327,7 @@
       : {\n          \"type\": \"uri\",\n          \"value\": \"urn:uuid:f17695af-9aeb-11e5-91da-b8763fd99c5f\"\
       \n        },\n        \"subregionName\": {\n          \"type\": \"literal\"\
       ,\n          \"value\": \"SE3 SGR\"\n        }\n      }\n    ]\n  }\n}"
-  steps_score: 0.0
+  steps_score: 1.0
   input_tokens: 265813
   output_tokens: 722
   total_tokens: 266535

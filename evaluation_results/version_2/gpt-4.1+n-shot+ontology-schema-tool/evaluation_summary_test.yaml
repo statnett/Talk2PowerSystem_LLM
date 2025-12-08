@@ -1,0 +1,2274 @@
+per_template:
+  template_list_20d9d345eeea0456390b124ac460eed2:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 417245
+      mean: 417245
+      median: 417245
+      min: 417245
+      max: 417245
+    output_tokens:
+      sum: 772
+      mean: 772
+      median: 772
+      min: 772
+      max: 772
+    total_tokens:
+      sum: 418017
+      mean: 418017
+      median: 418017
+      min: 418017
+      max: 418017
+    elapsed_sec:
+      sum: 106.82934856414795
+      mean: 106.82934856414795
+      median: 106.82934856414795
+      min: 106.82934856414795
+      max: 106.82934856414795
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 2
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 1
+  template_list_cacb4cbef32d7fa0124f98394d42ad18:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 416769
+      mean: 83353.8
+      median: 20325
+      min: 11770
+      max: 193381
+    output_tokens:
+      sum: 3872
+      mean: 774.4
+      median: 748
+      min: 433
+      max: 1191
+    total_tokens:
+      sum: 420641
+      mean: 84128.2
+      median: 21073
+      min: 12203
+      max: 194444
+    elapsed_sec:
+      sum: 89.65100145339966
+      mean: 17.93020029067993
+      median: 10.841371059417725
+      min: 6.844550132751465
+      max: 41.35685110092163
+    steps:
+      total:
+        sparql_query: 21
+        sample_sparql_queries: 3
+        autocomplete_search: 5
+        ontology_schema_and_vocabulary_tool: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 3
+        autocomplete_search: 2
+        ontology_schema_and_vocabulary_tool: 2
+      errors:
+        autocomplete_search: 3
+        sparql_query: 6
+      empty_results:
+        sparql_query: 1
+  template_list_45a0d577bf854c7c6a280774639e2767:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1130302
+      mean: 226060.4
+      median: 252963
+      min: 167977
+      max: 282314
+    output_tokens:
+      sum: 1582
+      mean: 316.4
+      median: 317
+      min: 255
+      max: 419
+    total_tokens:
+      sum: 1131884
+      mean: 226376.8
+      median: 253296
+      min: 168232
+      max: 282572
+    elapsed_sec:
+      sum: 261.83790159225464
+      mean: 52.367580318450926
+      median: 61.61099815368652
+      min: 23.420748710632324
+      max: 68.74906158447266
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 5
+        autocomplete_search: 1
+        sample_sparql_queries: 4
+        sparql_query: 9
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 5
+        autocomplete_search: 1
+        sample_sparql_queries: 4
+        sparql_query: 5
+  template_list_86c1970f752b1e76cb1b58868e4d7d27:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 249525
+      mean: 249525
+      median: 249525
+      min: 249525
+      max: 249525
+    output_tokens:
+      sum: 228
+      mean: 228
+      median: 228
+      min: 228
+      max: 228
+    total_tokens:
+      sum: 249753
+      mean: 249753
+      median: 249753
+      min: 249753
+      max: 249753
+    elapsed_sec:
+      sum: 56.179954051971436
+      mean: 56.179954051971436
+      median: 56.179954051971436
+      min: 56.179954051971436
+      max: 56.179954051971436
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_ae7fa865df5f3a27bd647ea6b4c5438a:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1564842
+      mean: 312968.4
+      median: 338107
+      min: 251502
+      max: 382691
+    output_tokens:
+      sum: 2896
+      mean: 579.2
+      median: 480
+      min: 335
+      max: 1077
+    total_tokens:
+      sum: 1567738
+      mean: 313547.6
+      median: 338709
+      min: 251904
+      max: 383768
+    elapsed_sec:
+      sum: 354.77236700057983
+      mean: 70.95447340011597
+      median: 72.3479425907135
+      min: 44.30280804634094
+      max: 88.67076063156128
+    steps:
+      total:
+        sparql_query: 14
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+      errors:
+        sparql_query: 4
+        sample_sparql_queries: 1
+  template_list_f3ac52c03739a895e4572be098bcab1a:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 346514
+      mean: 173257
+      median: 173257.0
+      min: 167943
+      max: 178571
+    output_tokens:
+      sum: 1006
+      mean: 503
+      median: 503.0
+      min: 359
+      max: 647
+    total_tokens:
+      sum: 347520
+      mean: 173760
+      median: 173760.0
+      min: 168302
+      max: 179218
+    elapsed_sec:
+      sum: 84.9312117099762
+      mean: 42.4656058549881
+      median: 42.4656058549881
+      min: 34.07300066947937
+      max: 50.858211040496826
+    steps:
+      total:
+        sparql_query: 4
+        sample_sparql_queries: 1
+        autocomplete_search: 1
+        ontology_schema_and_vocabulary_tool: 2
+      once_per_sample:
+        sparql_query: 2
+        sample_sparql_queries: 1
+        autocomplete_search: 1
+        ontology_schema_and_vocabulary_tool: 2
+      errors:
+        autocomplete_search: 1
+  template_list_9da2fc3ff270b270d7fa233f5207d4ea:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 333610
+      mean: 333610
+      median: 333610
+      min: 333610
+      max: 333610
+    output_tokens:
+      sum: 269
+      mean: 269
+      median: 269
+      min: 269
+      max: 269
+    total_tokens:
+      sum: 333879
+      mean: 333879
+      median: 333879
+      min: 333879
+      max: 333879
+    elapsed_sec:
+      sum: 85.84754824638367
+      mean: 85.84754824638367
+      median: 85.84754824638367
+      min: 85.84754824638367
+      max: 85.84754824638367
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_209250fe8453278270ceb1262b016c79:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 868897
+      mean: 173779.4
+      median: 255204
+      min: 4025
+      max: 337673
+    output_tokens:
+      sum: 2493
+      mean: 498.6
+      median: 479
+      min: 285
+      max: 669
+    total_tokens:
+      sum: 871390
+      mean: 174278
+      median: 255683
+      min: 4310
+      max: 338290
+    elapsed_sec:
+      sum: 220.1097695827484
+      mean: 44.021953916549684
+      median: 51.57972550392151
+      min: 4.187802314758301
+      max: 91.61709833145142
+    steps:
+      total:
+        sparql_query: 15
+        autocomplete_search: 1
+        sample_sparql_queries: 4
+        ontology_schema_and_vocabulary_tool: 3
+      once_per_sample:
+        sparql_query: 5
+        autocomplete_search: 1
+        sample_sparql_queries: 4
+        ontology_schema_and_vocabulary_tool: 3
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 2
+  template_list_80bdedf14b30446e714be7695895270f:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 878181
+      mean: 175636.2
+      median: 191755
+      min: 11132
+      max: 332059
+    output_tokens:
+      sum: 1311
+      mean: 262.2
+      median: 265
+      min: 230
+      max: 298
+    total_tokens:
+      sum: 879492
+      mean: 175898.4
+      median: 192053
+      min: 11410
+      max: 332299
+    elapsed_sec:
+      sum: 219.7975926399231
+      mean: 43.95951852798462
+      median: 53.41447067260742
+      min: 6.033965349197388
+      max: 88.41147136688232
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 3
+        autocomplete_search: 2
+        sample_sparql_queries: 5
+        sparql_query: 8
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 3
+        autocomplete_search: 2
+        sample_sparql_queries: 5
+        sparql_query: 5
+  template_list_33ffeb9f07c8f1315c0943abe2c8f557:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1276708
+      mean: 255341.6
+      median: 331032
+      min: 14984
+      max: 336913
+    output_tokens:
+      sum: 1858
+      mean: 371.6
+      median: 384
+      min: 231
+      max: 525
+    total_tokens:
+      sum: 1278566
+      mean: 255713.2
+      median: 331263
+      min: 15509
+      max: 337340
+    elapsed_sec:
+      sum: 311.5031065940857
+      mean: 62.300621318817136
+      median: 70.702791929245
+      min: 10.345000982284546
+      max: 89.34391975402832
+    steps:
+      total:
+        sparql_query: 14
+        sample_sparql_queries: 3
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 3
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 2
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 2
+  template_list_a05d77198050f9a012867fcfdb8153c1:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1260092
+      mean: 252018.4
+      median: 254051
+      min: 192640
+      max: 333569
+    output_tokens:
+      sum: 1684
+      mean: 336.8
+      median: 303
+      min: 242
+      max: 548
+    total_tokens:
+      sum: 1261776
+      mean: 252355.2
+      median: 254327
+      min: 192955
+      max: 333811
+    elapsed_sec:
+      sum: 264.6254312992096
+      mean: 52.92508625984192
+      median: 53.33353400230408
+      min: 36.81895565986633
+      max: 72.04153227806091
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 2
+  template_list_557a4456431794b43ca4d6afad3ddd3a:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 2.0
+      mean: 0.6666666666666666
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 369407
+      mean: 123135.66666666667
+      median: 167517
+      min: 10864
+      max: 191026
+    output_tokens:
+      sum: 793
+      mean: 264.3333333333333
+      median: 262
+      min: 226
+      max: 305
+    total_tokens:
+      sum: 370200
+      mean: 123400
+      median: 167743
+      min: 11169
+      max: 191288
+    elapsed_sec:
+      sum: 77.0533390045166
+      mean: 25.684446334838867
+      median: 22.07649827003479
+      min: 6.767167329788208
+      max: 48.2096734046936
+    steps:
+      total:
+        sparql_query: 6
+        sample_sparql_queries: 2
+        ontology_schema_and_vocabulary_tool: 2
+      once_per_sample:
+        sparql_query: 3
+        sample_sparql_queries: 2
+        ontology_schema_and_vocabulary_tool: 2
+      empty_results:
+        sparql_query: 2
+  template_list_84b31b30118c14fc7608765347d1964e:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 3.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 578002
+      mean: 192667.33333333334
+      median: 192714
+      min: 192507
+      max: 192781
+    output_tokens:
+      sum: 1250
+      mean: 416.6666666666667
+      median: 412
+      min: 395
+      max: 443
+    total_tokens:
+      sum: 579252
+      mean: 193084
+      median: 193109
+      min: 192919
+      max: 193224
+    elapsed_sec:
+      sum: 124.83122825622559
+      mean: 41.61040941874186
+      median: 43.194709062576294
+      min: 35.93286395072937
+      max: 45.70365524291992
+    steps:
+      total:
+        sparql_query: 6
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 3
+      once_per_sample:
+        sparql_query: 3
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 3
+  template_list_7ff5fec9ac5a3c68bc63ef44c8b1050a:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1571563
+      mean: 314312.6
+      median: 283881
+      min: 257112
+      max: 415251
+    output_tokens:
+      sum: 2322
+      mean: 464.4
+      median: 466
+      min: 362
+      max: 573
+    total_tokens:
+      sum: 1573885
+      mean: 314777
+      median: 284389
+      min: 257578
+      max: 415824
+    elapsed_sec:
+      sum: 374.1240394115448
+      mean: 74.82480788230896
+      median: 68.04793763160706
+      min: 55.67012023925781
+      max: 100.07504177093506
+    steps:
+      total:
+        sparql_query: 16
+        autocomplete_search: 6
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 2
+      once_per_sample:
+        sparql_query: 5
+        autocomplete_search: 3
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 2
+      errors:
+        autocomplete_search: 2
+      empty_results:
+        sparql_query: 2
+        autocomplete_search: 1
+  template_list_18bfb1249f7408c28b918c49fc94423c:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1178836
+      mean: 235767.2
+      median: 254660
+      min: 193062
+      max: 283138
+    output_tokens:
+      sum: 2187
+      mean: 437.4
+      median: 408
+      min: 382
+      max: 601
+    total_tokens:
+      sum: 1181023
+      mean: 236204.6
+      median: 255048
+      min: 193444
+      max: 283739
+    elapsed_sec:
+      sum: 265.02623438835144
+      mean: 53.00524687767029
+      median: 61.508737325668335
+      min: 34.5602707862854
+      max: 63.5386426448822
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 1
+  template_list_92d411495bf80b42d3fcfaec95d5df11:
+    number_of_error_samples: 0
+    number_of_success_samples: 4
+    steps_score:
+      sum: 2.0
+      mean: 0.5
+      median: 0.5
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 871909
+      mean: 217977.25
+      median: 182829.0
+      min: 168622
+      max: 337629
+    output_tokens:
+      sum: 2069
+      mean: 517.25
+      median: 503.0
+      min: 360
+      max: 703
+    total_tokens:
+      sum: 873978
+      mean: 218494.5
+      median: 183211.0
+      min: 169224
+      max: 338332
+    elapsed_sec:
+      sum: 192.1119363307953
+      mean: 48.02798408269882
+      median: 41.92199456691742
+      min: 28.045127391815186
+      max: 80.22281980514526
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 3
+        sample_sparql_queries: 2
+      once_per_sample:
+        sparql_query: 4
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 2
+        sample_sparql_queries: 2
+      empty_results:
+        sparql_query: 1
+      errors:
+        sparql_query: 1
+  template_list_66327e63be166716958d09015f3b5b87:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 428914
+      mean: 214457
+      median: 214457.0
+      min: 11852
+      max: 417062
+    output_tokens:
+      sum: 785
+      mean: 392.5
+      median: 392.5
+      min: 329
+      max: 456
+    total_tokens:
+      sum: 429699
+      mean: 214849.5
+      median: 214849.5
+      min: 12181
+      max: 417518
+    elapsed_sec:
+      sum: 99.38479733467102
+      mean: 49.69239866733551
+      median: 49.69239866733551
+      min: 7.273573637008667
+      max: 92.11122369766235
+    steps:
+      total:
+        sparql_query: 7
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+      once_per_sample:
+        sparql_query: 2
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+      errors:
+        sparql_query: 1
+  template_list_ea985984b05c3163f54e43b2da72e533:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 3.0
+      mean: 0.6
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1567838
+      mean: 313567.6
+      median: 331402
+      min: 191834
+      max: 374102
+    output_tokens:
+      sum: 1840
+      mean: 368
+      median: 355
+      min: 287
+      max: 497
+    total_tokens:
+      sum: 1569678
+      mean: 313935.6
+      median: 331740
+      min: 192189
+      max: 374457
+    elapsed_sec:
+      sum: 371.76268672943115
+      mean: 74.35253734588623
+      median: 82.47635626792908
+      min: 26.093201637268066
+      max: 97.51950407028198
+    steps:
+      total:
+        sparql_query: 18
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 1
+        autocomplete_search: 4
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 1
+        autocomplete_search: 4
+      empty_results:
+        sparql_query: 7
+      errors:
+        sparql_query: 1
+  template_list_eadc0539f32b9ab30301eb4097041931:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 970875
+      mean: 194175
+      median: 191313
+      min: 169350
+      max: 247136
+    output_tokens:
+      sum: 1225
+      mean: 245
+      median: 262
+      min: 176
+      max: 291
+    total_tokens:
+      sum: 972100
+      mean: 194420
+      median: 191575
+      min: 169575
+      max: 247312
+    elapsed_sec:
+      sum: 229.31709694862366
+      mean: 45.86341938972473
+      median: 42.87903165817261
+      min: 31.87348222732544
+      max: 67.38874983787537
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 5
+        autocomplete_search: 1
+        sparql_query: 9
+        sample_sparql_queries: 2
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 5
+        autocomplete_search: 1
+        sparql_query: 5
+        sample_sparql_queries: 2
+      empty_results:
+        sparql_query: 2
+  template_list_ad687b47b3b775ca57938bf228bba3e9:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 95036
+      mean: 95036
+      median: 95036
+      min: 95036
+      max: 95036
+    output_tokens:
+      sum: 217
+      mean: 217
+      median: 217
+      min: 217
+      max: 217
+    total_tokens:
+      sum: 95253
+      mean: 95253
+      median: 95253
+      min: 95253
+      max: 95253
+    elapsed_sec:
+      sum: 11.485928058624268
+      mean: 11.485928058624268
+      median: 11.485928058624268
+      min: 11.485928058624268
+      max: 11.485928058624268
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+  template_list_63e43f2b99b2fc822deec98df43d214c:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1329888
+      mean: 265977.6
+      median: 283490
+      min: 172168
+      max: 333145
+    output_tokens:
+      sum: 1638
+      mean: 327.6
+      median: 320
+      min: 257
+      max: 409
+    total_tokens:
+      sum: 1331526
+      mean: 266305.2
+      median: 283849
+      min: 172461
+      max: 333465
+    elapsed_sec:
+      sum: 309.86318159103394
+      mean: 61.97263631820679
+      median: 60.36180400848389
+      min: 54.12869477272034
+      max: 75.220712184906
+    steps:
+      total:
+        sparql_query: 13
+        autocomplete_search: 2
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 4
+      once_per_sample:
+        sparql_query: 5
+        autocomplete_search: 2
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 4
+      empty_results:
+        sparql_query: 2
+      errors:
+        sample_sparql_queries: 1
+  template_list_196bc2239e2bd22ad92a315b5d3e995f:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 248685
+      mean: 248685
+      median: 248685
+      min: 248685
+      max: 248685
+    output_tokens:
+      sum: 133
+      mean: 133
+      median: 133
+      min: 133
+      max: 133
+    total_tokens:
+      sum: 248818
+      mean: 248818
+      median: 248818
+      min: 248818
+      max: 248818
+    elapsed_sec:
+      sum: 57.92773079872131
+      mean: 57.92773079872131
+      median: 57.92773079872131
+      min: 57.92773079872131
+      max: 57.92773079872131
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_ebc823aab9cbb28c6bfb2622a4c05dfd:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1149432
+      mean: 229886.4
+      median: 191267
+      min: 10563
+      max: 586510
+    output_tokens:
+      sum: 1721
+      mean: 344.2
+      median: 327
+      min: 247
+      max: 482
+    total_tokens:
+      sum: 1151153
+      mean: 230230.6
+      median: 191625
+      min: 10870
+      max: 586992
+    elapsed_sec:
+      sum: 269.73899579048157
+      mean: 53.947799158096316
+      median: 37.35331058502197
+      min: 6.23677659034729
+      max: 148.79044246673584
+    steps:
+      total:
+        sparql_query: 9
+        sample_sparql_queries: 5
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 4
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 2
+      errors:
+        sample_sparql_queries: 1
+        autocomplete_search: 2
+  template_list_b8d3bd8177823730b64d9e2ebb0c4762:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 757129
+      mean: 151425.8
+      median: 192756
+      min: 12004
+      max: 285477
+    output_tokens:
+      sum: 1934
+      mean: 386.8
+      median: 411
+      min: 274
+      max: 479
+    total_tokens:
+      sum: 759063
+      mean: 151812.6
+      median: 193221
+      min: 12309
+      max: 285751
+    elapsed_sec:
+      sum: 169.04197597503662
+      mean: 33.80839519500732
+      median: 37.39541554450989
+      min: 6.861677169799805
+      max: 62.774574756622314
+    steps:
+      total:
+        sparql_query: 9
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+  template_list_5644d66efa65f76a9eec1d174bb5b774:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1349032
+      mean: 269806.4
+      median: 279354
+      min: 193196
+      max: 333333
+    output_tokens:
+      sum: 2131
+      mean: 426.2
+      median: 403
+      min: 298
+      max: 611
+    total_tokens:
+      sum: 1351163
+      mean: 270232.6
+      median: 279788
+      min: 193581
+      max: 333631
+    elapsed_sec:
+      sum: 310.75887751579285
+      mean: 62.15177550315857
+      median: 62.01555681228638
+      min: 47.191017627716064
+      max: 84.31859827041626
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 4
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 4
+        autocomplete_search: 2
+      errors:
+        sparql_query: 2
+  template_list_ae4169e5090bd25f6a6112dc592a7b9f:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 752266
+      mean: 376133
+      median: 376133.0
+      min: 251759
+      max: 500507
+    output_tokens:
+      sum: 1033
+      mean: 516.5
+      median: 516.5
+      min: 373
+      max: 660
+    total_tokens:
+      sum: 753299
+      mean: 376649.5
+      median: 376649.5
+      min: 252132
+      max: 501167
+    elapsed_sec:
+      sum: 180.61634850502014
+      mean: 90.30817425251007
+      median: 90.30817425251007
+      min: 61.50151968002319
+      max: 119.11482882499695
+    steps:
+      total:
+        sparql_query: 9
+        ontology_schema_and_vocabulary_tool: 2
+      once_per_sample:
+        sparql_query: 2
+        ontology_schema_and_vocabulary_tool: 2
+      empty_results:
+        sparql_query: 2
+  template_list_ddb5265d862b94860409990e71c918d8:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 165329
+      mean: 165329
+      median: 165329
+      min: 165329
+      max: 165329
+    output_tokens:
+      sum: 154
+      mean: 154
+      median: 154
+      min: 154
+      max: 154
+    total_tokens:
+      sum: 165483
+      mean: 165483
+      median: 165483
+      min: 165483
+      max: 165483
+    elapsed_sec:
+      sum: 45.73384189605713
+      mean: 45.73384189605713
+      median: 45.73384189605713
+      min: 45.73384189605713
+      max: 45.73384189605713
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sparql_query: 1
+  template_list_3b112d318cf82401c0b84e4e6fb2ce72:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 3532
+      mean: 3532
+      median: 3532
+      min: 3532
+      max: 3532
+    output_tokens:
+      sum: 117
+      mean: 117
+      median: 117
+      min: 117
+      max: 117
+    total_tokens:
+      sum: 3649
+      mean: 3649
+      median: 3649
+      min: 3649
+      max: 3649
+    elapsed_sec:
+      sum: 2.552617311477661
+      mean: 2.552617311477661
+      median: 2.552617311477661
+      min: 2.552617311477661
+      max: 2.552617311477661
+    steps:
+      total:
+        sparql_query: 1
+      once_per_sample:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 1
+  template_list_ae8ac10fc29ecde7ae2e1d96a5a378ab:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 869076
+      mean: 173815.2
+      median: 192233
+      min: 6418
+      max: 250914
+    output_tokens:
+      sum: 1253
+      mean: 250.6
+      median: 247
+      min: 208
+      max: 332
+    total_tokens:
+      sum: 870329
+      mean: 174065.8
+      median: 192565
+      min: 6630
+      max: 251161
+    elapsed_sec:
+      sum: 205.77476739883423
+      mean: 41.154953479766846
+      median: 52.49090337753296
+      min: 5.210939168930054
+      max: 62.079549074172974
+    steps:
+      total:
+        sparql_query: 11
+        ontology_schema_and_vocabulary_tool: 4
+        sample_sparql_queries: 2
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 4
+        sample_sparql_queries: 2
+      errors:
+        sample_sparql_queries: 1
+  template_list_9e0a8c428a52ef000282c413b03f2cb9:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1249391
+      mean: 249878.2
+      median: 249839
+      min: 166454
+      max: 333256
+    output_tokens:
+      sum: 1782
+      mean: 356.4
+      median: 339
+      min: 262
+      max: 488
+    total_tokens:
+      sum: 1251173
+      mean: 250234.6
+      median: 250178
+      min: 166716
+      max: 333744
+    elapsed_sec:
+      sum: 312.40978503227234
+      mean: 62.481957006454465
+      median: 62.420119762420654
+      min: 27.53118658065796
+      max: 98.1358540058136
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        sparql_query: 9
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        sparql_query: 5
+  template_list_9e2de67c2a5801cef4b16b3fd3abbabb:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 525124
+      mean: 262562
+      median: 262562.0
+      min: 193090
+      max: 332034
+    output_tokens:
+      sum: 782
+      mean: 391
+      median: 391.0
+      min: 299
+      max: 483
+    total_tokens:
+      sum: 525906
+      mean: 262953
+      median: 262953.0
+      min: 193573
+      max: 332333
+    elapsed_sec:
+      sum: 126.98598217964172
+      mean: 63.49299108982086
+      median: 63.49299108982086
+      min: 38.8817994594574
+      max: 88.10418272018433
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 2
+        autocomplete_search: 1
+        sample_sparql_queries: 2
+        sparql_query: 3
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 2
+        autocomplete_search: 1
+        sample_sparql_queries: 2
+        sparql_query: 2
+  template_list_c547feaba1f141d0b94fefdab1f35732:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 2.0
+      mean: 0.4
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1311022
+      mean: 262204.4
+      median: 254082
+      min: 192490
+      max: 416985
+    output_tokens:
+      sum: 2358
+      mean: 471.6
+      median: 448
+      min: 340
+      max: 641
+    total_tokens:
+      sum: 1313380
+      mean: 262676
+      median: 254487
+      min: 192830
+      max: 417626
+    elapsed_sec:
+      sum: 313.02500438690186
+      mean: 62.60500087738037
+      median: 62.31752014160156
+      min: 44.317131757736206
+      max: 97.31824517250061
+    steps:
+      total:
+        sparql_query: 12
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+      errors:
+        sample_sparql_queries: 1
+        sparql_query: 1
+      empty_results:
+        sparql_query: 3
+  template_list_51e4879e7b0b2f075ac6f0cb608a7f21:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 1.0
+      mean: 0.5
+      median: 0.5
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 500072
+      mean: 250036
+      median: 250036.0
+      min: 247303
+      max: 252769
+    output_tokens:
+      sum: 574
+      mean: 287
+      median: 287.0
+      min: 255
+      max: 319
+    total_tokens:
+      sum: 500646
+      mean: 250323
+      median: 250323.0
+      min: 247558
+      max: 253088
+    elapsed_sec:
+      sum: 125.55998826026917
+      mean: 62.77999413013458
+      median: 62.77999413013458
+      min: 62.71326518058777
+      max: 62.8467230796814
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 2
+        autocomplete_search: 1
+        sparql_query: 3
+        sample_sparql_queries: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 2
+        autocomplete_search: 1
+        sparql_query: 2
+        sample_sparql_queries: 1
+      empty_results:
+        sparql_query: 1
+  template_list_b393f77c3de86059026bc6fd9f19957b:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1123548
+      mean: 224709.6
+      median: 252781
+      min: 174270
+      max: 252956
+    output_tokens:
+      sum: 1693
+      mean: 338.6
+      median: 351
+      min: 306
+      max: 375
+    total_tokens:
+      sum: 1125241
+      mean: 225048.2
+      median: 253087
+      min: 174645
+      max: 253292
+    elapsed_sec:
+      sum: 274.2303502559662
+      mean: 54.84607005119324
+      median: 57.5566143989563
+      min: 33.770586013793945
+      max: 67.94587683677673
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+      empty_results:
+        sparql_query: 2
+  template_list_042d9f6cbc1dc6331fbc65d121dcfc57:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 3.0
+      mean: 0.6
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 831220
+      mean: 166244
+      median: 194707
+      min: 10255
+      max: 343399
+    output_tokens:
+      sum: 4966
+      mean: 993.2
+      median: 789
+      min: 753
+      max: 1741
+    total_tokens:
+      sum: 836186
+      mean: 167237.2
+      median: 195496
+      min: 11036
+      max: 345140
+    elapsed_sec:
+      sum: 199.2893989086151
+      mean: 39.85787978172302
+      median: 21.519472360610962
+      min: 6.004884243011475
+      max: 102.64345693588257
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 3
+        sparql_query: 8
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 3
+        sparql_query: 5
+      errors:
+        sparql_query: 1
+  template_list_82eba5daf09bf4bd09beed4c22ddba26:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1260532
+      mean: 252106.4
+      median: 253703
+      min: 169109
+      max: 333602
+    output_tokens:
+      sum: 1919
+      mean: 383.8
+      median: 366
+      min: 329
+      max: 463
+    total_tokens:
+      sum: 1262451
+      mean: 252490.2
+      median: 254121
+      min: 169475
+      max: 333945
+    elapsed_sec:
+      sum: 310.1544392108917
+      mean: 62.030887842178345
+      median: 62.4206109046936
+      min: 37.955769777297974
+      max: 80.85364437103271
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 4
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      empty_results:
+        sparql_query: 1
+  template_list_82ef500cde365a8a13b206aadd62f0b4:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 1.0
+      mean: 0.2
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1164444
+      mean: 232888.8
+      median: 192694
+      min: 192445
+      max: 332723
+    output_tokens:
+      sum: 1648
+      mean: 329.6
+      median: 330
+      min: 272
+      max: 368
+    total_tokens:
+      sum: 1166092
+      mean: 233218.4
+      median: 193062
+      min: 192793
+      max: 332995
+    elapsed_sec:
+      sum: 283.5493392944336
+      mean: 56.70986785888672
+      median: 52.60134935379028
+      min: 43.38900446891785
+      max: 81.15395402908325
+    steps:
+      total:
+        sparql_query: 9
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+  template_list_f479aa48b26c831afcb1948ca354aa26:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 165035
+      mean: 165035
+      median: 165035
+      min: 165035
+      max: 165035
+    output_tokens:
+      sum: 162
+      mean: 162
+      median: 162
+      min: 162
+      max: 162
+    total_tokens:
+      sum: 165197
+      mean: 165197
+      median: 165197
+      min: 165197
+      max: 165197
+    elapsed_sec:
+      sum: 32.391432762145996
+      mean: 32.391432762145996
+      median: 32.391432762145996
+      min: 32.391432762145996
+      max: 32.391432762145996
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sparql_query: 1
+  template_list_2a5bad8bc786a3abdd1f0e35876bdfbc:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 2074787
+      mean: 414957.4
+      median: 414610
+      min: 332734
+      max: 498282
+    output_tokens:
+      sum: 2254
+      mean: 450.8
+      median: 474
+      min: 344
+      max: 523
+    total_tokens:
+      sum: 2077041
+      mean: 415408.2
+      median: 415133
+      min: 333164
+      max: 498765
+    elapsed_sec:
+      sum: 502.4505341053009
+      mean: 100.49010682106018
+      median: 96.29563331604004
+      min: 90.34965014457703
+      max: 122.6034288406372
+    steps:
+      total:
+        sparql_query: 21
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 4
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        sample_sparql_queries: 4
+      empty_results:
+        sparql_query: 20
+      errors:
+        sparql_query: 1
+  template_list_78ab76fb7ce110800913f3800e7dd4c5:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 1.0
+      mean: 0.2
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 374297
+      mean: 74859.4
+      median: 12802
+      min: 3531
+      max: 332446
+    output_tokens:
+      sum: 1480
+      mean: 296
+      median: 330
+      min: 124
+      max: 365
+    total_tokens:
+      sum: 375777
+      mean: 75155.4
+      median: 13132
+      min: 3655
+      max: 332750
+    elapsed_sec:
+      sum: 123.50432586669922
+      mean: 24.700865173339842
+      median: 7.266886234283447
+      min: 2.8570752143859863
+      max: 98.85316848754883
+    steps:
+      total:
+        sparql_query: 8
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 4
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 4
+      empty_results:
+        sparql_query: 4
+  template_list_e8ebf7817c3e88bbba0424ba4a013f91:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 422849
+      mean: 211424.5
+      median: 211424.5
+      min: 168832
+      max: 254017
+    output_tokens:
+      sum: 570
+      mean: 285
+      median: 285.0
+      min: 269
+      max: 301
+    total_tokens:
+      sum: 423419
+      mean: 211709.5
+      median: 211709.5
+      min: 169101
+      max: 254318
+    elapsed_sec:
+      sum: 114.34310913085938
+      mean: 57.17155456542969
+      median: 57.17155456542969
+      min: 52.33581471443176
+      max: 62.00729441642761
+    steps:
+      total:
+        sparql_query: 4
+        ontology_schema_and_vocabulary_tool: 2
+        sample_sparql_queries: 1
+      once_per_sample:
+        sparql_query: 2
+        ontology_schema_and_vocabulary_tool: 2
+        sample_sparql_queries: 1
+  template_list_23797f59a43941077f3db083888fe61c:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 165028
+      mean: 165028
+      median: 165028
+      min: 165028
+      max: 165028
+    output_tokens:
+      sum: 137
+      mean: 137
+      median: 137
+      min: 137
+      max: 137
+    total_tokens:
+      sum: 165165
+      mean: 165165
+      median: 165165
+      min: 165165
+      max: 165165
+    elapsed_sec:
+      sum: 46.76552152633667
+      mean: 46.76552152633667
+      median: 46.76552152633667
+      min: 46.76552152633667
+      max: 46.76552152633667
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sparql_query: 1
+  template_list_c37c923e3a1acc46414b0b8369daec8d:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 1.0
+      mean: 0.2
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 720937
+      mean: 144187.4
+      median: 191859
+      min: 11436
+      max: 253071
+    output_tokens:
+      sum: 2492
+      mean: 498.4
+      median: 500
+      min: 368
+      max: 662
+    total_tokens:
+      sum: 723429
+      mean: 144685.8
+      median: 192359
+      min: 12098
+      max: 253515
+    elapsed_sec:
+      sum: 174.252103805542
+      mean: 34.850420761108396
+      median: 49.734699964523315
+      min: 8.59466290473938
+      max: 54.530410289764404
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 5
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 3
+        sample_sparql_queries: 5
+  template_list_51d8d4033ef4e102a213afde49b916d6:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 791588
+      mean: 158317.6
+      median: 168062
+      min: 11117
+      max: 252786
+    output_tokens:
+      sum: 1837
+      mean: 367.4
+      median: 361
+      min: 275
+      max: 472
+    total_tokens:
+      sum: 793425
+      mean: 158685
+      median: 168380
+      min: 11528
+      max: 253147
+    elapsed_sec:
+      sum: 185.95366024971008
+      mean: 37.190732049942014
+      median: 43.59514808654785
+      min: 9.4165620803833
+      max: 58.943012714385986
+    steps:
+      total:
+        sparql_query: 10
+        ontology_schema_and_vocabulary_tool: 4
+        sample_sparql_queries: 3
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 4
+        sample_sparql_queries: 3
+  template_list_990db3cc9afa18f0b1776c166bbfa4cb:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 1.0
+      mean: 0.2
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1335073
+      mean: 267014.6
+      median: 182528
+      min: 177549
+      max: 580357
+    output_tokens:
+      sum: 6036
+      mean: 1207.2
+      median: 1050
+      min: 431
+      max: 2244
+    total_tokens:
+      sum: 1341109
+      mean: 268221.8
+      median: 183578
+      min: 179362
+      max: 580788
+    elapsed_sec:
+      sum: 345.3439824581146
+      mean: 69.06879649162292
+      median: 58.840200901031494
+      min: 27.115406274795532
+      max: 143.78149318695068
+    steps:
+      total:
+        sparql_query: 12
+        ontology_schema_and_vocabulary_tool: 5
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 5
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+      empty_results:
+        sparql_query: 2
+  template_list_30b8c2d1adb5f4a91a4bc104cac5dfbe:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1262910
+      mean: 252582
+      median: 251356
+      min: 11917
+      max: 414473
+    output_tokens:
+      sum: 1636
+      mean: 327.2
+      median: 343
+      min: 249
+      max: 361
+    total_tokens:
+      sum: 1264546
+      mean: 252909.2
+      median: 251706
+      min: 12260
+      max: 414722
+    elapsed_sec:
+      sum: 311.1481201648712
+      mean: 62.22962403297424
+      median: 62.171725273132324
+      min: 6.5586326122283936
+      max: 108.66453170776367
+    steps:
+      total:
+        sparql_query: 15
+        ontology_schema_and_vocabulary_tool: 4
+        sample_sparql_queries: 1
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 4
+        sample_sparql_queries: 1
+        autocomplete_search: 1
+  template_list_55d4db1569415713bd9ac03b6b7e8dc0:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 332087
+      mean: 332087
+      median: 332087
+      min: 332087
+      max: 332087
+    output_tokens:
+      sum: 284
+      mean: 284
+      median: 284
+      min: 284
+      max: 284
+    total_tokens:
+      sum: 332371
+      mean: 332371
+      median: 332371
+      min: 332371
+      max: 332371
+    elapsed_sec:
+      sum: 93.52748203277588
+      mean: 93.52748203277588
+      median: 93.52748203277588
+      min: 93.52748203277588
+      max: 93.52748203277588
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_1b9b05fea75129b01e4b26a6c09e8b15:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1141022
+      mean: 228204.4
+      median: 253714
+      min: 9033
+      max: 371892
+    output_tokens:
+      sum: 1789
+      mean: 357.8
+      median: 354
+      min: 221
+      max: 516
+    total_tokens:
+      sum: 1142811
+      mean: 228562.2
+      median: 254047
+      min: 9254
+      max: 372408
+    elapsed_sec:
+      sum: 256.3328866958618
+      mean: 51.266577339172365
+      median: 56.78541684150696
+      min: 5.331852197647095
+      max: 90.76996111869812
+    steps:
+      total:
+        sparql_query: 13
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 1
+        sample_sparql_queries: 3
+      once_per_sample:
+        sparql_query: 5
+        ontology_schema_and_vocabulary_tool: 4
+        autocomplete_search: 1
+        sample_sparql_queries: 3
+      errors:
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_b1a263c30c3ca51ccf556e0b4a807801:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 1.0
+      mean: 0.5
+      median: 0.5
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 525689
+      mean: 262844.5
+      median: 262844.5
+      min: 192174
+      max: 333515
+    output_tokens:
+      sum: 600
+      mean: 300
+      median: 300.0
+      min: 256
+      max: 344
+    total_tokens:
+      sum: 526289
+      mean: 263144.5
+      median: 263144.5
+      min: 192518
+      max: 333771
+    elapsed_sec:
+      sum: 130.05590295791626
+      mean: 65.02795147895813
+      median: 65.02795147895813
+      min: 44.51089644432068
+      max: 85.54500651359558
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 2
+        autocomplete_search: 1
+        sample_sparql_queries: 2
+        sparql_query: 3
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 2
+        autocomplete_search: 1
+        sample_sparql_queries: 2
+        sparql_query: 2
+      empty_results:
+        sparql_query: 1
+  template_list_8cdcbec1ebe4f578c535b87e71df564e:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 249157
+      mean: 249157
+      median: 249157
+      min: 249157
+      max: 249157
+    output_tokens:
+      sum: 195
+      mean: 195
+      median: 195
+      min: 195
+      max: 195
+    total_tokens:
+      sum: 249352
+      mean: 249352
+      median: 249352
+      min: 249352
+      max: 249352
+    elapsed_sec:
+      sum: 61.9339702129364
+      mean: 61.9339702129364
+      median: 61.9339702129364
+      min: 61.9339702129364
+      max: 61.9339702129364
+    steps:
+      total:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        ontology_schema_and_vocabulary_tool: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+micro:
+  number_of_error_samples: 0
+  number_of_success_samples: 180
+  steps_score:
+    sum: 131.0
+    mean: 0.7277777777777777
+    median: 1.0
+    min: 0.0
+    max: 1.0
+  input_tokens:
+    sum: 40525246
+    mean: 225140.25555555554
+    median: 249811.0
+    min: 3531
+    max: 586510
+  output_tokens:
+    sum: 75967
+    mean: 422.0388888888889
+    median: 358.5
+    min: 117
+    max: 2244
+  total_tokens:
+    sum: 40601213
+    mean: 225562.29444444444
+    median: 250128.0
+    min: 3649
+    max: 586992
+  elapsed_sec:
+    sum: 9676.398175477982
+    mean: 53.75776764154434
+    median: 56.4826854467392
+    min: 2.552617311477661
+    max: 148.79044246673584
+macro:
+  steps_score:
+    mean: 0.7233333333333334
+  input_tokens:
+    mean: 225296.189
+  output_tokens:
+    mean: 386.173
+  total_tokens:
+    mean: 225682.362
+  elapsed_sec:
+    mean: 54.226133532126745

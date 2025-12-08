@@ -1,16 +1,14 @@
-PREFIX onto: <http://www.ontotext.com/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-SELECT ?uri ?name ?version ?date
-FROM onto:explicit {
+SELECT ?uri ?name ?date ?version {
     ?uri a owl:Ontology.
     OPTIONAL {
-        ?uri dct:title ?title
+        ?uri rdfs:label ?name
     }
     OPTIONAL {
-        ?uri rdfs:label ?label
+        ?uri dct:title ?name
     }
     OPTIONAL {
         ?uri owl:versionInfo ?version
@@ -18,6 +16,5 @@ FROM onto:explicit {
     OPTIONAL {
         ?uri dct:modified ?date
     }
-    BIND(COALESCE(?title, ?label) AS ?name)
 }
 ORDER BY ?name

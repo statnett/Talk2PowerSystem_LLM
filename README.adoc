@@ -98,7 +98,8 @@ Steps to create an official release (from the main branch):
 
 . `conda activate Talk2PowerSystemLLM`
 . `poetry version <major|minor|patch>`.
-. `git add pyproject.toml`
+. Update `CHANGELOG.md`
+. `git add pyproject.toml CHANGELOG.md`
 . `git commit -m "Bumping version from <previous-version> to <current-version>"`
 . `git push -u origin main`
 . Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface]. The tag and the release title must match the version from poetry!
@@ -115,7 +116,8 @@ For example, if the current version is `1.2.0-rc1`, the next version must be `1.
 If the current version is a development version, then the next pre-release version must follow the semantic versioning convention on how to increment the major,
 minor and patch parts of the version and add `-rc1` at the end.
 For example, if the current version is `1.1.0-dev0` and the next release will be a major one, the next version must be `2.0.0-rc1`.
-. `git add pyproject.toml`
+. Update `CHANGELOG.md`
+. `git add pyproject.toml CHANGELOG.md`
 . `git commit -m "Bumping version from <previous-version> to <current-version>"`
 . `git push -u origin main`
 . Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface]. The tag and the release title must match the version from poetry!

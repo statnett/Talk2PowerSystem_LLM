@@ -26,6 +26,10 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
+        checksum/configuration-properties: {{ include (print $.Template.BasePath "/configuration-properties.yaml") . | sha256sum }}
+        {{- if not .Values.configuration.agentOverride.configmap }}
+        checksum/agent-configuration: {{ include (print $.Template.BasePath "/agent-configuration.yaml") . | sha256sum }}
+        {{- end }}
         {{- with .Values.podAnnotations }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -50,9 +54,15 @@ spec:
         {{- include "t2ps-chatbot-llm.combinedImagePullSecrets" . | nindent 8 }}
       {{- end }}
       volumes:
+        {{- if .Values.configuration.agentOverride.configmap }}
+        - name: {{ .Values.configuration.agentOverride.configmap }}
+          configMap:
+            name: {{ .Values.configuration.agentOverride.configmap }}
+        {{- else }}
         - name: {{ include "t2ps-chatbot-llm.fullname.agent.config" . }}
           configMap:
             name: {{ include "t2ps-chatbot-llm.fullname.agent.config" . }}
+        {{- end }}
       {{- with .Values.extraVolumes }}
         {{- tpl (toYaml .) $ | nindent 8 }}
       {{- end }}
@@ -107,9 +117,15 @@ spec:
           env: {{- tpl (toYaml .) $ | nindent 12 }}
           {{- end }}
           volumeMounts:
+            {{- if .Values.configuration.agentOverride.configmap }}
+            - name: {{ .Values.configuration.agentOverride.configmap }}
+              mountPath: {{ .Values.configuration.agentOverride.mountPath }}
+              subPath: {{ base .Values.configuration.agentOverride.mountPath }}
+            {{- else }}
             - name: {{ include "t2ps-chatbot-llm.fullname.agent.config" . }}
               mountPath: /code/config/agent.yaml
               subPath: agent.yaml
+            {{- end }}
           {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}

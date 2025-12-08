@@ -1,3 +1,23 @@
+Next release
+============
+
+* [#278](https://github.com/statnett/Talk2PowerSystem_PM/issues/278): Update the version of `graphrag-eval` from `5.2.0` to `5.3.1`
+
+1.3.0-rc1
+============
+
+* [#256](https://github.com/statnett/Talk2PowerSystem_PM/issues/256): Update the queries for the ontologies and datasets information served from the `__about` endpoint
+* [#251](https://github.com/statnett/Talk2PowerSystem_PM/issues/251): Change N-Shot tool configuration to default to the base GraphDB
+* [#276](https://github.com/statnett/Talk2PowerSystem_PM/issues/276): Change N-Shot tool configuration SPARQL query template, so that it outputs unique SPARQL queries
+* [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `ttyg` from `1.9.3` to `1.10.0`, so that the chat bot can run without admin access to GraphDB
+* [#254](https://github.com/statnett/Talk2PowerSystem_PM/issues/254): Update the version of `cognite-sdk` from `7.86.0` to `7.88.0`
+
+1.2.0-rc4
+============
+
+* [#198](https://github.com/statnett/Talk2PowerSystem_PM/issues/198): Update version of `ttyg` from `1.9.2` to `1.9.3`, so that
+we can handle all possible responses for GraphDB autocomplete index status and RDF rank status
+
 1.2.0-rc3
 ============
 

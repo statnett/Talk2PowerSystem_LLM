@@ -4,7 +4,6 @@ graphdb:
   connect_timeout: 2
   read_timeout: 10
   sparql_timeout: 15
-  username: "admin"
 tools:
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
@@ -25,11 +24,7 @@ tools:
       LIMIT {limit}
   retrieval_search:
     graphdb:
-      base_url: "http://localhost:7200"
       repository_id: "qa_dataset"
-      connect_timeout: 2
-      read_timeout: 10
-      sparql_timeout: 15
     connector_name: "qa_dataset"
     name: sample_sparql_queries
     description: Given a user question obtain sample SPARQL queries, which can be used to answer the question
@@ -37,17 +32,22 @@ tools:
       PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>
       PREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>
       PREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>
-      SELECT ?question ?query {{
-          [] a retr-index:{connector_name} ;
-            retr:query "{query}" ;
-            retr:limit {limit} ;
-            retr:entities ?entity .
-          ?entity retr:score ?score;
-            qa:question ?question;
-            qa:sparql_query ?query.
-          FILTER (?score > {score})
+      SELECT (REPLACE(GROUP_CONCAT(?q; separator="@"), "(.*?)@.*", "$1") AS ?question) ?query {{
+          SELECT ?q ?query ?score {{
+              [] a retr-index:{connector_name} ;
+                  retr:query "{query}" ;
+                  retr:limit 100;
+                  retr:entities ?entity .
+              ?entity retr:score ?score;
+                  qa:question ?q.
+              ?template qa:paraphrase ?entity;
+                  qa:querySparql ?query.
+              FILTER (?score > {score})
+          }}
+          ORDER BY DESC(?score)
       }}
-      ORDER BY DESC(?score)
+      GROUP BY ?query
+      LIMIT {limit}
 llm:
   azure_endpoint: "https://statnett.openai.azure.com/"
   model: "gpt-4.1"

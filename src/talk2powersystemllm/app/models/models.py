@@ -1,3 +1,5 @@
+from typing import Literal, Annotated, Union
+
 from pydantic import BaseModel, Field
 
 
@@ -12,10 +14,19 @@ class Usage(BaseModel):
     total_tokens: int = Field(alias="totalTokens")
 
 
+class ImageGraphic(BaseModel):
+    type: Literal["image"] = "image"
+    url: str
+
+
+Graphic = Annotated[Union[ImageGraphic], Field(discriminator="type")]
+
+
 class Message(BaseModel):
     id: str
     message: str
     usage: Usage
+    graphics: list[Graphic] | None = None
 
 
 class ChatResponse(BaseModel):

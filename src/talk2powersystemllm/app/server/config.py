@@ -89,8 +89,8 @@ class RedisSettings(BaseSettings):
     )
     username: str = Field(default="default", description="Redis username for basic authentication.")
     password: SecretStr | None = Field(default=None, description="Redis password for basic authentication.")
-    ttl: int | None = Field(default=60, ge=1, description="Redis TTL in minutes")
-    ttl_refresh_on_read: bool | None = Field(default=True, description="Redis Refresh TTL on read")
+    ttl: int = Field(default=60, ge=1, description="Redis TTL in minutes")
+    ttl_refresh_on_read: bool = Field(default=True, description="Redis Refresh TTL on read")
 
 
 class AppSettings(BaseSettings):
@@ -102,16 +102,17 @@ class AppSettings(BaseSettings):
     agent_config: Path = Field(description="Path to the agent config yaml file")
     redis: RedisSettings
     security: SecuritySettings = SecuritySettings()
-    gtg_refresh_interval: int | None = Field(default=30, ge=1,
-                                             description="The __gtg endpoint refresh interval in seconds")
-    about_refresh_interval: int | None = Field(default=30, ge=1,
-                                               description="The __about endpoint refresh interval in seconds")
-    trouble_md_path: Path | None = "/code/trouble.md"
-    docs_url: str | None = "/docs"
-    root_path: str | None = "/"
-    logging_yaml_file: Path | None = "/code/logging.yaml"
-    manifest_path: Path | None = "/code/git-manifest.yaml"
-    pyproject_toml_path: Path | None = "/code/pyproject.toml"
+    gtg_refresh_interval: int = Field(default=30, ge=1,
+                                      description="The __gtg endpoint refresh interval in seconds")
+    about_refresh_interval: int = Field(default=30, ge=1,
+                                        description="The __about endpoint refresh interval in seconds")
+    trouble_md_path: Path = "/code/trouble.md"
+    docs_url: str = "/docs"
+    root_path: str = "/"
+    logging_yaml_file: Path = "/code/logging.yaml"
+    manifest_path: Path = "/code/git-manifest.yaml"
+    pyproject_toml_path: Path = "/code/pyproject.toml"
+    diagrams_path: Path = '/code/diagrams/'
 
 
 settings = AppSettings()

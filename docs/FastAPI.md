@@ -6,6 +6,7 @@
 
 * `AGENT_CONFIG` - REQUIRED - Path to the agent configuration file in yaml format.
   Check [the agent configurations here](./AgentConfig.md).
+* `DIAGRAMS_PATH` - OPTIONAL, DEFAULT=`/code/diagrams/` - Path to the static diagrams.
 
 ### Redis
 
@@ -31,26 +32,26 @@ If new messages are added to the conversation or the explain functionality is us
 
 * `GTG_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The `__gtg` endpoint refresh interval.
 * `ABOUT_REFRESH_INTERVAL` - OPTIONAL, DEFAULT=`30` seconds, must be >= 1 - The `__about` endpoint refresh interval.
-* `TROUBLE_MD_PATH` - OPTIONAL, default = `/code/trouble.md` - Path to the `trouble.md` file
+* `TROUBLE_MD_PATH` - OPTIONAL, DEFAULT = `/code/trouble.md` - Path to the `trouble.md` file
 
 ### Documentation
 
-- `DOCS_URL` - OPTIONAL, default = `/docs` - The endpoint, which serves the automatic documentation / Swagger UI. Must
+- `DOCS_URL` - OPTIONAL, DEFAULT = `/docs` - The endpoint, which serves the automatic documentation / Swagger UI. Must
   start with "/". Can be "/".
-- `ROOT_PATH` - OPTIONAL, default = `/` - A path prefix handled by a proxy that is not seen by the application but is
+- `ROOT_PATH` - OPTIONAL, DEFAULT = `/` - A path prefix handled by a proxy that is not seen by the application but is
   seen by external clients,
   which affects things like Swagger UI. Read more about it at
   the [FastAPI docs for Behind a Proxy](https://fastapi.tiangolo.com/advanced/behind-a-proxy/).
 
 ### Logging
 
-- `LOGGING_YAML_FILE` - OPTIONAL, default = `/code/logging.yaml` - Path to the logging configuration.
+- `LOGGING_YAML_FILE` - OPTIONAL, DEFAULT = `/code/logging.yaml` - Path to the logging configuration.
   Check [the official documentation](https://docs.python.org/3/library/logging.config.html#logging-config-dictschema) on
   how to configure the logging.
 
 ### Manifest
 
-- `MANIFEST_PATH` - OPTIONAL, default = `/code/git-manifest.yaml` - Path to the manifest file. The file must be in yaml
+- `MANIFEST_PATH` - OPTIONAL, DEFAULT = `/code/git-manifest.yaml` - Path to the manifest file. The file must be in yaml
   format. Sample content
 
 ```yaml
@@ -61,7 +62,7 @@ Build-Timestamp: '2024-01-09T13:31:49Z'
 
 This information is included in the response from the `/__about` endpoint.
 
-- `PYPROJECT_TOML_PATH` - OPTIONAL, default = `/code/pyproject.toml` - Path to the `pyproject.toml` file
+- `PYPROJECT_TOML_PATH` - OPTIONAL, DEFAULT = `/code/pyproject.toml` - Path to the `pyproject.toml` file
 
 The `version` information is included in the response from the `/__about` endpoint.
 
@@ -96,6 +97,7 @@ but you will need to create a `.env` file with sample content
 
 ```
 MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
+DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem/diagram/svg
 LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev+retrieval.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
@@ -129,6 +131,7 @@ To change the number of workers use the environment variable `WEB_CONCURRENCY`.
     - `README.adoc` - required by `poetry` in order to install the dependencies. Copied from
       the [README.adoc](../README.adoc)
     - `config/` - All `yaml` files from the [config directory](../config) and the `ontology` sub-directory.
+    - `diagrams/` - Contains the svg files from https://github.com/statnett/Talk2PowerSystem/tree/main/diagram/svg
     - `git-manifest.yaml` - automatically generated file during a release. The information is served from the `__about`
       endpoint of the app.
     - `logging.yaml` - Default logging configuration from [here](../docker/logging.yaml).
@@ -155,6 +158,7 @@ AGENT_CONFIG=/code/config/dev+retrieval.yaml
 LLM_API_KEY=<API_KEY_FROM_KEEPER>
 REDIS_HOST=redis
 REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
+WEB_CONCURRENCY=10
 ```
 You must replace <API_KEY_FROM_KEEPER> with the corresponding secret from Keeper.
 

@@ -190,81 +190,147 @@ Response Body JSON Schema:
 
 ```json
 {
- "$schema": "http://json-schema.org/draft-04/schema#",
- "type": "object",
- "properties": {
-   "id": {
-     "type": "string"
-   },
-   "messages": {
-     "type": "array",
-     "items": [
-       {
-         "type": "object",
-         "properties": {
-           "id": {
-             "type": "string"
-           },
-           "message": {
-             "type": "string"
-           },
-           "usage": {
-             "type": "object",
-             "properties": {
-               "completionTokens": {
-                 "type": "integer"
-               },
-               "promptTokens": {
-                 "type": "integer"
-               },
-               "totalTokens": {
-                 "type": "integer"
-               }
-             },
-             "required": [
-               "completionTokens",
-               "promptTokens",
-               "totalTokens"
-             ]
-           }
-         },
-         "required": [
-           "id",
-           "message",
-           "usage"
-         ]
-       }
-     ]
-   },
-   "usage": {
-     "type": "object",
-     "properties": {
-       "completionTokens": {
-         "type": "integer"
-       },
-       "promptTokens": {
-         "type": "integer"
-       },
-       "totalTokens": {
-         "type": "integer"
-       }
-     },
-     "required": [
-       "completionTokens",
-       "promptTokens",
-       "totalTokens"
-     ]
-   }
- },
- "required": [
-   "id",
-   "messages",
-   "usage"
- ]
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string"
+        },
+        "messages": {
+            "type": "array",
+            "items": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "usage": {
+                            "type": "object",
+                            "properties": {
+                                "completionTokens": {
+                                    "type": "integer"
+                                },
+                                "promptTokens": {
+                                    "type": "integer"
+                                },
+                                "totalTokens": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": [
+                                "completionTokens",
+                                "promptTokens",
+                                "totalTokens"
+                            ]
+                        },
+                        "graphics": {
+                            "type": "array",
+                            "items": {
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "svg"
+                                                ]
+                                            },
+                                            "svg": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "svg"
+                                        ],
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "image"
+                                                ]
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "format": "uri-reference"
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "url"
+                                        ],
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "iframe"
+                                                ]
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "format": "uri"
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "url"
+                                        ],
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "message",
+                        "usage"
+                    ]
+                }
+            ]
+        },
+        "usage": {
+            "type": "object",
+            "properties": {
+                "completionTokens": {
+                    "type": "integer"
+                },
+                "promptTokens": {
+                    "type": "integer"
+                },
+                "totalTokens": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "completionTokens",
+                "promptTokens",
+                "totalTokens"
+            ]
+        }
+    },
+    "required": [
+        "id",
+        "messages",
+        "usage"
+    ]
 }
 ```
 
-Sample Response Body:
+Sample Response Body Without Graphics:
 
 ```json
 {
@@ -287,6 +353,74 @@ Sample Response Body:
     }
 }
 ```
+
+Sample Response Body Including Graphics:
+
+```json
+{
+  "id": "thread_ce5859f4-f4ca-4bf7-90a7-6fa534ff77fe",
+  "messages": [
+    {
+      "id": "lc_run--28ade889-f636-4d2c-8e48-ef298daf9f06-0",
+      "message": "Here is the diagram: Diagram of substation KRISTIANSAND — PowSyBl Single-Line-Diagram of substation KRISTIANSAND",
+      "usage": {
+        "completionTokens": 1171,
+        "promptTokens": 164831,
+        "totalTokens": 166002
+      },
+      "graphics": [
+        {
+          "type": "image",
+          "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-KRISTIANSAND.svg"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "completionTokens": 1171,
+    "promptTokens": 164831,
+    "totalTokens": 166002
+  }
+}
+```
+
+##### GET /rest/chat/diagrams/{filename}
+
+Serves the static diagrams.
+
+Request Headers:
+
+- X-Request-Id - version 4 UUID, which can be used to correlate HTTP requests between clients, services and service dependencies; optional, if not provided, it will be automatically generated and returned as a response header
+
+- Accept - "\*/\*"
+
+- Authorization - "Bearer <token\>"
+
+Response Headers:
+
+- X-Request-Id - Same as the Request Header "X-Request-Id"; auto generated version 4 UUID, if the request didn't include it
+
+- Cache-Control - "private, max-age=3600"
+
+- Content-Type - "\*/\*"
+
+- Content-Length
+
+- Last-Modified
+
+- Date
+
+- Etag
+
+- Accept-Ranges
+
+Response Status Codes:
+
+- 200 - Successful Response
+
+- 401 - Unauthorized
+
+- 404 - File Not Found
 
 ##### POST /rest/chat/conversations/explain/
 
@@ -771,6 +905,21 @@ Response Body JSON Schema:
                                 "enabled"
                             ]
                         },
+                        "display_graphics": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "sparql_query_template": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "enabled",
+                                "sparql_query_template"
+                            ]
+                        },
                         "autocomplete_search": {
                             "type": "object",
                             "properties": {
@@ -859,6 +1008,7 @@ Response Body JSON Schema:
                     },
                     "required": [
                         "sparql_query",
+                        "display_graphics",
                         "autocomplete_search",
                         "sample_sparql_queries",
                         "retrieve_data_points",
@@ -925,412 +1075,412 @@ Sample Response Body:
 {
   "ontologies": [
     {
-      "name": "Assessed Element Vocabulary",
       "uri": "https://ap-voc.cim4.eu/AssessedElement#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Assessed Element Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Asset Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/Assets#Ontology",
-      "version": "2.0.0",
-      "date": "2025-08-14"
+      "name": "Asset Vocabulary",
+      "date": "2025-08-14",
+      "version": "2.0.0"
     },
     {
-      "name": "AssetCatalogue Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/AssetCatalogue#Ontology",
-      "version": "2.0.0",
-      "date": "2025-08-14"
+      "name": "AssetCatalogue Vocabulary",
+      "date": "2025-08-14",
+      "version": "2.0.0"
     },
     {
-      "name": "Availability schedule vocabulary",
       "uri": "https://ap-voc.cim4.eu/AvailabilitySchedule#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Availability schedule vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Contingency Vocabulary",
       "uri": "https://ap-voc.cim4.eu/Contingency#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Contingency Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Core Equipment Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/CoreEquipment-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Core Equipment Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "Dataset metadata vocabulary",
       "uri": "https://ap-voc.cim4.eu/DatasetMetadata#Ontology",
-      "version": "2.4.0",
-      "date": "2024-09-07"
+      "name": "Dataset metadata vocabulary",
+      "date": "2024-09-07",
+      "version": "2.4.0"
     },
     {
-      "name": "Diagram Layout Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/DiagramLayout-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Diagram Layout Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "Document header vocabulary",
       "uri": "https://ap-voc.cim4.eu/DocumentHeader#Ontology",
-      "version": "2.3.4",
-      "date": "2024-09-07"
+      "name": "Document header vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.4"
     },
     {
-      "name": "Dynamics Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/Dynamics-EU#Ontology",
-      "version": "1.0.0",
-      "date": "2020-10-12"
+      "name": "Dynamics Vocabulary",
+      "date": "2020-10-12",
+      "version": "1.0.0"
     },
     {
-      "name": "Equipment Boundary Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/EquipmentBoundary-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Equipment Boundary Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "Equipment Reliability Vocabulary",
       "uri": "https://ap-voc.cim4.eu/EquipmentReliability#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Equipment Reliability Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Geographical Location Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/GeographicalLocation-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Geographical Location Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "Grid Disturbance vocabulary",
       "uri": "https://ap-voc.cim4.eu/GridDisturbance#Ontology",
-      "version": "1.1.1",
-      "date": "2024-09-07"
+      "name": "Grid Disturbance vocabulary",
+      "date": "2024-09-07",
+      "version": "1.1.1"
     },
     {
-      "name": "Impact Assessment Matrix Vocabulary",
       "uri": "https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Impact Assessment Matrix Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Monitoring area Vocabulary",
       "uri": "https://ap-voc.cim4.eu/MonitoringArea#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Monitoring area Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Object Registry vocabulary",
       "uri": "https://ap-voc.cim4.eu/ObjectRegistry#Ontology",
-      "version": "2.2.3",
-      "date": "2024-09-07"
+      "name": "Object Registry vocabulary",
+      "date": "2024-09-07",
+      "version": "2.2.3"
     },
     {
-      "name": "Operation Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/Operation-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Operation Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "Power System Project Vocabulary",
       "uri": "https://ap-voc.cim4.eu/PowerSystemProject#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Power System Project Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Power schedule vocabulary",
       "uri": "https://ap-voc.cim4.eu/PowerSchedule#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Power schedule vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Remedial Action Schedule Vocabulary",
       "uri": "https://ap-voc.cim4.eu/RemedialActionSchedule#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Remedial Action Schedule Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Remedial action Vocabulary",
       "uri": "https://ap-voc.cim4.eu/RemedialAction#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Remedial action Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Security Analysis Result Vocabulary",
       "uri": "https://ap-voc.cim4.eu/SecurityAnalysisResult#Ontology",
-      "version": "2.4",
-      "date": "2024-09-07"
+      "name": "Security Analysis Result Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.4"
     },
     {
-      "name": "Sensitivity Matrix Vocabulary",
       "uri": "https://ap-voc.cim4.eu/SensitivityMatrix#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Sensitivity Matrix Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Short Circuit Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/ShortCircuit-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Short Circuit Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "State Variables Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/StateVariables-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "State Variables Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "State instruction schedule vocabulary",
       "uri": "https://ap-voc.cim4.eu/StateInstructionSchedule#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "State instruction schedule vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Steady State Hypothesis Schedule Vocabulary",
       "uri": "https://ap-voc.cim4.eu/SteadyStateHypothesisSchedule#Ontology",
-      "version": "1.0.1",
-      "date": "2024-09-07"
+      "name": "Steady State Hypothesis Schedule Vocabulary",
+      "date": "2024-09-07",
+      "version": "1.0.1"
     },
     {
-      "name": "Steady State Hypothesis Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/SteadyStateHypothesis-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Steady State Hypothesis Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "Steady state instruction Vocabulary",
       "uri": "https://ap-voc.cim4.eu/SteadyStateInstruction#Ontology",
-      "version": "2.3.1",
-      "date": "2024-09-07"
+      "name": "Steady state instruction Vocabulary",
+      "date": "2024-09-07",
+      "version": "2.3.1"
     },
     {
-      "name": "Topology Vocabulary",
       "uri": "http://iec.ch/TC57/ns/CIM/Topology-EU#Ontology",
-      "version": "3.0.0",
-      "date": "2020-10-12"
+      "name": "Topology Vocabulary",
+      "date": "2020-10-12",
+      "version": "3.0.0"
     },
     {
-      "name": "CIM Inferred Extension Ontology",
       "uri": "https://cim.ucaiug.io/rules#",
-      "version": "1.1",
-      "date": "2025-08-13"
+      "name": "CIM Inferred Extension Ontology",
+      "date": "2025-08-13",
+      "version": "1.1"
     }
   ],
   "datasets": [
     {
-      "name": "20160101_N44-ENT-Schneider_AC_v3-0-0-beta-1",
-      "uri": "urn:uuid:ade44b65-0bfa-41e0-95c5-2ccb345a6fed",
-      "date": "2025-02-14"
-    },
-    {
-      "name": "20160101_N44-ENT-Siemens_AC_v3-0-0-beta-1",
-      "uri": "urn:uuid:75f351c7-75a6-4c25-8f1c-985aa59e90ad",
-      "date": "2025-02-14"
-    },
-    {
-      "name": "20160101_N44-ENT-Statnett_AS_v3-0-0-beta-1",
       "uri": "urn:uuid:eb4d92e6-d4da-11e7-9296-cec278b6b50a",
+      "name": "Asset (AS) records for Statnett as asset owner in the enterprise part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.Nordic CPMSM Test model Asset.",
       "date": "2025-02-14"
     },
     {
-      "name": "20160101_N44-NC-HV_CD_v3-0-0-beta-1",
+      "uri": "urn:uuid:ade44b65-0bfa-41e0-95c5-2ccb345a6fed",
+      "name": "Asset Catalogue (AC) from Schneider included in the enterprise part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "date": "2025-02-14"
+    },
+    {
+      "uri": "urn:uuid:75f351c7-75a6-4c25-8f1c-985aa59e90ad",
+      "name": "Asset Catalogue (AC) from Siemens Energy included in the enterprise part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "date": "2025-02-14"
+    },
+    {
       "uri": "urn:uuid:d9a01a85-0ad8-4958-be03-d89ad78ca497",
+      "name": "Common Data (CD) included in Network Code part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "20160101_N44-NC-HV_CO_v3-0-0-beta-1",
       "uri": "urn:uuid:84552e03-0040-43d5-aff2-0f77f01668cb",
+      "name": "Contingency (CO) included in Network Code part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "20160101_N44-NC-HV_ER_v3-0-0-beta-1",
-      "uri": "urn:uuid:ebef4527-f0bc-4c59-8870-950af8ed9041",
-      "date": "2025-02-14"
-    },
-    {
-      "name": "20160101_N44-NC-HV_RAS_v3-0-0-beta-1",
-      "uri": "urn:uuid:3f3f00a8-b86a-4a3e-ab86-2cd3140fa187",
-      "date": "2025-02-14"
-    },
-    {
-      "name": "20160101_N44-NC-HV_RA_v3-0-0-beta-1",
-      "uri": "urn:uuid:9e3521e2-9504-4122-8c1e-a4c4411ffd7a",
-      "date": "2025-02-14"
-    },
-    {
-      "name": "20160101_N44-NC-HV_SSI_v3-0-0-beta-1",
-      "uri": "urn:uuid:ebe06a74-e44c-491f-bbfe-1cabb232828e",
-      "date": "2025-02-14"
-    },
-    {
-      "name": "DIGIN10-30-BaseVoltage_RD",
       "uri": "urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4",
-      "date": "2022-04-01"
-    },
-    {
-      "name": "DIGIN10-30-GeographicalRegion_RD",
-      "uri": "urn:uuid:5ad50f29-f3e5-4cf9-8519-cef17d71f8de",
-      "date": "2022-04-01"
-    },
-    {
-      "name": "DIGIN10-30-HV1-MV1_BM",
-      "uri": "urn:uuid:b39e7379-a9ae-4262-98dc-9ade1200adb0",
+      "name": "DIGIN10 CGMES v3.0 Base Voltage Reference model",
       "date": "2022-04-06"
     },
     {
-      "name": "DIGIN10-30-LV1_AS",
-      "uri": "urn:uuid:14a0302f-aaae-4abd-862f-7b0c86b4dca2",
-      "date": "2022-10-28"
-    },
-    {
-      "name": "DIGIN10-30-LV1_CU",
-      "uri": "urn:uuid:596d41fa-11d3-41da-b231-e05724325e9b",
-      "date": "2022-03-30"
-    },
-    {
-      "name": "DIGIN10-30-LV1_DL",
-      "uri": "urn:uuid:02c12c37-ced0-4cbd-8fc2-4b51b0c532a6",
-      "date": "2022-03-30"
-    },
-    {
-      "name": "DIGIN10-30-LV1_EQ",
-      "uri": "urn:uuid:c47d4310-b8ee-480d-9cf3-e53a81630981",
-      "date": "2022-10-28"
-    },
-    {
-      "name": "DIGIN10-30-LV1_GL",
-      "uri": "urn:uuid:9552dc72-0525-4a84-8532-81f160b8fb74",
-      "date": "2022-03-30"
-    },
-    {
-      "name": "DIGIN10-30-LV1_OP",
-      "uri": "urn:uuid:c47d4310-b8ee-480d-9cf3-e53a81630981",
-      "date": "2022-10-28"
-    },
-    {
-      "name": "DIGIN10-30-LV1_OR",
-      "uri": "urn:uuid:2e4ac4ff-692d-48e5-9837-cc0db61ee3dd",
-      "date": "2022-04-11"
-    },
-    {
-      "name": "DIGIN10-30-LV1_SC",
-      "uri": "urn:uuid:50ae854b-afb8-4d42-bd4b-e97f1ee1ca6f",
-      "date": "2022-03-30"
-    },
-    {
-      "name": "DIGIN10-30-LV1_SSH",
-      "uri": "urn:uuid:a529556e-aa95-4b28-b729-e9114f90880a",
-      "date": "2022-03-30"
-    },
-    {
-      "name": "DIGIN10-30-M1_AC",
-      "uri": "urn:uuid:309fe4e7-d477-44e1-a495-de43562b3504",
-      "date": "2022-10-28"
-    },
-    {
-      "name": "DIGIN10-30-MV1-LV1_BM",
-      "uri": "urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4",
+      "uri": "urn:uuid:5ad50f29-f3e5-4cf9-8519-cef17d71f8de",
+      "name": "DIGIN10 CGMES v3.0 Geographical Region Reference model",
       "date": "2022-04-01"
     },
     {
-      "name": "DIGIN10-30-MV1-LV1_SV",
-      "uri": "urn:uuid:00db75c5-d443-42e5-927b-ca9a2e14fd48",
+      "uri": "urn:uuid:b39e7379-a9ae-4262-98dc-9ade1200adb0",
+      "name": "DIGIN10 CGMES v3.0 High Voltage 1 (HV1) Medium Voltage 1 (MV1) Boundary Model",
+      "date": "2022-04-06"
+    },
+    {
+      "uri": "urn:uuid:c47d4310-b8ee-480d-9cf3-e53a81630981",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Core Equipment (EQ) Model",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1-LV1_TP",
-      "uri": "urn:uuid:ef750ad6-a00c-4db3-b5c3-f849c096c2a5",
+      "uri": "urn:uuid:596d41fa-11d3-41da-b231-e05724325e9b",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Customer (CU) Modele",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1_AS",
-      "uri": "urn:uuid:7c2e25c9-331f-46f2-a4d4-d33c2e25d342",
-      "date": "2022-10-28"
-    },
-    {
-      "name": "DIGIN10-30-MV1_CU",
-      "uri": "urn:uuid:5f21a6a1-1d98-45f0-89f1-e4d7aa34691a",
+      "uri": "urn:uuid:02c12c37-ced0-4cbd-8fc2-4b51b0c532a6",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Diagram Layout (DL) Model",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1_DL",
-      "uri": "urn:uuid:1399ce7d-e052-4714-954a-a17c7d6b4073",
+      "uri": "urn:uuid:c47d4310-b8ee-480d-9cf3-e53a81630981",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Equipment Operation (OP) Model",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1_EQ",
+      "uri": "urn:uuid:50ae854b-afb8-4d42-bd4b-e97f1ee1ca6f",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Equipment Short-Circuit (SC) Model",
+      "date": "2022-03-30"
+    },
+    {
+      "uri": "urn:uuid:9552dc72-0525-4a84-8532-81f160b8fb74",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Geograpical Location (GL) Model",
+      "date": "2022-03-30"
+    },
+    {
+      "uri": "urn:uuid:2e4ac4ff-692d-48e5-9837-cc0db61ee3dd",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Object Reference (OR) Model",
+      "date": "2022-04-11"
+    },
+    {
+      "uri": "urn:uuid:a529556e-aa95-4b28-b729-e9114f90880a",
+      "name": "DIGIN10 CGMES v3.0 Low Voltage 1 (LV1) Steady State Hypothesis (SSH) Model",
+      "date": "2022-03-30"
+    },
+    {
       "uri": "urn:uuid:d12e4546-e6a5-4211-a4c8-877ac1e24d16",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Core Equipment (EQ) Model",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1_GL",
-      "uri": "urn:uuid:99790ba1-4bb2-4960-ade7-34d245740654",
+      "uri": "urn:uuid:5f21a6a1-1d98-45f0-89f1-e4d7aa34691a",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Customer (CU) Model",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1_OP",
+      "uri": "urn:uuid:1399ce7d-e052-4714-954a-a17c7d6b4073",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Diagram Layout (DL) Model",
+      "date": "2022-03-30"
+    },
+    {
       "uri": "urn:uuid:31b9fe89-c729-4bb3-9f6c-22f885607731",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Equipment Operationa (OP) Model",
       "date": "2022-10-28"
     },
     {
-      "name": "DIGIN10-30-MV1_SC",
       "uri": "urn:uuid:9f36f713-b4d4-40a6-809f-9c342c3110ce",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Equipment Short-Circuit (SC) Model",
       "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-MV1_SSH",
+      "uri": "urn:uuid:99790ba1-4bb2-4960-ade7-34d245740654",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Geographical layout (GL) Model",
+      "date": "2022-03-30"
+    },
+    {
+      "uri": "urn:uuid:f4c70c71-77e2-410e-9903-cbd85305cdc4",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Low Voltage 1 (LV1) Boundary Model",
+      "date": "2022-04-06"
+    },
+    {
       "uri": "urn:uuid:f19668c6-e0a1-4db7-bfee-7645392d0021",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) Steady State Hypothesis (SSH) Model",
       "date": "2021-04-28"
     },
     {
-      "name": "DIGIN10-30-MeasurementValueSource_RD",
-      "uri": "urn:uuid:aca7b76a-77d9-42ce-bd34-67f4b12800f9",
-      "date": "2022-10-24"
+      "uri": "urn:uuid:00db75c5-d443-42e5-927b-ca9a2e14fd48",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) and Low Voltage 1 (LV1) State Variable (SV) Model",
+      "date": "2022-03-30"
     },
     {
-      "name": "DIGIN10-30-WattApp-GL",
+      "uri": "urn:uuid:ef750ad6-a00c-4db3-b5c3-f849c096c2a5",
+      "name": "DIGIN10 CGMES v3.0 Medium Voltage 1 (MV1) and Low Voltage 1 (LV1) Topology (TP) Model",
+      "date": "2022-03-30"
+    },
+    {
+      "uri": "urn:uuid:14a0302f-aaae-4abd-862f-7b0c86b4dca2",
+      "name": "DIGIN10 Low Voltage 1 (LV1) Asset Model",
+      "date": "2022-10-28"
+    },
+    {
+      "uri": "urn:uuid:309fe4e7-d477-44e1-a495-de43562b3504",
+      "name": "DIGIN10 Manufacture 1 (M1) Asset Catalogue Model",
+      "date": "2022-10-28"
+    },
+    {
+      "uri": "urn:uuid:7c2e25c9-331f-46f2-a4d4-d33c2e25d342",
+      "name": "DIGIN10 Medium Voltage 1 (MV1) Asset Model",
+      "date": "2022-10-28"
+    },
+    {
+      "uri": "urn:uuid:ebef4527-f0bc-4c59-8870-950af8ed9041",
+      "name": "Equipment Reliability (ER) included in Network Code part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "date": "2025-02-14"
+    },
+    {
       "uri": "urn:uuid:971c4254-5365-4aaf-8fa6-02658b3f8e05",
+      "name": "Geospartial GridCapacity MAS1",
       "date": "2023-02-21"
     },
     {
-      "name": "Diagram Layout (DL) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "uri": "urn:uuid:aca7b76a-77d9-42ce-bd34-67f4b12800f9",
+      "name": "Measurement Value Source Reference data (RD) based on IEC 61970-301:2020+AMD1:2022",
+      "date": "2022-10-24"
+    },
+    {
+      "uri": "urn:uuid:9e3521e2-9504-4122-8c1e-a4c4411ffd7a",
+      "name": "Remedial Action (RA) included in Network Code part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "date": "2025-02-14"
+    },
+    {
+      "uri": "urn:uuid:3f3f00a8-b86a-4a3e-ab86-2cd3140fa187",
+      "name": "Remedial Action Schedule (RAS) included in Network Code part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "date": "2025-02-14"
+    },
+    {
+      "uri": "urn:uuid:ebe06a74-e44c-491f-bbfe-1cabb232828e",
+      "name": "Steady State Instruction (SSI) included in Network Code part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
+      "date": "2025-02-14"
+    },
+    {
       "uri": "urn:uuid:2e11908e-5e1f-8542-854c-54da76d379d1",
+      "name": "Diagram Layout (DL) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "Equipment (EQ) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "uri": "urn:uuid:e710212f-f6b2-8d4c-9dc0-365398d8b59c",
+      "name": "Equipment (EQ) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "Equipment Operation (OP) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "uri": "urn:uuid:67e97bb0-ec38-481d-9e56-3e9d45e95a33",
+      "name": "Equipment Operation (OP) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "Geographical Location (GL) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "uri": "urn:uuid:167b4832-27c5-ff4f-bd26-6ce3bff1bdb7",
+      "name": "Geographical Location (GL) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "State Variable (SV) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "uri": "urn:uuid:5b6a8b13-4c20-4147-8ed6-7249e303e647",
+      "name": "State Variable (SV) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "Steady-State Hypothesis (SSH) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "uri": "urn:uuid:1d08772d-c1d0-4c47-810d-b14908cd94f5",
+      "name": "Steady-State Hypothesis (SSH) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     },
     {
-      "name": "Telemark-120_AO",
       "uri": "urn:uuid:f1d9a88d-0ff5-4e4b-9d6a-c353fe8232c3",
+      "name": "Telemark-120_AO",
       "date": "2024-02-06"
     },
     {
-      "name": "Topological (TP) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "uri": "urn:uuid:7b3f94c0-bd9b-e74e-866b-f473153c3e70",
+      "name": "Topological (TP) part of the Nordic 44-bus synthetic test model developed by Statnett SF of the Nordic region.",
       "date": "2025-02-14"
     }
   ],
@@ -1354,6 +1504,10 @@ Sample Response Body:
     "tools": {
       "sparql_query": {
         "enabled": true
+      },
+      "display_graphics": {
+        "enabled": true,
+        "sparql_query_template": "PREFIX dct: <http://purl.org/dc/terms/>\nPREFIX cimd: <https://cim.ucaiug.io/diagrams#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\nSELECT ?link ?name ?description ?format {{\n    <{iri}> cimd:Diagram.link ?link;\n        cim:IdentifiedObject.name ?name;\n        cim:IdentifiedObject.description ?description;\n        dct:format ?format.\n}}"
       },
       "autocomplete_search": {
         "enabled": true,
@@ -1384,27 +1538,28 @@ Sample Response Body:
   },
   "backend": {
     "description": "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot",
-    "version": "1.1.0a0",
-    "buildDate": "2024-01-09T13:31:49Z",
-    "buildBranch": "COOL-BRANCH-NAME",
-    "gitSHA": "a730751ac055a4f2dad3dc3e5658bb1bf30ff412",
-    "pythonVersion": "3.12.11 | packaged by conda-forge | (main, Jun  4 2025, 14:45:31) [GCC 13.3.0]",
+    "version": "1.3.1-dev0",
+    "buildDate": "2025-10-31T18:50:01Z",
+    "buildBranch": "Statnett-256",
+    "gitSHA": "616b060d985a461b28c5455f94d7c4629e5d5fec",
+    "pythonVersion": "3.12.12 | packaged by conda-forge | (main, Oct 22 2025, 23:25:55) [GCC 14.3.0]",
     "dependencies": {
-      "ttyg": "1.9.0",
-      "graphrag-eval": "5.1.2",
+      "ttyg": "3.0.0",
+      "graphrag-eval": "5.3.1",
       "jupyter": "1.1.1",
-      "langchain-openai": "0.3.32",
-      "langgraph-checkpoint-redis": "0.1.1",
+      "langchain-openai": "1.1.0",
+      "langgraph-checkpoint-redis": "0.2.1",
       "jsonlines": "4.0.0",
-      "cognite-sdk": "7.86.0",
-      "pydantic-settings": "2.10.1",
-      "PyYAML": "6.0.2",
-      "uvicorn[standard]": "0.35.0",
-      "fastapi": "0.116.1",
+      "cognite-sdk": "7.90.1",
+      "pydantic-settings": "2.12.0",
+      "PyYAML": "6.0.3",
+      "uvicorn[standard]": "0.38.0",
+      "fastapi": "0.123.4",
+      "APScheduler": "3.11.1",
       "toml": "0.10.2",
-      "markdown": "3.8.2",
+      "markdown": "3.10",
       "python-jose[cryptography]": "3.5.0",
-      "cachetools": "6.2.0",
+      "cachetools": "6.2.2",
       "importlib_resources": "6.5.2"
     }
   }

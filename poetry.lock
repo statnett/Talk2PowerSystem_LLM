@@ -1890,14 +1890,14 @@ langgraph-checkpoint = ">=2.1.0,<4.0.0"
 
 [[package]]
 name = "langgraph-sdk"
-version = "0.2.12"
+version = "0.2.14"
 description = "SDK for interacting with LangGraph API"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langgraph_sdk-0.2.12-py3-none-any.whl", hash = "sha256:d3866a59dec225fdbfad4813399fcd9d2985ecb53a6acb9fe61fe0d8e9b5db7d"},
-    {file = "langgraph_sdk-0.2.12.tar.gz", hash = "sha256:7776a95af1e2b084806ad815655fe6f287ead082cae629c106aed72d6e9dce29"},
+    {file = "langgraph_sdk-0.2.14-py3-none-any.whl", hash = "sha256:e01ab9867d3b22d3b4ddd46fc0bab67b7684b25ab784a276684f331ca07efabf"},
+    {file = "langgraph_sdk-0.2.14.tar.gz", hash = "sha256:fab3dd713a9c7a9cc46dc4b2eb5e555bd0c07b185cfaf813d61b5356ee40886e"},
 ]
 
 [package.dependencies]
@@ -1906,14 +1906,14 @@ orjson = ">=3.10.1"
 
 [[package]]
 name = "langsmith"
-version = "0.4.53"
+version = "0.4.56"
 description = "Client library to connect to the LangSmith Observability and Evaluation Platform."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langsmith-0.4.53-py3-none-any.whl", hash = "sha256:62e0b69d0f3b25afbd63dc5743a3bcec52993fe6c4e43e5b9e5311606aa04e9e"},
-    {file = "langsmith-0.4.53.tar.gz", hash = "sha256:362255850ac80abf6edc9e9b3455c42aa248e12686a24c637d4c56fc41139ffe"},
+    {file = "langsmith-0.4.56-py3-none-any.whl", hash = "sha256:f2c61d3f10210e78f16f77e3115f407d40f562ab00ac8c76927c7dd55b5c17b2"},
+    {file = "langsmith-0.4.56.tar.gz", hash = "sha256:c3dc53509972689dbbc24f9ac92a095dcce00f76bb0db03ae385815945572540"},
 ]
 
 [package.dependencies]
@@ -4203,14 +4203,14 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "2.1.0"
+version = "3.0.0"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-2.1.0-py3-none-any.whl", hash = "sha256:47513ac3270375d1548d5c7d2149a0589d912d8bfae83194647d0acc00b6e622"},
-    {file = "ttyg-2.1.0.tar.gz", hash = "sha256:1daec6deaaf12e80ade41eb22c3864f68230e30a381ea30515841d391a77f76d"},
+    {file = "ttyg-3.0.0-py3-none-any.whl", hash = "sha256:af0eda1a8195c389a34d4ecf116966411e611e01cf4067a34e21bb5253ea4cc4"},
+    {file = "ttyg-3.0.0.tar.gz", hash = "sha256:47088a5afb56a6ec188889f4f8542ddeab4791a5bab47be95713fa1ab1996071"},
 ]
 
 [package.dependencies]
@@ -4292,21 +4292,21 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 
 [[package]]
 name = "urllib3"
-version = "2.5.0"
+version = "2.6.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "test"]
 files = [
-    {file = "urllib3-2.5.0-py3-none-any.whl", hash = "sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc"},
-    {file = "urllib3-2.5.0.tar.gz", hash = "sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"},
+    {file = "urllib3-2.6.0-py3-none-any.whl", hash = "sha256:c90f7a39f716c572c4e3e58509581ebd83f9b59cced005b7db7ad2d22b0db99f"},
+    {file = "urllib3-2.6.0.tar.gz", hash = "sha256:cb9bcef5a4b345d5da5d145dc3e30834f58e8018828cbc724d30b4cb7d4d49f1"},
 ]
 
 [package.extras]
-brotli = ["brotli (>=1.0.9) ; platform_python_implementation == \"CPython\"", "brotlicffi (>=0.8.0) ; platform_python_implementation != \"CPython\""]
+brotli = ["brotli (>=1.2.0) ; platform_python_implementation == \"CPython\"", "brotlicffi (>=1.2.0.0) ; platform_python_implementation != \"CPython\""]
 h2 = ["h2 (>=4,<5)"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
-zstd = ["zstandard (>=0.18.0)"]
+zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 
 [[package]]
 name = "uuid-utils"
@@ -4962,4 +4962,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "cf716a98506284a3e0b601dd54147dd9599daef2a775e72c631fbb111e3b4c12"
+content-hash = "cda487332f3153efdac0a89bcf18aef7eb813564489d28a08d1f14fb0e6b0d51"

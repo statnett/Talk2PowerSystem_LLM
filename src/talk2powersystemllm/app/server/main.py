@@ -27,11 +27,15 @@ from langchain_core.messages import (
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import AsyncRedisSaver
 from rdflib import Graph, Namespace
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, FileResponse
 from ttyg.tools import AutocompleteSearchTool
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
-from talk2powersystemllm.tools.user_datetime_context import user_datetime_ctx
+from talk2powersystemllm.tools import (
+    user_datetime_ctx,
+    ImageArtifact,
+    GraphicsTool,
+)
 from .about import (
     __version__,
     __timestamp__,
@@ -52,6 +56,8 @@ from ..models import (
     ChatRequest,
     ChatResponse,
     Message,
+    Graphic,
+    ImageGraphic,
     Usage,
     ExplainRequest,
     ExplainResponse,
@@ -324,6 +330,17 @@ def get_about_graphdb() -> AboutGraphDBInfo:
 def get_about_agent() -> AboutAgentInfo:
     tools: dict[str, dict[str, Any]] = dict()
     tools["sparql_query"] = {"enabled": True}
+    tools["display_graphics"] = {"enabled": True}
+    if agent_factory.settings.tools.display_graphics and agent_factory.settings.tools.display_graphics.sparql_query_template:
+        tools["display_graphics"].update({
+            "sparql_query_template": agent_factory.settings.tools.display_graphics.sparql_query_template,
+        })
+    else:
+        display_graphics_tool: GraphicsTool = \
+            [tool for tool in agent_factory.tools if tool.name == "display_graphics"][0]
+        tools["display_graphics"].update({
+            "sparql_query_template": display_graphics_tool.sparql_query_template
+        })
     tools["autocomplete_search"] = {
         "enabled": True,
         "property_path": agent_factory.settings.tools.autocomplete_search.property_path,
@@ -333,9 +350,10 @@ def get_about_agent() -> AboutAgentInfo:
             "sparql_query_template": agent_factory.settings.tools.autocomplete_search.sparql_query_template,
         })
     else:
-        tool: AutocompleteSearchTool = [tool for tool in agent_factory.tools if tool.name == "autocomplete_search"][0]
+        autocomplete_search_tool: AutocompleteSearchTool = \
+            [tool for tool in agent_factory.tools if tool.name == "autocomplete_search"][0]
         tools["autocomplete_search"].update({
-            "sparql_query_template": tool.sparql_query_template
+            "sparql_query_template": autocomplete_search_tool.sparql_query_template
         })
     tools["sample_sparql_queries"] = {"enabled": True if agent_factory.settings.tools.retrieval_search else False}
     if agent_factory.settings.tools.retrieval_search:
@@ -438,6 +456,51 @@ def exchange_obo_for_cognite(user_access_token: str) -> dict:
 
 
 # noinspection PyUnusedLocal
+@app.get(
+    "/rest/chat/diagrams/{filename}",
+    summary="Serves the static diagrams",
+    tags=["Chat"],
+    responses={
+        401: {
+            "description": "Unauthorized",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Not authenticated"
+                    },
+                }
+            }
+        },
+        404: {
+            "description": "File not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "File not found"
+                    },
+                }
+            }
+        },
+    },
+    name="diagrams"
+)
+async def diagrams(
+    filename: str,
+    claims=Depends(conditional_security),
+):
+    file_path = settings.diagrams_path / filename
+
+    if not file_path.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return FileResponse(file_path, headers={"Cache-Control": "private, max-age=3600"})
+
+
+def build_diagram_url(request: Request, filename: str) -> str:
+    return str(request.app.url_path_for("diagrams", filename=filename))
+
+
+# noinspection PyUnusedLocal
 @app.post(
     "/rest/chat/conversations",
     summary="Starts a new conversation or adds message to an existing conversation",
@@ -469,7 +532,8 @@ def exchange_obo_for_cognite(user_access_token: str) -> dict:
     response_model_exclude_none=True,
 )
 async def conversations(
-    request: ChatRequest,
+    request: Request,
+    chat_request: ChatRequest,
     x_request_id: Annotated[str | None, Header()] = None,
     x_user_datetime: Annotated[str | None, Header()] = None,
     authorization: Annotated[str | None, Header()] = None,
@@ -484,7 +548,7 @@ async def conversations(
 
     user_datetime_ctx.set(x_user_datetime)
 
-    conversation_id = request.conversation_id
+    conversation_id = chat_request.conversation_id
     if conversation_id:
         checkpoint = await agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
         if not checkpoint:
@@ -492,18 +556,20 @@ async def conversations(
     else:
         conversation_id = "thread_" + str(uuid.uuid4())
 
-    logging.info(f"Conversation {conversation_id}: Input \"{request.question}\"")
+    logging.info(f"Conversation {conversation_id}: Input \"{chat_request.question}\"")
     runnable_config = RunnableConfig(configurable={"thread_id": conversation_id})
-    input_ = {"messages": [{"role": "user", "content": request.question}]}
-
-    sum_input_tokens, sum_output_tokens, sum_total_tokens = 0, 0, 0
+    input_ = {"messages": [{"role": "user", "content": chat_request.question}]}
 
     start = time.time()
-    messages = []
+    messages: list[Message] = []
+    graphics: list[Graphic] = []
+    sum_input_tokens, sum_output_tokens, sum_total_tokens = 0, 0, 0
 
     # noinspection PyTypeChecker
     async for output in agent.astream(input_, runnable_config, stream_mode="updates"):
-        logging.info(f"Conversation {conversation_id}: Output {output}")
+        output = dict(output)
+        logging.debug(f"Conversation {conversation_id}: Output {output}")
+
         if "model" in output and "messages" in output["model"]:
             for ai_message in output["model"]["messages"]:
                 usage_metadata = ai_message.usage_metadata
@@ -513,23 +579,43 @@ async def conversations(
                 sum_output_tokens += output_tokens
                 sum_total_tokens += total_tokens
                 if ai_message.content:
-                    messages.append(
-                        Message(
-                            id=ai_message.id,
-                            message=ai_message.content,
-                            usage=Usage(promptTokens=input_tokens, completionTokens=output_tokens,
-                                        totalTokens=total_tokens)
-                        ),
+                    logging.info(f"Conversation {conversation_id}: AI Message: \"{ai_message.content}\"")
+                    message_kwargs = {
+                        "id": ai_message.id,
+                        "message": ai_message.content,
+                        "usage": Usage(promptTokens=sum_input_tokens, completionTokens=sum_output_tokens,
+                                       totalTokens=sum_total_tokens)
+                    }
+                    if graphics:
+                        message_kwargs["graphics"] = graphics
+                    messages.append(Message(**message_kwargs))
+                    sum_input_tokens, sum_output_tokens, sum_total_tokens = 0, 0, 0
+                    graphics: list[Graphic] = []
+                if ai_message.tool_calls:
+                    for tool_call in ai_message.tool_calls:
+                        logging.info(f"Conversation {conversation_id}: Tool Call: {tool_call}")
+
+        elif "tools" in output and "messages" in output["tools"]:
+            for tool_message in output["tools"]["messages"]:
+                if tool_message.status == "success" and tool_message.artifact \
+                    and isinstance(tool_message.artifact, ImageArtifact):
+                    graphics.append(
+                        ImageGraphic(type="image", url=build_diagram_url(request, tool_message.artifact.data))
                     )
 
     logging.info(
         f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"
     )
 
+    total_input_tokens = sum([message.usage.prompt_tokens for message in messages])
+    total_output_tokens = sum([message.usage.completion_tokens for message in messages])
+    total_total_tokens = sum([message.usage.total_tokens for message in messages])
+
     return ChatResponse(
         id=conversation_id,
         messages=messages,
-        usage=Usage(completionTokens=sum_output_tokens, promptTokens=sum_input_tokens, totalTokens=sum_total_tokens)
+        usage=Usage(completionTokens=total_output_tokens, promptTokens=total_input_tokens,
+                    totalTokens=total_total_tokens)
     )
 
 
@@ -620,13 +706,16 @@ async def explain(
             break
         explain_messages.insert(0, message)
 
-    # gather artifacts (these are the actual redacted executed SPARQL queries) and errors
     tools_calls_errors = dict()
-    tools_calls_artifacts = dict()
+    executed_queries = dict()
     for message in explain_messages:
         if isinstance(message, ToolMessage):
-            if message.artifact:
-                tools_calls_artifacts[message.tool_call_id] = message.artifact
+            if message.artifact and "kwargs" in message.artifact and "type" in message.artifact["kwargs"] and \
+                message.artifact["kwargs"]["type"] == "query":
+                executed_queries[message.tool_call_id] = {
+                    "query": message.artifact["kwargs"]["query"],
+                    "queryType": message.artifact["kwargs"]["query_type"],
+                }
             if message.status == "error":
                 tools_calls_errors[message.tool_call_id] = message.content
 
@@ -638,12 +727,9 @@ async def explain(
                     "name": tool_call["name"],
                     "args": tool_call["args"],
                 }
-                # TODO this is not a good way, currently we rely on the fact that only the SPARQL tools produce artifacts
-                if tool_call["id"] in tools_calls_artifacts:
-                    query_method_kwargs.update({
-                        "query": tools_calls_artifacts[tool_call["id"]],
-                        "queryType": "sparql",
-                    })
+
+                if tool_call["id"] in executed_queries:
+                    query_method_kwargs.update(executed_queries[tool_call["id"]])
                 if tool_call["id"] in tools_calls_errors:
                     query_method_kwargs.update({
                         "errorOutput": tools_calls_errors[tool_call["id"]],

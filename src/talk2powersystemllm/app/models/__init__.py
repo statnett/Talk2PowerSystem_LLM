@@ -3,6 +3,8 @@ from .models import (
     ChatRequest,
     Usage,
     Message,
+    Graphic,
+    ImageGraphic,
     ChatResponse,
     ExplainRequest,
     QueryMethod,

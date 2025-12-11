@@ -14,6 +14,7 @@
         {"synchronousarea": {"type": "uri", "value": "urn:uuid:5829041b-1f25-4a3d-8b4c-532d9f0b6e54"}},
         {"synchronousarea": {"type": "uri", "value": "urn:uuid:2bb01483-28f2-4a79-a9c6-754478445e30"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - synchronousarea
       matches: chatcmpl-tool-01b24885472c49dc8f15a7cf8a789fa7
@@ -65,6 +66,7 @@
       name: iri_discovery
       output: urn:uuid:cfb857c9-3ac2-4ea8-bcdb-1e50bd15f541
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -85,6 +87,7 @@
       output: '{"head": {"vars": ["breaker"]}, "results": {"bindings": [{"breaker":
         {"type": "uri", "value": "urn:uuid:12156bb5-7a82-4e95-8ea4-2ff8573133fe"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - breaker
       matches: chatcmpl-tool-d2f59bc8e2004d6597a673bf40617877
@@ -273,6 +276,7 @@
       name: iri_discovery
       output: urn:uuid:0f3b6200-684d-4365-8d55-45baae73bffb
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -293,6 +297,7 @@
       output: '{"head": {"vars": ["breaker"]}, "results": {"bindings": [{"breaker":
         {"type": "uri", "value": "urn:uuid:12156bb5-7a82-4e95-8ea4-2ff8573133fe"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - breaker
       matches: chatcmpl-tool-f0db31bee766495d93aa17cc2d7b0812
@@ -364,6 +369,7 @@
       name: iri_discovery
       output: urn:uuid:26d2f8aa-b651-46c5-a54d-05948f35f3d2
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -384,6 +390,7 @@
       output: '{"head": {"vars": ["breaker"]}, "results": {"bindings": [{"breaker":
         {"type": "uri", "value": "urn:uuid:12156bb5-7a82-4e95-8ea4-2ff8573133fe"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - breaker
   status: success
@@ -466,6 +473,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901a7-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -485,6 +493,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f1769960-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-ecc83a81aee349539c6a9e59c44112a0
@@ -565,6 +574,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90170-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -584,6 +594,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f17698aa-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
   status: success
@@ -679,6 +690,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90183-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -698,6 +710,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f17698de-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-f2388f5b022941b5a4b18b2f0b5d34a7
@@ -739,6 +752,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9017b-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -758,6 +772,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:2dd90451-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-1cb34ffb8dcb4b8aa8807cc8dd8db10b
@@ -821,6 +836,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901b3-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -840,6 +856,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f17699bc-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
   status: success
@@ -956,6 +973,7 @@
       name: iri_discovery
       output: urn:uuid:f1769614-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -963,6 +981,7 @@
       name: iri_discovery
       output: urn:uuid:f176961a-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -987,6 +1006,7 @@
       output: '{"head": {"vars": ["linearshuntcompensator"]}, "results": {"bindings":
         [{"linearshuntcompensator": {"type": "uri", "value": "urn:uuid:2dd903cc-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - linearshuntcompensator
       matches: chatcmpl-tool-6b18f1ca19e3432389a1d05e43225809
@@ -1146,6 +1166,7 @@
       name: iri_discovery
       output: urn:uuid:f176964e-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -1153,6 +1174,7 @@
       name: iri_discovery
       output: urn:uuid:f1769650-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -1177,6 +1199,7 @@
       output: '{"head": {"vars": ["linearshuntcompensator"]}, "results": {"bindings":
         [{"linearshuntcompensator": {"type": "uri", "value": "urn:uuid:2dd90405-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - linearshuntcompensator
       matches: chatcmpl-tool-926b45352ddd49c6b3d0a121b730cc6f
@@ -1323,6 +1346,7 @@
       name: iri_discovery
       output: urn:uuid:681a1e15-5a55-11eb-a658-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -1330,6 +1354,7 @@
       name: iri_discovery
       output: urn:uuid:681a1e4e-5a55-11eb-a658-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -1354,6 +1379,7 @@
       output: '{"head": {"vars": ["linearshuntcompensator"]}, "results": {"bindings":
         [{"linearshuntcompensator": {"type": "uri", "value": "urn:uuid:681a323d-5a55-11eb-a658-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - linearshuntcompensator
       matches: chatcmpl-tool-507551f54fdb48b3bcfb3baab652af6a
@@ -1421,6 +1447,7 @@
       name: iri_discovery
       output: urn:uuid:f1769670-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -1428,6 +1455,7 @@
       name: iri_discovery
       output: urn:uuid:f1769672-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -1452,6 +1480,7 @@
       output: '{"head": {"vars": ["linearshuntcompensator"]}, "results": {"bindings":
         [{"linearshuntcompensator": {"type": "uri", "value": "urn:uuid:2dd90408-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - linearshuntcompensator
       matches: chatcmpl-tool-5527205286694f3dab3c70619ae422af
@@ -1685,6 +1714,7 @@
       name: iri_discovery
       output: urn:uuid:f176960e-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -1692,6 +1722,7 @@
       name: iri_discovery
       output: urn:uuid:f1769610-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -1716,6 +1747,7 @@
       output: '{"head": {"vars": ["linearshuntcompensator"]}, "results": {"bindings":
         [{"linearshuntcompensator": {"type": "uri", "value": "urn:uuid:2dd903bd-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - linearshuntcompensator
       matches: chatcmpl-tool-ca852b66497b4118956f0a783ab5ab5a
@@ -1800,6 +1832,7 @@
       name: iri_discovery
       output: urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -1820,6 +1853,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
       matches: chatcmpl-tool-a964fa79289343cf817c62e78bd36e55
@@ -1864,6 +1898,7 @@
       name: iri_discovery
       output: urn:uuid:734aa25e-9549-11ec-b226-48ba4eadba68
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -1884,6 +1919,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:734aa25e-9549-11ec-b226-48ba4eadba68"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
       matches: chatcmpl-tool-755a9063f8654547923e4e52b1ef859e
@@ -1981,6 +2017,7 @@
       name: iri_discovery
       output: urn:uuid:486f219e-c4dc-498d-ba6a-3c8c8c46cdcf
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2000,9 +2037,9 @@
       output: '{"head": {"vars": ["fuse"]}, "results": {"bindings": [{"fuse": {"type":
         "uri", "value": "urn:uuid:764a7252-9aae-4da4-a23b-6c770d8b16c1"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - fuse
-      matches: chatcmpl-tool-840cefb3550e41a1a6140eac92a09007
   status: success
   actual_steps:
   - name: sparql_query
@@ -2098,7 +2135,7 @@
       \n        }\n      },\n      {\n        \"fuse\": {\n          \"type\": \"\
       uri\",\n          \"value\": \"urn:uuid:764a7252-9aae-4da4-a23b-6c770d8b16c1\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 263508
   output_tokens: 602
   total_tokens: 264110
@@ -2128,6 +2165,7 @@
       name: iri_discovery
       output: urn:uuid:570e408d-5441-4c27-8480-5ef76e636e89
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2147,9 +2185,9 @@
       output: '{"head": {"vars": ["fuse"]}, "results": {"bindings": [{"fuse": {"type":
         "uri", "value": "urn:uuid:bf819ffc-270d-4025-bef8-db10ffb5b196"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - fuse
-      matches: chatcmpl-tool-a662799e6b4e4f30865d4fbf0afac10a
   status: success
   actual_steps:
   - name: sparql_query
@@ -2293,7 +2331,7 @@
       .\n\n<urn:uuid:764a7252-9aae-4da4-a23b-6c770d8b16c1> <https://cim.ucaiug.io/rules#connectedTo>\n    <urn:uuid:bf819ffc-270d-4025-bef8-db10ffb5b196>
       .\n\n<urn:uuid:2bd7a004-6ad1-47fc-bb52-6f5ee1f94c31> <https://cim.ucaiug.io/rules#connectedTo>\n    <urn:uuid:bf819ffc-270d-4025-bef8-db10ffb5b196>
       .\n"'
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 355759
   output_tokens: 943
   total_tokens: 356702
@@ -2320,6 +2358,7 @@
       name: iri_discovery
       output: urn:uuid:25aa69e7-0916-427f-9d87-d8690d39358b
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2339,6 +2378,7 @@
       output: '{"head": {"vars": ["fuse"]}, "results": {"bindings": [{"fuse": {"type":
         "uri", "value": "urn:uuid:a498f1fd-65f0-41df-83ee-29c92d075514"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - fuse
       matches: chatcmpl-tool-eba498d417664767b009bce0864ab66a
@@ -2415,6 +2455,7 @@
       name: iri_discovery
       output: urn:uuid:176d0737-9e72-456d-bb64-c430987bb331
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2434,6 +2475,7 @@
       output: '{"head": {"vars": ["fuse"]}, "results": {"bindings": [{"fuse": {"type":
         "uri", "value": "urn:uuid:9b24ac8f-043c-4087-ac3b-a695c464f93d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - fuse
       matches: chatcmpl-tool-44ae1bfc36fe447ca0b6e3c50736b9bb
@@ -2510,6 +2552,7 @@
       name: iri_discovery
       output: urn:uuid:ef273823-732b-426a-951f-d0173813d4d2
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2529,6 +2572,7 @@
       output: '{"head": {"vars": ["fuse"]}, "results": {"bindings": [{"fuse": {"type":
         "uri", "value": "urn:uuid:7e432a85-77b4-44f2-ae98-07134a1a5087"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - fuse
       matches: chatcmpl-tool-22d22704fbb445ae9868900533fb213f
@@ -2602,6 +2646,7 @@
       output: '{"head": {"vars": ["distributionsystemoperator"]}, "results": {"bindings":
         [{"distributionsystemoperator": {"type": "uri", "value": "urn:uuid:b08ad243-30c1-4bb1-9e7e-5783a8ed50bd"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - distributionsystemoperator
       matches: chatcmpl-tool-08e044ae213e4e4288dfed60b7237f21
@@ -2658,6 +2703,7 @@
       name: iri_discovery
       output: urn:uuid:417979f7-6af4-460e-8966-c42e671844a3
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2679,6 +2725,7 @@
         [{"rotatingmachineaction": {"type": "uri", "value": "urn:uuid:417979f7-6af4-460e-8966-c42e671844a3"}},
         {"rotatingmachineaction": {"type": "uri", "value": "urn:uuid:050cd458-b999-4c8d-ad24-93c6a3102b53"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - rotatingmachineaction
   status: success
@@ -2753,6 +2800,7 @@
       name: iri_discovery
       output: urn:uuid:050cd458-b999-4c8d-ad24-93c6a3102b53
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2774,6 +2822,7 @@
         [{"rotatingmachineaction": {"type": "uri", "value": "urn:uuid:417979f7-6af4-460e-8966-c42e671844a3"}},
         {"rotatingmachineaction": {"type": "uri", "value": "urn:uuid:050cd458-b999-4c8d-ad24-93c6a3102b53"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - rotatingmachineaction
   status: success
@@ -2827,6 +2876,7 @@
       name: iri_discovery
       output: urn:uuid:49a979ce-b328-476c-a11b-cf47233a4043
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2848,6 +2898,7 @@
       output: '{"head": {"vars": ["identifiedobject"]}, "results": {"bindings": [{"identifiedobject":
         {"type": "uri", "value": "urn:uuid:f1769664-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - identifiedobject
       matches: chatcmpl-tool-f91c659de9ed47608520f07cf13de72a
@@ -2921,6 +2972,7 @@
       name: iri_discovery
       output: urn:uuid:a2cc07bc-d618-11e5-9a54-c8f73334bf7e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -2942,6 +2994,7 @@
       output: '{"head": {"vars": ["identifiedobject"]}, "results": {"bindings": [{"identifiedobject":
         {"type": "uri", "value": "urn:uuid:f17696b8-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - identifiedobject
       matches: chatcmpl-tool-0d9386e4b0184253b077ce7a65ca58a0
@@ -2991,6 +3044,7 @@
       name: iri_discovery
       output: urn:uuid:b52df43a-d617-11e5-9a54-c8f73334bf7e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3012,6 +3066,7 @@
       output: '{"head": {"vars": ["identifiedobject"]}, "results": {"bindings": [{"identifiedobject":
         {"type": "uri", "value": "urn:uuid:f1769bb4-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - identifiedobject
       matches: chatcmpl-tool-b600ad8f69d64e4bb6b93c3a24bdd2dc
@@ -3124,6 +3179,7 @@
       name: iri_discovery
       output: urn:uuid:fa38b90d-d616-11e5-9a54-c8f73334bf7e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3145,6 +3201,7 @@
       output: '{"head": {"vars": ["identifiedobject"]}, "results": {"bindings": [{"identifiedobject":
         {"type": "uri", "value": "urn:uuid:f1769670-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - identifiedobject
       matches: chatcmpl-tool-1e6bc244257045de840bd2ea97425fee
@@ -3189,6 +3246,7 @@
       name: iri_discovery
       output: urn:uuid:eb9fa1e0-395e-441d-9d9c-bd5bb54dd789
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3210,9 +3268,9 @@
       output: '{"head": {"vars": ["identifiedobject"]}, "results": {"bindings": [{"identifiedobject":
         {"type": "uri", "value": "urn:uuid:f1769c74-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - identifiedobject
-      matches: chatcmpl-tool-ce13686a9d8848798a4ddf64f1fed44c
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -3308,7 +3366,7 @@
       \    \"value\": \"300OSLO-KVILLDAL\"\n        },\n        \"class\": {\n   \
       \       \"type\": \"uri\",\n          \"value\": \"http://www.opengis.net/ont/geosparql#Feature\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 263867
   output_tokens: 641
   total_tokens: 264508
@@ -3358,6 +3416,7 @@
         {"pinterminal": {"type": "uri", "value": "urn:uuid:b799d394-34b3-45e4-a103-a5676a13850d"}},
         {"pinterminal": {"type": "uri", "value": "urn:uuid:112e3335-caa5-44dd-85eb-3a258791e127"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - pinterminal
       matches: chatcmpl-tool-2dc1b46ee02a46ad876c256c202357a5
@@ -3406,6 +3465,7 @@
       name: iri_discovery
       output: urn:uuid:b0400312-53a3-11e8-a5aa-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3425,6 +3485,7 @@
       output: '{"head": {"vars": ["pinterminal"]}, "results": {"bindings": [{"pinterminal":
         {"type": "uri", "value": "urn:uuid:b0c5b94e-7094-470d-8515-7c6b1e7cfd31"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - pinterminal
   status: success
@@ -3545,6 +3606,7 @@
       name: iri_discovery
       output: urn:uuid:b040030f-53a3-11e8-a5aa-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3564,6 +3626,7 @@
       output: '{"head": {"vars": ["pinterminal"]}, "results": {"bindings": [{"pinterminal":
         {"type": "uri", "value": "urn:uuid:b799d394-34b3-45e4-a103-a5676a13850d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - pinterminal
   status: success
@@ -3617,6 +3680,7 @@
       name: iri_discovery
       output: urn:uuid:a688fe7a-40f2-4912-92b9-de2091ab93f9
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3637,6 +3701,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:acb47937-7b0b-5b48-aa5c-1bfea476304c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
   status: success
@@ -3682,6 +3747,7 @@
       name: iri_discovery
       output: urn:uuid:f06bd082-0c59-4f44-a4ba-3f3a1fa96f7f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3702,6 +3768,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:0954de0b-536f-7b45-b83a-f3ebaf34db13"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
   status: success
@@ -3755,6 +3822,7 @@
       name: iri_discovery
       output: urn:uuid:2e7635cf-db05-43c9-b8d9-ab1963ffb39d
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3775,6 +3843,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:56c7aad0-b73d-714f-8904-cb156a912127"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
   status: success
@@ -3842,6 +3911,7 @@
       name: iri_discovery
       output: urn:uuid:764cd027-060c-44f4-9913-1712eda83110
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3862,6 +3932,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:6b8e0ffe-1129-e541-9ba1-65e69ebff7a4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
   status: success
@@ -3915,6 +3986,7 @@
       name: iri_discovery
       output: urn:uuid:c7a2b34e-414b-41f4-8241-df37018d068b
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -3935,6 +4007,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:a311e1be-3bd0-0643-9298-94b985de0e9e"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
   status: success
@@ -3981,6 +4054,7 @@
       name: iri_discovery
       output: urn:uuid:734aa242-9549-11ec-b226-48ba4eadba68
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4011,6 +4085,7 @@
         {"disconnector": {"type": "uri", "value": "urn:uuid:fd338915-3831-4cc5-8c55-af2b4c1c2bb8"}},
         {"disconnector": {"type": "uri", "value": "urn:uuid:41e0788e-9dc5-4bf0-862b-f2a99e421602"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - disconnector
       matches: chatcmpl-tool-712efad7fb3b48dcb01e1a0aaf54cc0b
@@ -4084,6 +4159,7 @@
       name: iri_discovery
       output: urn:uuid:734aa239-9549-11ec-b226-48ba4eadba68
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4110,6 +4186,7 @@
         {"disconnector": {"type": "uri", "value": "urn:uuid:842aed4c-0828-4e7a-babc-ce724633a43d"}},
         {"disconnector": {"type": "uri", "value": "urn:uuid:842aed4c-0828-4e7a-babc-ce724633a43d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - disconnector
       matches: chatcmpl-tool-1c7ae4346f044a89a1762f2d2c76051f
@@ -4205,6 +4282,7 @@
       name: iri_discovery
       output: urn:uuid:734aa236-9549-11ec-b226-48ba4eadba68
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4227,6 +4305,7 @@
         {"disconnector": {"type": "uri", "value": "urn:uuid:a8afc199-8a20-41d8-8ada-5261202610eb"}},
         {"disconnector": {"type": "uri", "value": "urn:uuid:a8afc199-8a20-41d8-8ada-5261202610eb"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - disconnector
       matches: chatcmpl-tool-636f3dd3126847d0a80528f6d1aaac8d
@@ -4287,6 +4366,7 @@
       name: iri_discovery
       output: urn:uuid:734aa23c-9549-11ec-b226-48ba4eadba68
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4309,6 +4389,7 @@
         {"disconnector": {"type": "uri", "value": "urn:uuid:a450fac1-80a9-cd4d-aa26-0223af980b17"}},
         {"disconnector": {"type": "uri", "value": "urn:uuid:a8f889e8-53f2-494b-97b9-c5dcbc1d17c7"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - disconnector
       matches: chatcmpl-tool-d2941fb057db4a078fba8b5cacbe3046
@@ -4403,6 +4484,7 @@
       name: iri_discovery
       output: urn:uuid:734aa247-9549-11ec-b226-48ba4eadba68
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4423,6 +4505,7 @@
         {"type": "uri", "value": "urn:uuid:652e1c63-50b0-4f5a-b88d-8f814a0cda4d"}},
         {"disconnector": {"type": "uri", "value": "urn:uuid:652e1c63-50b0-4f5a-b88d-8f814a0cda4d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - disconnector
       matches: chatcmpl-tool-83f469e2885e489fac1c18f7d881659e
@@ -4520,6 +4603,7 @@
       name: iri_discovery
       output: urn:uuid:4abb4cf4-5b33-4e16-b4f4-7b7dbf45e90a
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4540,6 +4624,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:86cd468a-7cfa-4efa-9ee5-f9bb8088a7a1"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
   status: success
@@ -4584,6 +4669,7 @@
       name: iri_discovery
       output: urn:uuid:c70c1ea0-c58b-624b-ab6a-0072ad2eea25
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4604,6 +4690,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:ef17168b-d7ee-7548-9822-e10bbbcec793"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-c7e434a5d023460bb50e30e2dbe1356e
@@ -4685,6 +4772,7 @@
       name: iri_discovery
       output: urn:uuid:ed8865cf-8b36-42ce-acdc-0627b5f55802
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4705,6 +4793,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:e190ae57-ed18-f340-90c2-ddbbfe168ed8"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-90604a67101945a5849a97e6c42e96c7
@@ -4753,6 +4842,7 @@
       name: iri_discovery
       output: urn:uuid:6ce10f1e-5f92-3f4b-a0db-1a1a7179b175
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4772,6 +4862,7 @@
       output: '{"head": {"vars": ["bay"]}, "results": {"bindings": [{"bay": {"type":
         "uri", "value": "urn:uuid:8cae3059-9886-40db-befa-ddfa56ba94cd"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - bay
   status: success
@@ -4950,6 +5041,7 @@
       name: iri_discovery
       output: urn:uuid:129f8045-d9f2-fe4a-a905-6c4be6db5318
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -4969,6 +5061,7 @@
       output: '{"head": {"vars": ["bay"]}, "results": {"bindings": [{"bay": {"type":
         "uri", "value": "urn:uuid:1231dfc8-411f-4de0-88fe-cdfa58ed470e"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - bay
   status: success
@@ -5050,6 +5143,7 @@
       name: iri_discovery
       output: urn:uuid:4a48c790-94e4-0d4d-885c-9d7e498b8b67
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5069,6 +5163,7 @@
       output: '{"head": {"vars": ["bay"]}, "results": {"bindings": [{"bay": {"type":
         "uri", "value": "urn:uuid:876f7fb1-8568-4024-bbd2-664b9503adeb"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - bay
   status: success
@@ -5163,6 +5258,7 @@
       name: iri_discovery
       output: urn:uuid:508e6a84-b922-5344-a535-5ded6671e583
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5182,6 +5278,7 @@
       output: '{"head": {"vars": ["bay"]}, "results": {"bindings": [{"bay": {"type":
         "uri", "value": "urn:uuid:9ba118a2-7cb0-a54b-ac6e-277cf55bfd4d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - bay
   status: error
@@ -5202,6 +5299,7 @@
       name: iri_discovery
       output: urn:uuid:81e0db9e-aa30-474d-b017-def591771422
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5222,6 +5320,7 @@
         "uri", "value": "urn:uuid:12c2570d-d7d8-445b-865d-eb981c7603de"}}, {"bay":
         {"type": "uri", "value": "urn:uuid:2d80e032-6152-0a44-8206-45b04656dc85"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - bay
       matches: chatcmpl-tool-ff211eb17f784621a65a631ba0814507
@@ -5480,6 +5579,7 @@
       name: iri_discovery
       output: urn:uuid:9f3753d2-3a46-454b-8d14-f4f00743d48a
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5498,6 +5598,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:811613d5-c44f-4daa-9dc1-03005740a4e5"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: error
@@ -5518,6 +5619,7 @@
       name: iri_discovery
       output: urn:uuid:800c36a9-07be-45bd-9106-260cbd66ce4c
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5536,6 +5638,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:ccffa748-19de-412a-9946-1fc846d98b71"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
       matches: chatcmpl-tool-2dbd4e199755424f9daf9c6b7758da08
@@ -5611,6 +5714,7 @@
       name: iri_discovery
       output: urn:uuid:725505f7-df2a-41da-9428-0a9b7984817a
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5629,6 +5733,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:37a3bd2c-7817-48de-aa01-13a324a6d6bd"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
       matches: chatcmpl-tool-c5ff82d25361423b9b364b037ea4e048
@@ -5741,6 +5846,7 @@
       name: iri_discovery
       output: urn:uuid:e286272e-827c-4b12-83cb-6b3e91170e3e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5759,6 +5865,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:99a5ca36-e724-49a7-8e7f-247357b6f336"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
       matches: chatcmpl-tool-6b80e950673240cf9c36157e75025ffb
@@ -5816,6 +5923,7 @@
       name: iri_discovery
       output: urn:uuid:85024669-7147-4a77-9a30-b773d8b10f58
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5834,6 +5942,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:99a5ca36-e724-49a7-8e7f-247357b6f336"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
       matches: chatcmpl-tool-6dadc08e50d54146bbdb13fe61fcd2b9
@@ -5906,6 +6015,7 @@
       name: iri_discovery
       output: urn:uuid:256e66e8-9d74-11ec-a67a-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5925,6 +6035,7 @@
       output: '{"head": {"vars": ["potentialtransformer"]}, "results": {"bindings":
         [{"potentialtransformer": {"type": "uri", "value": "urn:uuid:d9358e9b-1dc4-40fe-9c5f-b3cb40b236a5"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - potentialtransformer
   status: success
@@ -5972,6 +6083,7 @@
       name: iri_discovery
       output: urn:uuid:7f618ac4-d4da-11e7-9296-cec278b6b50a
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -5991,6 +6103,7 @@
       output: '{"head": {"vars": ["overheadwireinfo"]}, "results": {"bindings": [{"overheadwireinfo":
         {"type": "uri", "value": "urn:uuid:7f618ac4-d4da-11e7-9296-cec278b6b50a"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - overheadwireinfo
   status: success
@@ -6103,6 +6216,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90295-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6122,6 +6236,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
       matches: chatcmpl-tool-28831d0621044aeea36c2caed78f615b
@@ -6180,6 +6295,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9016f-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6199,6 +6315,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
   status: success
@@ -6336,6 +6453,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90367-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6355,6 +6473,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
       matches: chatcmpl-tool-9337fa1ab60a41f9a10e4be3834023b7
@@ -6420,6 +6539,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9029b-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6439,6 +6559,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
       matches: chatcmpl-tool-a1b19edfde3d4a0393a70112179e8e0e
@@ -6638,6 +6759,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9038b-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6657,6 +6779,7 @@
       output: '{"head": {"vars": ["topologicalisland"]}, "results": {"bindings": [{"topologicalisland":
         {"type": "uri", "value": "urn:uuid:b04002c8-53a3-11e8-a5aa-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - topologicalisland
       matches: chatcmpl-tool-02812daedf23434790c910e18bfb62a9
@@ -6715,6 +6838,7 @@
       name: iri_discovery
       output: urn:uuid:69ed3bd9-c374-49ef-b186-d49d869940bb
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6734,6 +6858,7 @@
       output: '{"head": {"vars": ["stagetrigger"]}, "results": {"bindings": [{"stagetrigger":
         {"type": "uri", "value": "urn:uuid:69ed3bd9-c374-49ef-b186-d49d869940bb"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stagetrigger
   status: success
@@ -6791,6 +6916,7 @@
       name: iri_discovery
       output: urn:uuid:dcca331c-3acd-446a-94ec-1c00b427af05
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6810,9 +6936,9 @@
       output: '{"head": {"vars": ["stagetrigger"]}, "results": {"bindings": [{"stagetrigger":
         {"type": "uri", "value": "urn:uuid:dcca331c-3acd-446a-94ec-1c00b427af05"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stagetrigger
-      matches: chatcmpl-tool-55291d6442754ff881948c8bf1a4f2ed
   status: success
   actual_steps:
   - name: sparql_query
@@ -6844,7 +6970,7 @@
       results\": {\n    \"bindings\": [\n      {\n        \"gate\": {\n          \"\
       type\": \"uri\",\n          \"value\": \"urn:uuid:1238f3dd-6c26-488b-9067-d885d80903ba\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 261902
   output_tokens: 562
   total_tokens: 262464
@@ -6862,6 +6988,7 @@
       name: iri_discovery
       output: urn:uuid:bb31f847-7509-4582-9721-6e50b525f55d
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -6881,9 +7008,9 @@
       output: '{"head": {"vars": ["stagetrigger"]}, "results": {"bindings": [{"stagetrigger":
         {"type": "uri", "value": "urn:uuid:bb31f847-7509-4582-9721-6e50b525f55d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stagetrigger
-      matches: chatcmpl-tool-684f01a0831542d8847d604ff8275d8f
   status: success
   actual_steps:
   - name: sparql_query
@@ -6923,7 +7050,7 @@
       results\": {\n    \"bindings\": [\n      {\n        \"stage\": {\n         \
       \ \"type\": \"uri\",\n          \"value\": \"urn:uuid:cdb8c7f6-28ff-4cec-ba1b-0992ec445e2f\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 348819
   output_tokens: 506
   total_tokens: 349325
@@ -6954,6 +7081,7 @@
         {"type": "uri", "value": "urn:uuid:20605037-a626-4691-8601-89666564ff87"}},
         {"loadbreakswitch": {"type": "uri", "value": "urn:uuid:55de4e32-8cb0-4602-9901-ec91e104b300"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - loadbreakswitch
       matches: chatcmpl-tool-e838f1ab354b4e69967a4ba08d4c9f5f
@@ -6995,6 +7123,7 @@
       name: iri_discovery
       output: urn:uuid:2147932e-ba94-4cee-a9ad-a22c9c87dab5
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7014,6 +7143,7 @@
       output: '{"head": {"vars": ["powersystemresource"]}, "results": {"bindings":
         [{"powersystemresource": {"type": "uri", "value": "urn:uuid:74936f6f-296e-44db-b772-1d522f317069"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powersystemresource
       matches: chatcmpl-tool-7e033501e2d74fe2822b92e92bad0471
@@ -7070,6 +7200,7 @@
       name: iri_discovery
       output: urn:uuid:1104d9f6-95d3-463a-b8ad-6f64eb3a730b
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7089,6 +7220,7 @@
       output: '{"head": {"vars": ["powersystemresource"]}, "results": {"bindings":
         [{"powersystemresource": {"type": "uri", "value": "urn:uuid:74936f6f-296e-44db-b772-1d522f317069"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powersystemresource
   status: success
@@ -7511,6 +7643,7 @@
       name: iri_discovery
       output: urn:uuid:ff20c614-4797-471e-98c6-c08f7ed97ce6
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7530,6 +7663,7 @@
       output: '{"head": {"vars": ["powersystemresource"]}, "results": {"bindings":
         [{"powersystemresource": {"type": "uri", "value": "urn:uuid:fd11bf7f-138b-4a1b-802c-25262b7b8672"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powersystemresource
   status: success
@@ -7622,6 +7756,7 @@
       name: iri_discovery
       output: urn:uuid:addaff9d-8a88-4f0b-8213-1a15498083a2
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7641,6 +7776,7 @@
       output: '{"head": {"vars": ["powersystemresource"]}, "results": {"bindings":
         [{"powersystemresource": {"type": "uri", "value": "urn:uuid:cfb857c9-3ac2-4ea8-bcdb-1e50bd15f541"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powersystemresource
   status: success
@@ -7733,6 +7869,7 @@
       name: iri_discovery
       output: urn:uuid:6b7f7604-9f3e-479e-889f-f5d3d8ca60a1
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7752,6 +7889,7 @@
       output: '{"head": {"vars": ["powersystemresource"]}, "results": {"bindings":
         [{"powersystemresource": {"type": "uri", "value": "urn:uuid:74936f6f-296e-44db-b772-1d522f317069"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powersystemresource
       matches: chatcmpl-tool-19cc38d6337e4ec5a728eb262ff0cd07
@@ -7807,6 +7945,7 @@
       name: iri_discovery
       output: urn:uuid:f17697a0-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7825,6 +7964,7 @@
       output: '{"head": {"vars": ["nonconformload"]}, "results": {"bindings": [{"nonconformload":
         {"type": "uri", "value": "urn:uuid:f17697b8-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - nonconformload
   status: success
@@ -7911,6 +8051,7 @@
       name: iri_discovery
       output: urn:uuid:f17697d0-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -7929,6 +8070,7 @@
       output: '{"head": {"vars": ["nonconformload"]}, "results": {"bindings": [{"nonconformload":
         {"type": "uri", "value": "urn:uuid:f17697d6-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - nonconformload
   status: success
@@ -8011,6 +8153,7 @@
       name: iri_discovery
       output: urn:uuid:f176979a-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8029,6 +8172,7 @@
       output: '{"head": {"vars": ["nonconformload"]}, "results": {"bindings": [{"nonconformload":
         {"type": "uri", "value": "urn:uuid:f17697b8-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - nonconformload
   status: success
@@ -8097,6 +8241,7 @@
       name: iri_discovery
       output: urn:uuid:f17697dc-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8115,6 +8260,7 @@
       output: '{"head": {"vars": ["nonconformload"]}, "results": {"bindings": [{"nonconformload":
         {"type": "uri", "value": "urn:uuid:f17697ee-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - nonconformload
       matches: chatcmpl-tool-8948c7bb6d474082a693e58892a82bb8
@@ -8302,6 +8448,7 @@
       name: iri_discovery
       output: urn:uuid:f17697e2-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8320,6 +8467,7 @@
       output: '{"head": {"vars": ["nonconformload"]}, "results": {"bindings": [{"nonconformload":
         {"type": "uri", "value": "urn:uuid:f17697ee-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - nonconformload
   status: success
@@ -8362,6 +8510,7 @@
       name: iri_discovery
       output: urn:uuid:4abb4cf4-5b33-4e16-b4f4-7b7dbf45e90a
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8381,6 +8530,7 @@
       output: '{"head": {"vars": ["equivalentinjection"]}, "results": {"bindings":
         [{"equivalentinjection": {"type": "uri", "value": "urn:uuid:4abb4cf4-5b33-4e16-b4f4-7b7dbf45e90a"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - equivalentinjection
       matches: chatcmpl-tool-eb1e51a9a49d4e27a31bf0728f3907b1
@@ -8451,6 +8601,7 @@
       name: iri_discovery
       output: urn:uuid:c70c1ea0-c58b-624b-ab6a-0072ad2eea25
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8470,6 +8621,7 @@
       output: '{"head": {"vars": ["equivalentinjection"]}, "results": {"bindings":
         [{"equivalentinjection": {"type": "uri", "value": "urn:uuid:c70c1ea0-c58b-624b-ab6a-0072ad2eea25"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - equivalentinjection
   status: success
@@ -8555,6 +8707,7 @@
       name: iri_discovery
       output: urn:uuid:ed8865cf-8b36-42ce-acdc-0627b5f55802
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8574,9 +8727,9 @@
       output: '{"head": {"vars": ["equivalentinjection"]}, "results": {"bindings":
         [{"equivalentinjection": {"type": "uri", "value": "urn:uuid:ed8865cf-8b36-42ce-acdc-0627b5f55802"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - equivalentinjection
-      matches: chatcmpl-tool-e719db8b646f47ca8de7a370b42ef50a
   status: success
   actual_steps:
   - name: sparql_query
@@ -8639,7 +8792,7 @@
       \          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\",\n   \
       \       \"type\": \"literal\",\n          \"value\": \"0\"\n        }\n    \
       \  }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 351022
   output_tokens: 907
   total_tokens: 351929
@@ -8674,6 +8827,7 @@
       name: iri_discovery
       output: urn:uuid:f62c7e4e-374c-284f-896e-9b212731a8fc
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8694,6 +8848,7 @@
         {"type": "uri", "value": "urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f"}},
         {"substation": {"type": "uri", "value": "urn:uuid:f1769630-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -8794,6 +8949,7 @@
       name: iri_discovery
       output: urn:uuid:771462f6-6a78-104f-9d11-54ce568ea9c8
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -8814,6 +8970,7 @@
         {"type": "uri", "value": "urn:uuid:681a2179-5a55-11eb-a658-74e5f963e191"}},
         {"substation": {"type": "uri", "value": "urn:uuid:37a3bd2c-7817-48de-aa01-13a324a6d6bd"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -12902,6 +13059,7 @@
       name: iri_discovery
       output: urn:uuid:3ca9d0f7-4994-714f-8e09-7799609c5568
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -12923,6 +13081,7 @@
         {"substation": {"type": "uri", "value": "urn:uuid:f1769694-9aeb-11e5-91da-b8763fd99c5f"}},
         {"substation": {"type": "uri", "value": "urn:uuid:f1769604-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -13007,6 +13166,7 @@
       name: iri_discovery
       output: urn:uuid:411f9805-7d3c-ea43-9686-ad770566e962
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13027,6 +13187,7 @@
         {"type": "uri", "value": "urn:uuid:811613d5-c44f-4daa-9dc1-03005740a4e5"}},
         {"substation": {"type": "uri", "value": "urn:uuid:99a5ca36-e724-49a7-8e7f-247357b6f336"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -13274,6 +13435,7 @@
       name: iri_discovery
       output: urn:uuid:336d1458-d916-1441-8e86-89ce3de43223
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13296,6 +13458,7 @@
         {"substation": {"type": "uri", "value": "urn:uuid:f176964e-9aeb-11e5-91da-b8763fd99c5f"}},
         {"substation": {"type": "uri", "value": "urn:uuid:f1769654-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -13405,6 +13568,7 @@
       name: iri_discovery
       output: urn:uuid:f176968a-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13426,6 +13590,7 @@
         {"substation": {"type": "uri", "value": "urn:uuid:f1769682-9aeb-11e5-91da-b8763fd99c5f"}},
         {"substation": {"type": "uri", "value": "urn:uuid:f1769688-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -13483,6 +13648,7 @@
       name: iri_discovery
       output: urn:uuid:f176960a-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13503,6 +13669,7 @@
         {"type": "uri", "value": "urn:uuid:f176960e-9aeb-11e5-91da-b8763fd99c5f"}},
         {"substation": {"type": "uri", "value": "urn:uuid:f1769604-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -13564,6 +13731,7 @@
       name: iri_discovery
       output: urn:uuid:681a1e17-5a55-11eb-a658-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13584,6 +13752,7 @@
         {"type": "uri", "value": "urn:uuid:681a1e15-5a55-11eb-a658-74e5f963e191"}},
         {"substation": {"type": "uri", "value": "urn:uuid:681a1e3c-5a55-11eb-a658-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
   status: success
@@ -13738,6 +13907,7 @@
       name: iri_discovery
       output: urn:uuid:f1769650-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13757,6 +13927,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:f176964e-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
       matches: chatcmpl-tool-48b352751272471babfc27c34dce1aca
@@ -13824,6 +13995,7 @@
       name: iri_discovery
       output: urn:uuid:8da6d670-4607-4432-abce-49614b85fd8e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13843,6 +14015,7 @@
       output: '{"head": {"vars": ["substation"]}, "results": {"bindings": [{"substation":
         {"type": "uri", "value": "urn:uuid:27a21834-5457-4f1b-ad5c-1c69ff88fbd4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - substation
       matches: chatcmpl-tool-647e7d70e15241c0977b9d7d54499a4b
@@ -13892,6 +14065,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901a7-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13911,6 +14085,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90169-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
   status: error
@@ -13930,6 +14105,7 @@
       name: iri_discovery
       output: urn:uuid:b8a334a5-2bcb-40e6-b6c2-db906441552d
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -13949,6 +14125,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:9598e4a0-67e5-4ad7-879c-c85a1f63159c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-b32924485dcd4fe3adc3199bddf85dae
@@ -14045,6 +14222,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901bb-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14064,6 +14242,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-c184506354cf400790a567d56890fae0
@@ -14177,6 +14356,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90161-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14196,6 +14376,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-8d3432036d2d45cbb4d724b31c7b0373
@@ -14306,6 +14487,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901ad-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14325,6 +14507,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90169-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-f1643cee297c410a9b6183b7c038b4c7
@@ -14459,6 +14642,7 @@
       name: iri_discovery
       output: urn:uuid:69ed3bd9-c374-49ef-b186-d49d869940bb
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14477,6 +14661,7 @@
       output: '{"head": {"vars": ["stage"]}, "results": {"bindings": [{"stage": {"type":
         "uri", "value": "urn:uuid:af418504-ec4e-4315-8faf-234557121d8d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stage
       matches: chatcmpl-tool-465776d563094799a5d56cb2b16bfffe
@@ -14535,6 +14720,7 @@
       name: iri_discovery
       output: urn:uuid:dcca331c-3acd-446a-94ec-1c00b427af05
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14553,6 +14739,7 @@
       output: '{"head": {"vars": ["stage"]}, "results": {"bindings": [{"stage": {"type":
         "uri", "value": "urn:uuid:31095b78-d690-48ee-91b1-ef4bfecdb19e"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stage
       matches: chatcmpl-tool-dfd03d7dd7a34de1864c311f6655abed
@@ -14608,6 +14795,7 @@
       name: iri_discovery
       output: urn:uuid:bb31f847-7509-4582-9721-6e50b525f55d
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14626,6 +14814,7 @@
       output: '{"head": {"vars": ["stage"]}, "results": {"bindings": [{"stage": {"type":
         "uri", "value": "urn:uuid:cdb8c7f6-28ff-4cec-ba1b-0992ec445e2f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stage
       matches: chatcmpl-tool-2b44e24fad14482ea86b144553ae3f60
@@ -14687,6 +14876,7 @@
       name: iri_discovery
       output: urn:uuid:117beb83-cb8e-444f-a054-e98d1ca477e7
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14706,6 +14896,7 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:bb017e3b-c1e1-463c-b719-fe73df802624"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
       matches: chatcmpl-tool-f1a5d56ee1984393bf8bda96695e1b8b
@@ -14775,6 +14966,7 @@
       name: iri_discovery
       output: urn:uuid:46ae56a9-435f-4fad-aa91-015ef1dca930
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14794,6 +14986,7 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:791059a4-3f6e-4242-a478-1fbbf1abc328"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
       matches: chatcmpl-tool-f0e1126d23574c6bb8927b8250330daf
@@ -14872,6 +15065,7 @@
       name: iri_discovery
       output: urn:uuid:04355e33-02e4-42ed-8d88-96b0be7044a8
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14891,6 +15085,7 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:277ce47c-fa5b-438d-9f82-346c887b57fd"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
       matches: chatcmpl-tool-60003bf01b16459f9904d5e691fac3df
@@ -14952,6 +15147,7 @@
       name: iri_discovery
       output: urn:uuid:e832d4e7-1335-4773-b203-bf7035d29bc3
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -14971,6 +15167,7 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:d87764a9-3363-4342-908f-d96f8e7ef71d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
       matches: chatcmpl-tool-2809364ccc61460db6491a80dce62b81
@@ -15030,6 +15227,7 @@
       name: iri_discovery
       output: urn:uuid:7e432a85-77b4-44f2-ae98-07134a1a5087
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15049,6 +15247,7 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:791059a4-3f6e-4242-a478-1fbbf1abc328"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
       matches: chatcmpl-tool-031bcebbdb604c91a30ee4f515ef550d
@@ -15116,6 +15315,7 @@
       name: iri_discovery
       output: urn:uuid:f176996d-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -15123,6 +15323,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#RegulatingControlModeKind.voltage
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15150,6 +15351,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f1769960-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-8e61fcc69c534e219106f40d9e6d799f
@@ -15199,6 +15401,7 @@
       name: iri_discovery
       output: urn:uuid:f176982d-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -15206,6 +15409,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#RegulatingControlModeKind.voltage
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15233,6 +15437,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f1769817-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-8ac366b1c3874da4a47cfc8f4bea5cef
@@ -15283,6 +15488,7 @@
       name: iri_discovery
       output: urn:uuid:f17698f4-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -15290,6 +15496,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#RegulatingControlModeKind.voltage
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15317,6 +15524,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f17698de-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-10e6ad1aaec044008dc9b79c0ed34c5c
@@ -15371,6 +15579,7 @@
       name: iri_discovery
       output: urn:uuid:f1769947-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -15378,6 +15587,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#RegulatingControlModeKind.voltage
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15405,6 +15615,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f1769946-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-db9be2e64dda499eb4eff9ada5cf3baa
@@ -15455,6 +15666,7 @@
       name: iri_discovery
       output: urn:uuid:f1769868-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -15462,6 +15674,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#RegulatingControlModeKind.voltage
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15489,6 +15702,7 @@
       output: '{"head": {"vars": ["regulatingcontrol"]}, "results": {"bindings": [{"regulatingcontrol":
         {"type": "uri", "value": "urn:uuid:f1769844-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - regulatingcontrol
       matches: chatcmpl-tool-94393fb9d4024b3a92592311e378a2c6
@@ -15552,6 +15766,7 @@
       name: iri_discovery
       output: urn:uuid:f1769660-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15575,6 +15790,7 @@
         {"synchronousmachine": {"type": "uri", "value": "urn:uuid:f1769937-9aeb-11e5-91da-b8763fd99c5f"}},
         {"synchronousmachine": {"type": "uri", "value": "urn:uuid:f1769930-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - synchronousmachine
   status: error
@@ -15595,6 +15811,7 @@
       name: iri_discovery
       output: urn:uuid:f17695e1-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15615,6 +15832,7 @@
       output: '{"head": {"vars": ["synchronousmachine"]}, "results": {"bindings":
         [{"synchronousmachine": {"type": "uri", "value": "urn:uuid:f176983d-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - synchronousmachine
   status: success
@@ -15675,6 +15893,7 @@
       name: iri_discovery
       output: urn:uuid:f17696c6-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -15697,6 +15916,7 @@
         {"synchronousmachine": {"type": "uri", "value": "urn:uuid:f1769a04-9aeb-11e5-91da-b8763fd99c5f"}},
         {"synchronousmachine": {"type": "uri", "value": "urn:uuid:f1769a0a-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - synchronousmachine
       matches: chatcmpl-tool-b914e5f171f944adbaf506ff59afad21
@@ -16112,6 +16332,7 @@
       name: iri_discovery
       output: urn:uuid:f17695f3-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -16137,6 +16358,7 @@
         {"synchronousmachine": {"type": "uri", "value": "urn:uuid:f17698b7-9aeb-11e5-91da-b8763fd99c5f"}},
         {"synchronousmachine": {"type": "uri", "value": "urn:uuid:f17698bd-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - synchronousmachine
   status: error
@@ -16156,6 +16378,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#PhaseCode.ABCN
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -16178,6 +16401,7 @@
         {"breaker": {"type": "uri", "value": "urn:uuid:b63024f5-df5f-4d21-ba9d-97288bdabe97"}},
         {"breaker": {"type": "uri", "value": "urn:uuid:81f3131f-baed-442d-bf7a-3606832fc3e0"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - breaker
       matches: chatcmpl-tool-ba73a286bde94b8eb0cf2bc663e84439
@@ -16225,6 +16449,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#PhaseCode.N
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -16245,6 +16470,7 @@
         {"type": "uri", "value": "urn:uuid:e3b199ca-485b-4df8-99f0-fdd5e4f3ff73"}},
         {"breaker": {"type": "uri", "value": "urn:uuid:e3b199ca-485b-4df8-99f0-fdd5e4f3ff73"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - breaker
       matches: chatcmpl-tool-a629e2ced75f48d7a404cf919a0885b9
@@ -16292,6 +16518,7 @@
       name: iri_discovery
       output: https://cim.ucaiug.io/ns#PhaseCode.ABC
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -16311,6 +16538,7 @@
       output: '{"head": {"vars": ["breaker"]}, "results": {"bindings": [{"breaker":
         {"type": "uri", "value": "urn:uuid:48668646-105a-490d-aaad-3259b852aa23"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - breaker
       matches: chatcmpl-tool-5acbb5fa523c482db2ab3683eda25152
@@ -16350,6 +16578,7 @@
       name: iri_discovery
       output: urn:uuid:f1769876-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -16370,6 +16599,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-094d16d1dd5247e2872a2c94f3daa783
@@ -17520,6 +17750,7 @@
       name: iri_discovery
       output: urn:uuid:f1769979-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -17540,9 +17771,9 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90169-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-d0957b5dc83943e69fcc49f11fac2920
   status: success
   actual_steps:
   - name: sparql_query
@@ -17623,7 +17854,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"300\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 440405
   output_tokens: 975
   total_tokens: 441380
@@ -17648,6 +17879,7 @@
       name: iri_discovery
       output: urn:uuid:f1769861-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -17668,6 +17900,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-9a646c631b1a4a23936dfe44d1050f50
@@ -17799,6 +18032,7 @@
       name: iri_discovery
       output: urn:uuid:f17699b4-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -17819,6 +18053,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90169-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-8817a2b6ff6246fea1c7730fe029e4d2
@@ -17943,6 +18178,7 @@
       name: iri_discovery
       output: urn:uuid:f176990b-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -17963,9 +18199,9 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90169-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-b2fa349cd9b44cc28c366aa9e602c5c5
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -18010,7 +18246,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"300\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 349072
   output_tokens: 699
   total_tokens: 349771
@@ -18030,6 +18266,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90406-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18049,6 +18286,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd90406-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-c8183924bec54e618e92b52eae921368
@@ -18121,6 +18359,7 @@
       name: iri_discovery
       output: urn:uuid:2dd903f4-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18140,6 +18379,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd903f4-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-624529ff3160454fbcb112a65790d0de
@@ -18204,6 +18444,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90447-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18223,9 +18464,9 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd90447-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
-      matches: chatcmpl-tool-085f9b9c1e374cf992fb412fd6d6e024
   status: success
   actual_steps:
   - name: sparql_query
@@ -18256,7 +18497,7 @@
     status: success
     output: "{\n  \"head\": {\n    \"vars\": [\n      \"svPowerFlow\",\n      \"p\"\
       ,\n      \"q\"\n    ]\n  },\n  \"results\": {\n    \"bindings\": []\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 261740
   output_tokens: 577
   total_tokens: 262317
@@ -18286,6 +18527,7 @@
       name: iri_discovery
       output: urn:uuid:2dd902ab-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18305,6 +18547,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd902ab-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
   status: success
@@ -18366,6 +18609,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90399-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18385,6 +18629,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd90399-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
   status: error
@@ -18405,6 +18650,7 @@
       name: iri_discovery
       output: urn:uuid:0e9bf120-2b51-4347-9390-b2ae42d3492b
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -18412,6 +18658,7 @@
       name: iri_discovery
       output: urn:uuid:0e9bf120-2b51-4347-9390-b2ae42d3492b
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18436,6 +18683,7 @@
       output: '{"head": {"vars": ["aclinesegment"]}, "results": {"bindings": [{"aclinesegment":
         {"type": "uri", "value": "urn:uuid:6f519536-eefe-452e-8294-c115bf21581d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-b69a25744d7649c6a159593d6cca64a2
@@ -18552,6 +18800,7 @@
       name: iri_discovery
       output: urn:uuid:163037f6-cf93-054e-8a6d-3f58de83b6a3
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -18559,6 +18808,7 @@
       name: iri_discovery
       output: urn:uuid:163037f6-cf93-054e-8a6d-3f58de83b6a3
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18583,6 +18833,7 @@
       output: '{"head": {"vars": ["aclinesegment"]}, "results": {"bindings": [{"aclinesegment":
         {"type": "uri", "value": "urn:uuid:f1769c98-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-b8821d6e52824bc6b9516d1e5a951ab7
@@ -18659,6 +18910,7 @@
       name: iri_discovery
       output: urn:uuid:2dc165a0-39fb-6541-81d8-4daee82b2932
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -18666,6 +18918,7 @@
       name: iri_discovery
       output: urn:uuid:2dc165a0-39fb-6541-81d8-4daee82b2932
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18690,6 +18943,7 @@
       output: '{"head": {"vars": ["aclinesegment"]}, "results": {"bindings": [{"aclinesegment":
         {"type": "uri", "value": "urn:uuid:d1afcb93-f7d9-4e93-8c91-bbeb35f2a322"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
   status: success
@@ -18794,6 +19048,7 @@
       name: iri_discovery
       output: urn:uuid:771462f6-6a78-104f-9d11-54ce568ea9c8
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -18801,6 +19056,7 @@
       name: iri_discovery
       output: urn:uuid:771462f6-6a78-104f-9d11-54ce568ea9c8
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18825,6 +19081,7 @@
       output: '{"head": {"vars": ["aclinesegment"]}, "results": {"bindings": [{"aclinesegment":
         {"type": "uri", "value": "urn:uuid:f2ed5944-a394-4802-8ec9-936bc60e5bc4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-93786c619a5f4414b75cb64e03c67d0e
@@ -18935,6 +19192,7 @@
       name: iri_discovery
       output: urn:uuid:31f0b5c6-80e7-f14b-b231-a7fa2f129468
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -18942,6 +19200,7 @@
       name: iri_discovery
       output: urn:uuid:31f0b5c6-80e7-f14b-b231-a7fa2f129468
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -18966,6 +19225,7 @@
       output: '{"head": {"vars": ["aclinesegment"]}, "results": {"bindings": [{"aclinesegment":
         {"type": "uri", "value": "urn:uuid:f1769b84-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-54b999b407a14b759395b41c3bb10372
@@ -19062,6 +19322,7 @@
       name: iri_discovery
       output: urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -19082,6 +19343,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:f17696ad-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
       matches: chatcmpl-tool-c1faa16055b64d9ca043b160c9064eb2
@@ -19439,6 +19701,7 @@
       name: iri_discovery
       output: urn:uuid:eeded44f-071c-471f-952f-4be5134b40bc
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -19459,6 +19722,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:2c05c827-3cc9-476e-9211-01ec54bcdeb9"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
       matches: chatcmpl-tool-da7287f7f64d4cdc82d1359889e3d5ff
@@ -19531,6 +19795,7 @@
       name: iri_discovery
       output: urn:uuid:f17696d0-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -19551,6 +19816,7 @@
       output: '{"head": {"vars": ["connectivitynode"]}, "results": {"bindings": [{"connectivitynode":
         {"type": "uri", "value": "urn:uuid:f17696c9-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
       matches: chatcmpl-tool-b2020ca62763479897147102c56ff78c
@@ -19692,6 +19958,7 @@
       name: iri_discovery
       output: urn:uuid:d82114b7-09c0-4cb4-b9c8-19a5fdaf991a
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -19714,6 +19981,7 @@
         {"connectivitynode": {"type": "uri", "value": "urn:uuid:acd3ba85-71e9-43d1-8a81-093dc2fda8b5"}},
         {"connectivitynode": {"type": "uri", "value": "urn:uuid:0070949a-32c4-460d-8e40-c6b2cb0f62d8"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
       matches: chatcmpl-tool-52d49ff324234178839e36873a88d42d
@@ -19798,6 +20066,7 @@
       name: iri_discovery
       output: urn:uuid:92d33b37-7034-11eb-a65a-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -19819,6 +20088,7 @@
         {"type": "uri", "value": "urn:uuid:9bf03de1-7f35-4dfe-86aa-29dff75a6962"}},
         {"connectivitynode": {"type": "uri", "value": "urn:uuid:681a2178-5a55-11eb-a658-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - connectivitynode
   status: success
@@ -19950,6 +20220,7 @@
       name: iri_discovery
       output: urn:uuid:37a3bd2c-7817-48de-aa01-13a324a6d6bd
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -19957,6 +20228,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9048c-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -19984,6 +20256,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:d9b89685-1fed-4233-8f85-70fd9e6cfd23"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -20108,6 +20381,7 @@
       name: iri_discovery
       output: urn:uuid:f176965a-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -20115,6 +20389,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9048c-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20142,6 +20417,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f176965f-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-f358556335784ca1af47d6a16511346a
@@ -20194,6 +20470,7 @@
       name: iri_discovery
       output: urn:uuid:f17696a8-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -20201,6 +20478,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9048c-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20228,6 +20506,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17696a3-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -20392,6 +20671,7 @@
       name: iri_discovery
       output: urn:uuid:f17696da-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -20399,6 +20679,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9048c-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20426,6 +20707,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17696cf-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-9b4757aac3244648b3a013b8eca6a2dc
@@ -20475,6 +20757,7 @@
       name: iri_discovery
       output: urn:uuid:f1769682-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -20482,6 +20765,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9048c-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20509,6 +20793,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f176965f-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -20651,6 +20936,7 @@
       name: iri_discovery
       output: urn:uuid:f17695e1-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20670,6 +20956,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17695c3-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-e6b5ef7dd919431a9f179439b13ebdc8
@@ -20741,6 +21028,7 @@
       name: iri_discovery
       output: urn:uuid:f1769644-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20760,6 +21048,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769609-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-cafe5efb099e48269f87e3bf80590efd
@@ -20853,6 +21142,7 @@
       name: iri_discovery
       output: urn:uuid:f176968a-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20872,6 +21162,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769619-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-00a0937939514ea2bb718273b6e86b76
@@ -20952,6 +21243,7 @@
       name: iri_discovery
       output: urn:uuid:f17696ba-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -20971,6 +21263,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17696b3-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-ff966f279f004416b6f1ca04bc3b3a08
@@ -21058,6 +21351,7 @@
       name: iri_discovery
       output: urn:uuid:f17696a4-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21077,6 +21371,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17696a3-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -21109,6 +21404,7 @@
       name: iri_discovery
       output: urn:uuid:f17695e1-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21128,9 +21424,9 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-6144aba2c502472fb5749dc4fa6e85b5
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -21238,7 +21534,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"420\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 354825
   output_tokens: 1379
   total_tokens: 356204
@@ -21263,6 +21559,7 @@
       name: iri_discovery
       output: urn:uuid:d4959144-d4c4-4885-a5fd-2a8ad9abbe2c
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21282,6 +21579,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90174-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-7ac09a9b38f64f03ae70706bbc4d9527
@@ -21348,6 +21646,7 @@
       name: iri_discovery
       output: urn:uuid:f17696c6-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21367,9 +21666,9 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-054d31b7a38c4f31aea7610df095aabb
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -21570,7 +21869,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"420\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 538393
   output_tokens: 1739
   total_tokens: 540132
@@ -21594,6 +21893,7 @@
       name: iri_discovery
       output: urn:uuid:f176967e-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21613,6 +21913,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90169-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-6e5a325ca55847da88f59603cab54346
@@ -21753,6 +22054,7 @@
       name: iri_discovery
       output: urn:uuid:f17696dc-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21772,9 +22074,9 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:2dd90159-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-437f3fc8dcb04396aae0f75e1fcca7c8
   status: success
   actual_steps:
   - name: autocomplete_search
@@ -21851,7 +22153,7 @@
       \        },\n        \"nominalVoltage\": {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#integer\"\
       ,\n          \"type\": \"literal\",\n          \"value\": \"420\"\n        }\n\
       \      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 264333
   output_tokens: 1016
   total_tokens: 265349
@@ -21875,6 +22177,7 @@
       name: iri_discovery
       output: urn:uuid:81f3131f-baed-442d-bf7a-3606832fc3e0
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -21894,6 +22197,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:9598e4a0-67e5-4ad7-879c-c85a1f63159c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-747b79f043e84ec28c7a0506042f4a61
@@ -21981,6 +22285,7 @@
       name: iri_discovery
       output: urn:uuid:7c60d1fd-fe74-4094-89f7-2d3949deaa3c
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22000,9 +22305,9 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:9598e4a0-67e5-4ad7-879c-c85a1f63159c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
-      matches: chatcmpl-tool-6abdf65fb10e4ef5a42b48b854741e07
   status: success
   actual_steps:
   - name: sparql_query
@@ -22066,7 +22371,7 @@
       : {\n          \"datatype\": \"http://www.w3.org/2001/XMLSchema#double\",\n\
       \          \"type\": \"literal\",\n          \"value\": \"4.0E-1\"\n       \
       \ }\n      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 438187
   output_tokens: 1162
   total_tokens: 439349
@@ -22087,6 +22392,7 @@
       name: iri_discovery
       output: urn:uuid:e286272e-827c-4b12-83cb-6b3e91170e3e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22106,6 +22412,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:9598e4a0-67e5-4ad7-879c-c85a1f63159c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-5593990fea8249e3b94d7b8ce2bd11c0
@@ -22237,6 +22544,7 @@
       name: iri_discovery
       output: urn:uuid:76335f11-64c3-474d-92fd-7ab11ed607e4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22256,6 +22564,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:9598e4a0-67e5-4ad7-879c-c85a1f63159c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-6bc234c0ba4f41f88c3cf48a11aa1903
@@ -22471,6 +22780,7 @@
       name: iri_discovery
       output: urn:uuid:800c36a9-07be-45bd-9106-260cbd66ce4c
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22490,6 +22800,7 @@
       output: '{"head": {"vars": ["basevoltage"]}, "results": {"bindings": [{"basevoltage":
         {"type": "uri", "value": "urn:uuid:9598e4a0-67e5-4ad7-879c-c85a1f63159c"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - basevoltage
       matches: chatcmpl-tool-f58a9daf6d0f4321aab6a583972180d5
@@ -22617,6 +22928,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901ad-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22637,6 +22949,7 @@
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769b90-9aeb-11e5-91da-b8763fd99c5f"}},
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769d10-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-6ddcc6d9585b480a9c6da488478415cf
@@ -22792,6 +23105,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9015d-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22816,6 +23130,7 @@
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769a88-9aeb-11e5-91da-b8763fd99c5f"}},
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769ac4-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
   status: success
@@ -22855,6 +23170,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901a9-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -22876,6 +23192,7 @@
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769d10-9aeb-11e5-91da-b8763fd99c5f"}},
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769b30-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-733ace2854e04eed8154c6c172139bc2
@@ -22987,6 +23304,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90177-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -23006,6 +23324,7 @@
         {"type": "uri", "value": "urn:uuid:f1769ba8-9aeb-11e5-91da-b8763fd99c5f"}},
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769b9c-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-cb861ca587e9476cba54291f00f54a7b
@@ -23091,6 +23410,7 @@
       name: iri_discovery
       output: urn:uuid:2dd901bd-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -23115,6 +23435,7 @@
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769b24-9aeb-11e5-91da-b8763fd99c5f"}},
         {"aclinesegment": {"type": "uri", "value": "urn:uuid:f1769b84-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
   status: success
@@ -23227,6 +23548,7 @@
       name: iri_discovery
       output: urn:uuid:91ef68b3-8878-47a4-b24f-66f42bb459ba
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -23249,9 +23571,9 @@
         {"voltagelevel": {"type": "uri", "value": "urn:uuid:91ef68b3-8878-47a4-b24f-66f42bb459ba"}},
         {"voltagelevel": {"type": "uri", "value": "urn:uuid:91ef68b3-8878-47a4-b24f-66f42bb459ba"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
-      matches: chatcmpl-tool-9e4a8458225f485a9cf1ad8240070e53
   status: success
   actual_steps:
   - name: sparql_query
@@ -23339,7 +23661,7 @@
       \     {\n        \"partType\": {\n          \"type\": \"uri\",\n          \"\
       value\": \"https://cim.ucaiug.io/ns#Connector\"\n        }\n      }\n    ]\n\
       \  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 526848
   output_tokens: 1380
   total_tokens: 528228
@@ -23398,6 +23720,7 @@
       name: iri_discovery
       output: urn:uuid:1f4fabd4-8c57-c245-b107-4e64c9007ae3
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -23417,9 +23740,9 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:1f4fabd4-8c57-c245-b107-4e64c9007ae3"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
-      matches: chatcmpl-tool-f40ce191930e4fa7bcfcb310b418a830
   status: success
   actual_steps:
   - name: sparql_query
@@ -23452,7 +23775,7 @@
       : \"urn:uuid:1f4fabd4-8c57-c245-b107-4e64c9007ae3\"\n        },\n        \"\
       class\": {\n          \"type\": \"uri\",\n          \"value\": \"https://cim.ucaiug.io/rules#EquipmentOrContainer\"\
       \n        }\n      }\n    ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 174595
   output_tokens: 679
   total_tokens: 175274
@@ -23482,6 +23805,7 @@
       name: iri_discovery
       output: urn:uuid:681a1e3e-5a55-11eb-a658-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -23501,9 +23825,9 @@
       output: '{"head": {"vars": ["voltagelevel"]}, "results": {"bindings": [{"voltagelevel":
         {"type": "uri", "value": "urn:uuid:681a1e3e-5a55-11eb-a658-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
-      matches: chatcmpl-tool-19c8e52e50db4669a51c97a87e96fac7
   status: success
   actual_steps:
   - name: sparql_query
@@ -23590,7 +23914,7 @@
       \     \"parentClass\": {\n          \"type\": \"uri\",\n          \"value\"\
       : \"http://www.opengis.net/ont/geosparql#Feature\"\n        }\n      }\n   \
       \ ]\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 439453
   output_tokens: 1236
   total_tokens: 440689
@@ -23623,6 +23947,7 @@
       name: iri_discovery
       output: urn:uuid:277ce47c-fa5b-438d-9f82-346c887b57fd
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -23644,6 +23969,7 @@
         {"voltagelevel": {"type": "uri", "value": "urn:uuid:277ce47c-fa5b-438d-9f82-346c887b57fd"}},
         {"voltagelevel": {"type": "uri", "value": "urn:uuid:277ce47c-fa5b-438d-9f82-346c887b57fd"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
   status: success
@@ -24478,6 +24804,7 @@
       name: iri_discovery
       output: urn:uuid:681a1e65-5a55-11eb-a658-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24499,9 +24826,9 @@
         {"voltagelevel": {"type": "uri", "value": "urn:uuid:681a1e65-5a55-11eb-a658-74e5f963e191"}},
         {"voltagelevel": {"type": "uri", "value": "urn:uuid:681a1e65-5a55-11eb-a658-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - voltagelevel
-      matches: chatcmpl-tool-4af722b456254d3195ed7cc1b7dff623
   status: success
   actual_steps:
   - name: sparql_query
@@ -24521,7 +24848,7 @@
     status: success
     output: "{\n  \"head\": {\n    \"vars\": [\n      \"voltageLevel\"\n    ]\n  },\n\
       \  \"results\": {\n    \"bindings\": []\n  }\n}"
-  steps_score: 1.0
+  steps_score: 0.0
   input_tokens: 261305
   output_tokens: 543
   total_tokens: 261848
@@ -24549,6 +24876,7 @@
       name: iri_discovery
       output: urn:uuid:681a309e-5a55-11eb-a658-74e5f963e191
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24568,6 +24896,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:92d33bfd-7034-11eb-a65a-74e5f963e191"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-ff655969ed7e4567b3347ebb4c4359fc
@@ -24619,6 +24948,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9045a-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24638,6 +24968,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd90459-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-bac639f8441a43a48c5d698e781d8392
@@ -24694,6 +25025,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9046b-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24713,6 +25045,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd9046a-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-37a96f729d624a6a84a53981f7f42868
@@ -24775,6 +25108,7 @@
       name: iri_discovery
       output: urn:uuid:2dd90487-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24794,6 +25128,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd90486-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-b0a3253e350347df8dcedc1892f3422f
@@ -24857,6 +25192,7 @@
       name: iri_discovery
       output: urn:uuid:2dd9046f-bdfb-11e5-94fa-c8f73332c8f4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24876,6 +25212,7 @@
       output: '{"head": {"vars": ["terminal"]}, "results": {"bindings": [{"terminal":
         {"type": "uri", "value": "urn:uuid:2dd9046e-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - terminal
       matches: chatcmpl-tool-72b593bf59cc4a8297665cb9d092f152
@@ -24926,6 +25263,7 @@
       name: iri_discovery
       output: urn:uuid:5829041b-1f25-4a3d-8b4c-532d9f0b6e54
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -24933,6 +25271,7 @@
       name: iri_discovery
       output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -24959,6 +25298,7 @@
       output: '{"head": {"vars": ["schedulingarea"]}, "results": {"bindings": [{"schedulingarea":
         {"type": "uri", "value": "urn:uuid:d398cead-6dfb-4ce3-80a0-93f23d46bd7b"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - schedulingarea
   status: success
@@ -25049,6 +25389,7 @@
       name: iri_discovery
       output: urn:uuid:5829041b-1f25-4a3d-8b4c-532d9f0b6e54
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -25056,6 +25397,7 @@
       name: iri_discovery
       output: urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25082,6 +25424,7 @@
       output: '{"head": {"vars": ["schedulingarea"]}, "results": {"bindings": [{"schedulingarea":
         {"type": "uri", "value": "urn:uuid:f01ffeb3-1dd0-4344-9de7-42323a27d731"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - schedulingarea
   status: success
@@ -25171,6 +25514,7 @@
       name: iri_discovery
       output: urn:uuid:5829041b-1f25-4a3d-8b4c-532d9f0b6e54
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -25178,6 +25522,7 @@
       name: iri_discovery
       output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25204,6 +25549,7 @@
       output: '{"head": {"vars": ["schedulingarea"]}, "results": {"bindings": [{"schedulingarea":
         {"type": "uri", "value": "urn:uuid:b08fcabb-1507-478a-8b76-081ead819b1d"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - schedulingarea
       matches: chatcmpl-tool-f19de2116881438586685e77e5dffdcc
@@ -25327,6 +25673,7 @@
       name: iri_discovery
       output: urn:uuid:5829041b-1f25-4a3d-8b4c-532d9f0b6e54
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -25334,6 +25681,7 @@
       name: iri_discovery
       output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25360,6 +25708,7 @@
       output: '{"head": {"vars": ["schedulingarea"]}, "results": {"bindings": [{"schedulingarea":
         {"type": "uri", "value": "urn:uuid:0b6da2c4-48c2-4a39-953a-38b365e0953e"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - schedulingarea
       matches: chatcmpl-tool-bacab740d2f04ec4af0c23a394511119
@@ -25471,6 +25820,7 @@
       name: iri_discovery
       output: urn:uuid:5829041b-1f25-4a3d-8b4c-532d9f0b6e54
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
     - args:
@@ -25478,6 +25828,7 @@
       name: iri_discovery
       output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25504,6 +25855,7 @@
       output: '{"head": {"vars": ["schedulingarea"]}, "results": {"bindings": [{"schedulingarea":
         {"type": "uri", "value": "urn:uuid:2e0d8985-2b1b-425f-b1da-756635504a6b"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - schedulingarea
   status: success
@@ -25711,6 +26063,7 @@
       name: iri_discovery
       output: urn:uuid:0506353c-8adf-4f48-999f-bb1975c03467
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25733,6 +26086,7 @@
         {"bay": {"type": "uri", "value": "urn:uuid:32bc8225-a8b7-45eb-a1ad-9adb4648f1dc"}},
         {"bay": {"type": "uri", "value": "urn:uuid:3d51330c-7528-4efb-8edc-e61dcc145ac4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - bay
       matches: chatcmpl-tool-ade3713f09494f1380347203280e351d
@@ -25856,6 +26210,7 @@
       output: '{"head": {"vars": ["stationsupply"]}, "results": {"bindings": [{"stationsupply":
         {"type": "uri", "value": "urn:uuid:0506353c-8adf-4f48-999f-bb1975c03467"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - stationsupply
       matches: chatcmpl-tool-d867d7d1210449b4a5c8f2a444dc01c0
@@ -25887,6 +26242,7 @@
       name: iri_discovery
       output: urn:uuid:f1769e42-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25908,6 +26264,7 @@
       output: '{"head": {"vars": ["powertransformerend"]}, "results": {"bindings":
         [{"powertransformerend": {"type": "uri", "value": "urn:uuid:2dd90487-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powertransformerend
       matches: chatcmpl-tool-401f0ea172eb427580ae254821fac1a1
@@ -25950,6 +26307,7 @@
       name: iri_discovery
       output: urn:uuid:f1769d8e-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -25971,6 +26329,7 @@
       output: '{"head": {"vars": ["powertransformerend"]}, "results": {"bindings":
         [{"powertransformerend": {"type": "uri", "value": "urn:uuid:2dd90441-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powertransformerend
   status: success
@@ -26076,6 +26435,7 @@
       name: iri_discovery
       output: urn:uuid:f1769db2-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26097,6 +26457,7 @@
       output: '{"head": {"vars": ["powertransformerend"]}, "results": {"bindings":
         [{"powertransformerend": {"type": "uri", "value": "urn:uuid:2dd9044f-bdfb-11e5-94fa-c8f73332c8f4"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - powertransformerend
       matches: chatcmpl-tool-23a50cd5c5ce4f6ea0c78e1f1b4f74de
@@ -26136,6 +26497,7 @@
       name: iri_discovery
       output: urn:uuid:f17695d2-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26160,6 +26522,7 @@
         {"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17695af-9aeb-11e5-91da-b8763fd99c5f"}},
         {"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17695c3-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -26302,6 +26665,7 @@
       name: iri_discovery
       output: urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26324,6 +26688,7 @@
         {"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769609-9aeb-11e5-91da-b8763fd99c5f"}},
         {"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769619-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -26371,6 +26736,7 @@
       name: iri_discovery
       output: urn:uuid:f1769648-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26390,6 +26756,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769609-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
       matches: chatcmpl-tool-ab2e04fafb904f6fb1dbf883b120b5ad
@@ -26495,6 +26862,7 @@
       name: iri_discovery
       output: urn:uuid:f176960e-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26520,6 +26888,7 @@
         {"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769609-9aeb-11e5-91da-b8763fd99c5f"}},
         {"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f1769609-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -26600,6 +26969,7 @@
       name: iri_discovery
       output: urn:uuid:f17696a8-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26619,6 +26989,7 @@
       output: '{"head": {"vars": ["subgeographicalregion"]}, "results": {"bindings":
         [{"subgeographicalregion": {"type": "uri", "value": "urn:uuid:f17695cd-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - subgeographicalregion
   status: success
@@ -26734,6 +27105,7 @@
       name: iri_discovery
       output: urn:uuid:f176991c-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26756,6 +27128,7 @@
       output: '{"head": {"vars": ["controlarea"]}, "results": {"bindings": [{"controlarea":
         {"type": "uri", "value": "urn:uuid:f1769606-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - controlarea
   status: success
@@ -26807,6 +27180,7 @@
       name: iri_discovery
       output: urn:uuid:f1769984-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26829,6 +27203,7 @@
       output: '{"head": {"vars": ["controlarea"]}, "results": {"bindings": [{"controlarea":
         {"type": "uri", "value": "urn:uuid:f1769606-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - controlarea
       matches: chatcmpl-tool-94df3347090a45d7bcc85a9d6813758b
@@ -26952,6 +27327,7 @@
       name: iri_discovery
       output: urn:uuid:f176992c-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -26974,6 +27350,7 @@
       output: '{"head": {"vars": ["controlarea"]}, "results": {"bindings": [{"controlarea":
         {"type": "uri", "value": "urn:uuid:f1769606-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - controlarea
       matches: chatcmpl-tool-75d381460589428588dda795b896509c
@@ -27036,6 +27413,7 @@
       name: iri_discovery
       output: urn:uuid:f17698e2-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -27058,6 +27436,7 @@
       output: '{"head": {"vars": ["controlarea"]}, "results": {"bindings": [{"controlarea":
         {"type": "uri", "value": "urn:uuid:f1769606-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - controlarea
   status: success
@@ -27233,6 +27612,7 @@
       name: iri_discovery
       output: urn:uuid:f176981b-9aeb-11e5-91da-b8763fd99c5f
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -27255,6 +27635,7 @@
       output: '{"head": {"vars": ["controlarea"]}, "results": {"bindings": [{"controlarea":
         {"type": "uri", "value": "urn:uuid:f17695ca-9aeb-11e5-91da-b8763fd99c5f"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - controlarea
   status: success
@@ -27395,6 +27776,7 @@
       name: iri_discovery
       output: urn:uuid:d9358e9b-1dc4-40fe-9c5f-b3cb40b236a5
       output_media_type: text/uri
+      ignore_duplicates: false
       required_columns:
       - uri
   - - args:
@@ -27415,6 +27797,7 @@
       output: '{"head": {"vars": ["aclinesegment"]}, "results": {"bindings": [{"aclinesegment":
         {"type": "uri", "value": "urn:uuid:cf484bc9-2ef9-4116-a5a9-9a5db3e09df9"}}]}}'
       output_media_type: application/sparql-results+json
+      ignore_duplicates: false
       required_columns:
       - aclinesegment
       matches: chatcmpl-tool-044a3b4918c24a0486f4ae526e8e65b9

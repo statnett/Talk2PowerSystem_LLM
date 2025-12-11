@@ -107,7 +107,7 @@ Sample Response Body:
   "scopes": [
     "openid",
     "profile",
-    "api://7b9f2087-68f1-45fe-a21d-023daedd4047/.default"
+    "api://7b9f2087-68f1-45fe-a21d-023daedd4047/access_as_user"
   ],
   "authority": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875",
   "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/v2.0/logout",

@@ -429,7 +429,7 @@ async def get_auth_config(
         enabled=settings.security.enabled,
         clientId=settings.security.client_id,
         frontendAppClientId=settings.security.frontend_app_client_id,
-        scopes=["openid", "profile", f"{settings.security.audience}/.default"],
+        scopes=["openid", "profile", f"{settings.security.audience}/access_as_user"],
         authority=settings.security.authority,
         logout=settings.security.logout,
         loginRedirect=settings.security.login_redirect,

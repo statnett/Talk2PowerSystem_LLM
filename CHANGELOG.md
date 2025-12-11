@@ -2,6 +2,10 @@ Next release
 ============
 
 * [#255](https://github.com/statnett/Talk2PowerSystem_PM/issues/255): OBO auth flow for Cognite
+
+1.4.0-rc1
+============
+
 * [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Display svg diagrams
 * [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Show the accumulated tokens for the individual messages
 * [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Update the version of `ttyg` from `2.1.0` to `3.0.0`

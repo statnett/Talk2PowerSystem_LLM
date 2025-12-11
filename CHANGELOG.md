@@ -1,4 +1,4 @@
-Next release
+1.4.0-rc1
 ============
 
 * [#280](https://github.com/statnett/Talk2PowerSystem_PM/issues/280): Display svg diagrams

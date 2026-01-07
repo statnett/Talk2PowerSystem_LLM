@@ -460,7 +460,10 @@ async def diagrams(
 
 
 def build_diagram_url(request: Request, filename: str) -> str:
-    return str(request.url_for("diagrams", filename=filename))
+    return str(
+        (settings.frontend_context_path if settings.frontend_context_path != "/" else "") + \
+        request.app.url_path_for("diagrams", filename=filename)
+    )
 
 
 # noinspection PyUnusedLocal

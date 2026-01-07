@@ -460,7 +460,7 @@ async def diagrams(
 
 
 def build_diagram_url(request: Request, filename: str) -> str:
-    return str(request.app.url_path_for("diagrams", filename=filename))
+    return str(request.url_for("diagrams", filename=filename))
 
 
 # noinspection PyUnusedLocal

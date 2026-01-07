@@ -1,3 +1,8 @@
+1.4.1-rc1
+============
+
+* [#301](https://github.com/statnett/Talk2PowerSystem_PM/issues/301): Return full IRI to the diagrams in the /rest/chat/conversations response body
+
 1.4.0-rc1
 ============
 

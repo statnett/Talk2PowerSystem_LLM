@@ -1,3 +1,8 @@
+1.4.1-rc2
+============
+
+* [#301](https://github.com/statnett/Talk2PowerSystem_PM/issues/301): Revert back to relative paths for the diagrams, but add also the frontend context path as prefix
+
 1.4.1-rc1
 ============
 

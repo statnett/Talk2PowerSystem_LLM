@@ -104,6 +104,7 @@ class AppSettings(BaseSettings):
     manifest_path: Path = "/code/git-manifest.yaml"
     pyproject_toml_path: Path = "/code/pyproject.toml"
     diagrams_path: Path = '/code/diagrams/'
+    frontend_context_path: str = "/"
 
 
 settings = AppSettings()

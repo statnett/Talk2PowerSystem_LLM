@@ -354,7 +354,7 @@ Sample Response Body Including Graphics:
       "graphics": [
         {
           "type": "image",
-          "url": "http://localhost:8000/rest/chat/diagrams/PowSyBl-SLD-substation-KRISTIANSAND.svg"
+          "url": "/context/rest/chat/diagrams/PowSyBl-SLD-substation-KRISTIANSAND.svg"
         }
       ]
     }

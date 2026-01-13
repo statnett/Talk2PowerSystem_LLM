@@ -58,14 +58,14 @@ files = [
 
 [[package]]
 name = "apscheduler"
-version = "3.11.1"
+version = "3.11.2"
 description = "In-process task scheduler with Cron-like capabilities"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "apscheduler-3.11.1-py3-none-any.whl", hash = "sha256:6162cb5683cb09923654fa9bdd3130c4be4bfda6ad8990971c9597ecd52965d2"},
-    {file = "apscheduler-3.11.1.tar.gz", hash = "sha256:0db77af6400c84d1747fe98a04b8b58f0080c77d11d338c4f507a9752880f221"},
+    {file = "apscheduler-3.11.2-py3-none-any.whl", hash = "sha256:ce005177f741409db4e4dd40a7431b76feb856b9dd69d57e0da49d6715bfd26d"},
+    {file = "apscheduler-3.11.2.tar.gz", hash = "sha256:2a9966b052ec805f020c8c4c3ae6e6a06e24b1bf19f2e11d91d8cca0473eef41"},
 ]
 
 [package.dependencies]
@@ -79,7 +79,7 @@ mongodb = ["pymongo (>=3.0)"]
 redis = ["redis (>=3.0)"]
 rethinkdb = ["rethinkdb (>=2.4.0)"]
 sqlalchemy = ["sqlalchemy (>=1.4)"]
-test = ["APScheduler[etcd,mongodb,redis,rethinkdb,sqlalchemy,tornado,zookeeper]", "PySide6 ; platform_python_implementation == \"CPython\" and python_version < \"3.14\"", "anyio (>=4.5.2)", "gevent ; python_version < \"3.14\"", "pytest", "pytz", "twisted ; python_version < \"3.14\""]
+test = ["APScheduler[etcd,mongodb,redis,rethinkdb,sqlalchemy,tornado,zookeeper]", "PySide6 ; platform_python_implementation == \"CPython\" and python_version < \"3.14\"", "anyio (>=4.5.2)", "gevent ; python_version < \"3.14\"", "pytest", "pytest-timeout", "pytz", "twisted ; python_version < \"3.14\""]
 tornado = ["tornado (>=4.3)"]
 twisted = ["twisted"]
 zookeeper = ["kazoo"]
@@ -257,14 +257,14 @@ css = ["tinycss2 (>=1.1.0,<1.5)"]
 
 [[package]]
 name = "cachetools"
-version = "6.2.2"
+version = "6.2.4"
 description = "Extensible memoizing collections and decorators"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "cachetools-6.2.2-py3-none-any.whl", hash = "sha256:6c09c98183bf58560c97b2abfcedcbaf6a896a490f534b031b661d3723b45ace"},
-    {file = "cachetools-6.2.2.tar.gz", hash = "sha256:8e6d266b25e539df852251cfd6f990b4bc3a141db73b939058d809ebd2590fc6"},
+    {file = "cachetools-6.2.4-py3-none-any.whl", hash = "sha256:69a7a52634fed8b8bf6e24a050fb60bff1c9bd8f6d24572b99c32d4e71e62a51"},
+    {file = "cachetools-6.2.4.tar.gz", hash = "sha256:82c5c05585e70b6ba2d3ae09ea60b79548872185d2f24ae1f2709d37299fd607"},
 ]
 
 [[package]]
@@ -516,14 +516,14 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-sdk"
-version = "7.90.1"
+version = "7.91.0"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "cognite_sdk-7.90.1-py3-none-any.whl", hash = "sha256:98e5de938e10ab7b4f63662cfa937ba8a7cb61fb642b008e209fe83b8fb6f410"},
-    {file = "cognite_sdk-7.90.1.tar.gz", hash = "sha256:297b106fccae64be9c08b40d5f81f501c88378f7553c0f06492738a6a0a6366c"},
+    {file = "cognite_sdk-7.91.0-py3-none-any.whl", hash = "sha256:d8b6cc6ede96af460bc546d73959554eae783c8040db23c62e24fe974c6b8de7"},
+    {file = "cognite_sdk-7.91.0.tar.gz", hash = "sha256:6ed62e2f61b3748b29a1a7f82dc76a523656a4d2c497fe8137c66e26c4b7ec3d"},
 ]
 
 [package.dependencies]
@@ -866,26 +866,26 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [[package]]
 name = "fastapi"
-version = "0.123.4"
+version = "0.128.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "fastapi-0.123.4-py3-none-any.whl", hash = "sha256:fc2b5cbc10fa05f4f22d87ef7ebc8993b5110ffd9850c08e1fc35a0da37f492e"},
-    {file = "fastapi-0.123.4.tar.gz", hash = "sha256:c2d0ac82f3534c8e35692fda67e2412ac60bad846bb903a65cd8145a65741474"},
+    {file = "fastapi-0.128.0-py3-none-any.whl", hash = "sha256:aebd93f9716ee3b4f4fcfe13ffb7cf308d99c9f3ab5622d8877441072561582d"},
+    {file = "fastapi-0.128.0.tar.gz", hash = "sha256:1cc179e1cef10a6be60ffe429f79b829dce99d8de32d7acb7e6c8dfdf7f2645a"},
 ]
 
 [package.dependencies]
 annotated-doc = ">=0.0.2"
-pydantic = ">=1.7.4,<1.8 || >1.8,<1.8.1 || >1.8.1,<2.0.0 || >2.0.0,<2.0.1 || >2.0.1,<2.1.0 || >2.1.0,<3.0.0"
+pydantic = ">=2.7.0"
 starlette = ">=0.40.0,<0.51.0"
 typing-extensions = ">=4.8.0"
 
 [package.extras]
 all = ["email-validator (>=2.0.0)", "fastapi-cli[standard] (>=0.0.8)", "httpx (>=0.23.0,<1.0.0)", "itsdangerous (>=1.1.0)", "jinja2 (>=3.1.5)", "orjson (>=3.2.1)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.18)", "pyyaml (>=5.3.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0)", "uvicorn[standard] (>=0.12.0)"]
-standard = ["email-validator (>=2.0.0)", "fastapi-cli[standard] (>=0.0.8)", "httpx (>=0.23.0,<1.0.0)", "jinja2 (>=3.1.5)", "python-multipart (>=0.0.18)", "uvicorn[standard] (>=0.12.0)"]
-standard-no-fastapi-cloud-cli = ["email-validator (>=2.0.0)", "fastapi-cli[standard-no-fastapi-cloud-cli] (>=0.0.8)", "httpx (>=0.23.0,<1.0.0)", "jinja2 (>=3.1.5)", "python-multipart (>=0.0.18)", "uvicorn[standard] (>=0.12.0)"]
+standard = ["email-validator (>=2.0.0)", "fastapi-cli[standard] (>=0.0.8)", "httpx (>=0.23.0,<1.0.0)", "jinja2 (>=3.1.5)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.18)", "uvicorn[standard] (>=0.12.0)"]
+standard-no-fastapi-cloud-cli = ["email-validator (>=2.0.0)", "fastapi-cli[standard-no-fastapi-cloud-cli] (>=0.0.8)", "httpx (>=0.23.0,<1.0.0)", "jinja2 (>=3.1.5)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.18)", "uvicorn[standard] (>=0.12.0)"]
 
 [[package]]
 name = "fastjsonschema"
@@ -1747,18 +1747,18 @@ files = [
 
 [[package]]
 name = "langchain"
-version = "1.1.0"
+version = "1.2.3"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "langchain-1.1.0-py3-none-any.whl", hash = "sha256:af080f3a4a779bfa5925de7aacb6dfab83249d4aab9a08f7aa7b9bec3766d8ea"},
-    {file = "langchain-1.1.0.tar.gz", hash = "sha256:583c892f59873c0329dbe04169fb3234ac794c50780e7c6fb62a61c7b86a981b"},
+    {file = "langchain-1.2.3-py3-none-any.whl", hash = "sha256:5cdc7c80f672962b030c4b0d16d0d8f26d849c0ada63a4b8653a20d7505512ae"},
+    {file = "langchain-1.2.3.tar.gz", hash = "sha256:9d6171f9c3c760ca3c7c2cf8518e6f8625380962c488b41e35ebff1f1d611077"},
 ]
 
 [package.dependencies]
-langchain-core = ">=1.1.0,<2.0.0"
+langchain-core = ">=1.2.1,<2.0.0"
 langgraph = ">=1.0.2,<1.1.0"
 pydantic = ">=2.7.4,<3.0.0"
 
@@ -1782,14 +1782,14 @@ xai = ["langchain-xai"]
 
 [[package]]
 name = "langchain-core"
-version = "1.1.0"
+version = "1.2.7"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "langchain_core-1.1.0-py3-none-any.whl", hash = "sha256:2c9f27dadc6d21ed4aa46506a37a56e6a7e2d2f9141922dc5c251ba921822ee6"},
-    {file = "langchain_core-1.1.0.tar.gz", hash = "sha256:2b76a82d427922c8bc51c08404af4fc2a29e9f161dfe2297cb05091e810201e7"},
+    {file = "langchain_core-1.2.7-py3-none-any.whl", hash = "sha256:452f4fef7a3d883357b22600788d37e3d8854ef29da345b7ac7099f33c31828b"},
+    {file = "langchain_core-1.2.7.tar.gz", hash = "sha256:e1460639f96c352b4a41c375f25aeb8d16ffc1769499fb1c20503aad59305ced"},
 ]
 
 [package.dependencies]
@@ -1800,41 +1800,42 @@ pydantic = ">=2.7.4,<3.0.0"
 pyyaml = ">=5.3.0,<7.0.0"
 tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10.0.0"
 typing-extensions = ">=4.7.0,<5.0.0"
+uuid-utils = ">=0.12.0,<1.0"
 
 [[package]]
 name = "langchain-openai"
-version = "1.1.0"
+version = "1.1.7"
 description = "An integration package connecting OpenAI and LangChain"
 optional = false
 python-versions = "<4.0.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "langchain_openai-1.1.0-py3-none-any.whl", hash = "sha256:243bb345d0260ea1326c2b6ac2237ec29f082ab457c59e9306bac349df4577e8"},
-    {file = "langchain_openai-1.1.0.tar.gz", hash = "sha256:9a33280c2e8315d013d64e6b15e583be347beb0d0f281755c335ae504ad0c184"},
+    {file = "langchain_openai-1.1.7-py3-none-any.whl", hash = "sha256:34e9cd686aac1a120d6472804422792bf8080a2103b5d21ee450c9e42d053815"},
+    {file = "langchain_openai-1.1.7.tar.gz", hash = "sha256:f5ec31961ed24777548b63a5fe313548bc6e0eb9730d6552b8c6418765254c81"},
 ]
 
 [package.dependencies]
-langchain-core = ">=1.1.0,<2.0.0"
+langchain-core = ">=1.2.6,<2.0.0"
 openai = ">=1.109.1,<3.0.0"
 tiktoken = ">=0.7.0,<1.0.0"
 
 [[package]]
 name = "langgraph"
-version = "1.0.4"
+version = "1.0.5"
 description = "Building stateful, multi-actor applications with LLMs"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langgraph-1.0.4-py3-none-any.whl", hash = "sha256:b1a835ceb0a8d69b9db48075e1939e28b1ad70ee23fa3fa8f90149904778bacf"},
-    {file = "langgraph-1.0.4.tar.gz", hash = "sha256:86d08e25d7244340f59c5200fa69fdd11066aa999b3164b531e2a20036fac156"},
+    {file = "langgraph-1.0.5-py3-none-any.whl", hash = "sha256:b4cfd173dca3c389735b47228ad8b295e6f7b3df779aba3a1e0c23871f81281e"},
+    {file = "langgraph-1.0.5.tar.gz", hash = "sha256:7f6ae59622386b60fe9fa0ad4c53f42016b668455ed604329e7dc7904adbf3f8"},
 ]
 
 [package.dependencies]
 langchain-core = ">=0.1"
 langgraph-checkpoint = ">=2.1.0,<4.0.0"
 langgraph-prebuilt = ">=1.0.2,<1.1.0"
-langgraph-sdk = ">=0.2.2,<0.3.0"
+langgraph-sdk = ">=0.3.0,<0.4.0"
 pydantic = ">=2.7.4"
 xxhash = ">=3.5.0"
 
@@ -1856,20 +1857,20 @@ ormsgpack = ">=1.12.0"
 
 [[package]]
 name = "langgraph-checkpoint-redis"
-version = "0.2.1"
+version = "0.3.2"
 description = "Redis implementation of the LangGraph agent checkpoint saver and store."
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["main"]
 files = [
-    {file = "langgraph_checkpoint_redis-0.2.1-py3-none-any.whl", hash = "sha256:69013715c3a196543a256944238b6f1f8ece9c27dec7dc06f383aae153ab1b44"},
-    {file = "langgraph_checkpoint_redis-0.2.1.tar.gz", hash = "sha256:dc9812e00089d894935dc1cff0f30487e57b2f95ba86743f5b31cfb5322cacf0"},
+    {file = "langgraph_checkpoint_redis-0.3.2-py3-none-any.whl", hash = "sha256:7641bf5d3f1b64b396e064856f6fd36e983548e353fe2a11c9b0357bceb304fd"},
+    {file = "langgraph_checkpoint_redis-0.3.2.tar.gz", hash = "sha256:1fa28a3f06c1152ebcbfdddec865cdcac65e92ecccd39ecbca99a8be18a8d71b"},
 ]
 
 [package.dependencies]
 langgraph-checkpoint = ">=3.0.0,<4.0.0"
 orjson = ">=3.9.0,<4.0.0"
-redis = ">=5.2.1,<7.0.0"
+redis = ">=5.2.1"
 redisvl = ">=0.11.0,<1.0.0"
 
 [[package]]
@@ -1890,14 +1891,14 @@ langgraph-checkpoint = ">=2.1.0,<4.0.0"
 
 [[package]]
 name = "langgraph-sdk"
-version = "0.2.10"
+version = "0.3.3"
 description = "SDK for interacting with LangGraph API"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langgraph_sdk-0.2.10-py3-none-any.whl", hash = "sha256:9aef403663726085de6851e4e50459df9562069bd316dd0261eb359f776fd0ef"},
-    {file = "langgraph_sdk-0.2.10.tar.gz", hash = "sha256:ab58331504fbea28e6322037aa362929799b4e9106663ac1dbd7c5ac44558933"},
+    {file = "langgraph_sdk-0.3.3-py3-none-any.whl", hash = "sha256:a52ebaf09d91143e55378bb2d0b033ed98f57f48c9ad35c8f81493b88705fc7b"},
+    {file = "langgraph_sdk-0.3.3.tar.gz", hash = "sha256:c34c3dce3b6848755eb61f0c94369d1ba04aceeb1b76015db1ea7362c544fb26"},
 ]
 
 [package.dependencies]
@@ -4202,19 +4203,19 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "3.0.0"
+version = "3.1.0"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-3.0.0-py3-none-any.whl", hash = "sha256:af0eda1a8195c389a34d4ecf116966411e611e01cf4067a34e21bb5253ea4cc4"},
-    {file = "ttyg-3.0.0.tar.gz", hash = "sha256:47088a5afb56a6ec188889f4f8542ddeab4791a5bab47be95713fa1ab1996071"},
+    {file = "ttyg-3.1.0-py3-none-any.whl", hash = "sha256:72ff0bff9472a1b9f3851e1b719e46a6eb3042cc69a0055a1689f0bda2901345"},
+    {file = "ttyg-3.1.0.tar.gz", hash = "sha256:c74c123a43eaa4c04fe6e0f0c63392e8d1739712ed74a5752a63809d05abda55"},
 ]
 
 [package.dependencies]
-langchain = "1.1.0"
-langgraph = "1.0.4"
+langchain = "1.2.3"
+langgraph = "1.0.5"
 sparqlwrapper = "2.0.0"
 
 [[package]]
@@ -4291,14 +4292,14 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 
 [[package]]
 name = "urllib3"
-version = "2.6.0"
+version = "2.6.3"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "test"]
 files = [
-    {file = "urllib3-2.6.0-py3-none-any.whl", hash = "sha256:c90f7a39f716c572c4e3e58509581ebd83f9b59cced005b7db7ad2d22b0db99f"},
-    {file = "urllib3-2.6.0.tar.gz", hash = "sha256:cb9bcef5a4b345d5da5d145dc3e30834f58e8018828cbc724d30b4cb7d4d49f1"},
+    {file = "urllib3-2.6.3-py3-none-any.whl", hash = "sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4"},
+    {file = "urllib3-2.6.3.tar.gz", hash = "sha256:1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"},
 ]
 
 [package.extras]
@@ -4308,15 +4309,47 @@ socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 
 [[package]]
-name = "uvicorn"
-version = "0.38.0"
-description = "The lightning-fast ASGI server."
+name = "uuid-utils"
+version = "0.13.0"
+description = "Fast, drop-in replacement for Python's uuid module, powered by Rust."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "uvicorn-0.38.0-py3-none-any.whl", hash = "sha256:48c0afd214ceb59340075b4a052ea1ee91c16fbc2a9b1469cca0e54566977b02"},
-    {file = "uvicorn-0.38.0.tar.gz", hash = "sha256:fd97093bdd120a2609fc0d3afe931d4d4ad688b6e75f0f929fde1bc36fe0e91d"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:83628283e977fb212e756bc055df8fdd2f9f589a2e539ba1abe755b8ce8df7a4"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-macosx_10_12_x86_64.whl", hash = "sha256:c47638ed6334ab19d80f73664f153b04bbb04ab8ce4298d10da6a292d4d21c47"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:b276b538c57733ed406948584912da422a604313c71479654848b84b9e19c9b0"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-manylinux_2_24_armv7l.whl", hash = "sha256:bdaf2b77e34b199cf04cde28399495fd1ed951de214a4ece1f3919b2f945bb06"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-manylinux_2_24_i686.whl", hash = "sha256:eb2f0baf81e82f9769a7684022dca8f3bf801ca1574a3e94df1876e9d6f9271e"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-manylinux_2_24_ppc64le.whl", hash = "sha256:6be6c4d11275f5cc402a4fdba6c2b1ce45fd3d99bb78716cd1cc2cbf6802b2ce"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-manylinux_2_24_x86_64.whl", hash = "sha256:77621cf6ceca7f42173a642a01c01c216f9eaec3b7b65d093d2d6a433ca0a83d"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:9a5a9eb06c2bb86dd876cd7b2fe927fc8543d14c90d971581db6ffda4a02526f"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:775347c6110fb71360df17aac74132d8d47c1dbe71233ac98197fc872a791fd2"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:cf95f6370ad1a0910ee7b5ad5228fd19c4ae32fe3627389006adaf519408c41e"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:5a88e23e0b2f4203fefe2ccbca5736ee06fcad10e61b5e7e39c8d7904bc13300"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-win32.whl", hash = "sha256:3e4f2cc54e6a99c0551158100ead528479ad2596847478cbad624977064ffce3"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-win_amd64.whl", hash = "sha256:046cb2756e1597b3de22d24851b769913e192135830486a0a70bf41327f0360c"},
+    {file = "uuid_utils-0.13.0-cp39-abi3-win_arm64.whl", hash = "sha256:5447a680df6ef8a5a353976aaf4c97cc3a3a22b1ee13671c44227b921e3ae2a9"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:e5182e2d95f38e65f2e5bce90648ef56987443da13e145afcd747e584f9bc69c"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-macosx_10_12_x86_64.whl", hash = "sha256:e3909a8a1fbd79d7c8bdc874eeb83e23ccb7a7cb0aa821a49596cc96c0cce84b"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-manylinux_2_24_aarch64.whl", hash = "sha256:5dc4c9f749bd2511b8dcbf0891e658d7d86880022963db050722ad7b502b5e22"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-manylinux_2_24_armv7l.whl", hash = "sha256:516adf07f5b2cdb88d50f489c702b5f1a75ae8b2639bfd254f4192d5f7ee261f"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-manylinux_2_24_i686.whl", hash = "sha256:aeee3bd89e8de6184a3ab778ce19f5ce9ad32849d1be549516e0ddb257562d8d"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-manylinux_2_24_ppc64le.whl", hash = "sha256:97985256c2e59b7caa51f5c8515f64d777328562a9c900ec65e9d627baf72737"},
+    {file = "uuid_utils-0.13.0-pp311-pypy311_pp73-manylinux_2_24_x86_64.whl", hash = "sha256:b7ccaa20e24c5f60f41a69ef571ed820737f9b0ade4cbeef56aaa8f80f5aa475"},
+    {file = "uuid_utils-0.13.0.tar.gz", hash = "sha256:4c17df6427a9e23a4cd7fb9ee1efb53b8abb078660b9bdb2524ca8595022dfe1"},
+]
+
+[[package]]
+name = "uvicorn"
+version = "0.40.0"
+description = "The lightning-fast ASGI server."
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "uvicorn-0.40.0-py3-none-any.whl", hash = "sha256:c6c8f55bc8bf13eb6fa9ff87ad62308bbbc33d0b67f84293151efe87e0d5f2ee"},
+    {file = "uvicorn-0.40.0.tar.gz", hash = "sha256:839676675e87e73694518b5574fd0f24c9d97b46bea16df7b8c05ea1a51071ea"},
 ]
 
 [package.dependencies]
@@ -4929,4 +4962,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "0b19cbebabeae17f0f22915bddee2588cb7fa2f838448263a65d969fa19661f0"
+content-hash = "c0a0a4cff9e275a15b60e0c3673a829edbd8958d372b7448a6c2bec1a2829fdf"

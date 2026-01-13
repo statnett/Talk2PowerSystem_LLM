@@ -1,3 +1,9 @@
+1.5.0-rc1
+============
+
+* [#302](https://github.com/statnett/Talk2PowerSystem_PM/issues/302): Improve SPARQL display in Explain (Update the version of `ttyg` from `3.0.0` to `3.1.0`)
+* [#302](https://github.com/statnett/Talk2PowerSystem_PM/issues/302): Update versions of 3rd party libraries - langchain-openai, langgraph-checkpoint-redis, cognite-sdk, uvicorn, fastapi, APScheduler, cachetools
+
 1.4.1-rc2
 ============
 

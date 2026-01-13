@@ -78,10 +78,11 @@ prompts:
         This means you are mistaken, and should proceed with the next steps.
       3. Retrieve sample SPARQL queries:
          Given a specific user question you must always use the `sample_sparql_queries` tool, which will return similar questions and their corresponding SPARQL queries, which you must use for guidance.
-         Retrieve at least 10 similar questions. You must replace in the given user question:
-        - the identified named entities form the previous step with their corresponding classes without the prefix.
-          Since an entity can belong to multiple classes, you must replace it with all of its classes from the hierarchy without the prefixes, separated with | and wrapped in brackets <<<>>>.
-          For example, `<<<Substation|EquipmentContainer|ConnectivityNodeContainer|PowerSystemResource|IdentifiedObject>>>`
+         Retrieve 10 similar questions. If the question consists of multiple independent parts, you can invoke the tool separately for each part.
+         You must replace in the given user question:
+        - the identified named entities form the previous step with their corresponding classes with the prefix.
+          Since an entity can belong to multiple classes, you must replace it with all of its classes from the hierarchy, separated with | and wrapped in brackets <<<>>>.
+          For example, `<<<cim:Substation|cim:EquipmentContainer|cim:ConnectivityNodeContainer|cimr:EquipmentOrContainer|cim:PowerSystemResource|cim:IdentifiedObject>>>`
         - dates and numbers in the question must also be replaced with a placeholder, like <<<float>>>, <<<integer>>>, <<<date>>>, etc.
 
     SPARQL queries guidance:

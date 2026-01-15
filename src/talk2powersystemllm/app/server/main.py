@@ -563,11 +563,11 @@ async def conversations(
                 if tool_message.status == "success" and tool_message.artifact:
                     if isinstance(tool_message.artifact, ImageArtifact):
                         graphics.append(
-                            ImageGraphic(type="image", url=build_diagram_image_url(request, tool_message.artifact.data))
+                            ImageGraphic(type="image", url=build_diagram_image_url(request, tool_message.artifact.link))
                         )
                     elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
                         graphics.append(
-                            IframeGraphic(type="iframe", url=build_gdb_visual_graph_url(tool_message.artifact.data))
+                            IframeGraphic(type="iframe", url=build_gdb_visual_graph_url(tool_message.artifact.link))
                         )
 
     logging.info(

@@ -239,11 +239,16 @@ LIMIT {limit}
             """PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX cimd: <https://cim.ucaiug.io/diagrams#>
 PREFIX cim: <https://cim.ucaiug.io/ns#>
-SELECT ?link ?name ?description ?format {{
-    <{iri}> cimd:Diagram.link ?link;
+SELECT ?link ?name ?format ?description ?kind {{
+    <{iri}> cimd:Diagram.link|cimd:DiagramConfiguration.link ?link;
         cim:IdentifiedObject.name ?name;
-        cim:IdentifiedObject.description ?description;
         dct:format ?format.
+    OPTIONAL {{
+        <{iri}> cimd:Diagram.kind / rdfs:label ?kind
+    }}
+    OPTIONAL {{
+        <{iri}> cim:IdentifiedObject.description ?description
+    }}
 }}""",
             actual_response_json["agent"]["tools"]["display_graphics"]["sparql_query_template"]
         )

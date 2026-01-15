@@ -10,7 +10,7 @@ from ttyg.utils import timeit
 
 class GraphicArtifact(BaseArtifact):
     mime_type: str
-    data: str
+    link: str
 
 
 class ImageArtifact(GraphicArtifact):
@@ -18,7 +18,7 @@ class ImageArtifact(GraphicArtifact):
 
 
 class GraphDBVisualGraphArtifact(GraphicArtifact):
-    type: Literal["iframe"] = "iframe"
+    type: Literal["gdb_viz_graph"] = "gdb_viz_graph"
 
 
 class GraphicsTool(BaseGraphDBTool):
@@ -50,11 +50,12 @@ class GraphicsTool(BaseGraphDBTool):
     sparql_query_template: str = """PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX cimd: <https://cim.ucaiug.io/diagrams#>
 PREFIX cim: <https://cim.ucaiug.io/ns#>
-SELECT ?link ?name ?description ?format {{
+SELECT ?link ?name ?format ?description ?kind {{
     <{iri}> cimd:Diagram.link|cimd:DiagramConfiguration.link ?link;
-        cim:IdentifiedObject.name ?name.
+        cim:IdentifiedObject.name ?name;
+        dct:format ?format.
     OPTIONAL {{
-        <{iri}> dct:format ?format.
+        <{iri}> cimd:Diagram.kind / rdfs:label ?kind
     }}
     OPTIONAL {{
         <{iri}> cim:IdentifiedObject.description ?description
@@ -89,33 +90,34 @@ SELECT ?link ?name ?description ?format {{
         try:
             query_results, _ = self.graph.eval_sparql_query(query)
             if len(query_results["results"]["bindings"]) > 0:
-                first_result = query_results["results"]["bindings"][0]
-                name = first_result["name"]["value"]
-                link = first_result["link"]["value"]
+                bindings = query_results["results"]["bindings"][0]
+
+                name = bindings["name"]["value"]
+                format_ = bindings["format"]["value"]
+
+                link = bindings["link"]["value"]
                 if diagram_configuration_iri:
                     link += f"&uri={node_iri}"
-                format_ = None
-                if "format" in first_result:
-                    format_ = first_result["format"]["value"]
-                description = None
-                if "description" in first_result:
-                    description = first_result["description"]["value"]
+
+                if format_ == "image/svg+xml":
+                    artifact = ImageArtifact(link=link, mime_type=format_)
+                elif format_ == "text/html":
+                    artifact = GraphDBVisualGraphArtifact(link=link, mime_type=format_)
+                else:
+                    logging.warning(f"Found a diagram with unknown format {format_}")
+                    return f"Found a diagram with unknown format {format_}. Can't render it!", None
 
                 content = f"Diagram with name \"{name}\""
-                if description:
-                    content += f" and description \"{description}\""
+                if "description" in bindings:
+                    content += f" and description \"{bindings["description"]["value"]}\""
+                if "kind" in bindings:
+                    content += f" of kind \"{bindings["kind"]["value"]}\""
                 if diagram_configuration_iri:
                     content += f" for \"{node_iri}\""
-
-                artifact = None
-                if format_ == "image/svg+xml":
-                    artifact = ImageArtifact(data=link, mime_type=format_)
-                elif format_ == "text/html":
-                    artifact = GraphDBVisualGraphArtifact(data=link, mime_type=format_)
-                else: # todo patch until Nikola fix it
-                    artifact = GraphDBVisualGraphArtifact(data=link, mime_type="text/html")
                 return content, artifact
+
             else:
                 return "No diagram found", None
+
         except Exception as e:
             raise ToolException(str(e))

@@ -5,7 +5,7 @@ from .models import (
     Message,
     Graphic,
     ImageGraphic,
-IframeGraphic,
+    IframeGraphic,
     ChatResponse,
     ExplainRequest,
     QueryMethod,

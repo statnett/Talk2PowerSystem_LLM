@@ -367,6 +367,62 @@ Sample Response Body Including Graphics:
 }
 ```
 
+```json
+{
+    "id": "thread_005bab2a-e0a5-416f-8553-f44ca7215bae",
+    "messages": [
+        {
+            "id": "lc_run--019bc0a6-9cf0-7270-958d-f135d8d72a3d-0",
+            "message": "Here is the VizGraph for **VoltageLevel KRISTIAN300**:\n\n- **Diagram:** `VoltageLevel KRISTIAN300 (VizGraph)`\n- **Diagram IRI:** `urn:uuid:bf4867ad-7b05-4e45-b5db-9d18ba85701d`\n- **VizGraph link (relative):** `graphs-visualizations?saved=47e4cec85d65455188d7ff12b1f3580d`",
+            "usage": {
+                "completionTokens": 395,
+                "promptTokens": 336611,
+                "totalTokens": 337006
+            },
+            "graphics": [
+                {
+                    "type": "iframe",
+                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=47e4cec85d65455188d7ff12b1f3580d"
+                }
+            ]
+        }
+    ],
+    "usage": {
+        "completionTokens": 395,
+        "promptTokens": 336611,
+        "totalTokens": 337006
+    }
+}
+```
+
+```json
+{
+    "id": "thread_1fde6d65-180d-4308-97dd-b2e29d42d8dd",
+    "messages": [
+        {
+            "id": "lc_run--019bc135-51bc-7991-af2d-3698be2d738d-0",
+            "message": "Here is the **VizGraph** for **VoltageLevel KRISTIAN300**:\n\n- **VoltageLevel IRI:** `urn:uuid:f1769660-9aeb-11e5-91da-b8763fd99c5f`\n- **VizGraph configuration:** `urn:uuid:8e88a1f5-2ea1-4a4a-a8a4-64fc1c7dc396` (“VoltageLevel (VizGraph config)”)",
+            "usage": {
+                "completionTokens": 494,
+                "promptTokens": 363120,
+                "totalTokens": 363614
+            },
+            "graphics": [
+                {
+                    "type": "iframe",
+                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f1769660-9aeb-11e5-91da-b8763fd99c5f"
+                }
+            ]
+        }
+    ],
+    "usage": {
+        "completionTokens": 494,
+        "promptTokens": 363120,
+        "totalTokens": 363614
+    }
+}
+```
+
 ##### GET /rest/chat/diagrams/{filename}
 
 Serves the static diagrams.

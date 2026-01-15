@@ -1,3 +1,20 @@
+1.6.0-rc1
+============
+
+* [#307](https://github.com/statnett/Talk2PowerSystem_PM/issues/307): Changes in the system prompt related to the N-Shot tool usage:
+  * we tell the LLM to retrieve 10 samples, not at least 10
+  * we tell it to call the tool multiple times for questions consisting of multiple independent parts
+  * we tell it to add the class prefixes when doing the parametrization, because the prefixes are indexed
+
+Evaluation results with `gpt-5.2-2025-12-11`
+
+| Split |   Micro |    Macro | (Micro) Mean Tokens | (Micro) Mean Time |
+|:------|--------:|---------:|--------------------:|------------------:|
+| Dev   |  0.9105 |   0.8960 |            307456.3 |             18.96 |
+| Test  |  0.8333 |  0.84933 |            312005.4 |             23.17 |
+
+* [#307](https://github.com/statnett/Talk2PowerSystem_PM/issues/307): Update `cim-subset-pretty.ttl` to the latest one
+
 1.5.0-rc1
 ============
 

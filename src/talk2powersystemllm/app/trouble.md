@@ -339,31 +339,90 @@ Sample Response Body Without Graphics:
 
 Sample Response Body Including Graphics:
 
+- PowSyBl diagram:
 ```json
 {
-  "id": "thread_ce5859f4-f4ca-4bf7-90a7-6fa534ff77fe",
-  "messages": [
-    {
-      "id": "lc_run--28ade889-f636-4d2c-8e48-ef298daf9f06-0",
-      "message": "Here is the diagram: Diagram of substation KRISTIANSAND — PowSyBl Single-Line-Diagram of substation KRISTIANSAND",
-      "usage": {
-        "completionTokens": 1171,
-        "promptTokens": 164831,
-        "totalTokens": 166002
-      },
-      "graphics": [
+    "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+    "messages": [
         {
-          "type": "image",
-          "url": "/context/rest/chat/diagrams/PowSyBl-SLD-substation-KRISTIANSAND.svg"
+            "id": "lc_run--019bc183-1b25-7a30-b8df-d746abdf1d20-0",
+            "message": "Here is the **PowSyBl Single-Line Diagram (SLD)** for the **OSLO** substation:\n\n- Substation IRI: `<urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram IRI: `<urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d>`",
+            "usage": {
+                "completionTokens": 821,
+                "promptTokens": 434519,
+                "totalTokens": 435340
+            },
+            "graphics": [
+                {
+                    "type": "image",
+                    "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-OSLO.svg"
+                }
+            ]
         }
-      ]
+    ],
+    "usage": {
+        "completionTokens": 821,
+        "promptTokens": 434519,
+        "totalTokens": 435340
     }
-  ],
-  "usage": {
-    "completionTokens": 1171,
-    "promptTokens": 164831,
-    "totalTokens": 166002
-  }
+}
+```
+
+- Saved GraphDB Visual Graph
+```json
+{
+    "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+    "messages": [
+        {
+            "id": "lc_run--019bc188-fb32-7ed2-8e73-b3ba6601a1e8-0",
+            "message": "Here is the **saved VizGraph diagram** for **TopologicalNode ARENDAL**:\n\n- TopologicalNode IRI: `<urn:uuid:47eb7c24-d0f6-11e7-9f7b-b46d83638f70>`\n- VizGraph diagram IRI: `<urn:uuid:83179477-422c-403b-aca8-d577227430b8>`",
+            "usage": {
+                "completionTokens": 432,
+                "promptTokens": 358842,
+                "totalTokens": 359274
+            },
+            "graphics": [
+                {
+                    "type": "iframe",
+                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=dc0d824cdbfb4ca196c71ad55d6b1eb1"
+                }
+            ]
+        }
+    ],
+    "usage": {
+        "completionTokens": 432,
+        "promptTokens": 358842,
+        "totalTokens": 359274
+    }
+}
+```
+
+- GraphDB Visual Graph Saved Configuration
+```json
+{
+    "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+    "messages": [
+        {
+            "id": "lc_run--019bc18e-8ac6-7e53-8a19-a303830cba9c-0",
+            "message": "Here is the **VizGraph using the “VoltageLevel” configuration** for **HELSINKI420**:\n\n- VoltageLevel IRI: `<urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram configuration IRI: `<urn:uuid:694c7201-eef8-49c5-8fe7-bd48c01e4cc0>`",
+            "usage": {
+                "completionTokens": 470,
+                "promptTokens": 275045,
+                "totalTokens": 275515
+            },
+            "graphics": [
+                {
+                    "type": "iframe",
+                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f"
+                }
+            ]
+        }
+    ],
+    "usage": {
+        "completionTokens": 470,
+        "promptTokens": 275045,
+        "totalTokens": 275515
+    }
 }
 ```
 

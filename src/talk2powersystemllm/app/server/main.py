@@ -33,6 +33,7 @@ from talk2powersystemllm.agent import Talk2PowerSystemAgent
 from talk2powersystemllm.tools import (
     user_datetime_ctx,
     ImageArtifact,
+    GraphDBVisualGraphArtifact,
     GraphicsTool,
 )
 from .about import (
@@ -58,6 +59,7 @@ from ..models import (
     Message,
     Graphic,
     ImageGraphic,
+    IframeGraphic,
     Usage,
     ExplainRequest,
     ExplainResponse,
@@ -459,11 +461,15 @@ async def diagrams(
     return FileResponse(file_path, headers={"Cache-Control": "private, max-age=3600"})
 
 
-def build_diagram_url(request: Request, filename: str) -> str:
+def build_diagram_image_url(request: Request, filename: str) -> str:
     return str(
         (settings.frontend_context_path if settings.frontend_context_path != "/" else "") + \
         request.app.url_path_for("diagrams", filename=filename)
     )
+
+
+def build_gdb_visual_graph_url(link: str) -> str:
+    return agent.settings.graphdb.base_url + ("" if agent.settings.graphdb.base_url.endswith("/") else "/") + link
 
 
 # noinspection PyUnusedLocal
@@ -554,11 +560,15 @@ async def conversations(
 
         elif "tools" in output and "messages" in output["tools"]:
             for tool_message in output["tools"]["messages"]:
-                if tool_message.status == "success" and tool_message.artifact \
-                    and isinstance(tool_message.artifact, ImageArtifact):
-                    graphics.append(
-                        ImageGraphic(type="image", url=build_diagram_url(request, tool_message.artifact.data))
-                    )
+                if tool_message.status == "success" and tool_message.artifact:
+                    if isinstance(tool_message.artifact, ImageArtifact):
+                        graphics.append(
+                            ImageGraphic(type="image", url=build_diagram_image_url(request, tool_message.artifact.link))
+                        )
+                    elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
+                        graphics.append(
+                            IframeGraphic(type="iframe", url=build_gdb_visual_graph_url(tool_message.artifact.link))
+                        )
 
     logging.info(
         f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"

@@ -19,7 +19,12 @@ class ImageGraphic(BaseModel):
     url: str
 
 
-Graphic = Annotated[Union[ImageGraphic], Field(discriminator="type")]
+class IframeGraphic(BaseModel):
+    type: Literal["iframe"] = "iframe"
+    url: str
+
+
+Graphic = Annotated[Union[ImageGraphic, IframeGraphic], Field(discriminator="type")]
 
 
 class Message(BaseModel):

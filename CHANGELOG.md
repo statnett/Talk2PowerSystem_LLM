@@ -1,3 +1,8 @@
+1.7.0-rc1
+============
+
+* [#312](https://github.com/statnett/Talk2PowerSystem_PM/issues/312): Extend display graphics tool to support vizgraph
+
 1.6.0-rc1
 ============
 

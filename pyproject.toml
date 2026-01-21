@@ -1,29 +1,29 @@
 [project]
 name = "Talk2PowerSystemLLM"
-version = "1.4.1-dev0"
+version = "1.8.0-rc1"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==3.0.0",
+    "ttyg==3.1.0",
     "graphrag-eval==5.3.1",
     "jupyter==1.1.1",
-    "langchain-openai==1.1.0",
-    "langgraph-checkpoint-redis==0.2.1",
+    "langchain-openai==1.1.7",
+    "langgraph-checkpoint-redis==0.3.2",
     "jsonlines==4.0.0",
-    "cognite-sdk==7.90.1",
+    "cognite-sdk==7.91.1",
     "pydantic-settings==2.12.0",
     "PyYAML==6.0.3",
-    "uvicorn[standard] (==0.38.0)",
-    "fastapi==0.123.4",
-    "APScheduler==3.11.1",
+    "uvicorn[standard] (==0.40.0)",
+    "fastapi==0.128.0",
+    "APScheduler==3.11.2",
     "toml==0.10.2",
     "markdown==3.10",
     "python-jose[cryptography] (==3.5.0)",
     "msal==1.34.0",
-    "cachetools==6.2.2",
+    "cachetools==6.2.4",
     "importlib_resources==6.5.2",
 ]
 

@@ -3,6 +3,44 @@ Next release
 
 * [#255](https://github.com/statnett/Talk2PowerSystem_PM/issues/255): OBO auth flow for Cognite
 
+1.7.0-rc1
+============
+
+* [#312](https://github.com/statnett/Talk2PowerSystem_PM/issues/312): Extend display graphics tool to support vizgraph
+
+1.6.0-rc1
+============
+
+* [#307](https://github.com/statnett/Talk2PowerSystem_PM/issues/307): Changes in the system prompt related to the N-Shot tool usage:
+  * we tell the LLM to retrieve 10 samples, not at least 10
+  * we tell it to call the tool multiple times for questions consisting of multiple independent parts
+  * we tell it to add the class prefixes when doing the parametrization, because the prefixes are indexed
+
+Evaluation results with `gpt-5.2-2025-12-11`
+
+| Split |   Micro |    Macro | (Micro) Mean Tokens | (Micro) Mean Time |
+|:------|--------:|---------:|--------------------:|------------------:|
+| Dev   |  0.9105 |   0.8960 |            307456.3 |             18.96 |
+| Test  |  0.8333 |  0.84933 |            312005.4 |             23.17 |
+
+* [#307](https://github.com/statnett/Talk2PowerSystem_PM/issues/307): Update `cim-subset-pretty.ttl` to the latest one
+
+1.5.0-rc1
+============
+
+* [#302](https://github.com/statnett/Talk2PowerSystem_PM/issues/302): Improve SPARQL display in Explain (Update the version of `ttyg` from `3.0.0` to `3.1.0`)
+* [#302](https://github.com/statnett/Talk2PowerSystem_PM/issues/302): Update versions of 3rd party libraries - langchain-openai, langgraph-checkpoint-redis, cognite-sdk, uvicorn, fastapi, APScheduler, cachetools
+
+1.4.1-rc2
+============
+
+* [#301](https://github.com/statnett/Talk2PowerSystem_PM/issues/301): Revert back to relative paths for the diagrams, but add also the frontend context path as prefix
+
+1.4.1-rc1
+============
+
+* [#301](https://github.com/statnett/Talk2PowerSystem_PM/issues/301): Return full IRI to the diagrams in the /rest/chat/conversations response body
+
 1.4.0-rc1
 ============
 

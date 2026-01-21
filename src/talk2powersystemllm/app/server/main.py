@@ -34,6 +34,7 @@ from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
 from talk2powersystemllm.tools import (
     user_datetime_ctx,
     ImageArtifact,
+    GraphDBVisualGraphArtifact,
     GraphicsTool,
 )
 from .about import (
@@ -58,6 +59,7 @@ from ..models import (
     Message,
     Graphic,
     ImageGraphic,
+    IframeGraphic,
     Usage,
     ExplainRequest,
     ExplainResponse,
@@ -77,7 +79,8 @@ from ..models import (
     AboutBackendInfo,
 )
 
-API_DESCRIPTION = "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot"
+API_DESCRIPTION = ("Talk2PowerSystem Chat Bot Application provides functionality for chatting with the "
+                   "Talk2PowerSystem Chat bot")
 # noinspection PyTypeChecker
 gtg_info: GoodToGoInfo = None
 # noinspection PyTypeChecker
@@ -331,7 +334,8 @@ def get_about_agent() -> AboutAgentInfo:
     tools: dict[str, dict[str, Any]] = dict()
     tools["sparql_query"] = {"enabled": True}
     tools["display_graphics"] = {"enabled": True}
-    if agent_factory.settings.tools.display_graphics and agent_factory.settings.tools.display_graphics.sparql_query_template:
+    if (agent_factory.settings.tools.display_graphics and
+        agent_factory.settings.tools.display_graphics.sparql_query_template):
         tools["display_graphics"].update({
             "sparql_query_template": agent_factory.settings.tools.display_graphics.sparql_query_template,
         })
@@ -425,11 +429,13 @@ async def about(x_request_id: Annotated[str | None, Header()] = None) -> AboutIn
 async def get_auth_config(
     x_request_id: Annotated[str | None, Header()] = None,
 ) -> AuthConfig:
+    scopes = ["openid", "profile", f"{settings.security.audience}/access_as_user"] if settings.security.enabled else \
+        None
     return AuthConfig(
         enabled=settings.security.enabled,
         clientId=settings.security.client_id,
         frontendAppClientId=settings.security.frontend_app_client_id,
-        scopes=["openid", "profile", f"{settings.security.audience}/access_as_user"],
+        scopes=scopes,
         authority=settings.security.authority,
         logout=settings.security.logout,
         loginRedirect=settings.security.login_redirect,
@@ -496,8 +502,17 @@ async def diagrams(
     return FileResponse(file_path, headers={"Cache-Control": "private, max-age=3600"})
 
 
-def build_diagram_url(request: Request, filename: str) -> str:
-    return str(request.app.url_path_for("diagrams", filename=filename))
+def build_diagram_image_url(request: Request, filename: str) -> str:
+    return str(
+        (settings.frontend_context_path if settings.frontend_context_path != "/" else "") + \
+        request.app.url_path_for("diagrams", filename=filename)
+    )
+
+
+def build_gdb_visual_graph_url(link: str) -> str:
+    return agent_factory.settings.graphdb.base_url + \
+        ("" if agent_factory.settings.graphdb.base_url.endswith("/") else "/") + \
+        link
 
 
 # noinspection PyUnusedLocal
@@ -540,7 +555,8 @@ async def conversations(
     claims=Depends(conditional_security),
 ) -> ChatResponse:
     cognite_obo_token = None
-    if settings.security.enabled and agent_factory.settings.tools.cognite and agent_factory.settings.tools.cognite.client_secret:
+    if (settings.security.enabled and agent_factory.settings.tools.cognite and
+        agent_factory.settings.tools.cognite.client_secret):
         token_result = exchange_obo_for_cognite(authorization)
         cognite_obo_token = token_result["access_token"]
 
@@ -597,11 +613,15 @@ async def conversations(
 
         elif "tools" in output and "messages" in output["tools"]:
             for tool_message in output["tools"]["messages"]:
-                if tool_message.status == "success" and tool_message.artifact \
-                    and isinstance(tool_message.artifact, ImageArtifact):
-                    graphics.append(
-                        ImageGraphic(type="image", url=build_diagram_url(request, tool_message.artifact.data))
-                    )
+                if tool_message.status == "success" and tool_message.artifact:
+                    if isinstance(tool_message.artifact, ImageArtifact):
+                        graphics.append(
+                            ImageGraphic(type="image", url=build_diagram_image_url(request, tool_message.artifact.link))
+                        )
+                    elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
+                        graphics.append(
+                            IframeGraphic(type="iframe", url=build_gdb_visual_graph_url(tool_message.artifact.link))
+                        )
 
     logging.info(
         f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"

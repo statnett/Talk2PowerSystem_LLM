@@ -7,6 +7,8 @@
 * `AGENT_CONFIG` - REQUIRED - Path to the agent configuration file in yaml format.
   Check [the agent configurations here](./AgentConfig.md).
 * `DIAGRAMS_PATH` - OPTIONAL, DEFAULT=`/code/diagrams/` - Path to the static diagrams.
+* `FRONTEND_CONTEXT_PATH` - OPTIONAL, DEFAULT=`/` - The context path behind which the UI is deployed.
+This is added as a prefix to the relative paths to the diagrams.
 
 ### Redis
 

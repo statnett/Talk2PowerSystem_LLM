@@ -65,15 +65,42 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "display_graphics",
-            "description": "Returns the diagram specified by the IRI",
+            "description": "Displays a diagram specified by its IRI or "
+                           "a diagram specified by IRI of a diagram configuration and node IRI",
             "parameters": {
                 "properties": {
-                    "iri": {
-                        "description": "The IRI of the diagram",
-                        "type": "string"
-                    }
+                    "diagram_iri": {
+                        "anyOf": [{
+                            "type": "string"
+                        }, {
+                            "type": "null"
+                        }],
+                        "default": None,
+                        "description": "The IRI of a diagram. "
+                                       "Pass `diagram_iri` or `diagram_configuration_iri`, but not both."
+                    },
+                    "diagram_configuration_iri": {
+                        "anyOf": [{
+                            "type": "string"
+                        }, {
+                            "type": "null"
+                        }],
+                        "default": None,
+                        "description": "The IRI of a diagram configuration. "
+                                       "Pass `diagram_iri` or `diagram_configuration_iri`, but not both. "
+                                       "When passing `diagram_configuration_iri`, argument `node_iri` is also required."
+                    },
+                    "node_iri": {
+                        "anyOf": [{
+                            "type": "string"
+                        }, {
+                            "type": "null"
+                        }],
+                        "default": None,
+                        "description": "The IRI of a node. "
+                                       "When passing `node_iri`, argument `diagram_configuration_iri` is also required."
+                    },
                 },
-                "required": ["iri"],
                 "type": "object"
             }
         }

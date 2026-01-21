@@ -67,6 +67,17 @@ Response Body JSON Schema:
     "clientId": {
       "type": "string"
     },
+    "frontendAppClientId": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
     "authority": {
       "type": "string"
     },
@@ -91,11 +102,17 @@ Sample Response Body:
 ```json
 {
   "enabled": true,
-  "clientId": "6f8c5e30-b4b4-4b78-bdba-0ac5f5947fb6",
+  "clientId": "7b9f2087-68f1-45fe-a21d-023daedd4047",
+  "frontendAppClientId": "10acd638-f239-4aa2-8186-761512253325",
+  "scopes": [
+    "openid",
+    "profile",
+    "api://7b9f2087-68f1-45fe-a21d-023daedd4047/access_as_user"
+  ],
   "authority": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875",
-  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/logout",
-  "loginRedirect": "http://localhost:3000",
-  "logoutRedirect": "http://localhost:3000/login"
+  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/v2.0/logout",
+  "loginRedirect": "http://localhost:3000/",
+  "logoutRedirect": "http://localhost:3000/"
 }
 ```
 
@@ -728,17 +745,6 @@ Sample Response Body:
             "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
             "description": "Checks if Redis can be queried.",
             "message": "Redis can be queried."
-        },
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
-            "name": "Cognite Health Check",
-            "type": "cognite",
-            "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
-            "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
-            "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
-            "message": "Cognite can be queried."
         },
         {
             "status": "OK",
@@ -1706,6 +1712,7 @@ experienced with the following:
 * GraphDB
 * Cognite
 * Azure OpenAI
+* OpenID, Microsoft Entra ID
 * Redis
 
 ## Resolving Known Issues
@@ -1719,10 +1726,6 @@ Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-
 #### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search` are failing
 
 Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
-
-#### Cognite health check status is not OK
-
-Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
 
 #### Calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing
 
@@ -1760,12 +1763,21 @@ This section lists the causes of known issues and provides solutions.
 ##### Solution
 
 - Make sure Cognite is reachable from the app host.
-- Make sure Cognite credentials are correct.
+- Make sure the application security is enabled, otherwise Cognite won't be accessible.
+- Make sure that in the application configuration in Azure `user impersonation` for Cognite is set under API permissions and is approved.
+- Make sure the property `tools.cognite.client_secret` is set and has a correct value. To create / obtain it you (or your Azure admin) must:
+    1. Go to the Azure Portal → Microsoft Entra ID → App registrations → Your FastAPI Backend App
+    2. In the left menu, choose Certificates & secrets
+    3. Under Client secrets, click ➕ New client secret
+    4. Give it a description and choose an expiry (6 months, 12 months, custom)
+    5. Click Add
+    Azure will show you:
+        - Value – this is your actual secret (copy it now → you can’t view it later)
+        - Secret ID – an internal reference (not needed in code)
 
 ##### Verification
 
-- Check the response status code of the `__gtg` endpoint, it must be `200`.
-- Check the response body of the `__health` endpoint, Cognite health check must have status `OK`.
+Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
 
 #### Redis can't be queried or is mis-configured
 

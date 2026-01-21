@@ -1,3 +1,8 @@
+Next release
+============
+
+* [#255](https://github.com/statnett/Talk2PowerSystem_PM/issues/255): OBO auth flow for Cognite
+
 1.7.0-rc1
 ============
 

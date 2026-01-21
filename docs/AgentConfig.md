@@ -174,10 +174,11 @@ LIMIT {limit}
 - `tools.cognite.project` - OPTIONAL, DEFAULT=`prod` - Cognite Data Fusion project name.
 One of `dev1`, `dev2`, `dev3`, `test`, `prod` according to [CDF access from RNDP](https://github.com/statnett/Talk2PowerSystem_PM/wiki/CDF-access-from-RNDP).
 - `tools.cognite.client_name` - OPTIONAL, DEFAULT=`talk2powersystem` - Name of the client for logging purposes.
-- `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used.
-  Otherwise, `tools.cognite.token_file_path` must be provided for client credentials authentication.
+- `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used (when you run on a dev machine the backend app with uvicorn or the Jupyter Notebook).
+  Otherwise, `tools.cognite.token_file_path` or `tools.cognite.client_secret` must be provided.
 - `tools.cognite.tenant_id` - REQUIRED iff `tools.cognite.interactive_client_id` is present - Azure tenant ID. For example, `a8d61462-f252-44b2-bf6a-d7231960c041`.
-- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the cognite token file. For example, `/var/run/secrets/microsoft.com/entra/cognite`.
+- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the cognite token file (used when you run the Jupyter Notebook on RNDP). For example, `/var/run/secrets/microsoft.com/entra/cognite`.
+* `tools.cognite.client_secret` - OPTIONAL - Client secret for the Cognite confidential application (used for the backend app running on RNDP).
 
 ## `llm`
 

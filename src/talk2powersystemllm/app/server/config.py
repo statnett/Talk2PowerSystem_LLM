@@ -17,6 +17,10 @@ class SecuritySettings(BaseSettings):
         default=None,
         description="The registered application (client) ID. The value is also exposed to the UI."
     )
+    frontend_app_client_id: str | None = Field(
+        default=None,
+        description="The registered frontend application (client) ID. The value is also exposed to the UI."
+    )
     oidc_discovery_url: str | None = Field(
         default=None,
         description="OpenID Connect Discovery URL."
@@ -24,6 +28,10 @@ class SecuritySettings(BaseSettings):
     audience: str | None = Field(
         default=None,
         description="The expected audience of the security tokens"
+    )
+    issuer: str | None = Field(
+        default=None,
+        description="The expected issuer of the security tokens"
     )
     ttl: int = Field(
         default=86400,
@@ -51,11 +59,12 @@ class SecuritySettings(BaseSettings):
 
     @model_validator(mode="after")
     def check_required_fields_and_set_default_oidc_discovery_url(self) -> "SecuritySettings":
-        if self.enabled and ((not self.client_id) or (not self.authority)
-                             or (not self.logout) or (not self.login_redirect) or (not self.logout_redirect)
-                             or (not self.audience)):
+        if self.enabled and ((not self.client_id) or (not self.frontend_app_client_id) or (not self.authority)
+                             or (not self.logout) or (not self.login_redirect)
+                             or (not self.logout_redirect) or (not self.audience) or (not self.issuer)):
             raise ValueError("If security is enabled, the following fields are required: "
-                             "client_id, authority, logout, login_redirect, logout_redirect, audience!")
+                             "client_id, frontend_app_client_id, authority, logout, "
+                             "login_redirect, logout_redirect, audience, issuer!")
         if self.enabled and not self.oidc_discovery_url:
             self.oidc_discovery_url = (
                 self.authority.rstrip("/") + "/v2.0/.well-known/openid-configuration"

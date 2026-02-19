@@ -1,6 +1,11 @@
 Next release
 ============
 
+* Bump 3rd party libraries versions
+
+1.8.0-rc1
+============
+
 * [#255](https://github.com/statnett/Talk2PowerSystem_PM/issues/255): OBO auth flow for Cognite
 
 1.7.0-rc1

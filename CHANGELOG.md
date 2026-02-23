@@ -2,6 +2,10 @@ Next release
 ============
 
 * Bump 3rd party libraries versions
+* [#294](https://github.com/statnett/Talk2PowerSystem_PM/issues/294):
+  * Updated the response for the svg diagrams, so that we can implement the interactions with the diagrams
+  * Updated path to the PowSyBl diagrams packaged to the Docker image
+  * Updated `ttyg` to `3.2.0` to allow execution of asymmetric DESCRIBE
 
 1.8.0-rc1
 ============

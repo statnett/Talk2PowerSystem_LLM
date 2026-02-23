@@ -33,7 +33,7 @@ from ttyg.tools import AutocompleteSearchTool
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
 from talk2powersystemllm.tools import (
     user_datetime_ctx,
-    ImageArtifact,
+    SvgArtifact,
     GraphDBVisualGraphArtifact,
     GraphicsTool,
 )
@@ -58,7 +58,7 @@ from ..models import (
     ChatResponse,
     Message,
     Graphic,
-    ImageGraphic,
+    SvgGraphic,
     IframeGraphic,
     Usage,
     ExplainRequest,
@@ -614,9 +614,9 @@ async def conversations(
         elif "tools" in output and "messages" in output["tools"]:
             for tool_message in output["tools"]["messages"]:
                 if tool_message.status == "success" and tool_message.artifact:
-                    if isinstance(tool_message.artifact, ImageArtifact):
+                    if isinstance(tool_message.artifact, SvgArtifact):
                         graphics.append(
-                            ImageGraphic(type="image", url=build_diagram_image_url(request, tool_message.artifact.link))
+                            SvgGraphic(type="svg", url=build_diagram_image_url(request, tool_message.artifact.link))
                         )
                     elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
                         graphics.append(

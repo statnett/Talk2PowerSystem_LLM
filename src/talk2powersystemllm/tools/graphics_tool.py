@@ -13,8 +13,8 @@ class GraphicArtifact(BaseArtifact):
     link: str
 
 
-class ImageArtifact(GraphicArtifact):
-    type: Literal["image"] = "image"
+class SvgArtifact(GraphicArtifact):
+    type: Literal["svg"] = "svg"
 
 
 class GraphDBVisualGraphArtifact(GraphicArtifact):
@@ -71,7 +71,7 @@ SELECT ?link ?name ?format ?description ?kind {{
         diagram_configuration_iri: str | None,
         node_iri: str | None,
         run_manager: CallbackManagerForToolRun | None = None,
-    ) -> Tuple[str, ImageArtifact | GraphDBVisualGraphArtifact | None]:
+    ) -> Tuple[str, SvgArtifact | GraphDBVisualGraphArtifact | None]:
         if (not diagram_iri) and (not diagram_configuration_iri):
             raise ValueError(
                 "One of `diagram_iri` or `diagram_configuration_iri` arguments must be provided!"
@@ -100,7 +100,7 @@ SELECT ?link ?name ?format ?description ?kind {{
                     link += f"&uri={node_iri}"
 
                 if format_ == "image/svg+xml":
-                    artifact = ImageArtifact(link=link, mime_type=format_)
+                    artifact = SvgArtifact(link=link, mime_type=format_)
                 elif format_ == "text/html":
                     artifact = GraphDBVisualGraphArtifact(link=link, mime_type=format_)
                 else:

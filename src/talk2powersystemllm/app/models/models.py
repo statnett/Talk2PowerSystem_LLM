@@ -14,8 +14,8 @@ class Usage(BaseModel):
     total_tokens: int = Field(alias="totalTokens")
 
 
-class ImageGraphic(BaseModel):
-    type: Literal["image"] = "image"
+class SvgGraphic(BaseModel):
+    type: Literal["svg"] = "svg"
     url: str
 
 
@@ -24,7 +24,7 @@ class IframeGraphic(BaseModel):
     url: str
 
 
-Graphic = Annotated[Union[ImageGraphic, IframeGraphic], Field(discriminator="type")]
+Graphic = Annotated[Union[SvgGraphic, IframeGraphic], Field(discriminator="type")]
 
 
 class Message(BaseModel):

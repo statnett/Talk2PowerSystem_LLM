@@ -240,13 +240,14 @@ Response Body JSON Schema:
                                                     "svg"
                                                 ]
                                             },
-                                            "svg": {
-                                                "type": "string"
+                                            "url": {
+                                                "type": "string",
+                                                "format": "uri-reference"
                                             }
                                         },
                                         "required": [
                                             "type",
-                                            "svg"
+                                            "url"
                                         ],
                                         "additionalProperties": false
                                     },
@@ -371,7 +372,7 @@ Sample Response Body Including Graphics:
             },
             "graphics": [
                 {
-                    "type": "image",
+                    "type": "svg",
                     "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-OSLO.svg"
                 }
             ]

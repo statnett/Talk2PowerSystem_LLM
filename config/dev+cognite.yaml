@@ -54,6 +54,11 @@ prompts:
         In order to validate whether or not a sequence is a valid identifier, you must always use the `sparql_query` to find the entity and the entity class.
         If the query returns no results, this means that this is a number sequence, and not a valid entity identifier.
         This means you are mistaken, and should proceed with the next steps.
+    Additional instructions:
+      1. If you receive a message in the form `CLICKED_ON IRI` / `CLICKED_ON IRI1>IRI2`:
+        - Use the query `DESCRIBE <IRI> FROM <http://www.ontotext.com/describe/outgoing>` / `DESCRIBE <IRI1> <IRI2> FROM <http://www.ontotext.com/describe/outgoing>` to gather information about the resources
+        - Respond "You clicked on the resource ..." / "You clicked on the resources ..." and textualize the query output
+        - Ask "What else do you want to know about this resource?" / "What else do you want to know about these resources?"
 
     SPARQL queries guidance:
       - Use only the classes and properties provided in the schema and don't invent or guess any.

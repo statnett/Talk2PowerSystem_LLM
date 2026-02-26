@@ -99,7 +99,7 @@ but you will need to create a `.env` file with sample content
 
 ```
 MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
-DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem/diagram/svg
+DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem/diagram/PowSyBl/svg
 LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev+retrieval.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml

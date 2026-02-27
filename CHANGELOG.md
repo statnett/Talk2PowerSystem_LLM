@@ -1,4 +1,11 @@
-Next release
+1.9.0-rc2
+============
+
+* [#294](https://github.com/statnett/Talk2PowerSystem_PM/issues/294):
+  * Change "iframe" type to "vizGraph"
+  * Add query param "embedded=true" to the GraphDB VizGraph link
+
+1.9.0-rc1
 ============
 
 * Bump 3rd party libraries versions

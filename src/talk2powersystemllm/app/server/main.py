@@ -59,7 +59,7 @@ from ..models import (
     Message,
     Graphic,
     SvgGraphic,
-    IframeGraphic,
+    VizGraphGraphic,
     Usage,
     ExplainRequest,
     ExplainResponse,
@@ -512,7 +512,7 @@ def build_diagram_image_url(request: Request, filename: str) -> str:
 def build_gdb_visual_graph_url(link: str) -> str:
     return agent_factory.settings.graphdb.base_url + \
         ("" if agent_factory.settings.graphdb.base_url.endswith("/") else "/") + \
-        link
+        link + "&embedded=true"
 
 
 # noinspection PyUnusedLocal
@@ -620,7 +620,7 @@ async def conversations(
                         )
                     elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
                         graphics.append(
-                            IframeGraphic(type="iframe", url=build_gdb_visual_graph_url(tool_message.artifact.link))
+                            VizGraphGraphic(type="vizGraph", url=build_gdb_visual_graph_url(tool_message.artifact.link))
                         )
 
     logging.info(

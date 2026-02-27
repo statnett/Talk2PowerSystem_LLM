@@ -19,12 +19,12 @@ class SvgGraphic(BaseModel):
     url: str
 
 
-class IframeGraphic(BaseModel):
-    type: Literal["iframe"] = "iframe"
+class VizGraphGraphic(BaseModel):
+    type: Literal["vizGraph"] = "vizGraph"
     url: str
 
 
-Graphic = Annotated[Union[SvgGraphic, IframeGraphic], Field(discriminator="type")]
+Graphic = Annotated[Union[SvgGraphic, VizGraphGraphic], Field(discriminator="type")]
 
 
 class Message(BaseModel):

@@ -3,7 +3,6 @@ graphdb:
   repository_id: "cim"
   connect_timeout: 2
   read_timeout: 10
-  sparql_timeout: 15
 tools:
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
@@ -23,8 +22,7 @@ tools:
       ORDER BY DESC(?rank)
       LIMIT {limit}
   retrieval_search:
-    graphdb:
-      repository_id: "qa_dataset"
+    graphdb_repository_id: "qa_dataset"
     connector_name: "qa_dataset"
     name: sample_sparql_queries
     description: Given a user question obtain sample SPARQL queries, which can be used to answer the question

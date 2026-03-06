@@ -3,9 +3,13 @@ from typing import Type, Tuple, Literal
 
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.tools import ToolException
-from pydantic import BaseModel, Field
-from ttyg.tools import BaseArtifact, BaseGraphDBTool
+from pydantic import Field, model_validator, BaseModel
+from pyparsing import ParseException
+from rdflib import Variable
+from rdflib.plugins.sparql import prepareQuery
+from ttyg.tools import BaseArtifact, SparqlQueryTool
 from ttyg.utils import timeit
+from typing_extensions import Self
 
 
 class GraphicArtifact(BaseArtifact):
@@ -21,7 +25,7 @@ class GraphDBVisualGraphArtifact(GraphicArtifact):
     type: Literal["gdb_viz_graph"] = "gdb_viz_graph"
 
 
-class GraphicsTool(BaseGraphDBTool):
+class GraphicsTool(SparqlQueryTool):
     """
     Displays a diagram specified by its IRI or a diagram specified by IRI of a diagram configuration and node IRI
     """
@@ -62,7 +66,24 @@ SELECT ?link ?name ?format ?description ?kind {{
     }}
 }}"""
     args_schema: Type[BaseModel] = ArgumentsSchema
-    response_format: str = "content_and_artifact"
+
+    @model_validator(mode="after")
+    def validate_sparql_query_template(self) -> Self:
+        """
+        Validate the SPARQL query template uses SELECT
+        """
+
+        try:
+            parsed_query = prepareQuery(self.sparql_query_template.format(iri="http://example.com/"))
+        except ParseException as e:
+            raise ValueError("Graphics tool SPARQL query template is not valid.", e)
+
+        if parsed_query.algebra.name != "SelectQuery":
+            raise ValueError(
+                "Invalid query type. Only SELECT queries are supported."
+            )
+
+        return self
 
     @timeit
     def _run(
@@ -88,14 +109,13 @@ SELECT ?link ?name ?format ?description ?kind {{
         )
         logging.debug(f"Fetching diagram with query {query}")
         try:
-            query_results, _ = self.graph.eval_sparql_query(query)
-            if len(query_results["results"]["bindings"]) > 0:
-                bindings = query_results["results"]["bindings"][0]
+            query_results, _ = self.graph.eval_sparql_query(self.graphdb_repository_id, query)
+            if len(query_results.bindings) > 0:
+                bindings = query_results.bindings[0]
+                name = bindings[Variable("name")].value
+                format_ = bindings[Variable("format")].value
 
-                name = bindings["name"]["value"]
-                format_ = bindings["format"]["value"]
-
-                link = bindings["link"]["value"]
+                link = bindings[Variable("link")].value
                 if diagram_configuration_iri:
                     link += f"&uri={node_iri}"
 
@@ -108,10 +128,10 @@ SELECT ?link ?name ?format ?description ?kind {{
                     return f"Found a diagram with unknown format {format_}. Can't render it!", None
 
                 content = f"Diagram with name \"{name}\""
-                if "description" in bindings:
-                    content += f" and description \"{bindings["description"]["value"]}\""
-                if "kind" in bindings:
-                    content += f" of kind \"{bindings["kind"]["value"]}\""
+                if Variable("description") in bindings:
+                    content += f" and description \"{bindings[Variable("description")].value}\""
+                if Variable("kind") in bindings:
+                    content += f" of kind \"{bindings[Variable("kind")].value}\""
                 if diagram_configuration_iri:
                     content += f" for \"{node_iri}\""
                 return content, artifact

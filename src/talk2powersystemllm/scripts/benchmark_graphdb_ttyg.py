@@ -58,13 +58,13 @@ class GraphDBWrapper(GraphDB):
      present in the response. However, the original implementation also checks for IRIs in the SPARQL queries,
      which are missing in the KG, but we want to skip this check here."""
 
-    def _GraphDB__validate_query(self, query: str) -> str:
+    def _GraphDB__validate_query(self, repository_id: str, query: str) -> str:
         parsed_query = self._GraphDB__parse_query(query)
         prefix_part = str(parsed_query[0])
         query_part = str(parsed_query[1:])
 
         defined_prefixes = self._GraphDB__get_defined_prefixes(prefix_part)
-        known_prefixes = self.get_known_prefixes()
+        known_prefixes = self._GraphDB__get_known_prefixes(repository_id)
 
         query = self._GraphDB__correct_wrong_prefixes(defined_prefixes, known_prefixes, query)
 
@@ -84,7 +84,6 @@ class GraphDBSettings(BaseSettings):
     repository_id: str
     connect_timeout: int = Field(default=2, ge=1)
     read_timeout: int = Field(default=10, ge=1)
-    sparql_timeout: int = Field(default=15, ge=1)
     ttyg_agent_id: str
     username: str | None = None
     password: SecretStr | None = None
@@ -104,10 +103,10 @@ def save_as_yaml(path: Path, obj) -> None:
 
 
 def run_agent(
-        writer: io.TextIOWrapper,
-        graphdb_settings: GraphDBSettings,
-        question_id: str,
-        question_text: str,
+    writer: io.TextIOWrapper,
+    graphdb_settings: GraphDBSettings,
+    question_id: str,
+    question_text: str,
 ) -> None:
     writer.write(str(question_id))
     writer.write("\n")
@@ -197,30 +196,45 @@ def log_retry(retry_state: RetryCallState):
     before_sleep=log_retry
 )
 def post_conversations(
-        x_request_id_prefix: str,
-        graphdb_settings: GraphDBSettings,
-        question_text: str,
-        retry_state: RetryCallState = None
+    x_request_id_prefix: str,
+    graphdb_settings: GraphDBSettings,
+    question_text: str,
+    retry_state: RetryCallState = None
 ) -> Response:
     attempt_number = retry_state.attempt_number if retry_state else 1
 
-    conversations_headers = {
+    base_headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "X-Request-Id": f"{x_request_id_prefix}-{attempt_number}-conversations",
     }
     if graphdb_settings.username:
-        conversations_headers.update({
+        base_headers.update({
             "Authorization": "Basic " + b64encode(
                 f"{graphdb_settings.username}:{graphdb_settings.password.get_secret_value()}".encode("ascii")
             ).decode()
         })
 
-    conversations_response = requests.post(
-        f"{graphdb_settings.base_url}/rest/chat/conversations",
-        headers=conversations_headers,
+    start_conversation_headers = base_headers.copy()
+    start_conversation_headers["X-Request-Id"] = f"{x_request_id_prefix}-{attempt_number}-start-conversation"
+    start_conversation_response = requests.post(
+        f"{graphdb_settings.base_url}/rest/chat/chats",
+        headers=start_conversation_headers,
         json={
             "agentId": graphdb_settings.ttyg_agent_id,
+            "question": question_text,
+        },
+        timeout=(graphdb_settings.connect_timeout, graphdb_settings.read_timeout)
+    )
+    start_conversation_response.raise_for_status()
+
+    conversations_headers = base_headers.copy()
+    conversations_headers["X-Request-Id"] = f"{x_request_id_prefix}-{attempt_number}-conversations"
+    conversations_response = requests.post(
+        f"{graphdb_settings.base_url}/rest/chat/chats/question",
+        headers=base_headers,
+        json={
+            "agentId": graphdb_settings.ttyg_agent_id,
+            "conversationId": start_conversation_response.json()["conversationId"],
             "question": question_text,
         },
         timeout=(graphdb_settings.connect_timeout, graphdb_settings.read_timeout)
@@ -232,10 +246,8 @@ def post_conversations(
 def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDBWrapper:
     kwargs = {
         "base_url": graphdb_settings.base_url,
-        "repository_id": graphdb_settings.repository_id,
         "connect_timeout": graphdb_settings.connect_timeout,
         "read_timeout": graphdb_settings.read_timeout,
-        "sparql_timeout": graphdb_settings.sparql_timeout,
     }
     if graphdb_settings.username:
         kwargs.update({
@@ -247,10 +259,10 @@ def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDBWrapper:
 
 
 def run_evaluation_on_split(
-        graphdb_settings: GraphDBSettings,
-        split: list[dict],
-        split_name: str,
-        results_dir: Path,
+    graphdb_settings: GraphDBSettings,
+    split: list[dict],
+    split_name: str,
+    results_dir: Path,
 ) -> None:
     gdb_responses_file = results_dir / f"gdb_responses_{split_name}.txt"
 
@@ -293,8 +305,13 @@ def run_evaluation_on_split(
                         output = query_method["errorOutput"]
                     else:
                         status = "success"
-                        results, _ = graphdb_client.eval_sparql_query(query_method["query"])
-                        output = results
+                        results, _ = graphdb_client.eval_sparql_query(
+                            graphdb_settings.repository_id, query_method["query"]
+                        )
+                        if results.type in ("CONSTRUCT", "DESCRIBE"):
+                            output = results.serialize(format="turtle", encoding="utf-8").decode("utf-8")
+                        else:
+                            output = json.loads(results.serialize(format="json", encoding="utf-8").decode("utf-8"))
 
                     if query_method["name"] == "sparql_query":
                         name, args = "sparql_query", {"query": query_method["rawQuery"]}

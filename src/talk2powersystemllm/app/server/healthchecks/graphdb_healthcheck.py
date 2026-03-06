@@ -27,21 +27,25 @@ class GraphDBHealthchecker(metaclass=SingletonMeta):
     def __init__(
             self,
             graphdb_client: GraphDB,
+            repository_id: str,
     ):
         self.__graphdb_client = graphdb_client
+        self.__repository_id = repository_id
         HealthChecks().add(self)
 
     async def health(self) -> GraphDBHealthcheck:
         try:
-            self.__graphdb_client.eval_sparql_query("ASK { ?s ?p ?o }", validation=False)
-            autocomplete_status = self.__graphdb_client.get_autocomplete_status()
+            self.__graphdb_client.eval_sparql_query(
+                self.__repository_id, "ASK { ?s ?p ?o }", validation=False
+            )
+            autocomplete_status = self.__graphdb_client.get_autocomplete_status(self.__repository_id)
             if autocomplete_status != GraphDBAutocompleteStatus.READY:
                 warning_message = (f"The Autocomplete index status of the repository is \"{autocomplete_status.name}\". "
                                    f"It should be \"READY\".")
                 logging.warning(warning_message)
                 return GraphDBHealthcheck(status=HealthStatus.WARNING, message=warning_message)
 
-            rdf_rank_status = self.__graphdb_client.get_rdf_rank_status()
+            rdf_rank_status = self.__graphdb_client.get_rdf_rank_status(self.__repository_id)
             if rdf_rank_status != GraphDBRdfRankStatus.COMPUTED:
                 warning_message = (f"The RDF Rank status of the repository is \"{rdf_rank_status.name}\". "
                                    f"It should be \"COMPUTED\".")

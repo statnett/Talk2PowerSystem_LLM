@@ -402,7 +402,7 @@ Sample Response Body Including Graphics:
             "graphics": [
                 {
                     "type": "vizGraph",
-                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=dc0d824cdbfb4ca196c71ad55d6b1eb1"
+                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=dc0d824cdbfb4ca196c71ad55d6b1eb1&embedded=true"
                 }
             ]
         }
@@ -431,7 +431,7 @@ Sample Response Body Including Graphics:
             "graphics": [
                 {
                     "type": "vizGraph",
-                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f"
+                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f&embedded=true"
                 }
             ]
         }

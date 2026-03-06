@@ -26,7 +26,7 @@ from langchain_core.messages import (
 )
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import AsyncRedisSaver
-from rdflib import Graph, Namespace
+from rdflib import Namespace, Variable
 from starlette.responses import JSONResponse, FileResponse
 from ttyg.tools import AutocompleteSearchTool
 
@@ -138,7 +138,7 @@ async def lifespan(_: FastAPI):
             )
             COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default"]
 
-        GraphDBHealthchecker(agent_factory.graphdb_client)
+        GraphDBHealthchecker(agent_factory.graphdb_client, agent_factory.graphdb_repository_id)
 
         scheduler = AsyncIOScheduler()
         scheduler.add_job(update_gtg_info, 'interval', seconds=settings.gtg_refresh_interval)
@@ -286,47 +286,49 @@ async def update_about_info() -> None:
 
 def get_about_ontologies() -> list[AboutOntologyInfo]:
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_ontologies_query.rq").read_text()
-    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(query, validation=False)
+    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(
+        agent_factory.graphdb_repository_id, query, validation=False
+    )
     ontologies: list[AboutOntologyInfo] = []
-    for binding in query_results["results"]["bindings"]:
+    for binding in query_results.bindings:
         ontologies.append(AboutOntologyInfo(
-            uri=binding["uri"]["value"],
-            name=binding["name"]["value"] if "name" in binding else None,
-            version=binding["version"]["value"] if "version" in binding else None,
-            date=binding["date"]["value"] if "date" in binding else None,
+            uri=binding[Variable("uri")],
+            name=binding[Variable("name")].value if Variable("name") in binding else None,
+            version=binding[Variable("version")].value if Variable("version") in binding else None,
+            date=str(binding[Variable("date")].value) if Variable("date") in binding else None,
         ))
     return ontologies
 
 
 def get_about_datasets() -> list[AboutDatasetInfo]:
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_datasets_query.rq").read_text()
-    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(query, validation=False)
+    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(
+        agent_factory.graphdb_repository_id, query, validation=False
+    )
     datasets: list[AboutDatasetInfo] = []
-    for binding in query_results["results"]["bindings"]:
+    for binding in query_results.bindings:
         datasets.append(AboutDatasetInfo(
-            uri=binding["uri"]["value"],
-            name=binding["name"]["value"] if "name" in binding else None,
-            date=binding["date"]["value"] if "date" in binding else None,
+            uri=binding[Variable("uri")],
+            name=binding[Variable("name")].value if Variable("name") in binding else None,
+            date=str(binding[Variable("date")].value) if Variable("date") in binding else None,
         ))
     return datasets
 
 
 def get_about_graphdb() -> AboutGraphDBInfo:
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_graphdb_query.rq").read_text()
-    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(query, validation=False)
-    schema_graph = Graph().parse(
-        data=query_results,
-        format="turtle",
+    query_results, _ = agent_factory.graphdb_client.eval_sparql_query(
+        agent_factory.graphdb_repository_id, query, validation=False
     )
     onto = Namespace("http://www.ontotext.com/")
     return AboutGraphDBInfo(
         baseUrl=agent_factory.settings.graphdb.base_url,
-        repository=agent_factory.settings.graphdb.repository_id,
-        version=list(schema_graph.objects(onto.SI_has_Revision, None))[0].value,
-        numberOfExplicitTriples=list(schema_graph.objects(onto.SI_number_of_explicit_triples, None))[0].value,
-        numberOfTriples=list(schema_graph.objects(onto.SI_number_of_triples, None))[0].value,
-        autocompleteIndexStatus=agent_factory.graphdb_client.get_autocomplete_status(),
-        rdfRankStatus=agent_factory.graphdb_client.get_rdf_rank_status(),
+        repository=agent_factory.graphdb_repository_id,
+        version=list(query_results.graph.objects(onto.SI_has_Revision, None))[0].value,
+        numberOfExplicitTriples=list(query_results.graph.objects(onto.SI_number_of_explicit_triples, None))[0].value,
+        numberOfTriples=list(query_results.graph.objects(onto.SI_number_of_triples, None))[0].value,
+        autocompleteIndexStatus=agent_factory.graphdb_client.get_autocomplete_status(agent_factory.graphdb_repository_id),
+        rdfRankStatus=agent_factory.graphdb_client.get_rdf_rank_status(agent_factory.graphdb_repository_id),
     )
 
 

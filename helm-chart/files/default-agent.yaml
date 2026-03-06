@@ -2,12 +2,11 @@
 # For the full list of supported properties refer: /docs/AgentConfig.md
 graphdb:
   base_url: "https://graphdb.com"
-  repository_id: "default"
   connect_timeout: 2
   read_timeout: 10
-  sparql_timeout: 15
   username: "admin"
 tools:
+  graphdb_repository_id: "default"
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
   autocomplete_search:

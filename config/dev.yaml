@@ -1,10 +1,9 @@
 graphdb:
   base_url: "https://cim.ontotext.com/graphdb"
-  repository_id: "cim"
   connect_timeout: 2
   read_timeout: 10
-  sparql_timeout: 15
 tools:
+  graphdb_repository_id: "cim"
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
   autocomplete_search:

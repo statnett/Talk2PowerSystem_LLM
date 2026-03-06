@@ -120,7 +120,6 @@ configuration:
   agent:
     graphdb:
       base_url: "https://rndpsvc.statnett.no/graphdb"
-      repository_id: "nordic44"
       username: "chatbot"
     llm:
       model: "gpt-4.1"

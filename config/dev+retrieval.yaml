@@ -1,10 +1,9 @@
 graphdb:
   base_url: "https://cim.ontotext.com/graphdb"
-  repository_id: "cim"
   connect_timeout: 2
   read_timeout: 10
-  sparql_timeout: 15
 tools:
+  graphdb_repository_id: "cim"
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
   autocomplete_search:
@@ -23,8 +22,7 @@ tools:
       ORDER BY DESC(?rank)
       LIMIT {limit}
   retrieval_search:
-    graphdb:
-      repository_id: "qa_dataset"
+    graphdb_repository_id: "qa_dataset"
     connector_name: "qa_dataset"
     name: sample_sparql_queries
     description: Given a user question obtain sample SPARQL queries, which can be used to answer the question
@@ -49,9 +47,8 @@ tools:
       GROUP BY ?query
       LIMIT {limit}
 llm:
-  azure_endpoint: "https://statnett.openai.azure.com/"
-  model: "gpt-4.1"
-  api_version: "2024-12-01-preview"
+  type: "openai"
+  model: "gpt-5.2-2025-12-11"
   temperature: 0
   seed: 1
   timeout: 120

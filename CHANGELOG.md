@@ -1,6 +1,21 @@
 1.9.0-rc2
 ============
 
+* [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
+  Update to `ttyg` to `4.0.0`, which uses the GraphDB client from rdflib 
+  to solve the known issue that the SPARQL queries are executed 
+  against GraphDB without using a connection pool.
+  Delete from the source code some old scripts used for some experiments
+  but, which can no longer work with the new `ttyg` version,
+  and we don't want to update them.
+* [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
+  Update other 3rd party libraries to their latest versions.
+* [#294](https://github.com/statnett/Talk2PowerSystem_PM/issues/294):
+  Update trouble.md example responses to include `embedded=true` in the GraphDB VizGraph link.
+
+1.9.0-rc2
+============
+
 * [#294](https://github.com/statnett/Talk2PowerSystem_PM/issues/294):
   * Change "iframe" type to "vizGraph"
   * Add query param "embedded=true" to the GraphDB VizGraph link

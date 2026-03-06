@@ -35,10 +35,8 @@ class GraphDBSettings(BaseSettings):
     }
 
     base_url: str
-    repository_id: str
     connect_timeout: int = Field(default=2, ge=1)
     read_timeout: int = Field(default=10, ge=1)
-    sparql_timeout: int = Field(default=15, ge=1)
     username: str | None = None
     password: SecretStr | None = None
 
@@ -65,7 +63,7 @@ class DisplayGraphicsSettings(BaseModel):
 
 
 class RetrievalSearchSettings(BaseModel):
-    graphdb: GraphDBSettings
+    graphdb_repository_id: str
     connector_name: str
     name: str
     description: str
@@ -99,6 +97,7 @@ class CogniteSettings(BaseModel):
 
 
 class ToolsSettings(BaseModel):
+    graphdb_repository_id: str
     ontology_schema: OntologySchemaSettings
     autocomplete_search: AutocompleteSearchSettings
     display_graphics: DisplayGraphicsSettings | None = None
@@ -164,22 +163,14 @@ def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
     abs_path = config_path.parent / rel_path
     ontology_schema_config["file_path"] = str(abs_path.resolve())
 
-    # Copy GraphDB base configuration to the retrieval search configuration
-    if "retrieval_search" in config["tools"]:
-        config["tools"]["retrieval_search"]["graphdb"] = merge_dicts(
-            config["graphdb"],
-            config["tools"]["retrieval_search"]["graphdb"]
-        )
     return Talk2PowerSystemAgentSettings(**config)
 
 
 def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDB:
     kwargs = {
         "base_url": graphdb_settings.base_url,
-        "repository_id": graphdb_settings.repository_id,
         "connect_timeout": graphdb_settings.connect_timeout,
         "read_timeout": graphdb_settings.read_timeout,
-        "sparql_timeout": graphdb_settings.sparql_timeout,
     }
     if graphdb_settings.username:
         kwargs.update({
@@ -241,10 +232,12 @@ class Talk2PowerSystemAgentFactory:
         self.checkpointer = checkpointer
 
         tools_settings = self.settings.tools
+        self.graphdb_repository_id = tools_settings.graphdb_repository_id
         self.tools: list[BaseTool] = []
 
         sparql_query_tool = SparqlQueryTool(
             graph=self.graphdb_client,
+            graphdb_repository_id=tools_settings.graphdb_repository_id,
         )
         self.tools.append(sparql_query_tool)
 
@@ -258,15 +251,20 @@ class Talk2PowerSystemAgentFactory:
             })
         autocomplete_search_tool = AutocompleteSearchTool(
             graph=self.graphdb_client,
+            graphdb_repository_id=tools_settings.graphdb_repository_id,
             **autocomplete_search_kwargs,
         )
         self.tools.append(autocomplete_search_tool)
-        self.tools.append(GraphicsTool(graph=self.graphdb_client))
+        self.tools.append(GraphicsTool(
+            graph=self.graphdb_client,
+            graphdb_repository_id=tools_settings.graphdb_repository_id,
+        ))
 
         if tools_settings.retrieval_search:
             retrieval_search_settings = tools_settings.retrieval_search
             retrieval_query_tool = RetrievalQueryTool(
-                graph=init_graphdb(retrieval_search_settings.graphdb),
+                graph=self.graphdb_client,
+                graphdb_repository_id=retrieval_search_settings.graphdb_repository_id,
                 connector_name=retrieval_search_settings.connector_name,
                 name=retrieval_search_settings.name,
                 description=retrieval_search_settings.description,

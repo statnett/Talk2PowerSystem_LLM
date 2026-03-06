@@ -1,7 +1,7 @@
 graphdb:
   base_url: "http://graphdb:7200"
-  repository_id: "cim"
 tools:
+  graphdb_repository_id: "cim"
   ontology_schema:
     file_path: "ontology/cim-subset-pretty.ttl"
   autocomplete_search:

@@ -1,3 +1,11 @@
+2.1.0-rc1
+============
+
+* [#292](https://github.com/statnett/Talk2PowerSystem_PM/issues/292):
+  Update the response from the `explain` endpoint to include 
+  the GraphDB repository id for the GraphDB tools, so that the UI can build
+  the url to the GraphDB Workbench with the preloaded query correctly.
+
 2.0.0-rc1
 ============
 

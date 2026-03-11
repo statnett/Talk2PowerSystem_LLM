@@ -557,37 +557,41 @@ Response Body JSON Schema:
         },
         "queryMethods": {
             "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "args": {
-                            "type": "object"
-                        },
-                        "query": {
-                            "type": "string",
-                            "description": "Present only if the queryType is present."
-                        },
-                        "queryType": {
-                            "enum": [
-                                "sparql"
-                            ]
-                        },
-                        "errorOutput": {
-                            "type": "string"
-                        }
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
                     },
-                    "required": [
-                        "name",
-                        "args"
-                    ]
-                }
-            ]
+                    "args": {
+                        "type": "object"
+                    },
+                    "query": {
+                        "type": "string",
+                        "description": "Present only if the queryType is present."
+                    },
+                    "queryType": {
+                        "enum": [
+                            "sparql"
+                        ]
+                    },
+                    "graphdbRepositoryId": {
+                        "type": "string",
+                        "description": "Present for query methods, which execute queries against GraphDB."
+                    },
+                    "errorOutput": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "name",
+                    "args"
+                ]
+            }
         }
     },
+    "additionalProperties": false,
     "required": [
         "conversationId",
         "messageId",
@@ -610,7 +614,8 @@ Sample Response Body:
                 "result_class": "cim:Substation"
             },
             "query": "\nPREFIX sesame: <http://www.openrdf.org/schema/sesame#>\nPREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>\nPREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>\nSELECT ?iri ?name ?class ?rank {\n    ?iri auto:query \"OSLO\" ;\n        <https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn> ?name ;\n        a cim:Substation ;\n        sesame:directType ?class;\n        rank:hasRDFRank5 ?rank.\n}\nORDER BY DESC(?rank)\nLIMIT 10",
-            "queryType": "sparql"
+            "queryType": "sparql",
+            "graphdbRepositoryId": "cim"
         },
         {
             "name": "sparql_query",
@@ -619,7 +624,8 @@ Sample Response Body:
             },
             "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }",
             "queryType": "sparql",
-            "errorOutput": "Error: ValueError('The following IRIs are not used in the data stored in GraphDB: <urn:uri:1234>') Please fix your mistakes."
+            "errorOutput": "Error: ValueError('The following IRIs are not used in the data stored in GraphDB: <urn:uri:1234>') Please fix your mistakes.",
+            "graphdbRepositoryId": "cim"
         },
         {
             "name": "sparql_query",
@@ -627,7 +633,8 @@ Sample Response Body:
                 "query": "\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name"
             },
             "query": "\nPREFIX cim: <https://cim.ucaiug.io/ns#>\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name",
-            "queryType": "sparql"
+            "queryType": "sparql",
+            "graphdbRepositoryId": "cim"
         },
         {
             "name": "retrieve_data_points",

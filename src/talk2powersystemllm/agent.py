@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings
 from ttyg.graphdb import GraphDB
 from ttyg.tools import (
+    BaseGraphDBTool,
     AutocompleteSearchTool,
     OntologySchemaAndVocabularyTool,
     RetrievalQueryTool,
@@ -226,6 +227,7 @@ class Talk2PowerSystemAgentFactory:
     settings: Talk2PowerSystemAgentSettings
     graphdb_client: GraphDB
     graphdb_repository_id: str
+    tool_name_to_gdb_repository_id: dict[str, str]
     checkpointer: Checkpointer | None = None
     model: BaseChatModel
     instructions: str
@@ -291,6 +293,12 @@ class Talk2PowerSystemAgentFactory:
         self.instructions = f"""{self.settings.prompts.assistant_instructions}""".replace(
             "{ontology_schema}", ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle")
         )
+
+        self.tool_name_to_gdb_repository = {
+            tool.name: tool.graphdb_repository_id
+            for tool in self.tools
+            if isinstance(tool, BaseGraphDBTool)
+        }
 
         self.model = init_llm(self.settings.llm)
 

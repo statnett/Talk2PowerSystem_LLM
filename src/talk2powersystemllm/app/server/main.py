@@ -327,7 +327,8 @@ def get_about_graphdb() -> AboutGraphDBInfo:
         version=list(query_results.graph.objects(onto.SI_has_Revision, None))[0].value,
         numberOfExplicitTriples=list(query_results.graph.objects(onto.SI_number_of_explicit_triples, None))[0].value,
         numberOfTriples=list(query_results.graph.objects(onto.SI_number_of_triples, None))[0].value,
-        autocompleteIndexStatus=agent_factory.graphdb_client.get_autocomplete_status(agent_factory.graphdb_repository_id),
+        autocompleteIndexStatus=agent_factory.graphdb_client.get_autocomplete_status(
+            agent_factory.graphdb_repository_id),
         rdfRankStatus=agent_factory.graphdb_client.get_rdf_rank_status(agent_factory.graphdb_repository_id),
     )
 
@@ -702,23 +703,39 @@ async def explain(
     claims=Depends(conditional_security),
 ) -> ExplainResponse:
     conversation_id, message_id = request.conversation_id, request.message_id
-    checkpoint = await agent_factory.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
+    explain_messages = await get_explain_messages(conversation_id, message_id)
+    executed_queries, tools_calls_errors = await get_queries_and_errors(explain_messages)
+    query_methods = await build_query_methods(explain_messages, executed_queries, tools_calls_errors)
 
+    return ExplainResponse(
+        conversationId=conversation_id,
+        messageId=message_id,
+        queryMethods=query_methods,
+    )
+
+
+async def get_all_messages(conversation_id: str, message_id: str) -> list[Any]:
+    checkpoint = await agent_factory.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
     if not checkpoint:
         raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")
-
-    saved_messages = checkpoint["channel_values"]["messages"]
 
     message_found = False
     # take only the messages up to the one we're interested in
     messages = []
-    for message in saved_messages:
+    for message in checkpoint["channel_values"]["messages"]:
         messages.append(message)
         if message.id == message_id:
             message_found = True
             break
+
     if not message_found:
         raise MessageNotFound(f"Message with id \"{message_id}\" not found.")
+
+    return messages
+
+
+async def get_explain_messages(conversation_id: str, message_id: str) -> list[Any]:
+    messages = await get_all_messages(conversation_id, message_id)
 
     # going backwards find a human message or AI message with content
     # all messages in between are the explanation
@@ -727,9 +744,12 @@ async def explain(
         if isinstance(message, HumanMessage) or (isinstance(message, AIMessage) and message.content != ""):
             break
         explain_messages.insert(0, message)
+    return explain_messages
 
-    tools_calls_errors = dict()
+
+async def get_queries_and_errors(explain_messages: list[Any]) -> tuple[dict[str, dict[str, str]], dict[str, Any]]:
     executed_queries = dict()
+    tools_calls_errors = dict()
     for message in explain_messages:
         if isinstance(message, ToolMessage):
             if message.artifact and "kwargs" in message.artifact and "type" in message.artifact["kwargs"] and \
@@ -740,26 +760,30 @@ async def explain(
                 }
             if message.status == "error":
                 tools_calls_errors[message.tool_call_id] = message.content
+    return executed_queries, tools_calls_errors
 
+
+async def build_query_methods(
+    explain_messages: list[Any],
+    executed_queries: dict[str, dict[str, str]],
+    tools_calls_errors: dict[str, Any]
+) -> list[QueryMethod]:
     query_methods: list[QueryMethod] = []
     for message in explain_messages:
         if isinstance(message, AIMessage) and message.tool_calls != []:
             for tool_call in message.tool_calls:
+                tool_name = tool_call["name"]
+                tool_call_id = tool_call["id"]
                 query_method_kwargs = {
-                    "name": tool_call["name"],
+                    "name": tool_name,
                     "args": tool_call["args"],
                 }
 
-                if tool_call["id"] in executed_queries:
-                    query_method_kwargs.update(executed_queries[tool_call["id"]])
-                if tool_call["id"] in tools_calls_errors:
-                    query_method_kwargs.update({
-                        "errorOutput": tools_calls_errors[tool_call["id"]],
-                    })
+                if tool_name in agent_factory.tool_name_to_gdb_repository:
+                    query_method_kwargs["graphdbRepositoryId"] = agent_factory.tool_name_to_gdb_repository[tool_name]
+                if tool_call_id in executed_queries:
+                    query_method_kwargs.update(executed_queries[tool_call_id])
+                if tool_call_id in tools_calls_errors:
+                    query_method_kwargs["errorOutput"] = tools_calls_errors[tool_call_id]
                 query_methods.append(QueryMethod(**query_method_kwargs))
-
-    return ExplainResponse(
-        conversationId=conversation_id,
-        messageId=message_id,
-        queryMethods=query_methods,
-    )
+    return query_methods

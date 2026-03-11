@@ -5,6 +5,10 @@
   Update the response from the `explain` endpoint to include 
   the GraphDB repository id for the GraphDB tools, so that the UI can build
   the url to the GraphDB Workbench with the preloaded query correctly.
+* [#300](https://github.com/statnett/Talk2PowerSystem_PM/issues/300):
+  Update the response from the `explain` endpoint to include additional fields 
+  "advanced" and "hideArgs" to indicate the UI that a tool call or its 
+  arguments by default shouldn't be displayed.
 
 2.0.0-rc1
 ============

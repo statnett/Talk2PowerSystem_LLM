@@ -232,6 +232,7 @@ class Talk2PowerSystemAgentFactory:
     model: BaseChatModel
     instructions: str
     tools: list[BaseTool]
+    advanced_tools: set[str]
 
     def __init__(
         self,
@@ -284,7 +285,8 @@ class Talk2PowerSystemAgentFactory:
             )
             self.tools.append(retrieval_query_tool)
 
-        self.tools.append(NowTool())
+        now_tool = NowTool()
+        self.tools.append(now_tool)
 
         ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
             graph=self.graphdb_client,
@@ -298,6 +300,11 @@ class Talk2PowerSystemAgentFactory:
             tool.name: tool.graphdb_repository_id
             for tool in self.tools
             if isinstance(tool, BaseGraphDBTool)
+        }
+        self.advanced_tools = {now_tool.name} | {
+            tool.name
+            for tool in self.tools
+            if isinstance(tool, BaseGraphDBTool) and tool.name != sparql_query_tool.name
         }
 
         self.model = init_llm(self.settings.llm)

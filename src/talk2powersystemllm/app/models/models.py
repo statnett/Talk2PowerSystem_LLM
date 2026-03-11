@@ -52,6 +52,8 @@ class QueryMethod(BaseModel):
     query_type: str | None = Field(default=None, alias="queryType")
     graphdb_repository_id: str | None = Field(default=None, alias="graphdbRepositoryId")
     error_output: str | None = Field(default=None, alias="errorOutput")
+    advanced: bool | None = None
+    hide_args: bool | None = Field(default=None, alias="hideArgs")
 
 
 class ExplainResponse(BaseModel):

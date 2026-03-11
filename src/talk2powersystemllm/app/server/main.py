@@ -774,16 +774,21 @@ async def build_query_methods(
             for tool_call in message.tool_calls:
                 tool_name = tool_call["name"]
                 tool_call_id = tool_call["id"]
-                query_method_kwargs = {
+                query_method: dict[str, Any] = {
                     "name": tool_name,
                     "args": tool_call["args"],
                 }
 
+                if tool_name in agent_factory.advanced_tools or tool_call_id in tools_calls_errors:
+                    query_method["advanced"] = True
                 if tool_name in agent_factory.tool_name_to_gdb_repository:
-                    query_method_kwargs["graphdbRepositoryId"] = agent_factory.tool_name_to_gdb_repository[tool_name]
+                    query_method["graphdbRepositoryId"] = agent_factory.tool_name_to_gdb_repository[tool_name]
                 if tool_call_id in executed_queries:
-                    query_method_kwargs.update(executed_queries[tool_call_id])
+                    query_method.update(executed_queries[tool_call_id])
                 if tool_call_id in tools_calls_errors:
-                    query_method_kwargs["errorOutput"] = tools_calls_errors[tool_call_id]
-                query_methods.append(QueryMethod(**query_method_kwargs))
+                    query_method["errorOutput"] = tools_calls_errors[tool_call_id]
+                if query_method.get("queryType") == "sparql" and "query" in query_method and \
+                    "errorOutput" not in query_method:
+                    query_method["hideArgs"] = True
+                query_methods.append(QueryMethod(**query_method))
     return query_methods

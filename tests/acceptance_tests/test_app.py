@@ -75,9 +75,13 @@ class AcceptanceTestsApp(TestCase):
                 "type": "graphdb",
                 "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                "description": "Checks if GraphDB repository can be queried. Also checks that the status of "
-                               "the autocomplete index is READY, and the RDF rank status is COMPUTED.",
-                "message": "GraphDB repository can be queried and it's configured correctly."
+                "description": "Checks that the GraphDB repository can be queried and is healthy. "
+                               "Checks that the status of the autocomplete index is READY, "
+                               "and the RDF rank status is COMPUTED. "
+                               "In addition, if the n-shot tool is available, checks that the n-shot tool "
+                               "GraphDB repository can be queried and is healthy, and that the "
+                               "ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+                "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
             } in actual_response_json["healthChecks"]
         )
         self.assertTrue(
@@ -110,9 +114,13 @@ class AcceptanceTestsApp(TestCase):
                 "type": "graphdb",
                 "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                "description": "Checks if GraphDB repository can be queried. Also checks that the status of "
-                               "the autocomplete index is READY, and the RDF rank status is COMPUTED.",
-                "message": "GraphDB repository can be queried and it's configured correctly."
+                "description": "Checks that the GraphDB repository can be queried and is healthy. "
+                               "Checks that the status of the autocomplete index is READY, "
+                               "and the RDF rank status is COMPUTED. "
+                               "In addition, if the n-shot tool is available, checks that the n-shot tool "
+                               "GraphDB repository can be queried and is healthy, and that the "
+                               "ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+                "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
             } in actual_response_json["healthChecks"]
         )
         self.assertTrue(

@@ -138,7 +138,7 @@ async def lifespan(_: FastAPI):
             )
             COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default"]
 
-        GraphDBHealthchecker(agent_factory.graphdb_client, agent_factory.graphdb_repository_id)
+        GraphDBHealthchecker(agent_factory)
 
         scheduler = AsyncIOScheduler()
         scheduler.add_job(update_gtg_info, 'interval', seconds=settings.gtg_refresh_interval)

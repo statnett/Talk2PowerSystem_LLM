@@ -1,3 +1,12 @@
+2.2.0-rc1
+============
+
+* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
+  Implement additional checks for the GraphDB health:
+  - Call `/repositories/{repositoryId}/health` endpoint for the main GraphDB repository to catch long-running queries.
+  - Check the n-shot tool repository is present and healthy, if the n-shot tool is available.
+  - Check the n-shot tool connector is present and healthy, if the n-shot tool is available.
+
 2.1.0-rc1
 ============
 

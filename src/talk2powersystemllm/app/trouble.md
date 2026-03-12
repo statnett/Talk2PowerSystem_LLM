@@ -774,8 +774,8 @@ Sample Response Body:
             "type": "graphdb",
             "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
             "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
-            "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
-            "message": "GraphDB repository can be queried and it's configured correctly."
+            "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+            "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
         }
     ]
 }
@@ -1770,8 +1770,10 @@ This section lists the causes of known issues and provides solutions.
 - Make sure GraphDB is reachable from the app host.
 - Make sure GraphDB credentials are correct. The application needs read access.
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
-- Make sure [GraphDB autocomplete index status](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html) is `READY`.
-- Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/10.0/rdf-rank.html) is computed and up-to-date. The status must be `COMPUTED`.
+- Make sure [GraphDB autocomplete index status](https://graphdb.ontotext.com/documentation/11.3/autocomplete-index.html) is `READY`.
+- Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/11.3/ranking-results.html) is computed and up-to-date. The status must be `COMPUTED`.
+- If the n-shot tool is available, make sure the GraphDB repository for the tool exists, and the ChatGPT Retrieval Plugin Connector also exists.
+Check [the documentation](https://github.com/statnett/Talk2PowerSystem/tree/main/qa-dataset-ontology-schema) for more details.
 
 ##### Verification
 

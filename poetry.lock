@@ -3094,6 +3094,26 @@ pygments = ">=2.7.2"
 dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-asyncio"
+version = "1.3.0"
+description = "Pytest support for asyncio"
+optional = false
+python-versions = ">=3.10"
+groups = ["test"]
+files = [
+    {file = "pytest_asyncio-1.3.0-py3-none-any.whl", hash = "sha256:611e26147c7f77640e6d0a92a38ed17c3e9848063698d5c93d5aa7aa11cebff5"},
+    {file = "pytest_asyncio-1.3.0.tar.gz", hash = "sha256:d7f52f36d231b80ee124cd216ffb19369aa168fc10095013c6b014a34d3ee9e5"},
+]
+
+[package.dependencies]
+pytest = ">=8.2,<10"
+typing-extensions = {version = ">=4.12", markers = "python_version < \"3.13\""}
+
+[package.extras]
+docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1)"]
+testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)"]
+
+[[package]]
 name = "pytest-cov"
 version = "7.0.0"
 description = "Pytest plugin for measuring coverage."
@@ -4205,14 +4225,14 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "4.1.0"
+version = "4.2.0"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-4.1.0-py3-none-any.whl", hash = "sha256:66d5c248f01dd510769a30d868a5d233cb4ebddbf2bd9bb9f0053db422bcbcc2"},
-    {file = "ttyg-4.1.0.tar.gz", hash = "sha256:87c43ac1b8568a5b0041501f14e6471cf11afa3107a7ce02b1f362864422d69b"},
+    {file = "ttyg-4.2.0-py3-none-any.whl", hash = "sha256:3430ba1834501025ac9038f519da5c83116593c71e34966b91a13cb45d2a9cb8"},
+    {file = "ttyg-4.2.0.tar.gz", hash = "sha256:51d8e3d27c8b459360d0e2780249f922be6ecc8992996cb5b809b6ec3a68ff9c"},
 ]
 
 [package.dependencies]
@@ -4226,7 +4246,7 @@ version = "4.15.0"
 description = "Backported and Experimental Type Hints for Python 3.9+"
 optional = false
 python-versions = ">=3.9"
-groups = ["main"]
+groups = ["main", "test"]
 files = [
     {file = "typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548"},
     {file = "typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"},
@@ -4956,4 +4976,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "00016e3845b67c783f35f230e7d74308142f536d8aa0ff197907324d29644357"
+content-hash = "01c389741887661b19f0bee194b872f522e7cdc337f08cb2fcb812d277ed449e"

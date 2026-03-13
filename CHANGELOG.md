@@ -6,6 +6,9 @@
   - Call `/repositories/{repositoryId}/health` endpoint for the main GraphDB repository to catch long-running queries.
   - Check the n-shot tool repository is present and healthy, if the n-shot tool is available.
   - Check the n-shot tool connector is present and healthy, if the n-shot tool is available.
+* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
+  Implement LLM health check, which checks if any LLM errors were hit in the last 60 seconds.
+  The data is persisted in Redis.
 
 2.1.0-rc1
 ============

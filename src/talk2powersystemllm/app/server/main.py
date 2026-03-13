@@ -7,10 +7,10 @@ from contextvars import ContextVar
 from typing import Annotated, Any
 
 import msal
+import openai
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import (
     FastAPI,
-    Request,
     Response,
     Header,
     status,
@@ -26,7 +26,10 @@ from langchain_core.messages import (
 )
 from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import AsyncRedisSaver
+from langgraph.graph.state import CompiledStateGraph
 from rdflib import Namespace, Variable
+from redis.asyncio import Redis
+from starlette.requests import Request
 from starlette.responses import JSONResponse, FileResponse
 from ttyg.tools import AutocompleteSearchTool
 
@@ -47,10 +50,11 @@ from .about import (
 from .auth import conditional_security
 from .config import settings
 from .healthchecks import (
-    GraphDBHealthchecker,
     HealthChecks,
+    GraphDBHealthchecker,
+    RedisHealthchecker,
+    LLMHealthchecker,
 )
-from .healthchecks.redis_healthcheck import RedisHealthchecker
 from .logging_config import LoggingConfig
 from .trouble import get_trouble_html
 from ..models import (
@@ -91,6 +95,8 @@ agent_factory: Talk2PowerSystemAgentFactory = None
 confidential_app: msal.ConfidentialClientApplication = None
 # noinspection PyTypeChecker
 COGNITE_SCOPES: list[str] = None
+# noinspection PyTypeChecker
+llm_errors_persistence: Redis = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.logging_yaml_file)
 trouble_html = get_trouble_html()
@@ -102,17 +108,20 @@ async def lifespan(_: FastAPI):
     global agent_factory
     global confidential_app
     global COGNITE_SCOPES
+    global llm_errors_persistence
 
     redis_password = settings.redis.password
     redis_auth = ""
     if redis_password:
         redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
-    async with AsyncRedisSaver.from_conn_string(
-        redis_url=f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}",
+
+    redis_url = f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}"
+    async with Redis.from_url(redis_url, db=1) as persistence_redis, AsyncRedisSaver.from_conn_string(
+        redis_url=redis_url,
         connection_args={
-            'socket_connect_timeout': settings.redis.connect_timeout,
-            'socket_timeout': settings.redis.read_timeout,
-            'health_check_interval': settings.redis.healthcheck_interval,
+            "socket_connect_timeout": settings.redis.connect_timeout,
+            "socket_timeout": settings.redis.read_timeout,
+            "health_check_interval": settings.redis.healthcheck_interval,
         },
         ttl={
             "default_ttl": settings.redis.ttl,
@@ -121,6 +130,10 @@ async def lifespan(_: FastAPI):
     ) as memory_saver:
         await memory_saver.asetup()
         RedisHealthchecker(memory_saver._redis)
+
+        llm_errors_persistence = persistence_redis
+        LLMHealthchecker(persistence_redis)
+
         agent_factory = Talk2PowerSystemAgentFactory(
             settings.agent_config,
             checkpointer=memory_saver
@@ -446,24 +459,6 @@ async def get_auth_config(
     )
 
 
-def exchange_obo_for_cognite(user_access_token: str) -> dict:
-    result = confidential_app.acquire_token_silent(COGNITE_SCOPES, account=None)
-    if result:
-        logging.debug("Cognite token acquired.")
-        return result["access_token"]
-
-    logging.debug("Acquiring token for Cognite using OBO.")
-    result = confidential_app.acquire_token_on_behalf_of(
-        user_assertion=user_access_token,
-        scopes=COGNITE_SCOPES,
-    )
-    if "access_token" not in result:
-        error_message = f"Failed to obtain OBO token for Cognite: {result}"
-        logging.error(error_message)
-        raise HTTPException(status_code=401, detail=error_message)
-    return result
-
-
 # noinspection PyUnusedLocal
 @app.get(
     "/rest/chat/diagrams/{filename}",
@@ -505,19 +500,6 @@ async def diagrams(
     return FileResponse(file_path, headers={"Cache-Control": "private, max-age=3600"})
 
 
-def build_diagram_image_url(request: Request, filename: str) -> str:
-    return str(
-        (settings.frontend_context_path if settings.frontend_context_path != "/" else "") + \
-        request.app.url_path_for("diagrams", filename=filename)
-    )
-
-
-def build_gdb_visual_graph_url(link: str) -> str:
-    return agent_factory.settings.graphdb.base_url + \
-        ("" if agent_factory.settings.graphdb.base_url.endswith("/") else "/") + \
-        link + "&embedded=true"
-
-
 # noinspection PyUnusedLocal
 @app.post(
     "/rest/chat/conversations",
@@ -557,16 +539,56 @@ async def conversations(
     authorization: Annotated[str | None, Header()] = None,
     claims=Depends(conditional_security),
 ) -> ChatResponse:
+    cognite_obo_token = await get_cognite_obo_token(authorization)
+    agent = agent_factory.get_agent(cognite_obo_token)
+    conversation_id = await get_or_create_conversation(chat_request, agent)
+    logging.info(f"Conversation {conversation_id}: Input \"{chat_request.question}\"")
+    user_datetime_ctx.set(x_user_datetime)
+
+    start = time.time()
+    try:
+        return await run_agent_on_input(request, agent, conversation_id, chat_request.question)
+    except openai.OpenAIError as error:
+        logging.error("OpenAI Error", exc_info=error)
+        await llm_errors_persistence.set("llm_errors", "true", ex=60)
+        raise error
+    finally:
+        logging.info(
+            f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"
+        )
+
+
+async def get_cognite_obo_token(authorization: str | None) -> str | None:
     cognite_obo_token = None
     if (settings.security.enabled and agent_factory.settings.tools.cognite and
         agent_factory.settings.tools.cognite.client_secret):
         token_result = exchange_obo_for_cognite(authorization)
         cognite_obo_token = token_result["access_token"]
+    return cognite_obo_token
 
-    agent = agent_factory.get_agent(cognite_obo_token)
 
-    user_datetime_ctx.set(x_user_datetime)
+def exchange_obo_for_cognite(user_access_token: str) -> dict:
+    result = confidential_app.acquire_token_silent(COGNITE_SCOPES, account=None)
+    if result:
+        logging.debug("Cognite token acquired.")
+        return result["access_token"]
 
+    logging.debug("Acquiring token for Cognite using OBO.")
+    result = confidential_app.acquire_token_on_behalf_of(
+        user_assertion=user_access_token,
+        scopes=COGNITE_SCOPES,
+    )
+    if "access_token" not in result:
+        error_message = f"Failed to obtain OBO token for Cognite: {result}"
+        logging.error(error_message)
+        raise HTTPException(status_code=401, detail=error_message)
+    return result
+
+
+async def get_or_create_conversation(
+    chat_request: ChatRequest,
+    agent: CompiledStateGraph,
+) -> str:
     conversation_id = chat_request.conversation_id
     if conversation_id:
         checkpoint = await agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
@@ -574,16 +596,21 @@ async def conversations(
             raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")
     else:
         conversation_id = "thread_" + str(uuid.uuid4())
+    return conversation_id
 
-    logging.info(f"Conversation {conversation_id}: Input \"{chat_request.question}\"")
-    runnable_config = RunnableConfig(configurable={"thread_id": conversation_id})
-    input_ = {"messages": [{"role": "user", "content": chat_request.question}]}
 
-    start = time.time()
+async def run_agent_on_input(
+    request: Request,
+    agent: CompiledStateGraph,
+    conversation_id: str,
+    question: str
+) -> ChatResponse:
     messages: list[Message] = []
     graphics: list[Graphic] = []
     sum_input_tokens, sum_output_tokens, sum_total_tokens = 0, 0, 0
 
+    runnable_config = RunnableConfig(configurable={"thread_id": conversation_id})
+    input_ = {"messages": [{"role": "user", "content": question}]}
     # noinspection PyTypeChecker
     async for output in agent.astream(input_, runnable_config, stream_mode="updates"):
         output = dict(output)
@@ -623,12 +650,9 @@ async def conversations(
                         )
                     elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
                         graphics.append(
-                            VizGraphGraphic(type="vizGraph", url=build_gdb_visual_graph_url(tool_message.artifact.link))
+                            VizGraphGraphic(type="vizGraph",
+                                            url=build_gdb_visual_graph_url(tool_message.artifact.link))
                         )
-
-    logging.info(
-        f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"
-    )
 
     total_input_tokens = sum([message.usage.prompt_tokens for message in messages])
     total_output_tokens = sum([message.usage.completion_tokens for message in messages])
@@ -640,6 +664,19 @@ async def conversations(
         usage=Usage(completionTokens=total_output_tokens, promptTokens=total_input_tokens,
                     totalTokens=total_total_tokens)
     )
+
+
+def build_diagram_image_url(request: Request, filename: str) -> str:
+    return str(
+        (settings.frontend_context_path if settings.frontend_context_path != "/" else "") + \
+        request.app.url_path_for("diagrams", filename=filename)
+    )
+
+
+def build_gdb_visual_graph_url(link: str) -> str:
+    return agent_factory.settings.graphdb.base_url + \
+        ("" if agent_factory.settings.graphdb.base_url.endswith("/") else "/") + \
+        link + "&embedded=true"
 
 
 class ConversationNotFound(Exception):

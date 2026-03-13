@@ -109,7 +109,8 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "now",
-            "description": "Returns the user's current date time in yyyy-mm-ddTHH:MM:SS±hhmm format (ISO 8601). Do not reuse responses.",
+            "description": "Returns the user's current date time in yyyy-mm-ddTHH:MM:SS±hhmm format (ISO 8601). "
+                           "Do not reuse responses.",
             "parameters": {
                 "properties": {},
                 "type": "object"
@@ -132,6 +133,24 @@ def mock_openai_verify() -> None:
 
 def mock_openai_reset() -> None:
     MOCK_OPENAI_CLIENT.reset()
+
+
+def mock_openai_error(
+    n_times: int,
+    request_messages: list,
+    status_code: int,
+    error_message: str,
+):
+    MOCK_OPENAI_CLIENT.expect(
+        request=openai_request(
+            request_messages=request_messages,
+        ),
+        response=openai_error_response(
+            status_code=status_code,
+            error_message=error_message,
+        ),
+        timing=times(n_times),
+    )
 
 
 def mock_openai(
@@ -212,6 +231,20 @@ def openai_response(
                 "prompt_tokens": prompt_tokens,
                 "completion_tokens": completion_tokens,
                 "total_tokens": prompt_tokens + completion_tokens,
+            }
+        }
+    }
+
+
+def openai_error_response(
+    status_code: int,
+    error_message: str,
+) -> dict:
+    return {
+        "statusCode": status_code,
+        "body": {
+            "error": {
+                "message": error_message
             }
         }
     }

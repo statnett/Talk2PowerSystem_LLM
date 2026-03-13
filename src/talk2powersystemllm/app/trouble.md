@@ -19,10 +19,10 @@ The application is implemented in Python and uses Fast API. It's served with the
 It provides functionality for chatting with the Talk2PowerSystem Chat Bot.
 It doesn't provide functionalities for:
 
-- creating, updating or deleting chat bots
+- creating, updating or deleting chatbots
 - conversations / chats histories
 
-The chat bot memory is persisted in Redis.
+The chatbot memory is persisted in Redis.
 
 The application can be secured using OpenID.
 
@@ -776,6 +776,17 @@ Sample Response Body:
             "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
             "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
             "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
+        },
+        {
+            "status": "OK",
+            "severity": "HIGH",
+            "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+            "name": "LLM Health Check",
+            "type": "llm",
+            "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+            "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
+            "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+            "message": "No LLM errors were hit in the last 60 seconds!"
         }
     ]
 }
@@ -1741,11 +1752,11 @@ experienced with the following:
 
 #### GraphDB health check status is not OK
 
-Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
+Most probable cause: ["GraphDB can't be queried or is misconfigured"](#graphdb-cant-be-queried-or-is-misconfigured)
 
-#### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search` are failing
+#### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search`, `display_graphics` are failing
 
-Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
+Most probable cause: ["GraphDB can't be queried or is misconfigured"](#graphdb-cant-be-queried-or-is-misconfigured)
 
 #### Calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing
 
@@ -1755,15 +1766,22 @@ Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-
 
 Most probable cause: ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
 
+#### LLM health check status is not OK
+
+There are two probable causes:
+
+- ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
+- ["LLM Misconfiguration"](#llm-misconfiguration)
+
 #### Users are experiencing slow responses
 
-Most probable cause: ["Mis-configurations"](#mis-configurations)
+Most probable cause: ["Misconfigurations"](#misconfiguration)
 
 ### Causes
 
 This section lists the causes of known issues and provides solutions.
 
-#### GraphDB can't be queried or is mis-configured
+#### GraphDB can't be queried or is misconfigured
 
 ##### Solution
 
@@ -1814,7 +1832,7 @@ Users no longer report that the calls made by the LLM agent to the tools `retrie
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
 - Check the response body of the `__health` endpoint, Redis health check must have status `OK`.
 
-#### Mis-configurations
+#### Misconfiguration
 
 ##### Solution
 
@@ -1827,3 +1845,27 @@ If it does, in the application logs there will be messages containing `429 Too M
 ##### Verification
 
 Users no longer report slow responses
+
+#### LLM misconfiguration
+
+##### Solution
+
+- Make sure the LLM configuration is correct including but not limited to the credentials and the timeout.
+If the credentials are not correct, you will see error messages like this one in the app logs:
+```
+- 2026-03-09T14:09:17.996278313+01:00 stdout F openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+```
+- If the application is configured to use Azure OpenAI, make sure it is not hitting 
+[the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
+If it does, in the application logs there will be messages containing `429 Too Many Requests`.
+If this is the case, the rate limits must be increased.
+- If the application is configured to use OpenAI, make sure that the quota is not exceeded.
+If it is, in the application logs there will be messages like this one:
+```
+2026-03-09T14:09:17.996278313+01:00 stdout F openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+```
+
+##### Verification
+
+- Check the response status code of the `__gtg` endpoint, it must be `200`.
+- Check the response body of the `__health` endpoint, LLM health check must have status `OK`.

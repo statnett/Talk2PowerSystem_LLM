@@ -5,7 +5,6 @@ graphdb:
   repository_id: "default"
   connect_timeout: 2
   read_timeout: 10
-  sparql_timeout: 15
   username: "admin"
 tools:
   ontology_schema:

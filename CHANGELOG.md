@@ -1,3 +1,27 @@
+2.0.0-rc1
+============
+
+* [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
+  Update `ttyg` to `4.1.0`, which uses the GraphDB client from rdflib 
+  to solve the known issue that the SPARQL queries are executed 
+  against GraphDB without using a connection pool.
+  As a result the configuration `graphdb.sparql_timeout` is no longer available.
+* [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
+  The N-Shot Tool (Retrieval Tool) now uses the same GraphDB client
+  as the other tools, and not a separate one like it used to be.
+  The GraphDB repository id for it is passed as `graphdb_repository_id` 
+  instead of `graphdb.repository_id`.
+* [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
+  Refactor the code used to evaluate open source LLMs:
+  - Delete from the source code the script `run_evaluation_hf.py`.
+  `run_evaluation.py` must be used instead.
+  - Delete from the source code `agent_hf.py` and add new `llm.type` 
+  option, which is `hugging_face`.
+* [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
+  Update some 3rd party libraries to their latest versions.
+* [#294](https://github.com/statnett/Talk2PowerSystem_PM/issues/294):
+  Update trouble.md example responses to include `embedded=true` in the GraphDB VizGraph link.
+
 1.9.0-rc2
 ============
 

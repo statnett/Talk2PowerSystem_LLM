@@ -38,7 +38,6 @@ class GraphDBSettings(BaseSettings):
     repository_id: str
     connect_timeout: int = Field(default=2, ge=1)
     read_timeout: int = Field(default=10, ge=1)
-    sparql_timeout: int = Field(default=15, ge=1)
     username: str | None = None
     password: SecretStr | None = None
 
@@ -65,7 +64,7 @@ class DisplayGraphicsSettings(BaseModel):
 
 
 class RetrievalSearchSettings(BaseModel):
-    graphdb: GraphDBSettings
+    graphdb_repository_id: str
     connector_name: str
     name: str
     description: str
@@ -109,6 +108,7 @@ class ToolsSettings(BaseModel):
 class LLMType(Enum):
     openai = "openai"
     azure_openai = "azure_openai"
+    hugging_face = "hugging_face"
 
 
 class LLMSettings(BaseSettings):
@@ -120,6 +120,7 @@ class LLMSettings(BaseSettings):
     model: str
     azure_endpoint: str | None = None
     api_version: str | None = None
+    hugging_face_endpoint: str | None = None
     temperature: float = Field(default=0, ge=0.0, le=2.0)
     seed: int = Field(default=1)
     timeout: int = Field(default=120, gt=0.0)
@@ -132,6 +133,9 @@ class LLMSettings(BaseSettings):
                 raise ValueError("azure_endpoint is required!")
             if not self.api_version:
                 raise ValueError("api_version is required!")
+        elif self.type == LLMType.hugging_face:
+            if not self.hugging_face_endpoint:
+                raise ValueError("hugging_face_endpoint is required!")
         return self
 
 
@@ -147,12 +151,6 @@ class Talk2PowerSystemAgentSettings(BaseSettings):
 
 
 def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
-    def merge_dicts(base: dict, override: dict) -> dict:
-        merged = base.copy()
-        for k, v in override.items():
-            merged[k] = v
-        return merged
-
     config_path = Path(path_to_yaml_config).resolve()
 
     # Resolve paths relative to config file
@@ -164,22 +162,14 @@ def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
     abs_path = config_path.parent / rel_path
     ontology_schema_config["file_path"] = str(abs_path.resolve())
 
-    # Copy GraphDB base configuration to the retrieval search configuration
-    if "retrieval_search" in config["tools"]:
-        config["tools"]["retrieval_search"]["graphdb"] = merge_dicts(
-            config["graphdb"],
-            config["tools"]["retrieval_search"]["graphdb"]
-        )
     return Talk2PowerSystemAgentSettings(**config)
 
 
 def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDB:
     kwargs = {
         "base_url": graphdb_settings.base_url,
-        "repository_id": graphdb_settings.repository_id,
         "connect_timeout": graphdb_settings.connect_timeout,
         "read_timeout": graphdb_settings.read_timeout,
-        "sparql_timeout": graphdb_settings.sparql_timeout,
     }
     if graphdb_settings.username:
         kwargs.update({
@@ -213,8 +203,17 @@ def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
             timeout=llm_settings.timeout,
             api_key=llm_settings.api_key,
         )
+    elif llm_settings.type == LLMType.openai:
+        return ChatOpenAI(
+            model=llm_settings.model,
+            temperature=llm_settings.temperature,
+            seed=llm_settings.seed,
+            timeout=llm_settings.timeout,
+            api_key=llm_settings.api_key,
+        )
     else:
         return ChatOpenAI(
+            base_url=llm_settings.hugging_face_endpoint,
             model=llm_settings.model,
             temperature=llm_settings.temperature,
             seed=llm_settings.seed,
@@ -226,6 +225,7 @@ def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
 class Talk2PowerSystemAgentFactory:
     settings: Talk2PowerSystemAgentSettings
     graphdb_client: GraphDB
+    graphdb_repository_id: str
     checkpointer: Checkpointer | None = None
     model: BaseChatModel
     instructions: str
@@ -241,10 +241,13 @@ class Talk2PowerSystemAgentFactory:
         self.checkpointer = checkpointer
 
         tools_settings = self.settings.tools
+        graphdb_repository_id = self.settings.graphdb.repository_id
+        self.graphdb_repository_id = graphdb_repository_id
         self.tools: list[BaseTool] = []
 
         sparql_query_tool = SparqlQueryTool(
             graph=self.graphdb_client,
+            graphdb_repository_id=graphdb_repository_id,
         )
         self.tools.append(sparql_query_tool)
 
@@ -258,15 +261,20 @@ class Talk2PowerSystemAgentFactory:
             })
         autocomplete_search_tool = AutocompleteSearchTool(
             graph=self.graphdb_client,
+            graphdb_repository_id=graphdb_repository_id,
             **autocomplete_search_kwargs,
         )
         self.tools.append(autocomplete_search_tool)
-        self.tools.append(GraphicsTool(graph=self.graphdb_client))
+        self.tools.append(GraphicsTool(
+            graph=self.graphdb_client,
+            graphdb_repository_id=graphdb_repository_id,
+        ))
 
         if tools_settings.retrieval_search:
             retrieval_search_settings = tools_settings.retrieval_search
             retrieval_query_tool = RetrievalQueryTool(
-                graph=init_graphdb(retrieval_search_settings.graphdb),
+                graph=self.graphdb_client,
+                graphdb_repository_id=retrieval_search_settings.graphdb_repository_id,
                 connector_name=retrieval_search_settings.connector_name,
                 name=retrieval_search_settings.name,
                 description=retrieval_search_settings.description,

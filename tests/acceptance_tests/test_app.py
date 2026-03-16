@@ -645,7 +645,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                     ]
                 },
                 {
-                    "content": "{\n  \"head\": {\n    \"vars\": [\n      \"substation\"\n    ]\n  },\n  \"results\": {\n    \"bindings\": [\n      {\n        \"substation\": {\n          \"type\": \"uri\",\n          \"value\": \"urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f\"\n        }\n      }\n    ]\n  }\n}",
+                    "content": "${json-unit.ignore-element}",  # the actual SPARQL query tool is called and the
+                    # result is a JSON serialized string
                     "role": "tool",
                     "tool_call_id": "sparql_query_call_1"
                 }
@@ -683,7 +684,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                     ]
                 },
                 {
-                    "content": "{\n  \"head\": {\n    \"vars\": [\n      \"substation\"\n    ]\n  },\n  \"results\": {\n    \"bindings\": [\n      {\n        \"substation\": {\n          \"type\": \"uri\",\n          \"value\": \"urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f\"\n        }\n      }\n    ]\n  }\n}",
+                    "content": "${json-unit.ignore-element}",  # the actual SPARQL query tool is called and the
+                    # result is a JSON serialized string
                     "role": "tool",
                     "tool_call_id": "sparql_query_call_1"
                 },
@@ -733,7 +735,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                     ]
                 },
                 {
-                    "content": "{\n  \"head\": {\n    \"vars\": [\n      \"substation\"\n    ]\n  },\n  \"results\": {\n    \"bindings\": [\n      {\n        \"substation\": {\n          \"type\": \"uri\",\n          \"value\": \"urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f\"\n        }\n      }\n    ]\n  }\n}",
+                    "content": "${json-unit.ignore-element}",  # the actual SPARQL query tool is called and the
+                    # result is a JSON serialized string
                     "role": "tool",
                     "tool_call_id": "sparql_query_call_1"
                 },

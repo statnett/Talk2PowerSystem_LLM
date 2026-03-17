@@ -28,7 +28,7 @@ The application can be secured using OpenID.
 
 #### Context Diagram
 
-Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI, Redis and optionally on Cognite.
+Talk2PowerSystem Chat Bot Application depends on GraphDB, OpenAI / Azure OpenAI, Redis and optionally on Cognite.
 
 ![context-diagram](https://lucid.app/publicSegments/view/f29659b5-21c1-4b8b-b91b-b8b2d4eea769/image.jpeg)
 
@@ -1752,7 +1752,10 @@ experienced with the following:
 
 #### GraphDB health check status is not OK
 
-Most probable cause: ["GraphDB can't be queried or is misconfigured"](#graphdb-cant-be-queried-or-is-misconfigured)
+There are two probable causes:
+
+- ["GraphDB can't be queried or is misconfigured"](#graphdb-cant-be-queried-or-is-misconfigured)
+- ["Long-running queries"](#long-running-queries)
 
 #### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search`, `display_graphics` are failing
 
@@ -1760,17 +1763,17 @@ Most probable cause: ["GraphDB can't be queried or is misconfigured"](#graphdb-c
 
 #### Calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing
 
-Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
+Most probable cause: ["Cognite can't be queried or is misconfigured"](#cognite-cant-be-queried-or-is-misconfigured)
 
 #### Redis health check status is not OK
 
-Most probable cause: ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
+Most probable cause: ["Redis can't be queried or is misconfigured"](#redis-cant-be-queried-or-is-misconfigured)
 
 #### LLM health check status is not OK
 
 There are two probable causes:
 
-- ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
+- ["Redis can't be queried or is misconfigured"](#redis-cant-be-queried-or-is-misconfigured)
 - ["LLM Misconfiguration"](#llm-misconfiguration)
 
 #### Users are experiencing slow responses
@@ -1798,7 +1801,18 @@ Check [the documentation](https://github.com/statnett/Talk2PowerSystem/tree/main
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
 - Check the response body of the `__health` endpoint, GraphDB health check must have status `OK`.
 
-#### Cognite can't be queried or is mis-configured
+#### Long-running queries
+
+##### Solution
+
+- 
+
+##### Verification
+
+- Check the response status code of the `__gtg` endpoint, it must be `200`.
+- Check the response body of the `__health` endpoint, GraphDB health check must have status `OK`.
+
+#### Cognite can't be queried or is misconfigured
 
 ##### Solution
 
@@ -1819,7 +1833,7 @@ Check [the documentation](https://github.com/statnett/Talk2PowerSystem/tree/main
 
 Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
 
-#### Redis can't be queried or is mis-configured
+#### Redis can't be queried or is misconfigured
 
 ##### Solution
 
@@ -1853,13 +1867,14 @@ Users no longer report slow responses
 - Make sure the LLM configuration is correct including but not limited to the credentials and the timeout.
 If the credentials are not correct, you will see error messages like this one in the app logs:
 ```
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-************************************************************yLEA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}
 - 2026-03-09T14:09:17.996278313+01:00 stdout F openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
 ```
 - If the application is configured to use Azure OpenAI, make sure it is not hitting 
 [the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
 If it does, in the application logs there will be messages containing `429 Too Many Requests`.
 If this is the case, the rate limits must be increased.
-- If the application is configured to use OpenAI, make sure that the quota is not exceeded.
+- If the application is configured to use OpenAI, make sure the quota is not exceeded.
 If it is, in the application logs there will be messages like this one:
 ```
 2026-03-09T14:09:17.996278313+01:00 stdout F openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}

@@ -15,6 +15,7 @@ This is added as a prefix to the relative paths to the diagrams.
 * `REDIS_HOST` - REQUIRED - Redis connection host. For example, `localhost`.
 The connection to Redis is with `redis://` protocol, i.e. TCP socket connection.
 * `REDIS_PORT` - OPTIONAL, DEFAULT=`6379` - Redis connection port.
+* `REDIS_IS_A_CLUSTER` - OPTIONAL, DEFAULT=`False` - False, if Redis is a single node. True, if Redis is a cluster.
 * `REDIS_CONNECT_TIMEOUT` - OPTIONAL, DEFAULT=`2` - Redis connect timeout in seconds, must be >= 1.
 * `REDIS_READ_TIMEOUT` - OPTIONAL, DEFAULT=`10` - Redis read timeout in seconds, must be >= 1.
 * `REDIS_HEALTHCHECK_INTERVAL` - OPTIONAL, DEFAULT=`3` - Redis health check interval in seconds, must be >= 1.

@@ -7,10 +7,10 @@ from contextvars import ContextVar
 from typing import Annotated, Any
 
 import msal
-import openai
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import (
     FastAPI,
+    Request,
     Response,
     Header,
     status,
@@ -28,8 +28,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.redis import AsyncRedisSaver
 from langgraph.graph.state import CompiledStateGraph
 from rdflib import Namespace, Variable
-from redis.asyncio import Redis
-from starlette.requests import Request
+from redis.asyncio import Redis, RedisCluster
 from starlette.responses import JSONResponse, FileResponse
 from ttyg.tools import AutocompleteSearchTool
 
@@ -89,14 +88,6 @@ API_DESCRIPTION = ("Talk2PowerSystem Chat Bot Application provides functionality
 gtg_info: GoodToGoInfo = None
 # noinspection PyTypeChecker
 about_info: AboutInfo = None
-# noinspection PyTypeChecker
-agent_factory: Talk2PowerSystemAgentFactory = None
-# noinspection PyTypeChecker
-confidential_app: msal.ConfidentialClientApplication = None
-# noinspection PyTypeChecker
-COGNITE_SCOPES: list[str] = None
-# noinspection PyTypeChecker
-llm_errors_persistence: Redis = None
 ctx_request = ContextVar("request", default=None)
 LoggingConfig.config_logger(settings.logging_yaml_file)
 trouble_html = get_trouble_html()
@@ -105,57 +96,46 @@ trouble_html = get_trouble_html()
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     logging.info("Starting the application")
-    global agent_factory
-    global confidential_app
-    global COGNITE_SCOPES
-    global llm_errors_persistence
 
-    redis_password = settings.redis.password
-    redis_auth = ""
-    if redis_password:
-        redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
+    async with (
+        create_redis_client() as redis_client,
+        AsyncRedisSaver.from_conn_string(
+            redis_client=redis_client,
+            ttl={
+                "default_ttl": settings.redis.ttl,
+                "refresh_on_read": settings.redis.ttl_refresh_on_read,
+            }
+        ) as redis_saver
+    ):
+        await redis_saver.asetup()
+        RedisHealthchecker(redis_client)
 
-    redis_url = f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}"
-    async with Redis.from_url(redis_url, db=1) as persistence_redis, AsyncRedisSaver.from_conn_string(
-        redis_url=redis_url,
-        connection_args={
-            "socket_connect_timeout": settings.redis.connect_timeout,
-            "socket_timeout": settings.redis.read_timeout,
-            "health_check_interval": settings.redis.healthcheck_interval,
-        },
-        ttl={
-            "default_ttl": settings.redis.ttl,
-            "refresh_on_read": settings.redis.ttl_refresh_on_read,
-        }
-    ) as memory_saver:
-        await memory_saver.asetup()
-        RedisHealthchecker(memory_saver._redis)
-
-        llm_errors_persistence = persistence_redis
-        LLMHealthchecker(persistence_redis)
+        app.state.callbacks = [LLMHealthchecker(redis_client)]
 
         agent_factory = Talk2PowerSystemAgentFactory(
             settings.agent_config,
-            checkpointer=memory_saver
+            checkpointer=redis_saver,
         )
+        app.state.agent_factory = agent_factory
+
+        GraphDBHealthchecker(agent_factory)
+
         if settings.security.enabled and agent_factory.settings.tools.cognite:
             if not agent_factory.settings.tools.cognite.client_secret:
                 raise ValueError(
                     "Cognite client secret must be provided in order to register the Cognite tools, "
                     "when the security is enabled."
                 )
-            confidential_app = msal.ConfidentialClientApplication(
+            app.state.confidential_app = msal.ConfidentialClientApplication(
                 settings.security.client_id,
                 authority=settings.security.authority,
                 client_credential=agent_factory.settings.tools.cognite.client_secret,
             )
-            COGNITE_SCOPES = [f"{agent_factory.settings.tools.cognite.base_url}/.default"]
-
-        GraphDBHealthchecker(agent_factory)
+            app.state.cognite_scopes = [f"{agent_factory.settings.tools.cognite.base_url}/.default"]
 
         scheduler = AsyncIOScheduler()
-        scheduler.add_job(update_gtg_info, 'interval', seconds=settings.gtg_refresh_interval)
-        scheduler.add_job(update_about_info, 'interval', seconds=settings.about_refresh_interval)
+        scheduler.add_job(update_gtg_info, "interval", seconds=settings.gtg_refresh_interval)
+        scheduler.add_job(update_about_info, "interval", seconds=settings.about_refresh_interval)
 
         scheduler.start()
         app.state.scheduler = scheduler
@@ -170,6 +150,29 @@ async def lifespan(_: FastAPI):
         logging.info("Destroying the application")
         scheduler.shutdown()
         logging.info("Scheduler is stopped")
+
+
+def create_redis_client() -> Redis | RedisCluster:
+    redis_password = settings.redis.password
+    redis_auth = ""
+    if redis_password:
+        redis_auth = f"{settings.redis.username}:{redis_password.get_secret_value()}@"
+    redis_url = f"redis://{redis_auth}{settings.redis.host}:{settings.redis.port}"
+    connection_kwargs = {
+        "socket_connect_timeout": settings.redis.connect_timeout,
+        "socket_timeout": settings.redis.read_timeout,
+        "health_check_interval": settings.redis.healthcheck_interval,
+    }
+    if settings.redis.is_a_cluster:
+        return RedisCluster.from_url(
+            redis_url,
+            **connection_kwargs,
+        )
+    else:
+        return Redis.from_url(
+            redis_url,
+            **connection_kwargs,
+        )
 
 
 app = FastAPI(
@@ -298,6 +301,7 @@ async def update_about_info() -> None:
 
 
 def get_about_ontologies() -> list[AboutOntologyInfo]:
+    agent_factory = app.state.agent_factory
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_ontologies_query.rq").read_text()
     query_results, _ = agent_factory.graphdb_client.eval_sparql_query(
         agent_factory.graphdb_repository_id, query, validation=False
@@ -314,6 +318,7 @@ def get_about_ontologies() -> list[AboutOntologyInfo]:
 
 
 def get_about_datasets() -> list[AboutDatasetInfo]:
+    agent_factory = app.state.agent_factory
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_datasets_query.rq").read_text()
     query_results, _ = agent_factory.graphdb_client.eval_sparql_query(
         agent_factory.graphdb_repository_id, query, validation=False
@@ -329,6 +334,7 @@ def get_about_datasets() -> list[AboutDatasetInfo]:
 
 
 def get_about_graphdb() -> AboutGraphDBInfo:
+    agent_factory = app.state.agent_factory
     query = files("talk2powersystemllm.app.server.queries").joinpath("about_graphdb_query.rq").read_text()
     query_results, _ = agent_factory.graphdb_client.eval_sparql_query(
         agent_factory.graphdb_repository_id, query, validation=False
@@ -347,6 +353,7 @@ def get_about_graphdb() -> AboutGraphDBInfo:
 
 
 def get_about_agent() -> AboutAgentInfo:
+    agent_factory = app.state.agent_factory
     tools: dict[str, dict[str, Any]] = dict()
     tools["sparql_query"] = {"enabled": True}
     tools["display_graphics"] = {"enabled": True}
@@ -540,7 +547,7 @@ async def conversations(
     claims=Depends(conditional_security),
 ) -> ChatResponse:
     cognite_obo_token = await get_cognite_obo_token(authorization)
-    agent = agent_factory.get_agent(cognite_obo_token)
+    agent = app.state.agent_factory.get_agent(cognite_obo_token)
     conversation_id = await get_or_create_conversation(chat_request, agent)
     logging.info(f"Conversation {conversation_id}: Input \"{chat_request.question}\"")
     user_datetime_ctx.set(x_user_datetime)
@@ -548,10 +555,6 @@ async def conversations(
     start = time.time()
     try:
         return await run_agent_on_input(request, agent, conversation_id, chat_request.question)
-    except openai.OpenAIError as error:
-        logging.error("OpenAI Error", exc_info=error)
-        await llm_errors_persistence.set("llm_errors", "true", ex=60)
-        raise error
     finally:
         logging.info(
             f"Conversation {conversation_id}: Elapsed time: {time.time() - start:.2f} seconds"
@@ -560,6 +563,7 @@ async def conversations(
 
 async def get_cognite_obo_token(authorization: str | None) -> str | None:
     cognite_obo_token = None
+    agent_factory = app.state.agent_factory
     if (settings.security.enabled and agent_factory.settings.tools.cognite and
         agent_factory.settings.tools.cognite.client_secret):
         token_result = exchange_obo_for_cognite(authorization)
@@ -568,7 +572,9 @@ async def get_cognite_obo_token(authorization: str | None) -> str | None:
 
 
 def exchange_obo_for_cognite(user_access_token: str) -> dict:
-    result = confidential_app.acquire_token_silent(COGNITE_SCOPES, account=None)
+    confidential_app = app.state.confidential_app
+    cognite_scopes = app.state.cognite_scopes
+    result = confidential_app.acquire_token_silent(cognite_scopes, account=None)
     if result:
         logging.debug("Cognite token acquired.")
         return result["access_token"]
@@ -576,7 +582,7 @@ def exchange_obo_for_cognite(user_access_token: str) -> dict:
     logging.debug("Acquiring token for Cognite using OBO.")
     result = confidential_app.acquire_token_on_behalf_of(
         user_assertion=user_access_token,
-        scopes=COGNITE_SCOPES,
+        scopes=cognite_scopes,
     )
     if "access_token" not in result:
         error_message = f"Failed to obtain OBO token for Cognite: {result}"
@@ -609,7 +615,10 @@ async def run_agent_on_input(
     graphics: list[Graphic] = []
     sum_input_tokens, sum_output_tokens, sum_total_tokens = 0, 0, 0
 
-    runnable_config = RunnableConfig(configurable={"thread_id": conversation_id})
+    runnable_config = RunnableConfig(
+        configurable={"thread_id": conversation_id},
+        callbacks=app.state.callbacks,
+    )
     input_ = {"messages": [{"role": "user", "content": question}]}
     # noinspection PyTypeChecker
     async for output in agent.astream(input_, runnable_config, stream_mode="updates"):
@@ -674,6 +683,7 @@ def build_diagram_image_url(request: Request, filename: str) -> str:
 
 
 def build_gdb_visual_graph_url(link: str) -> str:
+    agent_factory = app.state.agent_factory
     return agent_factory.settings.graphdb.base_url + \
         ("" if agent_factory.settings.graphdb.base_url.endswith("/") else "/") + \
         link + "&embedded=true"
@@ -752,7 +762,7 @@ async def explain(
 
 
 async def get_all_messages(conversation_id: str, message_id: str) -> list[Any]:
-    checkpoint = await agent_factory.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
+    checkpoint = await app.state.agent_factory.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
     if not checkpoint:
         raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")
 
@@ -805,6 +815,7 @@ async def build_query_methods(
     executed_queries: dict[str, dict[str, str]],
     tools_calls_errors: dict[str, Any]
 ) -> list[QueryMethod]:
+    agent_factory = app.state.agent_factory
     query_methods: list[QueryMethod] = []
     for message in explain_messages:
         if isinstance(message, AIMessage) and message.tool_calls != []:

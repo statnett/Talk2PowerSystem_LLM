@@ -79,6 +79,10 @@ class RedisSettings(BaseSettings):
 
     host: str = Field(description="Redis connection host")
     port: int = Field(default=6379, description="Redis connection port")
+    is_a_cluster: bool = Field(
+        default=False,
+        description="False, if Redis is a single node. True, if Redis is a cluster.",
+    )
     connect_timeout: int = Field(2, ge=1, description="Redis connect timeout in seconds")
     read_timeout: int = Field(10, ge=1, description="Redis read timeout in seconds")
     healthcheck_interval: int = Field(

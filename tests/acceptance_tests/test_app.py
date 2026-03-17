@@ -587,7 +587,9 @@ SELECT ?link ?name ?format ?description ?kind {{
                         "args": {
                             "query": "SELECT * { ?substation a cim:Substation }"
                         },
-                        "errorOutput": "The following prefixes are undefined: cim"
+                        "errorOutput": "The following prefixes are undefined: cim",
+                        "graphdbRepositoryId": "cim",
+                        "advanced": True
                     }
                 ]
             },
@@ -794,7 +796,9 @@ SELECT ?link ?name ?format ?description ?kind {{
                             "query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }"
                         },
                         "query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }",
-                        "queryType": "sparql"
+                        "queryType": "sparql",
+                        "graphdbRepositoryId": "cim",
+                        "hideArgs": True
                     }
                 ]
             },
@@ -814,7 +818,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                 "queryMethods": [
                     {
                         "name": "now",
-                        "args": {}
+                        "args": {},
+                        "advanced": True
                     }
                 ]
             },

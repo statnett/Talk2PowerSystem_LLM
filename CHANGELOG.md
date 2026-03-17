@@ -1,27 +1,3 @@
-2.2.0-rc1
-============
-
-* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
-  Implement additional checks for the GraphDB health:
-  - Call `/repositories/{repositoryId}/health` endpoint for the main GraphDB repository to catch long-running queries.
-  - Check the n-shot tool repository is present and healthy, if the n-shot tool is available.
-  - Check the n-shot tool connector is present and healthy, if the n-shot tool is available.
-* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
-  Implement LLM health check, which checks if any LLM errors were hit in the last 60 seconds.
-  The data is persisted in Redis.
-
-2.1.0-rc1
-============
-
-* [#292](https://github.com/statnett/Talk2PowerSystem_PM/issues/292):
-  Update the response from the `explain` endpoint to include 
-  the GraphDB repository id for the GraphDB tools, so that the UI can build
-  the url to the GraphDB Workbench with the preloaded query correctly.
-* [#300](https://github.com/statnett/Talk2PowerSystem_PM/issues/300):
-  Update the response from the `explain` endpoint to include additional fields 
-  "advanced" and "hideArgs" to indicate the UI that a tool call or its 
-  arguments by default shouldn't be displayed.
-
 2.0.0-rc1
 ============
 
@@ -45,6 +21,22 @@
   Update some 3rd party libraries to their latest versions.
 * [#294](https://github.com/statnett/Talk2PowerSystem_PM/issues/294):
   Update trouble.md example responses to include `embedded=true` in the GraphDB VizGraph link.
+* [#292](https://github.com/statnett/Talk2PowerSystem_PM/issues/292):
+  Update the response from the `explain` endpoint to include 
+  the GraphDB repository id for the GraphDB tools, so that the UI can build
+  the url to the GraphDB Workbench with the preloaded query correctly.
+* [#300](https://github.com/statnett/Talk2PowerSystem_PM/issues/300):
+  Update the response from the `explain` endpoint to include additional fields 
+  "advanced" and "hideArgs" to indicate the UI that a tool call or its 
+  arguments by default shouldn't be displayed.
+* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
+  Implement additional checks for the GraphDB health:
+  - Call `/repositories/{repositoryId}/health` endpoint for the main GraphDB repository to catch long-running queries.
+  - Check the n-shot tool repository is present and healthy, if the n-shot tool is available.
+  - Check the n-shot tool connector is present and healthy, if the n-shot tool is available.
+* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
+  Implement LLM health check, which checks if any LLM errors were hit in the last 60 seconds.
+  The data is persisted in Redis.
 
 1.9.0-rc2
 ============

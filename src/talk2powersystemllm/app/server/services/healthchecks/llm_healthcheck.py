@@ -6,8 +6,8 @@ from langchain_core.callbacks import AsyncCallbackHandler
 from redis.asyncio import Redis, RedisCluster
 
 from .healthchecks import HealthChecks
-from ..singleton import SingletonMeta
-from ...models import HealthCheck, Severity, HealthStatus
+from talk2powersystemllm.app.server.singleton import SingletonMeta
+from talk2powersystemllm.app.models import HealthCheck, Severity, HealthStatus
 
 
 class LLMHealthcheck(HealthCheck):

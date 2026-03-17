@@ -11,8 +11,8 @@ from ttyg.graphdb import (
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
 from .healthchecks import HealthChecks
-from ..singleton import SingletonMeta
-from ...models import HealthCheck, Severity, HealthStatus
+from talk2powersystemllm.app.server.singleton import SingletonMeta
+from talk2powersystemllm.app.models import HealthCheck, Severity, HealthStatus
 
 
 class GraphDBHealthcheck(HealthCheck):

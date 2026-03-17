@@ -3,7 +3,7 @@ import re
 import toml
 import yaml
 
-from .config import settings
+from talk2powersystemllm.app.server.config import settings
 
 
 def read_manifest() -> dict:

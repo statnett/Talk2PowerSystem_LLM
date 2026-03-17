@@ -4,8 +4,8 @@ from urllib.parse import urlparse, urlunparse
 
 from fastapi import Request
 
-from ..singleton import SingletonMeta
-from ...models import HealthInfo, HealthStatus
+from talk2powersystemllm.app.server.singleton import SingletonMeta
+from talk2powersystemllm.app.models import HealthInfo, HealthStatus
 
 
 class HealthChecks(metaclass=SingletonMeta):

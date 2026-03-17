@@ -10,7 +10,7 @@ from fastapi.security import HTTPBearer
 from jose import jwt, JWTError, ExpiredSignatureError
 from jose.exceptions import JWTClaimsError
 
-from .config import settings
+from talk2powersystemllm.app.server.config import settings
 
 security_scheme = HTTPBearer(auto_error=False)
 

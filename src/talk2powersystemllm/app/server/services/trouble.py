@@ -1,6 +1,6 @@
 import markdown
 
-from .config import settings
+from talk2powersystemllm.app.server.config import settings
 
 
 def get_trouble_html():

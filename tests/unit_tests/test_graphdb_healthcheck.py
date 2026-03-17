@@ -8,7 +8,7 @@ from rdflib.contrib.graphdb.exceptions import (
 from ttyg.graphdb import GraphDBRdfRankStatus, GraphDBAutocompleteStatus
 
 from talk2powersystemllm.app.models import HealthStatus
-from talk2powersystemllm.app.server.healthchecks import GraphDBHealthchecker
+from talk2powersystemllm.app.server.services.healthchecks import GraphDBHealthchecker
 
 # minimal responses
 green_status = {

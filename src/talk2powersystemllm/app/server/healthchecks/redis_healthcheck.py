@@ -1,7 +1,6 @@
 import logging
-from typing import Union
 
-from redis import Redis, RedisCluster
+from redis.asyncio import Redis, RedisCluster
 
 from .healthchecks import HealthChecks
 from ..singleton import SingletonMeta
@@ -20,8 +19,8 @@ class RedisHealthcheck(HealthCheck):
 
 class RedisHealthchecker(metaclass=SingletonMeta):
     def __init__(
-            self,
-            redis_client: Union[Redis, RedisCluster],
+        self,
+        redis_client: Redis | RedisCluster,
     ):
         self.__redis_client = redis_client
         HealthChecks().add(self)

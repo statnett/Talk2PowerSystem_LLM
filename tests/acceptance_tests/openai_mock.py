@@ -128,7 +128,7 @@ def mock_openai_verify() -> None:
             "httpRequest": req,
             "times": {"atLeast": timing.count, "atMost": timing.count}
         }))
-        assert result.status_code == 202, result.content.decode('UTF-8').replace('\n', '\r\n')
+        assert result.status_code == 202, result.content.decode("UTF-8").replace("\n", "\r\n")
 
 
 def mock_openai_reset() -> None:

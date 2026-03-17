@@ -28,9 +28,9 @@ The application can be secured using OpenID.
 
 #### Context Diagram
 
-Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI, Redis and optionally on Cognite.
+Talk2PowerSystem Chat Bot Application depends on GraphDB, OpenAI / Azure OpenAI, Redis and optionally on Cognite.
 
-![context-diagram](https://lucid.app/publicSegments/view/f29659b5-21c1-4b8b-b91b-b8b2d4eea769/image.jpeg)
+![context-diagram](https://lucid.app/publicSegments/view/ee7d6024-4f91-4435-882b-b941009664ea/image.jpeg)
 
 #### Important Endpoints
 
@@ -1742,7 +1742,7 @@ experienced with the following:
 * bash
 * GraphDB
 * Cognite
-* Azure OpenAI
+* OpenAI / Azure OpenAI
 * OpenID, Microsoft Entra ID
 * Redis
 
@@ -1752,30 +1752,33 @@ experienced with the following:
 
 #### GraphDB health check status is not OK
 
-Most probable cause: ["GraphDB can't be queried or is misconfigured"](#graphdb-cant-be-queried-or-is-misconfigured)
+There are two probable causes:
+
+- [GraphDB can't be queried or is misconfigured](#graphdb-cant-be-queried-or-is-misconfigured)
+- [Long-running queries](#long-running-queries)
 
 #### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search`, `display_graphics` are failing
 
-Most probable cause: ["GraphDB can't be queried or is misconfigured"](#graphdb-cant-be-queried-or-is-misconfigured)
+Most probable cause: [GraphDB can't be queried or is misconfigured](#graphdb-cant-be-queried-or-is-misconfigured)
 
 #### Calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing
 
-Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
+Most probable cause: [Cognite can't be queried or is misconfigured](#cognite-cant-be-queried-or-is-misconfigured)
 
 #### Redis health check status is not OK
 
-Most probable cause: ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
+Most probable cause: [Redis can't be queried or is misconfigured](#redis-cant-be-queried-or-is-misconfigured)
 
 #### LLM health check status is not OK
 
 There are two probable causes:
 
-- ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
-- ["LLM Misconfiguration"](#llm-misconfiguration)
+- [Redis can't be queried or is misconfigured](#redis-cant-be-queried-or-is-misconfigured)
+- [LLM Misconfiguration](#llm-misconfiguration)
 
 #### Users are experiencing slow responses
 
-Most probable cause: ["Misconfigurations"](#misconfiguration)
+Most probable cause: [Misconfigurations](#misconfiguration)
 
 ### Causes
 
@@ -1798,7 +1801,103 @@ Check [the documentation](https://github.com/statnett/Talk2PowerSystem/tree/main
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
 - Check the response body of the `__health` endpoint, GraphDB health check must have status `OK`.
 
-#### Cognite can't be queried or is mis-configured
+#### Long-running queries
+
+Since the app is using a LLM to generate SPARQL queries, potentially they can be heavy and inefficient.
+It is recommended to set query-timeout (to 60 seconds for example) and throw-QueryEvaluationException-on-timeout=true for all GraphDB repositories used by this application.
+
+To inspect the long-running queries check GraphDB query.log for messages like this one:
+
+```
+[ERROR] 2026-03-06 14:47:35,407 [repositories/cim | c.o.t.q.LoggingClosableIteration] Error while executing query: <number>ms
+<?xml version='1.0'?>
+<query includeInferred='true' maxExecutionTime='0'>
+	<body>SELECT ?s1 ?s2 { ?s1 a ?type1 . ?s2 a ?type2 . FILTER(?s1 != ?s2)}</body>
+</query>
+
+com.ontotext.trree.QueryTimeoutErrorException: Query evaluation took too long
+	at com.ontotext.trree.TimeoutIteration.checkThrowError(TimeoutIteration.java:150)
+	at com.ontotext.trree.TimeoutIteration.onExternalTimeout(TimeoutIteration.java:193)
+	at com.ontotext.trree.QueryTimeout.checkTimeout(QueryTimeout.java:23)
+	at com.ontotext.trree.query.SubQuery$5.wasInterruptedOrTimedOut(SubQuery.java:1701)
+	at com.ontotext.trree.query.SubQuery$5.next(SubQuery.java:1509)
+	at com.ontotext.trree.query.MainQuery$1.next(MainQuery.java:314)
+	at com.ontotext.trree.query.QueryModelConverter$2.next(QueryModelConverter.java:486)
+	at com.ontotext.trree.query.QueryModelConverter$2.next(QueryModelConverter.java:469)
+	at org.eclipse.rdf4j.common.iteration.ConvertingIteration.next(ConvertingIteration.java:84)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at com.ontotext.trree.SailIterationWrapper.next(SailIterationWrapper.java:72)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at com.ontotext.trree.TimeoutIteration.next(TimeoutIteration.java:107)
+	at com.ontotext.trree.TimeoutIteration.next(TimeoutIteration.java:31)
+	at com.ontotext.trree.query.LoggingClosableIteration.next(LoggingClosableIteration.java:120)
+	at com.ontotext.trree.query.LoggingClosableIteration.next(LoggingClosableIteration.java:27)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at com.ontotext.graphdb.sesame.CatchHandler.processWithBuffer(CatchHandler.java:138)
+	at com.ontotext.graphdb.sesame.TupleQueryResultView.renderQueryResult(TupleQueryResultView.java:71)
+	at com.ontotext.graphdb.sesame.TupleQueryResultView.renderQueryResult(TupleQueryResultView.java:22)
+	at com.ontotext.graphdb.sesame.QueryResultViewBase.renderInternal(QueryResultViewBase.java:82)
+	at org.eclipse.rdf4j.http.server.repository.QueryResultView.render(QueryResultView.java:71)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1438)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1168)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at com.ontotext.forest.security.AdminDelegatingFilterProxy.doFilter(AdminDelegatingFilterProxy.java:92)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at com.ontotext.forest.clusterproxy.ClusterFilterBean.doFilter(ClusterFilterBean.java:73)
+	at com.ontotext.forest.clusterproxy.ClusterLoadBalancerFilter.doFilterInternal(ClusterLoadBalancerFilter.java:25)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at com.ontotext.forest.core.request.RequestFilter.doFilterInternal(RequestFilter.java:47)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at com.ontotext.forest.core.request.GraphDBUrlHandlerFilter.lambda$new$0(GraphDBUrlHandlerFilter.java:26)
+	at com.ontotext.forest.core.request.GraphDBUrlHandlerFilter.doFilter(GraphDBUrlHandlerFilter.java:32)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:90)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1780)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:948)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:482)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+```
+
+Note that as of GraphDB 11.3.0 these queries don't appear in the slow-queries.log until [GDB-14252](https://graphwise.atlassian.net/browse/GDB-14252) is fixed.
+
+##### Solution
+
+The default value of the GraphDB parameter `health.max.query.time.seconds` is 20 seconds.
+You can consider increasing the value.
+Another option is to change the LLM system prompt, or the LLM model to a more capable one.
+
+##### Verification
+
+- Check the response status code of the `__gtg` endpoint, it must be `200`.
+- Check the response body of the `__health` endpoint, GraphDB health check must have status `OK`.
+
+#### Cognite can't be queried or is misconfigured
 
 ##### Solution
 
@@ -1819,7 +1918,7 @@ Check [the documentation](https://github.com/statnett/Talk2PowerSystem/tree/main
 
 Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
 
-#### Redis can't be queried or is mis-configured
+#### Redis can't be queried or is misconfigured
 
 ##### Solution
 
@@ -1838,8 +1937,10 @@ Users no longer report that the calls made by the LLM agent to the tools `retrie
 
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
 - Make sure Redis connect and read timeouts are configured correctly.
-- Make sure the application is not hitting [Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
-If it does, in the application logs there will be messages containing `429 Too Many Requests`. If this is the case, the rate limits must be increased. 
+- Make sure the application is not hitting [the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST)
+or [the OpenAI rate limits](https://developers.openai.com/api/docs/guides/rate-limits) depending on which service the app is running with.
+If it does, in the application logs there will be messages containing `429 Too Many Requests`.
+If this is the case, you should consider changing the rate limits.
 - Make sure the number of uvicorn [workers](https://fastapi.tiangolo.com/deployment/server-workers/) is configured according to the number of parallel users of the system.
 
 ##### Verification
@@ -1851,19 +1952,20 @@ Users no longer report slow responses
 ##### Solution
 
 - Make sure the LLM configuration is correct including but not limited to the credentials and the timeout.
-If the credentials are not correct, you will see error messages like this one in the app logs:
+If the credentials are not correct, you will see error messages like these in the logs:
+
 ```
-- 2026-03-09T14:09:17.996278313+01:00 stdout F openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: ***. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}
 ```
-- If the application is configured to use Azure OpenAI, make sure it is not hitting 
-[the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
+
+```
+openai.AuthenticationError: Error code: 401 - {'error': {'code': '401', 'message': 'Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.'}}
+```
+
+- Make sure the application is not hitting [the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST)
+or [the OpenAI rate limits](https://developers.openai.com/api/docs/guides/rate-limits) depending on which service the app is running with.
 If it does, in the application logs there will be messages containing `429 Too Many Requests`.
-If this is the case, the rate limits must be increased.
-- If the application is configured to use OpenAI, make sure that the quota is not exceeded.
-If it is, in the application logs there will be messages like this one:
-```
-2026-03-09T14:09:17.996278313+01:00 stdout F openai.RateLimitError: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
-```
+If this is the case, you should consider changing the rate limits.
 
 ##### Verification
 

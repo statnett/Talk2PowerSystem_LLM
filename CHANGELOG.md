@@ -2,7 +2,7 @@
 ============
 
 * [#349](https://github.com/statnett/Talk2PowerSystem_PM/issues/349):
-  Update `ttyg` to `4.1.0`, which uses the GraphDB client from rdflib 
+  Update `ttyg` to `4.2.0`, which uses the GraphDB client from rdflib 
   to solve the known issue that the SPARQL queries are executed 
   against GraphDB without using a connection pool.
   As a result the configuration `graphdb.sparql_timeout` is no longer available.

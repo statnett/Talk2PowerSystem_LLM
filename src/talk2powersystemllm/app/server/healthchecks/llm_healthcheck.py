@@ -1,7 +1,9 @@
 import logging
-from typing import Union
+from typing import Any
+from uuid import UUID
 
-from redis import Redis, RedisCluster
+from langchain_core.callbacks import AsyncCallbackHandler
+from redis.asyncio import Redis, RedisCluster
 
 from .healthchecks import HealthChecks
 from ..singleton import SingletonMeta
@@ -18,21 +20,44 @@ class LLMHealthcheck(HealthCheck):
     description: str = "Checks if any LLM calls resulted in errors during the last 60 seconds!"
 
 
-class LLMHealthchecker(metaclass=SingletonMeta):
+class LLMHealthchecker(AsyncCallbackHandler, metaclass=SingletonMeta):
     def __init__(
         self,
-        redis_client: Union[Redis, RedisCluster],
+        redis_client: Redis | RedisCluster,
+        prefix: str = "app:health:",
+        key: str = "llm_error",
+        ttl: int = 60,
     ):
+        super().__init__()
         self.__redis_client = redis_client
+        # the prefix becomes {prefix}, i.e. we use Redis hashtag for cluster compatibility
+        self.__prefix = f"{{{prefix}}}"
+        self.__key = key
+        self.__ttl = ttl
         HealthChecks().add(self)
+
+    async def on_llm_error(
+        self,
+        error: BaseException,
+        *,
+        run_id: UUID,
+        parent_run_id: UUID | None = None,
+        tags: list[str] | None = None,
+        **kwargs: Any,
+    ) -> None:
+        logging.error("Calling the LLM resulted in error", exc_info=error)
+        await self.__redis_client.set(f"{self.__prefix}{self.__key}", "true", ex=self.__ttl)
 
     async def health(self) -> LLMHealthcheck:
         try:
-            llm_errors = await self.__redis_client.get("llm_errors")
+            llm_errors = await self.__redis_client.get(f"{self.__prefix}{self.__key}")
             if llm_errors:
                 return LLMHealthcheck(status=HealthStatus.WARNING,
-                                      message="LLM errors were hit in the last 60 seconds!")
-            return LLMHealthcheck(status=HealthStatus.OK, message="No LLM errors were hit in the last 60 seconds!")
+                                      message=f"LLM errors were hit in the last {self.__ttl} seconds!")
+            return LLMHealthcheck(
+                status=HealthStatus.OK,
+                message=f"No LLM errors were hit in the last {self.__ttl} seconds!"
+            )
         except Exception as error:
             logging.error("Exception while checking for LLM errors", exc_info=error)
             return LLMHealthcheck(status=HealthStatus.ERROR, message=str(error))

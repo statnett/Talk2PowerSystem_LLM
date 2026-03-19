@@ -13,7 +13,7 @@ def replace_value_filter(match):
     # match group looks like: "cim:GeneratingUnit, cim:GeneratingUnit.maxOperatingP, xsd:float"
     parts = match.group(1).split(",")
     if parts:
-        return f"<<<{parts[-1].split(':')[-1].strip()}>>>"
+        return f"<<<{parts[-1].split(":")[-1].strip()}>>>"
     return match.group(0)
 
 
@@ -29,7 +29,7 @@ def transform_sparql(sparql_query: str) -> str:
 
 def verify_unique_placeholders(text: str) -> bool:
     # Find all <<< >>> placeholders
-    placeholders = re.findall(r'<<<(.*?)>>>', text)
+    placeholders = re.findall(r"<<<(.*?)>>>", text)
 
     # Check uniqueness
     unique_placeholders = set(placeholders)
@@ -55,13 +55,13 @@ def build_qa_dataset_graph(split):
     graph.bind("qa", qa_dataset_ns)
 
     for template in split:
-        template_iri = URIRef(f"Template_{template['template_id']}", base_ns)
+        template_iri = URIRef(f"Template_{template["template_id"]}", base_ns)
         graph.add((template_iri, RDF.type, qa_dataset_ns.Template))
         sparql_template = template["sparql_template"]
         graph.add((template_iri, qa_dataset_ns.querySparql, Literal(transform_sparql(sparql_template))))
 
         for n, paraphrase in enumerate(template["paraphrases"]):
-            paraphrase_iri = URIRef(f"Paraphrase_{template['template_id']}_{n}", base_ns)
+            paraphrase_iri = URIRef(f"Paraphrase_{template["template_id"]}_{n}", base_ns)
             graph.add((paraphrase_iri, RDF.type, qa_dataset_ns.Paraphrase))
             graph.add((template_iri, qa_dataset_ns.paraphrase, paraphrase_iri))
             transformed_paraphrase = transform_paraphrase(paraphrase)

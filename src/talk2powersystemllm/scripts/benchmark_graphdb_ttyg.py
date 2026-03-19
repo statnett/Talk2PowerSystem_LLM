@@ -366,5 +366,5 @@ def main():
     run_evaluation_on_split(graphdb_settings, test_split, "test", results_dir)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

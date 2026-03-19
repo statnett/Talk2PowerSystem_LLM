@@ -5,9 +5,10 @@ from uuid import UUID
 from langchain_core.callbacks import AsyncCallbackHandler
 from redis.asyncio import Redis, RedisCluster
 
-from .healthchecks import HealthChecks
-from talk2powersystemllm.app.server.singleton import SingletonMeta
 from talk2powersystemllm.app.models import HealthCheck, Severity, HealthStatus
+from talk2powersystemllm.app.server.services.healthchecks.healthchecks import HealthProvider
+
+logger = logging.getLogger(__name__)
 
 
 class LLMHealthcheck(HealthCheck):
@@ -20,7 +21,7 @@ class LLMHealthcheck(HealthCheck):
     description: str = "Checks if any LLM calls resulted in errors during the last 60 seconds!"
 
 
-class LLMHealthchecker(AsyncCallbackHandler, metaclass=SingletonMeta):
+class LLMHealthchecker(AsyncCallbackHandler, HealthProvider):
     def __init__(
         self,
         redis_client: Redis | RedisCluster,
@@ -34,7 +35,6 @@ class LLMHealthchecker(AsyncCallbackHandler, metaclass=SingletonMeta):
         self.__prefix = f"{{{prefix}}}"
         self.__key = key
         self.__ttl = ttl
-        HealthChecks().add(self)
 
     async def on_llm_error(
         self,
@@ -45,7 +45,7 @@ class LLMHealthchecker(AsyncCallbackHandler, metaclass=SingletonMeta):
         tags: list[str] | None = None,
         **kwargs: Any,
     ) -> None:
-        logging.error("Calling the LLM resulted in error", exc_info=error)
+        logger.exception("Calling the LLM resulted in error")
         await self.__redis_client.set(f"{self.__prefix}{self.__key}", "true", ex=self.__ttl)
 
     async def health(self) -> LLMHealthcheck:
@@ -59,5 +59,5 @@ class LLMHealthchecker(AsyncCallbackHandler, metaclass=SingletonMeta):
                 message=f"No LLM errors were hit in the last {self.__ttl} seconds!"
             )
         except Exception as error:
-            logging.error("Exception while checking for LLM errors", exc_info=error)
+            logger.exception("Exception while checking for LLM errors")
             return LLMHealthcheck(status=HealthStatus.ERROR, message=str(error))

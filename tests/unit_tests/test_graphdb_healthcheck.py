@@ -5,7 +5,10 @@ from rdflib.contrib.graphdb.exceptions import (
     RepositoryNotFoundError,
     RepositoryNotHealthyError,
 )
-from ttyg.graphdb import GraphDBRdfRankStatus, GraphDBAutocompleteStatus
+from ttyg.graphdb import (
+    GraphDBRdfRankStatus,
+    GraphDBAutocompleteStatus,
+)
 
 from talk2powersystemllm.app.models import HealthStatus
 from talk2powersystemllm.app.server.services.healthchecks import GraphDBHealthchecker
@@ -77,13 +80,6 @@ green_status_with_red_connector = {
         }
     ]
 }
-
-
-@pytest.fixture(autouse=True)
-def reset_singleton():
-    """Clears the singleton instance before each test."""
-    GraphDBHealthchecker._instances = {}
-    yield
 
 
 @pytest.fixture

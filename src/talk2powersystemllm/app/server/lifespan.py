@@ -3,27 +3,33 @@ from contextlib import asynccontextmanager
 
 import msal
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from fastapi import (
-    FastAPI,
-)
+from cachetools import TTLCache
+from fastapi import FastAPI
 from langgraph.checkpoint.redis import AsyncRedisSaver
+from redis.asyncio import Redis, RedisCluster
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
-from talk2powersystemllm.app.server.config import settings
-from talk2powersystemllm.app.server.services.healthchecks import (
+from talk2powersystemllm.app.server.services import (
+    create_redis_client,
+    update_about_info,
     GraphDBHealthchecker,
     RedisHealthchecker,
     LLMHealthchecker,
+    HealthChecks,
 )
-from .services import create_redis_client
+from talk2powersystemllm.app.server.services.gtg_service import update_gtg_info
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(fastapi_app: FastAPI):
-    logging.info("Starting the application")
+    logger.info("Starting the application")
+
+    settings = fastapi_app.state.settings
 
     async with (
-        create_redis_client() as redis_client,
+        create_redis_client(settings) as redis_client,
         AsyncRedisSaver.from_conn_string(
             redis_client=redis_client,
             ttl={
@@ -33,9 +39,6 @@ async def lifespan(fastapi_app: FastAPI):
         ) as redis_saver
     ):
         await redis_saver.asetup()
-        RedisHealthchecker(redis_client)
-
-        fastapi_app.state.callbacks = [LLMHealthchecker(redis_client)]
 
         agent_factory = Talk2PowerSystemAgentFactory(
             settings.agent_config,
@@ -43,35 +46,69 @@ async def lifespan(fastapi_app: FastAPI):
         )
         fastapi_app.state.agent_factory = agent_factory
 
-        GraphDBHealthchecker(agent_factory)
+        health_checks_registry = await create_health_checks_registry(fastapi_app, agent_factory, redis_client)
+        fastapi_app.state.health_checks_registry = health_checks_registry
 
-        if settings.security.enabled and agent_factory.settings.tools.cognite:
-            if not agent_factory.settings.tools.cognite.client_secret:
-                raise ValueError(
-                    "Cognite client secret must be provided in order to register the Cognite tools, "
-                    "when the security is enabled."
-                )
-            fastapi_app.state.confidential_app = msal.ConfidentialClientApplication(
-                settings.security.client_id,
-                authority=settings.security.authority,
-                client_credential=agent_factory.settings.tools.cognite.client_secret,
+        if settings.security.enabled:
+            fastapi_app.state.jwks_cache = TTLCache(
+                maxsize=1,
+                ttl=settings.security.ttl
             )
-            fastapi_app.state.cognite_scopes = [f"{agent_factory.settings.tools.cognite.base_url}/.default"]
+            if agent_factory.cognite_enabled:
+                if not agent_factory.cognite_settings.client_secret:
+                    raise ValueError(
+                        "Cognite client secret must be provided in order to register the Cognite tools, "
+                        "when the security is enabled."
+                    )
+                fastapi_app.state.confidential_app = msal.ConfidentialClientApplication(
+                    settings.security.client_id,
+                    authority=settings.security.authority,
+                    client_credential=agent_factory.cognite_settings.client_secret,
+                )
+                fastapi_app.state.cognite_scopes = [f"{agent_factory.cognite_settings.base_url}/.default"]
 
-        scheduler = AsyncIOScheduler()
-        scheduler.add_job(update_gtg_info, "interval", seconds=settings.gtg_refresh_interval)
-        scheduler.add_job(update_about_info, "interval", seconds=settings.about_refresh_interval)
+        scheduler = await create_scheduler(fastapi_app, settings)
 
-        scheduler.start()
-        fastapi_app.state.scheduler = scheduler
+        await update_gtg_info(fastapi_app)
+        await update_about_info(fastapi_app)
 
-        await update_gtg_info()
-        await update_about_info()
-
-        logging.info("Application is running")
+        logger.info("Application is running")
 
         yield
 
-        logging.info("Destroying the application")
+        logger.info("Destroying the application")
         scheduler.shutdown()
-        logging.info("Scheduler is stopped")
+        logger.info("Scheduler is stopped")
+
+
+async def create_health_checks_registry(
+    fastapi_app: FastAPI,
+    agent_factory: Talk2PowerSystemAgentFactory,
+    redis_client: Redis | RedisCluster
+) -> HealthChecks:
+    health_checks_registry = HealthChecks()
+    health_checks_registry.add(GraphDBHealthchecker(agent_factory))
+    health_checks_registry.add(RedisHealthchecker(redis_client))
+    llm_health_check = LLMHealthchecker(redis_client)
+    fastapi_app.state.callbacks = [llm_health_check]
+    health_checks_registry.add(llm_health_check)
+    return health_checks_registry
+
+
+async def create_scheduler(fastapi_app: FastAPI, settings) -> AsyncIOScheduler:
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(
+        update_gtg_info,
+        "interval",
+        args=[fastapi_app],
+        seconds=settings.gtg_refresh_interval
+    )
+    scheduler.add_job(
+        update_about_info,
+        "interval",
+        args=[fastapi_app],
+        seconds=settings.about_refresh_interval
+    )
+
+    scheduler.start()
+    return scheduler

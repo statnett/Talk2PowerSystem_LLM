@@ -1,8 +1,7 @@
 from redis.asyncio import Redis, RedisCluster
 
-from talk2powersystemllm.app.server.config import settings
 
-def create_redis_client() -> Redis | RedisCluster:
+def create_redis_client(settings) -> Redis | RedisCluster:
     redis_password = settings.redis.password
     redis_auth = ""
     if redis_password:

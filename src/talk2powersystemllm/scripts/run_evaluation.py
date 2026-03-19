@@ -97,7 +97,7 @@ def run_agent(agent: CompiledStateGraph, question: dict) -> dict[str, Any]:
     )
     if "status" in chat_response and chat_response["status"] == "error":
         print(
-            f"Warning: The chat response for the question with id {question['id']} "
+            f"Warning: The chat response for the question with id {question["id"]} "
             f"is {chat_response["error"]}"
         )
     return chat_response

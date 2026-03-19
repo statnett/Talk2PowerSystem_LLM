@@ -10,9 +10,10 @@ from ttyg.graphdb import (
 )
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
-from .healthchecks import HealthChecks
-from talk2powersystemllm.app.server.singleton import SingletonMeta
 from talk2powersystemllm.app.models import HealthCheck, Severity, HealthStatus
+from talk2powersystemllm.app.server.services.healthchecks.healthchecks import HealthProvider
+
+logger = logging.getLogger(__name__)
 
 
 class GraphDBHealthcheck(HealthCheck):
@@ -31,19 +32,17 @@ class GraphDBHealthcheck(HealthCheck):
     )
 
 
-class GraphDBHealthchecker(metaclass=SingletonMeta):
+class GraphDBHealthchecker(HealthProvider):
     def __init__(self, agent_factory: Talk2PowerSystemAgentFactory):
         self.__graphdb_client = agent_factory.graphdb_client
         self.__repository_id = agent_factory.graphdb_repository_id
 
         self.__retrieval_repository_id = None
         self.__retrieval_connector_name = None
-        retrieval_search_settings = agent_factory.settings.tools.retrieval_search
-        if retrieval_search_settings:
+        if agent_factory.sample_sparql_queries_enabled:
+            retrieval_search_settings = agent_factory.sample_sparql_queries_settings
             self.__retrieval_repository_id = retrieval_search_settings.graphdb_repository_id
             self.__retrieval_connector_name = retrieval_search_settings.connector_name
-
-        HealthChecks().add(self)
 
     async def health(self) -> GraphDBHealthcheck:
         try:
@@ -79,7 +78,7 @@ class GraphDBHealthchecker(metaclass=SingletonMeta):
             )
 
         except Exception as error:
-            logging.error("Exception raised in GraphDB health check", exc_info=error)
+            logger.exception("Exception raised in GraphDB health check")
             return GraphDBHealthcheck(status=HealthStatus.ERROR, message=str(error))
 
     def __check_repository_health(self, repository_id: str) -> tuple[HealthStatus, str, dict | None]:
@@ -102,9 +101,9 @@ class GraphDBHealthchecker(metaclass=SingletonMeta):
     @staticmethod
     def __log(status: HealthStatus, message: str) -> None:
         if status == HealthStatus.ERROR:
-            logging.error(message)
+            logger.error(message)
         else:
-            logging.warning(message)
+            logger.warning(message)
 
     def __check_autocomplete_status(self) -> tuple[HealthStatus, str]:
         autocomplete_status = self.__graphdb_client.get_autocomplete_status(self.__repository_id)

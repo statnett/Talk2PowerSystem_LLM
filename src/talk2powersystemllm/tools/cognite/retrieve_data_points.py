@@ -7,7 +7,7 @@ from langchain_core.tools import ToolException
 from pydantic import BaseModel, Field
 from ttyg.utils import timeit
 
-from .base import BaseCogniteTool
+from talk2powersystemllm.tools.cognite.base import BaseCogniteTool
 
 
 class RetrieveDataPointsTool(BaseCogniteTool):
@@ -67,7 +67,8 @@ class RetrieveDataPointsTool(BaseCogniteTool):
                         "Note that when using aggregates, the end will be rounded up such that the last aggregate "
                         "represents a full aggregation interval containing the original end, "
                         "where the interval is the granularity unit times the granularity multiplier. "
-                        "For granularity ``2d``, the aggregation interval is 2 days, if end was originally 3 days after "
+                        "For granularity ``2d``, the aggregation interval is 2 days, if end was originally 3 days "
+                        "after "
                         "the start, it will be rounded to 4 days after the start. "
                         "Argument ``end`` must be later than argument ``start``. "
                         "By default ``end`` is ``now``. ",
@@ -104,7 +105,8 @@ class RetrieveDataPointsTool(BaseCogniteTool):
                         "``w/week(s)``, ``mo/month(s)``, ``q/quarter(s)``, or ``y/year(s)``. "
                         "Examples: ``30s``, ``5m``, ``1day``, ``2weeks``. "
                         "For 'second' and 'minute', the multiple must be an integer between 1 and 120 inclusive. "
-                        "For 'hour', 'day', and 'month', the multiple must be an integer between 1 and 100000 inclusive. "
+                        "For 'hour', 'day', and 'month', the multiple must be an integer between 1 and 100000 "
+                        "inclusive. "
                         "When passing `granularity`, argument `aggregates` is also required.",
             default=None,
             examples=["1w", "1mo", "2days"]

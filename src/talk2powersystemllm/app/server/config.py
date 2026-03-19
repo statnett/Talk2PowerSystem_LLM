@@ -116,8 +116,5 @@ class AppSettings(BaseSettings):
     logging_yaml_file: Path = "/code/logging.yaml"
     manifest_path: Path = "/code/git-manifest.yaml"
     pyproject_toml_path: Path = "/code/pyproject.toml"
-    diagrams_path: Path = '/code/diagrams/'
+    diagrams_path: Path = "/code/diagrams/"
     frontend_context_path: str = "/"
-
-
-settings = AppSettings()

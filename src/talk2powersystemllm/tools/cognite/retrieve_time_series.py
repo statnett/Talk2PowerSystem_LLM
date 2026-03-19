@@ -6,7 +6,7 @@ from langchain_core.tools import ToolException
 from pydantic import BaseModel, Field
 from ttyg.utils import timeit
 
-from .base import BaseCogniteTool
+from talk2powersystemllm.tools.cognite.base import BaseCogniteTool
 
 
 class RetrieveTimeSeriesTool(BaseCogniteTool):

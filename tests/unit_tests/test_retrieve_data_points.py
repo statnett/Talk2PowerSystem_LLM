@@ -6,7 +6,10 @@ from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client.testing import monkeypatch_cognite_client
 from langchain_core.tools import ToolException
 
-from talk2powersystemllm.tools import RetrieveDataPointsTool, CogniteSession
+from talk2powersystemllm.tools import (
+    RetrieveDataPointsTool,
+    CogniteSession,
+)
 
 
 @pytest.mark.parametrize(

@@ -5,7 +5,7 @@ formatters:
     format: '[%(asctime)s] [%(threadName)s] [%(name)s] %(levelname)s - %(x_request_id)s - %(message)s'
 filters:
   xRequestIdFilter:
-    (): talk2powersystemllm.app.server.x_request_id_logging_filter.XRequestIdFilter
+    (): talk2powersystemllm.app.server.logging_conf.XRequestIdFilter
 handlers:
   console:
     formatter: default

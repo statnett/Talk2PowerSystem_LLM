@@ -2,8 +2,10 @@ import logging
 
 from redis.asyncio import Redis, RedisCluster
 
-from talk2powersystemllm.app.models import HealthCheck, Severity, HealthStatus
-from talk2powersystemllm.app.server.services.healthchecks.healthchecks import HealthProvider
+from talk2powersystemllm.app.models import HealthCheck, HealthStatus, Severity
+from talk2powersystemllm.app.server.services.healthchecks.healthchecks import (
+    HealthProvider,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +30,9 @@ class RedisHealthchecker(HealthProvider):
     async def health(self) -> RedisHealthcheck:
         try:
             await self.__redis_client.ping()
-            return RedisHealthcheck(status=HealthStatus.OK, message="Redis can be queried.")
+            return RedisHealthcheck(
+                status=HealthStatus.OK, message="Redis can be queried."
+            )
         except Exception as error:
             logger.exception("Exception while pinging Redis")
             return RedisHealthcheck(status=HealthStatus.ERROR, message=str(error))

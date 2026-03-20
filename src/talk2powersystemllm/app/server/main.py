@@ -1,8 +1,8 @@
 import re
 from functools import lru_cache
 from importlib.metadata import version as get_pkg_version
+from pathlib import Path
 
-import markdown
 import toml
 from fastapi import FastAPI
 
@@ -13,26 +13,20 @@ from talk2powersystemllm.app.server.logging_conf import config_logger
 from talk2powersystemllm.app.server.middleware import setup_middleware
 from talk2powersystemllm.app.server.routers import all_routers
 
-API_DESCRIPTION = ("Talk2PowerSystem Chat Bot Application provides functionality for chatting with the "
-                   "Talk2PowerSystem Chat bot")
-
 
 @lru_cache
 def get_settings():
     return AppSettings()
 
 
-settings = get_settings()
-
-config_logger(settings.logging_yaml_file)
-
-
-def get_version_and_dependencies() -> tuple[str, dict[str, str]]:
-    with open(str(settings.pyproject_toml_path)) as pyproject_toml_file:
+def get_version_and_dependencies(
+    pyproject_toml_path: Path,
+) -> tuple[str, dict[str, str]]:
+    with open(str(pyproject_toml_path)) as pyproject_toml_file:
         pyproject = toml.loads(pyproject_toml_file.read())
-        v: str = pyproject["project"]["version"]
+        version: str = pyproject["project"]["version"]
         dependencies: list[str] = pyproject["project"]["dependencies"]
-        return v, get_dependency_to_version(dependencies)
+        return version, get_dependency_to_version(dependencies)
 
 
 def get_dependency_to_version(dependencies: list[str]) -> dict[str, str]:
@@ -50,40 +44,37 @@ def get_dependency_to_version(dependencies: list[str]) -> dict[str, str]:
     return dependency_to_version
 
 
-def get_trouble_html():
-    with open(settings.trouble_md_path, "r", encoding="utf-8") as trouble_md_file:
-        trouble_md_text = trouble_md_file.read()
-        return markdown.markdown(
-            trouble_md_text,
-            extensions=["toc", "fenced_code"],
-            extension_configs={"toc": {"title": "Table of Contents"}}
-        )
+def create_app() -> FastAPI:
+    settings = get_settings()
+
+    config_logger(settings.logging_yaml_file)
+
+    version, dependencies = get_version_and_dependencies(settings.pyproject_toml_path)
+
+    fastapi_app = FastAPI(
+        title="Talk2PowerSystem Chat Bot Application",
+        description="Talk2PowerSystem Chat Bot Application provides functionality "
+        "for chatting with the Talk2PowerSystem Chat bot",
+        version=version,
+        docs_url=settings.docs_url,
+        redoc_url=None,
+        root_path=settings.root_path,
+        lifespan=lifespan,
+        license_info={
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
+        },
+    )
+
+    fastapi_app.state.settings = settings
+    fastapi_app.state.dependencies = dependencies
+
+    for router in all_routers:
+        fastapi_app.include_router(router)
+
+    setup_exception_handlers(fastapi_app)
+    setup_middleware(fastapi_app)
+    return fastapi_app
 
 
-trouble_html = get_trouble_html()
-
-version, API_DEPENDENCIES = get_version_and_dependencies()
-
-app = FastAPI(
-    title="Talk2PowerSystem Chat Bot Application",
-    description=API_DESCRIPTION,
-    version=version,
-    docs_url=settings.docs_url,
-    redoc_url=None,
-    root_path=settings.root_path,
-    lifespan=lifespan,
-    license_info={
-        "name": "Apache 2.0",
-        "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
-    }
-)
-
-app.state.settings = settings
-app.state.dependencies = API_DEPENDENCIES
-app.state.trouble_html = trouble_html
-
-for router in all_routers:
-    app.include_router(router)
-
-setup_exception_handlers(app)
-setup_middleware(app)
+app = create_app()

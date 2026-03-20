@@ -64,7 +64,9 @@ class AboutGraphDBInfo(BaseModel):
     version: str
     number_of_explicit_triples: int = Field(alias="numberOfExplicitTriples")
     number_of_triples: int = Field(alias="numberOfTriples")
-    autocomplete_index_status: GraphDBAutocompleteStatus = Field(alias="autocompleteIndexStatus")
+    autocomplete_index_status: GraphDBAutocompleteStatus = Field(
+        alias="autocompleteIndexStatus"
+    )
     rdf_rank_status: GraphDBRdfRankStatus = Field(alias="rdfRankStatus")
 
 

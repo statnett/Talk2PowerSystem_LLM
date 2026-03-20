@@ -2,10 +2,8 @@ import logging
 
 import requests
 from cachetools import TTLCache
-from fastapi import (
-    HTTPException,
-)
-from jose import jwt, JWTError, ExpiredSignatureError
+from fastapi import HTTPException
+from jose import ExpiredSignatureError, JWTError, jwt
 from jose.exceptions import JWTClaimsError
 
 from talk2powersystemllm.app.server.config import AppSettings
@@ -21,11 +19,15 @@ def get_jwks_uri(settings: AppSettings) -> str:
         logger.exception(
             f"Failed to fetch OpenID Configuration from url {settings.security.oidc_discovery_url}"
         )
-        raise HTTPException(status_code=500, detail="Fail to fetch OpenID Configuration")
+        raise HTTPException(
+            status_code=500, detail="Fail to fetch OpenID Configuration"
+        )
 
     json_response_body = oid_config.json()
     if "jwks_uri" not in json_response_body:
-        raise HTTPException(status_code=500, detail="jwks_uri not found in the OpenID Configuration")
+        raise HTTPException(
+            status_code=500, detail="jwks_uri not found in the OpenID Configuration"
+        )
 
     return json_response_body["jwks_uri"]
 
@@ -62,7 +64,9 @@ def verify_jwt(settings: AppSettings, jwks_cache: TTLCache, token: str):
         raise HTTPException(status_code=401, detail=f"Expired Signature: {str(e)}")
     except JWTClaimsError as e:
         logger.warning("Any claim is invalid in any way", exc_info=e)
-        raise HTTPException(status_code=401, detail=f"Any claim is invalid in any way: {str(e)}")
+        raise HTTPException(
+            status_code=401, detail=f"Any claim is invalid in any way: {str(e)}"
+        )
     except JWTError as e:
         logger.warning("Signature is invalid", exc_info=e)
         raise HTTPException(status_code=401, detail=f"Signature is invalid: {str(e)}")

@@ -1,11 +1,16 @@
 import argparse
 from pathlib import Path
 
-from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset, build_qa_dataset_graph
+from talk2powersystemllm.qa_dataset import (
+    build_qa_dataset_graph,
+    load_and_split_qa_dataset,
+)
 
 
 def get_args_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Serialize the train and dev splits of the Q&A dataset as turtle")
+    parser = argparse.ArgumentParser(
+        description="Serialize the train and dev splits of the Q&A dataset as turtle"
+    )
     parser.add_argument(
         "--qa-dataset-path",
         dest="qa_dataset_path",

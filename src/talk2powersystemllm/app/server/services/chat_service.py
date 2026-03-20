@@ -4,28 +4,37 @@ import uuid
 from langchain_core.runnables import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 
-from talk2powersystemllm.app.models import ChatResponse, Message, Usage, SvgGraphic, VizGraphGraphic, Graphic
+from talk2powersystemllm.app.models import (
+    ChatResponse,
+    Graphic,
+    Message,
+    SvgGraphic,
+    Usage,
+    VizGraphGraphic,
+)
 from talk2powersystemllm.app.server.exceptions import ConversationNotFound
-from talk2powersystemllm.tools import SvgArtifact, GraphDBVisualGraphArtifact
+from talk2powersystemllm.tools import GraphDBVisualGraphArtifact, SvgArtifact
 
 logger = logging.getLogger(__name__)
+
 
 async def get_or_create_conversation(chat_request, agent: CompiledStateGraph) -> str:
     conversation_id = chat_request.conversation_id
     if conversation_id:
-        checkpoint = await agent.checkpointer.aget({"configurable": {"thread_id": conversation_id}})
+        checkpoint = await agent.checkpointer.aget(
+            {"configurable": {"thread_id": conversation_id}}
+        )
         if not checkpoint:
-            raise ConversationNotFound(f"Conversation with id \"{conversation_id}\" not found.")
+            raise ConversationNotFound(
+                f'Conversation with id "{conversation_id}" not found.'
+            )
     else:
         conversation_id = f"thread_{uuid.uuid4()}"
     return conversation_id
 
 
 async def run_agent_loop(
-    agent: CompiledStateGraph,
-    conversation_id: str,
-    question: str,
-    callbacks: list
+    agent: CompiledStateGraph, conversation_id: str, question: str, callbacks: list
 ) -> ChatResponse:
     messages: list[Message] = []
     graphics: list[Graphic] = []
@@ -44,21 +53,21 @@ async def run_agent_loop(
         if "model" in output and "messages" in output["model"]:
             for ai_message in output["model"]["messages"]:
                 usage_metadata = ai_message.usage_metadata
-                input_tokens, output_tokens, total_tokens = usage_metadata["input_tokens"], usage_metadata[
-                    "output_tokens"], usage_metadata["total_tokens"]
-                sum_input_tokens += input_tokens
-                sum_output_tokens += output_tokens
-                sum_total_tokens += total_tokens
+                sum_input_tokens += usage_metadata["input_tokens"]
+                sum_output_tokens += usage_metadata["output_tokens"]
+                sum_total_tokens += usage_metadata["total_tokens"]
                 if ai_message.content:
-                    logger.info(f"Conversation {conversation_id}: AI Message: \"{ai_message.content}\"")
+                    logger.info(
+                        f'Conversation {conversation_id}: AI Message: "{ai_message.content}"'
+                    )
                     message_kwargs = {
                         "id": ai_message.id,
                         "message": ai_message.content,
                         "usage": Usage(
                             promptTokens=sum_input_tokens,
                             completionTokens=sum_output_tokens,
-                            totalTokens=sum_total_tokens
-                        )
+                            totalTokens=sum_total_tokens,
+                        ),
                     }
                     if graphics:
                         message_kwargs["graphics"] = graphics
@@ -67,7 +76,9 @@ async def run_agent_loop(
                     graphics: list[Graphic] = []
                 if ai_message.tool_calls:
                     for tool_call in ai_message.tool_calls:
-                        logger.info(f"Conversation {conversation_id}: Tool Call: {tool_call}")
+                        logger.info(
+                            f"Conversation {conversation_id}: Tool Call: {tool_call}"
+                        )
 
         elif "tools" in output and "messages" in output["tools"]:
             for tool_message in output["tools"]["messages"]:
@@ -78,7 +89,9 @@ async def run_agent_loop(
                         )
                     elif isinstance(tool_message.artifact, GraphDBVisualGraphArtifact):
                         graphics.append(
-                            VizGraphGraphic(type="vizGraph", url=tool_message.artifact.link)
+                            VizGraphGraphic(
+                                type="vizGraph", url=tool_message.artifact.link
+                            )
                         )
 
     total_input_tokens = sum([message.usage.prompt_tokens for message in messages])
@@ -91,6 +104,6 @@ async def run_agent_loop(
         usage=Usage(
             completionTokens=total_output_tokens,
             promptTokens=total_input_tokens,
-            totalTokens=total_total_tokens
-        )
+            totalTokens=total_total_tokens,
+        ),
     )

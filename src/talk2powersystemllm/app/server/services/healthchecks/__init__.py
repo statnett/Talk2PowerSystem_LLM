@@ -4,8 +4,8 @@ from .llm_healthcheck import LLMHealthchecker
 from .redis_healthcheck import RedisHealthchecker
 
 __all__ = [
-    "HealthChecks",
     "GraphDBHealthchecker",
-    "RedisHealthchecker",
+    "HealthChecks",
     "LLMHealthchecker",
+    "RedisHealthchecker",
 ]

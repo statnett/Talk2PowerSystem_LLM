@@ -1,12 +1,13 @@
 import random
 import re
+import time
 from datetime import datetime
 from unittest import TestCase
 
 import requests
 from requests import Response
 
-from .openai_mock import mock_openai, mock_openai_verify, mock_openai_reset
+from .openai_mock import mock_openai, mock_openai_verify, mock_openai_reset, mock_openai_error
 
 
 def is_valid_uuid_v4(s: str) -> bool:
@@ -58,14 +59,12 @@ class AcceptanceTestsApp(TestCase):
         actual_response_json = self.validate_response_and_return_json_body(response, expected_x_request_id="test")
         self.assertEqual(expected_response_json, actual_response_json)
 
-    def test_health(self) -> None:
-        response = requests.get(HEALTH_ENDPOINT, timeout=(2, 10))
-        actual_response_json = self.validate_response_and_return_json_body(response)
+    def verify_health_response(self, actual_response_json: dict):
         self.assertEqual(2, len(actual_response_json))
         self.assertTrue("status" in actual_response_json)
         self.assertEqual("OK", actual_response_json["status"])
         self.assertTrue("healthChecks" in actual_response_json)
-        self.assertEqual(2, len(actual_response_json["healthChecks"]))
+        self.assertEqual(3, len(actual_response_json["healthChecks"]))
         self.assertTrue(
             {
                 "status": "OK",
@@ -75,9 +74,13 @@ class AcceptanceTestsApp(TestCase):
                 "type": "graphdb",
                 "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                "description": "Checks if GraphDB repository can be queried. Also checks that the status of "
-                               "the autocomplete index is READY, and the RDF rank status is COMPUTED.",
-                "message": "GraphDB repository can be queried and it's configured correctly."
+                "description": "Checks that the GraphDB repository can be queried and is healthy. "
+                               "Checks that the status of the autocomplete index is READY, "
+                               "and the RDF rank status is COMPUTED. "
+                               "In addition, if the n-shot tool is available, checks that the n-shot tool "
+                               "GraphDB repository can be queried and is healthy, and that the "
+                               "ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+                "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
             } in actual_response_json["healthChecks"]
         )
         self.assertTrue(
@@ -91,43 +94,30 @@ class AcceptanceTestsApp(TestCase):
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#redis-health-check-status-is-not-ok",
                 "description": "Checks if Redis can be queried.",
                 "message": "Redis can be queried."
+            } in actual_response_json["healthChecks"]
+        )
+        self.assertTrue(
+            {
+                "status": "OK",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+                "name": "LLM Health Check",
+                "type": "llm",
+                "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#llm-health-check-status-is-not-ok",
+                "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+                "message": "No LLM errors were hit in the last 60 seconds!"
             } in actual_response_json["healthChecks"]
         )
 
+    def test_health(self) -> None:
+        response = requests.get(HEALTH_ENDPOINT, timeout=(2, 10))
+        actual_response_json = self.validate_response_and_return_json_body(response)
+        self.verify_health_response(actual_response_json)
+
         response = requests.get(HEALTH_ENDPOINT, headers={"X-Request-Id": "test"}, timeout=(2, 10))
         actual_response_json = self.validate_response_and_return_json_body(response, expected_x_request_id="test")
-        self.assertEqual(2, len(actual_response_json))
-        self.assertTrue("status" in actual_response_json)
-        self.assertEqual("OK", actual_response_json["status"])
-        self.assertTrue("healthChecks" in actual_response_json)
-        self.assertEqual(2, len(actual_response_json["healthChecks"]))
-        self.assertTrue(
-            {
-                "status": "OK",
-                "severity": "HIGH",
-                "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
-                "name": "GraphDB Health Check",
-                "type": "graphdb",
-                "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
-                "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
-                "description": "Checks if GraphDB repository can be queried. Also checks that the status of "
-                               "the autocomplete index is READY, and the RDF rank status is COMPUTED.",
-                "message": "GraphDB repository can be queried and it's configured correctly."
-            } in actual_response_json["healthChecks"]
-        )
-        self.assertTrue(
-            {
-                "status": "OK",
-                "severity": "HIGH",
-                "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
-                "name": "Redis Health Check",
-                "type": "redis",
-                "impact": "Redis is inaccessible and the chat bot can't function",
-                "troubleshooting": "http://talk2powersystem:8000/__trouble#redis-health-check-status-is-not-ok",
-                "description": "Checks if Redis can be queried.",
-                "message": "Redis can be queried."
-            } in actual_response_json["healthChecks"]
-        )
+        self.verify_health_response(actual_response_json)
 
     def verify_about_response(self, actual_response_json: dict) -> None:
         self.assertTrue("ontologies" in actual_response_json)
@@ -616,7 +606,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                     "type": "function",
                     "function": {
                         "name": "sparql_query",
-                        "arguments": "{ \"query\": \"SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }\" }"
+                        "arguments": "{ \"query\": \"SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> "
+                                     "}\" }"
                     }
                 }
             ],
@@ -641,7 +632,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                             "id": "sparql_query_call_1",
                             "function": {
                                 "name": "sparql_query",
-                                "arguments": "{\"query\": \"SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }\"}"
+                                "arguments": "{\"query\": \"SELECT * { ?substation a "
+                                             "<https://cim.ucaiug.io/ns#Substation> }\"}"
                             }
                         }
                     ]
@@ -680,7 +672,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                             "id": "sparql_query_call_1",
                             "function": {
                                 "name": "sparql_query",
-                                "arguments": "{\"query\": \"SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }\"}"
+                                "arguments": "{\"query\": \"SELECT * { ?substation a "
+                                             "<https://cim.ucaiug.io/ns#Substation> }\"}"
                             }
                         }
                     ]
@@ -731,7 +724,8 @@ SELECT ?link ?name ?format ?description ?kind {{
                             "id": "sparql_query_call_1",
                             "function": {
                                 "name": "sparql_query",
-                                "arguments": "{\"query\": \"SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }\"}"
+                                "arguments": "{\"query\": \"SELECT * { ?substation a "
+                                             "<https://cim.ucaiug.io/ns#Substation> }\"}"
                             }
                         }
                     ]
@@ -824,4 +818,98 @@ SELECT ?link ?name ?format ?description ?kind {{
                 ]
             },
             explain_response_body2
+        )
+
+    def test_llm_errors_openai_401_error(self) -> None:
+        self.llm_healthcheck_is_ok()
+
+        question = "list substations"
+        mock_openai_error(
+            request_messages=[
+                {
+                    "content": question,
+                    "role": "user"
+                }
+            ],
+            status_code=401,
+            error_message="Access denied due to invalid subscription key or wrong API endpoint. Make sure "
+                          "to provide a valid key for an active subscription and use a correct regional "
+                          "API endpoint for your resource.",
+            n_times=1
+        )
+
+        conversation_request_body = {"question": question}
+        conversation_response = requests.post(CONVERSATION_ENDPOINT, json=conversation_request_body, timeout=(2, 10))
+        self.assertEqual(500, conversation_response.status_code)
+
+        self.llm_healthcheck_warning()
+        time.sleep(61)
+        self.llm_healthcheck_is_ok()
+
+    def test_llm_errors_openai_429_error(self) -> None:
+        self.llm_healthcheck_is_ok()
+
+        question = "list substations"
+        mock_openai_error(
+            request_messages=[
+                {
+                    "content": question,
+                    "role": "user"
+                }
+            ],
+            status_code=429,
+            error_message="You exceeded your current quota, please check your plan and billing details. "
+                          "For more information on this error, read the docs: "
+                          "https://platform.openai.com/docs/guides/error-codes/api-errors.",
+            n_times=3
+        )
+
+        conversation_request_body = {"question": question}
+        conversation_response = requests.post(CONVERSATION_ENDPOINT, json=conversation_request_body, timeout=(2, 10))
+        self.assertEqual(500, conversation_response.status_code)
+
+        self.llm_healthcheck_warning()
+        time.sleep(61)
+        self.llm_healthcheck_is_ok()
+
+    def llm_healthcheck_is_ok(self):
+        response = requests.get(HEALTH_ENDPOINT, timeout=(2, 10))
+        actual_response_json = self.validate_response_and_return_json_body(response)
+        self.assertEqual(2, len(actual_response_json))
+        self.assertTrue("status" in actual_response_json)
+        self.assertEqual("OK", actual_response_json["status"])
+        self.assertTrue("healthChecks" in actual_response_json)
+        self.assertTrue(
+            {
+                "status": "OK",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+                "name": "LLM Health Check",
+                "type": "llm",
+                "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#llm-health-check-status-is-not-ok",
+                "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+                "message": "No LLM errors were hit in the last 60 seconds!"
+            } in actual_response_json["healthChecks"]
+        )
+
+    def llm_healthcheck_warning(self):
+        response = requests.get(HEALTH_ENDPOINT, timeout=(2, 10))
+        actual_response_json = self.validate_response_and_return_json_body(response)
+        self.assertEqual(2, len(actual_response_json))
+        self.assertTrue("status" in actual_response_json)
+        self.assertEqual("WARNING", actual_response_json["status"])
+        self.assertTrue("healthChecks" in actual_response_json)
+        self.assertTrue(
+            {
+                "status": "WARNING",
+                "severity": "HIGH",
+                "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+                "name": "LLM Health Check",
+                "type": "llm",
+                "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+                "troubleshooting": "http://talk2powersystem:8000/__trouble#llm-health-check-status-is-not-ok",
+                "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+                "message": "LLM errors were hit in the last 60 seconds!"
+            } in actual_response_json["healthChecks"]
         )

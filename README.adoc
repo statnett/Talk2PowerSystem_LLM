@@ -31,13 +31,13 @@ inference, and seamless integration with other parts of the Talk2PowerSystem eco
 
 The repository is organized as follows:
 
-* `src/` - Main source code including training, inference, and integration scripts.
-* `data/` - Data sets and preprocessing scripts.
-* `docs/` - Documentation, guides, and technical notes.
-* `tests/` - Unit and integration tests for various modules.
 * `config/` - Configuration files for model parameters and environment settings.
+* `docker/` - Dockerfile for the FastAPI chatbot application.
+* `docs/` - Documentation, guides, and technical notes.
 * `evaluation_results/` - Directory, which holds the evaluation results of the system.
 * `helm-chart/` - Directory, which holds resources for easier deployment on Kubernetes environments.
+* `src/` - Main source code including training, inference, and integration scripts.
+* `tests/` - Unit and integration tests for various modules.
 
 == Installation
 
@@ -76,13 +76,48 @@ poetry run pytest --cov=talk2powersystemllm --cov-report=term-missing tests/unit
 ----
 
 === Acceptance tests
+
+==== GraphDB License Management
+
+The acceptance tests require a valid GraphDB license to run in CI.
+On GitHub, this is handled via the `GRAPHDB_LICENSE` GitHub Secret.
+
+**Current License Expiry:** `2027-03-20`
+
+===== How to Update the License
+Since the license is a binary file, it must be stored as a Base64 encoded string to prevent corruption during transport. When the license expires, follow these steps:
+
+. *Encode the new binary file*
++
+Run this command on your local machine to generate the encoded string:
++
+[,bash]
+----
+# Linux/GNU (standard)
+base64 -w 0 /path/to/new/graphdb.license
+
+# macOS (BSD)
+base64 -i /path/to/new/graphdb.license
+----
+
+. *Update GitHub Secrets*
++
+--
+* Navigate to the repository menu:Settings[Secrets and variables > Actions].
+* Locate the `GRAPHDB_LICENSE` secret and click the *Edit* (pencil) icon.
+* Paste the **entire output** from the command above into the value field and save.
+--
+
+===== Local Execution
+When running acceptance tests locally, the environment does not use the GitHub Secret. Instead, you must pass the absolute path to the license file on your machine via the `LICENSE_PATH` environment variable:
+
 [,bash]
 ----
 bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
-docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
 ----
 

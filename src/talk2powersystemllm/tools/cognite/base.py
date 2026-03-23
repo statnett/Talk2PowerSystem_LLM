@@ -11,6 +11,7 @@ from langchain_core.tools import BaseTool
 
 class CogniteSession:
     """Wrapper around CogniteClient to keep session from expiring."""
+
     _client: CogniteClient
     _token_file_path: Path | None
     _expires_at: datetime | None
@@ -54,7 +55,9 @@ class CogniteSession:
                 scopes=[f"{base_url}/.default"],
             )
         else:
-            raise ValueError("Cannot initialize a Cognite client with the provided configuration!")
+            raise ValueError(
+                "Cannot initialize a Cognite client with the provided configuration!"
+            )
 
         config = ClientConfig(
             base_url=base_url,
@@ -79,7 +82,9 @@ class CogniteSession:
 
         Use for every api request to ensure its not expired.
         """
-        if hasattr(self, "_expires_at") and ((self._expires_at - datetime.now(timezone.utc)).total_seconds() < 60):
+        if hasattr(self, "_expires_at") and (
+            (self._expires_at - datetime.now(timezone.utc)).total_seconds() < 60
+        ):
             self._refresh()
 
         return self._client

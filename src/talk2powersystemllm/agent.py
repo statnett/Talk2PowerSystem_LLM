@@ -14,8 +14,8 @@ from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings
 from ttyg.graphdb import GraphDB
 from ttyg.tools import (
-    BaseGraphDBTool,
     AutocompleteSearchTool,
+    BaseGraphDBTool,
     OntologySchemaAndVocabularyTool,
     RetrievalQueryTool,
     SparqlQueryTool,
@@ -23,10 +23,10 @@ from ttyg.tools import (
 
 from talk2powersystemllm.tools import (
     CogniteSession,
-    RetrieveDataPointsTool,
-    RetrieveTimeSeriesTool,
     GraphicsTool,
     NowTool,
+    RetrieveDataPointsTool,
+    RetrieveTimeSeriesTool,
 )
 
 
@@ -90,8 +90,12 @@ class CogniteSettings(BaseModel):
         def exactly_one_is_not_none(*args: Any) -> bool:
             return sum(a is not None for a in args) == 1
 
-        if not exactly_one_is_not_none(self.client_secret, self.token_file_path, self.interactive_client_id):
-            raise ValueError("Pass exactly one of 'client_secret', 'token_file_path' or 'interactive_client_id'!")
+        if not exactly_one_is_not_none(
+            self.client_secret, self.token_file_path, self.interactive_client_id
+        ):
+            raise ValueError(
+                "Pass exactly one of 'client_secret', 'token_file_path' or 'interactive_client_id'!"
+            )
 
         if self.interactive_client_id and not self.tenant_id:
             raise ValueError("Tenant id is required!")
@@ -151,129 +155,112 @@ class Talk2PowerSystemAgentSettings(BaseSettings):
     prompts: PromptsSettings
 
 
-def read_config(path_to_yaml_config: Path) -> Talk2PowerSystemAgentSettings:
-    config_path = Path(path_to_yaml_config).resolve()
-
-    # Resolve paths relative to config file
-    with open(config_path, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f.read())
-
-    ontology_schema_config = config["tools"]["ontology_schema"]
-    rel_path = ontology_schema_config["file_path"]
-    abs_path = config_path.parent / rel_path
-    ontology_schema_config["file_path"] = str(abs_path.resolve())
-
-    return Talk2PowerSystemAgentSettings(**config)
-
-
-def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDB:
-    kwargs = {
-        "base_url": graphdb_settings.base_url,
-        "connect_timeout": graphdb_settings.connect_timeout,
-        "read_timeout": graphdb_settings.read_timeout,
-    }
-    if graphdb_settings.username:
-        kwargs.update({
-            "auth_header": "Basic " + b64encode(
-                f"{graphdb_settings.username}:{graphdb_settings.password.get_secret_value()}".encode("ascii")
-            ).decode()
-        })
-    return GraphDB(**kwargs)
-
-
-def init_cognite(cognite_settings: CogniteSettings, obo_token: str | None = None) -> CogniteSession:
-    return CogniteSession(
-        base_url=cognite_settings.base_url,
-        client_name=cognite_settings.client_name,
-        project=cognite_settings.project,
-        token_file_path=cognite_settings.token_file_path,
-        interactive_client_id=cognite_settings.interactive_client_id,
-        tenant_id=cognite_settings.tenant_id,
-        obo_token=obo_token,
-    )
-
-
-def init_llm(llm_settings: LLMSettings) -> BaseChatModel:
-    if llm_settings.type == LLMType.azure_openai:
-        return AzureChatOpenAI(
-            azure_endpoint=llm_settings.azure_endpoint,
-            api_version=llm_settings.api_version,
-            model=llm_settings.model,
-            temperature=llm_settings.temperature,
-            seed=llm_settings.seed,
-            timeout=llm_settings.timeout,
-            api_key=llm_settings.api_key,
-        )
-    elif llm_settings.type == LLMType.openai:
-        return ChatOpenAI(
-            model=llm_settings.model,
-            temperature=llm_settings.temperature,
-            seed=llm_settings.seed,
-            timeout=llm_settings.timeout,
-            api_key=llm_settings.api_key,
-        )
-    else:
-        return ChatOpenAI(
-            base_url=llm_settings.hugging_face_endpoint,
-            model=llm_settings.model,
-            temperature=llm_settings.temperature,
-            seed=llm_settings.seed,
-            timeout=llm_settings.timeout,
-            api_key=llm_settings.api_key,
-        )
-
-
 class Talk2PowerSystemAgentFactory:
-    settings: Talk2PowerSystemAgentSettings
-    graphdb_client: GraphDB
-    graphdb_repository_id: str
-    tool_name_to_gdb_repository_id: dict[str, str]
-    checkpointer: Checkpointer | None = None
-    model: BaseChatModel
     instructions: str
+    model: BaseChatModel
+    checkpointer: Checkpointer | None = None
+    graphdb_client: GraphDB
     tools: list[BaseTool]
+    tools_metadata: dict[str, dict[str, Any]]
+    tool_name_to_gdb_repository_id: dict[str, str]
     advanced_tools: set[str]
+    __settings: Talk2PowerSystemAgentSettings
 
     def __init__(
         self,
         path_to_yaml_config: Path,
         checkpointer: Checkpointer | None = None,
     ):
-        self.settings = read_config(path_to_yaml_config)
-        self.graphdb_client = init_graphdb(self.settings.graphdb)
+        self.__init_settings(path_to_yaml_config)
+        self.__init_graphdb()
+        self.__init_tools()
+        self.__init_instructions()
+        self.__init_model()
         self.checkpointer = checkpointer
 
-        tools_settings = self.settings.tools
-        graphdb_repository_id = self.settings.graphdb.repository_id
-        self.graphdb_repository_id = graphdb_repository_id
+    def __init_settings(self, path_to_yaml_config: Path) -> None:
+        config_path = Path(path_to_yaml_config).resolve()
+
+        # Resolve paths relative to config file
+        with open(config_path, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f.read())
+
+        ontology_schema_config = config["tools"]["ontology_schema"]
+        rel_path = ontology_schema_config["file_path"]
+        abs_path = config_path.parent / rel_path
+        ontology_schema_config["file_path"] = str(abs_path.resolve())
+
+        self.__settings = Talk2PowerSystemAgentSettings(**config)
+
+    def __init_graphdb(self) -> None:
+        def basic_auth_token(settings: GraphDBSettings) -> str:
+            return b64encode(
+                f"{settings.username}:{settings.password.get_secret_value()}".encode(
+                    "ascii"
+                )
+            ).decode()
+
+        graphdb_settings = self.__settings.graphdb
+        kwargs = {
+            "base_url": graphdb_settings.base_url,
+            "connect_timeout": graphdb_settings.connect_timeout,
+            "read_timeout": graphdb_settings.read_timeout,
+        }
+        if graphdb_settings.username:
+            kwargs.update(
+                {"auth_header": f"Basic {basic_auth_token(graphdb_settings)}"}
+            )
+        self.graphdb_client = GraphDB(**kwargs)
+
+    def __init_tools(self) -> None:
+        tools_settings = self.__settings.tools
         self.tools: list[BaseTool] = []
+        self.tools_metadata: dict[str, dict[str, Any]] = dict()
 
         sparql_query_tool = SparqlQueryTool(
             graph=self.graphdb_client,
-            graphdb_repository_id=graphdb_repository_id,
+            graphdb_repository_id=self.graphdb_repository_id,
         )
         self.tools.append(sparql_query_tool)
+        self.tools_metadata["sparql_query"] = {"enabled": True}
 
         autocomplete_search_settings = tools_settings.autocomplete_search
         autocomplete_search_kwargs = {
             "property_path": autocomplete_search_settings.property_path,
         }
         if autocomplete_search_settings.sparql_query_template:
-            autocomplete_search_kwargs.update({
-                "sparql_query_template": autocomplete_search_settings.sparql_query_template,
-            })
+            autocomplete_search_kwargs.update(
+                {
+                    "sparql_query_template": autocomplete_search_settings.sparql_query_template,
+                }
+            )
         autocomplete_search_tool = AutocompleteSearchTool(
             graph=self.graphdb_client,
-            graphdb_repository_id=graphdb_repository_id,
+            graphdb_repository_id=self.graphdb_repository_id,
             **autocomplete_search_kwargs,
         )
         self.tools.append(autocomplete_search_tool)
-        self.tools.append(GraphicsTool(
-            graph=self.graphdb_client,
-            graphdb_repository_id=graphdb_repository_id,
-        ))
+        self.tools_metadata["autocomplete_search"] = {
+            "enabled": True,
+            "property_path": autocomplete_search_tool.property_path,
+            "sparql_query_template": autocomplete_search_tool.sparql_query_template,
+        }
 
-        if tools_settings.retrieval_search:
+        display_graphics_tool = GraphicsTool(
+            graph=self.graphdb_client,
+            graphdb_repository_id=self.graphdb_repository_id,
+        )
+        self.tools.append(display_graphics_tool)
+        self.tools_metadata["display_graphics"] = {
+            "enabled": True,
+            "sparql_query_template": display_graphics_tool.sparql_query_template,
+        }
+
+        sample_sparql_queries_enabled = bool(tools_settings.retrieval_search)
+        sample_sparql_queries_meta: dict[str, Any] = {
+            "enabled": sample_sparql_queries_enabled
+        }
+        if sample_sparql_queries_enabled:
             retrieval_search_settings = tools_settings.retrieval_search
             retrieval_query_tool = RetrievalQueryTool(
                 graph=self.graphdb_client,
@@ -284,17 +271,32 @@ class Talk2PowerSystemAgentFactory:
                 sparql_query_template=retrieval_search_settings.sparql_query_template,
             )
             self.tools.append(retrieval_query_tool)
+            sample_sparql_queries_meta.update(
+                {
+                    "sparql_query_template": retrieval_query_tool.sparql_query_template,
+                    "connector_name": retrieval_query_tool.connector_name,
+                }
+            )
+        self.tools_metadata["sample_sparql_queries"] = sample_sparql_queries_meta
 
         now_tool = NowTool()
         self.tools.append(now_tool)
+        self.tools_metadata["now"] = {"enabled": True}
 
-        ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
-            graph=self.graphdb_client,
-            ontology_schema_file_path=tools_settings.ontology_schema.file_path,
-        )
-        self.instructions = f"""{self.settings.prompts.assistant_instructions}""".replace(
-            "{ontology_schema}", ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle")
-        )
+        cognite_enabled = bool(tools_settings.cognite)
+        cognite_meta: dict[str, Any] = {"enabled": cognite_enabled}
+
+        if cognite_enabled:
+            cognite_meta.update(
+                {
+                    "base_url": tools_settings.cognite.base_url,
+                    "project": tools_settings.cognite.project,
+                    "client_name": tools_settings.cognite.client_name,
+                }
+            )
+
+        self.tools_metadata["retrieve_data_points"] = cognite_meta
+        self.tools_metadata["retrieve_time_series"] = cognite_meta
 
         self.tool_name_to_gdb_repository = {
             tool.name: tool.graphdb_repository_id
@@ -307,18 +309,104 @@ class Talk2PowerSystemAgentFactory:
             if isinstance(tool, BaseGraphDBTool) and tool.name != sparql_query_tool.name
         }
 
-        self.model = init_llm(self.settings.llm)
+    def __init_instructions(self) -> None:
+        settings = self.__settings
+        ontology_schema_and_vocabulary_tool = OntologySchemaAndVocabularyTool(
+            graph=self.graphdb_client,
+            ontology_schema_file_path=settings.tools.ontology_schema.file_path,
+        )
+        self.instructions = f"""{settings.prompts.assistant_instructions}""".replace(
+            "{ontology_schema}",
+            ontology_schema_and_vocabulary_tool.schema_graph.serialize(format="turtle"),
+        )
+
+    def __init_model(self) -> None:
+        llm_settings = self.__settings.llm
+        if llm_settings.type == LLMType.azure_openai:
+            self.model = AzureChatOpenAI(
+                azure_endpoint=llm_settings.azure_endpoint,
+                api_version=llm_settings.api_version,
+                model=llm_settings.model,
+                temperature=llm_settings.temperature,
+                seed=llm_settings.seed,
+                timeout=llm_settings.timeout,
+                api_key=llm_settings.api_key,
+            )
+        elif llm_settings.type == LLMType.openai:
+            self.model = ChatOpenAI(
+                model=llm_settings.model,
+                temperature=llm_settings.temperature,
+                seed=llm_settings.seed,
+                timeout=llm_settings.timeout,
+                api_key=llm_settings.api_key,
+            )
+        else:
+            self.model = ChatOpenAI(
+                base_url=llm_settings.hugging_face_endpoint,
+                model=llm_settings.model,
+                temperature=llm_settings.temperature,
+                seed=llm_settings.seed,
+                timeout=llm_settings.timeout,
+                api_key=llm_settings.api_key,
+            )
+
+    def __init_cognite(self, obo_token: str | None = None) -> CogniteSession:
+        cognite_settings = self.cognite_settings
+        return CogniteSession(
+            base_url=cognite_settings.base_url,
+            client_name=cognite_settings.client_name,
+            project=cognite_settings.project,
+            token_file_path=cognite_settings.token_file_path,
+            interactive_client_id=cognite_settings.interactive_client_id,
+            tenant_id=cognite_settings.tenant_id,
+            obo_token=obo_token,
+        )
 
     def get_agent(self, cognite_obo_token: str | None = None) -> CompiledStateGraph:
-        tools = self.tools.copy()
-        if self.settings.tools.cognite:
-            cognite_settings = self.settings.tools.cognite
-            cognite_session = init_cognite(cognite_settings, cognite_obo_token)
-            tools.append(RetrieveTimeSeriesTool(cognite_session=cognite_session))
-            tools.append(RetrieveDataPointsTool(cognite_session=cognite_session))
+        tools = self.tools
+        if self.cognite_enabled:
+            cognite_session = self.__init_cognite(cognite_obo_token)
+            tools = tools + [
+                RetrieveTimeSeriesTool(cognite_session=cognite_session),
+                RetrieveDataPointsTool(cognite_session=cognite_session),
+            ]
         return create_agent(
             model=self.model,
             tools=tools,
             system_prompt=self.instructions,
             checkpointer=self.checkpointer,
+        )
+
+    @property
+    def graphdb_base_url(self) -> str:
+        return self.__settings.graphdb.base_url
+
+    @property
+    def graphdb_repository_id(self) -> str:
+        return self.__settings.graphdb.repository_id
+
+    @property
+    def sample_sparql_queries_enabled(self) -> bool:
+        return bool(self.__settings.tools.retrieval_search)
+
+    @property
+    def sample_sparql_queries_settings(self) -> RetrievalSearchSettings:
+        return self.__settings.tools.retrieval_search
+
+    @property
+    def cognite_enabled(self) -> bool:
+        return bool(self.__settings.tools.cognite)
+
+    @property
+    def cognite_settings(self) -> CogniteSettings:
+        return self.__settings.tools.cognite
+
+    @property
+    def assistant_instructions(self) -> str:
+        return self.__settings.prompts.assistant_instructions
+
+    @property
+    def llm_metadata(self) -> dict:
+        return self.__settings.llm.model_dump(
+            include={"type", "model", "temperature", "seed"}
         )

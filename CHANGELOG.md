@@ -37,6 +37,13 @@
 * [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
   Implement LLM health check, which checks if any LLM errors were hit in the last 60 seconds.
   The data is persisted in Redis.
+* [#315](https://github.com/statnett/Talk2PowerSystem_PM/issues/315):
+  Code refactoring including, but not limited to:
+    - split the large app server file
+    - use of dependencies instead of globals
+    - improve logging by using individual loggers and not the root logger
+    - code re-formatting
+    - usage of absolute imports instead of relative ones
 
 1.9.0-rc2
 ============

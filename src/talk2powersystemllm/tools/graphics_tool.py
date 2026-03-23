@@ -11,6 +11,8 @@ from ttyg.tools import BaseArtifact, SparqlQueryTool
 from ttyg.utils import timeit
 from typing_extensions import Self
 
+logger = logging.getLogger(__name__)
+
 
 class GraphicArtifact(BaseArtifact):
     mime_type: str
@@ -107,7 +109,7 @@ SELECT ?link ?name ?format ?description ?kind {{
         query = self.sparql_query_template.format(
             iri=diagram_iri if diagram_iri else diagram_configuration_iri,
         )
-        logging.debug(f"Fetching diagram with query {query}")
+        logger.debug(f"Fetching diagram with query {query}")
         try:
             query_results, _ = self.graph.eval_sparql_query(self.graphdb_repository_id, query)
             if len(query_results.bindings) > 0:
@@ -124,7 +126,7 @@ SELECT ?link ?name ?format ?description ?kind {{
                 elif format_ == "text/html":
                     artifact = GraphDBVisualGraphArtifact(link=link, mime_type=format_)
                 else:
-                    logging.warning(f"Found a diagram with unknown format {format_}")
+                    logger.warning(f"Found a diagram with unknown format {format_}")
                     return f"Found a diagram with unknown format {format_}. Can't render it!", None
 
                 content = f"Diagram with name \"{name}\""

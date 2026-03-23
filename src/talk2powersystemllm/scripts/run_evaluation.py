@@ -5,9 +5,9 @@ from typing import Any
 
 import jsonlines
 import yaml
-from graphrag_eval import run_evaluation, compute_aggregates
+from graphrag_eval import compute_aggregates, run_evaluation
 from langgraph.graph.state import CompiledStateGraph
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_result
+from tenacity import retry, retry_if_result, stop_after_attempt, wait_exponential
 from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
 
@@ -21,7 +21,9 @@ def save_as_yaml(path: Path, obj) -> None:
 
 
 def get_args_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Evaluate Talk to Power System LLM Quality")
+    parser = argparse.ArgumentParser(
+        description="Evaluate Talk to Power System LLM Quality"
+    )
     parser.add_argument(
         "--chat_config_path",
         dest="chat_config_path",
@@ -53,25 +55,31 @@ def get_args_parser() -> argparse.ArgumentParser:
 
 
 def run_evaluation_on_split(
-        agent: CompiledStateGraph,
-        split: list[dict],
-        split_name: str,
-        results_dir: Path,
+    agent: CompiledStateGraph,
+    split: list[dict],
+    split_name: str,
+    results_dir: Path,
 ) -> None:
     chat_responses_actual_answers = dict()
     chat_responses = dict()
     chat_responses_file = results_dir / f"chat_responses_{split_name}.jsonl"
     with jsonlines.open(chat_responses_file, mode="w") as writer:
-        for template in tqdm(split, desc=f"Processing templates from {split_name} split"):
+        for template in tqdm(
+            split, desc=f"Processing templates from {split_name} split"
+        ):
             for question in template["questions"]:
                 chat_response = run_agent(agent, question)
                 writer.write(chat_response)
-                chat_responses_actual_answers[question["id"]] = chat_response.pop("actual_answer", None)
+                chat_responses_actual_answers[question["id"]] = chat_response.pop(
+                    "actual_answer", None
+                )
                 chat_responses[question["id"]] = chat_response
 
     per_question_eval = run_evaluation(split, chat_responses)
     for question_eval in per_question_eval:
-        question_eval["actual_answer"] = chat_responses_actual_answers[question_eval["question_id"]]
+        question_eval["actual_answer"] = chat_responses_actual_answers[
+            question_eval["question_id"]
+        ]
     evaluation_results_file = results_dir / f"evaluation_per_question_{split_name}.yaml"
     save_as_yaml(evaluation_results_file, per_question_eval)
     aggregates = compute_aggregates(per_question_eval)
@@ -87,18 +95,16 @@ def is_error_response(response: dict[str, Any]) -> bool:
 @retry(
     retry=retry_if_result(is_error_response),
     stop=stop_after_attempt(5),
-    wait=wait_exponential(multiplier=1, min=1, max=60)
+    wait=wait_exponential(multiplier=1, min=1, max=60),
 )
 def run_agent(agent: CompiledStateGraph, question: dict) -> dict[str, Any]:
     chat_response = run_agent_for_evaluation(
-        agent,
-        question["id"],
-        {"messages": [("user", question["question_text"])]}
+        agent, question["id"], {"messages": [("user", question["question_text"])]}
     )
     if "status" in chat_response and chat_response["status"] == "error":
         print(
             f"Warning: The chat response for the question with id {question['id']} "
-            f"is {chat_response["error"]}"
+            f"is {chat_response['error']}"
         )
     return chat_response
 
@@ -112,7 +118,9 @@ def main():
     results_dir = results_dir / timestamp
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path), n_templates=args.n_templates)
+    _, dev_split, test_split = load_and_split_qa_dataset(
+        Path(args.qa_dataset_path), n_templates=args.n_templates
+    )
     agent: CompiledStateGraph = Talk2PowerSystemAgentFactory(
         Path(args.chat_config_path),
     ).get_agent()

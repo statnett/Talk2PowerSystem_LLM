@@ -45,3 +45,13 @@ connection to external services and applications.
 ```bash
 helm uninstall --namespace t2ps-chatbot t2ps-chatbot-llm
 ```
+
+## Release the chart
+
+```bash
+cd helm-chart/
+helm dependency update
+helm lint .
+helm package .
+curl -fsSL -F file=@t2ps-chatbot-llm-<x.y.z>.tgz -u '<user>:<password>' <repository-url>
+```

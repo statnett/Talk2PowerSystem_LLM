@@ -943,6 +943,223 @@ SELECT ?link ?name ?format ?description ?kind {{
             explain_response_body2,
         )
 
+    def test_conversation_with_svg_diagram(self) -> None:
+        question = "show me SLD of OSLO"
+        answer = "Here is the single-line diagram (SLD) of OSLO (substation): ..."
+        prompt_tokens = random.randint(10, 20)
+        completion_tokens = random.randint(10, 20)
+        mock_openai(
+            request_messages=[{"content": question, "role": "user"}],
+            response_tool_calls=[
+                {
+                    "id": "graphics_tool_call_1",
+                    "type": "function",
+                    "function": {
+                        "name": "display_graphics",
+                        "arguments": '{"diagram_iri": '
+                        '"urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"}',
+                    },
+                }
+            ],
+            response_prompt_tokens=prompt_tokens,
+            response_completion_tokens=completion_tokens,
+            n_times=1,
+        )
+        prompt_tokens2 = random.randint(10, 20)
+        completion_tokens2 = random.randint(10, 20)
+        mock_openai(
+            request_messages=[
+                {"content": question, "role": "user"},
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "type": "function",
+                            "id": "graphics_tool_call_1",
+                            "function": {
+                                "name": "display_graphics",
+                                "arguments": '{"diagram_iri": '
+                                '"urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"}',
+                            },
+                        }
+                    ],
+                },
+                {
+                    "content": 'Diagram with name "Diagram of substation OSLO" and description '
+                    '"PowSyBl Single-Line-Diagram of substation OSLO" of kind '
+                    '"PowSyBl-SingleLineDiagram"',
+                    "role": "tool",
+                    "tool_call_id": "graphics_tool_call_1",
+                },
+            ],
+            response_content=answer,
+            response_prompt_tokens=prompt_tokens2,
+            response_completion_tokens=completion_tokens2,
+            n_times=1,
+        )
+
+        conversation_request_body = {"question": question}
+        conversation_response = requests.post(
+            CONVERSATION_ENDPOINT, json=conversation_request_body, timeout=(2, 10)
+        )
+        conversation_response_body = self.validate_response_and_return_json_body(
+            conversation_response
+        )
+        first_response_message = conversation_response_body["messages"][0]
+        self.assertTrue("graphics" in first_response_message)
+        self.assertEqual(
+            [
+                {
+                    "type": "svg",
+                    "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-OSLO.svg",
+                }
+            ],
+            first_response_message["graphics"],
+        )
+
+        explain_request_body = {
+            "conversationId": conversation_response_body["id"],
+            "messageId": first_response_message["id"],
+        }
+        explain_response = requests.post(
+            EXPLAIN_ENDPOINT, json=explain_request_body, timeout=(2, 10)
+        )
+        explain_response_body = self.validate_response_and_return_json_body(
+            explain_response
+        )
+        self.assertEqual(
+            {
+                "conversationId": conversation_response_body["id"],
+                "messageId": first_response_message["id"],
+                "queryMethods": [
+                    {
+                        "name": "display_graphics",
+                        "args": {
+                            "diagram_iri": "urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"
+                        },
+                        "graphdbRepositoryId": "cim",
+                        "advanced": True,
+                    }
+                ],
+            },
+            explain_response_body,
+        )
+
+    def test_conversation_with_visual_graph_diagram(self) -> None:
+        question = (
+            'show me the saved vizgraph config "Class hierarchy (VizGraph config)" for '
+            "the class Equipment"
+        )
+        answer = "Here is the saved VizGraph configuration ..."
+        prompt_tokens = random.randint(10, 20)
+        completion_tokens = random.randint(10, 20)
+        mock_openai(
+            request_messages=[{"content": question, "role": "user"}],
+            response_tool_calls=[
+                {
+                    "id": "graphics_tool_call_1",
+                    "type": "function",
+                    "function": {
+                        "name": "display_graphics",
+                        "arguments": "{"
+                        '"diagram_configuration_iri": "urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377",'
+                        '"node_iri": "https://cim.ucaiug.io/ns#Equipment"'
+                        "}",
+                    },
+                }
+            ],
+            response_prompt_tokens=prompt_tokens,
+            response_completion_tokens=completion_tokens,
+            n_times=1,
+        )
+        prompt_tokens2 = random.randint(10, 20)
+        completion_tokens2 = random.randint(10, 20)
+        mock_openai(
+            request_messages=[
+                {"content": question, "role": "user"},
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "type": "function",
+                            "id": "graphics_tool_call_1",
+                            "function": {
+                                "name": "display_graphics",
+                                "arguments": "{"
+                                '"diagram_configuration_iri": '
+                                '"urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377", '
+                                '"node_iri": "https://cim.ucaiug.io/ns#Equipment"'
+                                "}",
+                            },
+                        }
+                    ],
+                },
+                {
+                    "content": 'Diagram with name "Class hierarchy (VizGraph config)" and '
+                    'description "Shows the hierarchy (parent and children) of any class." '
+                    'for "https://cim.ucaiug.io/ns#Equipment"',
+                    "role": "tool",
+                    "tool_call_id": "graphics_tool_call_1",
+                },
+            ],
+            response_content=answer,
+            response_prompt_tokens=prompt_tokens2,
+            response_completion_tokens=completion_tokens2,
+            n_times=1,
+        )
+
+        conversation_request_body = {"question": question}
+        conversation_response = requests.post(
+            CONVERSATION_ENDPOINT, json=conversation_request_body, timeout=(2, 10)
+        )
+        conversation_response_body = self.validate_response_and_return_json_body(
+            conversation_response
+        )
+        first_response_message = conversation_response_body["messages"][0]
+        self.assertTrue("graphics" in first_response_message)
+        self.assertEqual(
+            [
+                {
+                    "type": "vizGraph",
+                    "url": "http://graphdb:7200/graphs-visualizations"
+                    "?config=5099ad5fc1954153a12f1f052fe1df7c"
+                    "&uri=https%3A//cim.ucaiug.io/ns%23Equipment&embedded=true",
+                }
+            ],
+            first_response_message["graphics"],
+        )
+
+        explain_request_body = {
+            "conversationId": conversation_response_body["id"],
+            "messageId": first_response_message["id"],
+        }
+        explain_response = requests.post(
+            EXPLAIN_ENDPOINT, json=explain_request_body, timeout=(2, 10)
+        )
+        explain_response_body = self.validate_response_and_return_json_body(
+            explain_response
+        )
+        self.assertEqual(
+            {
+                "conversationId": conversation_response_body["id"],
+                "messageId": first_response_message["id"],
+                "queryMethods": [
+                    {
+                        "name": "display_graphics",
+                        "args": {
+                            "diagram_configuration_iri": "urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377",
+                            "node_iri": "https://cim.ucaiug.io/ns#Equipment",
+                        },
+                        "graphdbRepositoryId": "cim",
+                        "advanced": True,
+                    }
+                ],
+            },
+            explain_response_body,
+        )
+
     def test_llm_errors_openai_401_error(self) -> None:
         self.llm_healthcheck_is_ok()
 

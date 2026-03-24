@@ -1,3 +1,10 @@
+2.0.0-rc2
+============
+
+* [#359](https://github.com/statnett/Talk2PowerSystem_PM/issues/359):
+  Encode the query parameters of the GraphDB Visual graph link and of the 
+  PowSyBl diagrams.
+
 2.0.0-rc1
 ============
 

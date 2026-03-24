@@ -1,9 +1,10 @@
 import logging
-from typing import Type, Tuple, Literal
+from typing import Literal, Tuple, Type
+from urllib.parse import quote
 
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.tools import ToolException
-from pydantic import Field, model_validator, BaseModel
+from pydantic import BaseModel, Field, model_validator
 from pyparsing import ParseException
 from rdflib import Variable
 from rdflib.plugins.sparql import prepareQuery
@@ -29,30 +30,33 @@ class GraphDBVisualGraphArtifact(GraphicArtifact):
 
 class GraphicsTool(SparqlQueryTool):
     """
-    Displays a diagram specified by its IRI or a diagram specified by IRI of a diagram configuration and node IRI
+    Displays a diagram specified by its IRI or
+    a diagram specified by IRI of a diagram configuration and node IRI
     """
 
     class ArgumentsSchema(BaseModel):
         diagram_iri: str | None = Field(
             description="The IRI of a diagram. "
-                        "Pass `diagram_iri` or `diagram_configuration_iri`, but not both.",
+            "Pass `diagram_iri` or `diagram_configuration_iri`, but not both.",
             default=None,
         )
         diagram_configuration_iri: str | None = Field(
             description="The IRI of a diagram configuration. "
-                        "Pass `diagram_iri` or `diagram_configuration_iri`, but not both. "
-                        "When passing `diagram_configuration_iri`, argument `node_iri` is also required.",
+            "Pass `diagram_iri` or `diagram_configuration_iri`, but not both. "
+            "When passing `diagram_configuration_iri`, argument `node_iri` is also required.",
             default=None,
         )
         node_iri: str | None = Field(
             description="The IRI of a node. "
-                        "When passing `node_iri`, argument `diagram_configuration_iri` is also required.",
+            "When passing `node_iri`, argument `diagram_configuration_iri` is also required.",
             default=None,
         )
 
     name: str = "display_graphics"
-    description: str = ("Displays a diagram specified by its IRI or "
-                        "a diagram specified by IRI of a diagram configuration and node IRI")
+    description: str = (
+        "Displays a diagram specified by its IRI or "
+        "a diagram specified by IRI of a diagram configuration and node IRI"
+    )
     sparql_query_template: str = """PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX cimd: <https://cim.ucaiug.io/diagrams#>
 PREFIX cim: <https://cim.ucaiug.io/ns#>
@@ -76,14 +80,14 @@ SELECT ?link ?name ?format ?description ?kind {{
         """
 
         try:
-            parsed_query = prepareQuery(self.sparql_query_template.format(iri="http://example.com/"))
+            parsed_query = prepareQuery(
+                self.sparql_query_template.format(iri="http://example.com/")
+            )
         except ParseException as e:
             raise ValueError("Graphics tool SPARQL query template is not valid.", e)
 
         if parsed_query.algebra.name != "SelectQuery":
-            raise ValueError(
-                "Invalid query type. Only SELECT queries are supported."
-            )
+            raise ValueError("Invalid query type. Only SELECT queries are supported.")
 
         return self
 
@@ -101,17 +105,22 @@ SELECT ?link ?name ?format ?description ?kind {{
             )
         if diagram_iri and diagram_configuration_iri:
             raise ValueError(
-                "Only one of `diagram_iri` and `diagram_configuration_iri` arguments must be provided, not both!"
+                "Only one of `diagram_iri` and `diagram_configuration_iri` arguments "
+                "must be provided, not both!"
             )
         if diagram_configuration_iri and (not node_iri):
-            raise ValueError("When passing `diagram_configuration_iri`, argument `node_iri` is also required.")
+            raise ValueError(
+                "When passing `diagram_configuration_iri`, argument `node_iri` is also required."
+            )
 
         query = self.sparql_query_template.format(
             iri=diagram_iri if diagram_iri else diagram_configuration_iri,
         )
         logger.debug(f"Fetching diagram with query {query}")
         try:
-            query_results, _ = self.graph.eval_sparql_query(self.graphdb_repository_id, query)
+            query_results, _ = self.graph.eval_sparql_query(
+                self.graphdb_repository_id, query
+            )
             if len(query_results.bindings) > 0:
                 bindings = query_results.bindings[0]
                 name = bindings[Variable("name")].value
@@ -119,23 +128,30 @@ SELECT ?link ?name ?format ?description ?kind {{
 
                 link = bindings[Variable("link")].value
                 if diagram_configuration_iri:
-                    link += f"&uri={node_iri}"
+                    link += f"&uri={quote(node_iri)}"
 
                 if format_ == "image/svg+xml":
-                    artifact = SvgArtifact(link=link, mime_type=format_)
+                    artifact = SvgArtifact(link=quote(link), mime_type=format_)
                 elif format_ == "text/html":
-                    artifact = GraphDBVisualGraphArtifact(link=link, mime_type=format_)
+                    artifact = GraphDBVisualGraphArtifact(
+                        link=f"{link}&embedded=true", mime_type=format_
+                    )
                 else:
                     logger.warning(f"Found a diagram with unknown format {format_}")
-                    return f"Found a diagram with unknown format {format_}. Can't render it!", None
+                    return (
+                        f"Found a diagram with unknown format {format_}. Can't render it!",
+                        None,
+                    )
 
-                content = f"Diagram with name \"{name}\""
+                content = f'Diagram with name "{name}"'
                 if Variable("description") in bindings:
-                    content += f" and description \"{bindings[Variable("description")].value}\""
+                    content += (
+                        f' and description "{bindings[Variable("description")].value}"'
+                    )
                 if Variable("kind") in bindings:
-                    content += f" of kind \"{bindings[Variable("kind")].value}\""
+                    content += f' of kind "{bindings[Variable("kind")].value}"'
                 if diagram_configuration_iri:
-                    content += f" for \"{node_iri}\""
+                    content += f' for "{node_iri}"'
                 return content, artifact
 
             else:

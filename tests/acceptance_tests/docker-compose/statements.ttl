@@ -3,6 +3,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix cimd: <https://cim.ucaiug.io/diagrams#> .
 
 <urn:uuid:f176961e-9aeb-11e5-91da-b8763fd99c5f> a <https://cim.ucaiug.io/ns#Substation>;
   <https://cim.ucaiug.io/ns#IdentifiedObject.mRID> "f176961e-9aeb-11e5-91da-b8763fd99c5f";
@@ -42,3 +43,32 @@
   owl:versionInfo "1.1" .
 
 <https://ap-voc.cim4.eu/ImpactAssessmentMatrix#Ontology> a owl:Ontology.
+
+<urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377> a cimd:DiagramConfiguration;
+  <http://purl.org/dc/terms/format> "text/html";
+  cimd:DiagramConfiguration.appliesTo "owl:Class";
+  cimd:DiagramConfiguration.displaysInstances false;
+  cimd:DiagramConfiguration.link "graphs-visualizations?config=5099ad5fc1954153a12f1f052fe1df7c";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.description> "Shows the hierarchy (parent and children) of any class.";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.mRID> "e81beed4-781c-4683-91a4-9ed8d8ebf377";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.name> "Class hierarchy (VizGraph config)";
+  <https://cim.ucaiug.io/rules#mridSignificantPart> "e81beed4" .
+
+<urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d> a cimd:Diagram;
+  <http://purl.org/dc/terms/format> "image/svg+xml";
+  cimd:Diagram.PowerSystemResource <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f>;
+  cimd:Diagram.kind cimd:DiagramKind.PowSyBl-SingleLineDiagram;
+  cimd:Diagram.link "PowSyBl-SLD-substation-OSLO.svg";
+  cimd:Diagram.mRIDs "\"f176963c-9aeb-11e5-91da-b8763fd99c5f\"";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.description> "PowSyBl Single-Line-Diagram of substation OSLO";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.mRID> "a53f9c60-189d-4be2-b3af-0320298e529d";
+  <https://cim.ucaiug.io/ns#IdentifiedObject.name> "Diagram of substation OSLO";
+  <https://cim.ucaiug.io/rules#mridSignificantPart> "a53f9c60" .
+
+cimd:DiagramKind.PowSyBl-SingleLineDiagram a cimd:DiagramKind;
+  <http://iec.ch/TC57/1999/rdf-schema-extensions-19990926#stereotype> "enum";
+  rdfs:comment """PowSyBl Single-Line-Diagram. Shows equipment (switches, disconnectors, busbars, voltage levels, power transformers, loads, generators), adjacent lines, voltages and input/output flows.
+Can display one or several substations, voltage levels or areas.""";
+  rdfs:isDefinedBy cimd:;
+  rdfs:label "PowSyBl-SingleLineDiagram";
+  cimd:DiagramKind.isClickable true .

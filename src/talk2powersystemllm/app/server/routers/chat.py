@@ -158,7 +158,7 @@ def build_gdb_visual_graph_url(
     base_url = agent_factory.graphdb_base_url + (
         "" if agent_factory.graphdb_base_url.endswith("/") else "/"
     )
-    return base_url + link + "&embedded=true"
+    return base_url + link
 
 
 # noinspection PyUnusedLocal

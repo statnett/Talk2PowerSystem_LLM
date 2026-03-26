@@ -21,11 +21,36 @@ tools:
       }}
       ORDER BY DESC(?rank)
       LIMIT {limit}
+  retrieval_search:
+    graphdb_repository_id: "qa_dataset"
+    connector_name: "qa_dataset"
+    name: sample_sparql_queries
+    description: Given a user question obtain sample SPARQL queries, which can be used to answer the question
+    sparql_query_template: |
+      PREFIX retr: <http://www.ontotext.com/connectors/retrieval#>
+      PREFIX retr-index: <http://www.ontotext.com/connectors/retrieval/instance#>
+      PREFIX qa: <https://www.statnett.no/Talk2PowerSystem/qa#>
+      SELECT (REPLACE(GROUP_CONCAT(?q; separator="@"), "(.*?)@.*", "$1") AS ?question) ?query {{
+          SELECT ?q ?query ?score {{
+              [] a retr-index:{connector_name} ;
+                  retr:query "{query}" ;
+                  retr:limit 100;
+                  retr:entities ?entity .
+              ?entity retr:score ?score;
+                  qa:question ?q.
+              ?template qa:paraphrase ?entity;
+                  qa:querySparql ?query.
+              FILTER (?score > {score})
+          }}
+          ORDER BY DESC(?score)
+      }}
+      GROUP BY ?query
+      LIMIT {limit}
 llm:
   type: openai
   model: "gpt-5.4-2026-03-05"
   temperature: 0
-  seed: 1
+  use_responses_api: true
   timeout: 120
 prompts:
   assistant_instructions: |
@@ -48,6 +73,14 @@ prompts:
         In order to validate whether or not a sequence is a valid identifier, you must always use the `sparql_query` to find the entity and the entity class.
         If the query returns no results, this means that this is a number sequence, and not a valid entity identifier.
         This means you are mistaken, and should proceed with the next steps.
+      3. Retrieve sample SPARQL queries:
+         Given a specific user question you must always use the `sample_sparql_queries` tool, which will return similar questions and their corresponding SPARQL queries, which you must use for guidance.
+         Retrieve 10 similar questions. If the question consists of multiple independent parts, you can invoke the tool separately for each part.
+         You must replace in the given user question:
+        - the identified named entities form the previous step with their corresponding classes with the prefix.
+          Since an entity can belong to multiple classes, you must replace it with all of its classes from the hierarchy, separated with | and wrapped in brackets <<<>>>.
+          For example, `<<<cim:Substation|cim:EquipmentContainer|cim:ConnectivityNodeContainer|cimr:EquipmentOrContainer|cim:PowerSystemResource|cim:IdentifiedObject>>>`
+        - dates and numbers in the question must also be replaced with a placeholder, like <<<float>>>, <<<integer>>>, <<<date>>>, etc.
     Additional instructions:
       1. If you receive a message in the form `CLICKED_ON IRI` / `CLICKED_ON IRI1>IRI2`:
         - Use the query `DESCRIBE <IRI> FROM <http://www.ontotext.com/describe/outgoing>` / `DESCRIBE <IRI1> <IRI2> FROM <http://www.ontotext.com/describe/outgoing>` to gather information about the resources

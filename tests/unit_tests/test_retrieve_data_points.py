@@ -61,17 +61,21 @@ def test_correct_format_start(start: str) -> None:
 def test_external_id_doesnt_exist() -> None:
     with monkeypatch_cognite_client() as c_mock:
         c_mock.time_series.data.retrieve_arrays.side_effect = CogniteNotFoundError(
-            not_found=["external_id"],
+            message="Not found",
+            code=404,
+            missing=["external_id"],
         )
         mock_session = MagicMock(spec=CogniteSession)
         mock_session.client.return_value = c_mock
 
         tool = RetrieveDataPointsTool(cognite_session=mock_session)
-        with pytest.raises(ToolException) as exc:
+        with pytest.raises(
+            ToolException,
+            match="Not found, missing: [external_id] | code: 404 | X-Request-ID: None",
+        ):
             tool._run(
                 external_id="external_id",
             )
-        assert "Not found: ['external_id']" == str(exc.value)
 
         c_mock.time_series.data.retrieve_arrays.assert_called_once_with(
             external_id="external_id",

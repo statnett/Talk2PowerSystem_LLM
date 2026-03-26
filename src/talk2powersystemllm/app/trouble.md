@@ -72,11 +72,9 @@ Response Body JSON Schema:
     },
     "scopes": {
       "type": "array",
-      "items": [
-        {
-          "type": "string"
-        }
-      ]
+      "items": {
+        "type": "string"
+      }
     },
     "authority": {
       "type": "string"
@@ -91,6 +89,7 @@ Response Body JSON Schema:
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "required": [
     "enabled"
   ]
@@ -161,6 +160,7 @@ Request Body JSON Schema:
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "required": [
     "question"
   ]
@@ -181,8 +181,8 @@ Sample Request Bodies:
 
 ```json
 {
- "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
- "question": "List all transformers within substation OSLO."
+  "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "question": "List all transformers within substation OSLO."
 }
 ```
 
@@ -190,144 +190,146 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "id": {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
             "type": "string"
-        },
-        "messages": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "id": {
-                            "type": "string"
-                        },
-                        "message": {
-                            "type": "string"
-                        },
-                        "usage": {
-                            "type": "object",
-                            "properties": {
-                                "completionTokens": {
-                                    "type": "integer"
-                                },
-                                "promptTokens": {
-                                    "type": "integer"
-                                },
-                                "totalTokens": {
-                                    "type": "integer"
-                                }
-                            },
-                            "required": [
-                                "completionTokens",
-                                "promptTokens",
-                                "totalTokens"
-                            ]
-                        },
-                        "graphics": {
-                            "type": "array",
-                            "items": {
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "svg"
-                                                ]
-                                            },
-                                            "url": {
-                                                "type": "string",
-                                                "format": "uri-reference"
-                                            }
-                                        },
-                                        "required": [
-                                            "type",
-                                            "url"
-                                        ],
-                                        "additionalProperties": false
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "image"
-                                                ]
-                                            },
-                                            "url": {
-                                                "type": "string",
-                                                "format": "uri-reference"
-                                            }
-                                        },
-                                        "required": [
-                                            "type",
-                                            "url"
-                                        ],
-                                        "additionalProperties": false
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "vizGraph"
-                                                ]
-                                            },
-                                            "url": {
-                                                "type": "string",
-                                                "format": "uri"
-                                            }
-                                        },
-                                        "required": [
-                                            "type",
-                                            "url"
-                                        ],
-                                        "additionalProperties": false
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "required": [
-                        "id",
-                        "message",
-                        "usage"
-                    ]
-                }
-            ]
-        },
-        "usage": {
+          },
+          "message": {
+            "type": "string"
+          },
+          "usage": {
             "type": "object",
             "properties": {
-                "completionTokens": {
-                    "type": "integer"
-                },
-                "promptTokens": {
-                    "type": "integer"
-                },
-                "totalTokens": {
-                    "type": "integer"
-                }
+              "completionTokens": {
+                "type": "integer"
+              },
+              "promptTokens": {
+                "type": "integer"
+              },
+              "totalTokens": {
+                "type": "integer"
+              }
             },
+            "additionalProperties": false,
             "required": [
-                "completionTokens",
-                "promptTokens",
-                "totalTokens"
+              "completionTokens",
+              "promptTokens",
+              "totalTokens"
             ]
-        }
+          },
+          "graphics": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "svg"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri-reference"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "url"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "image"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri-reference"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "url"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "vizGraph"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "url"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "message",
+          "usage"
+        ]
+      }
     },
-    "required": [
-        "id",
-        "messages",
-        "usage"
-    ]
+    "usage": {
+      "type": "object",
+      "properties": {
+        "completionTokens": {
+          "type": "integer"
+        },
+        "promptTokens": {
+          "type": "integer"
+        },
+        "totalTokens": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "completionTokens",
+        "promptTokens",
+        "totalTokens"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "messages",
+    "usage"
+  ]
 }
 ```
 
@@ -335,23 +337,23 @@ Sample Response Body Without Graphics:
 
 ```json
 {
-    "id": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
-    "messages": [
-        {
-            "id": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
-            "message": "The following transformers are within substation OSLO:\n\n1. OSLO T1\n2. OSLO T2\n\nLet me know if you need more details about these transformers.",
-            "usage": {
-                "completionTokens": 38,
-                "promptTokens": 57322,
-                "totalTokens": 57360
-            }
-        }
-    ],
-    "usage": {
+  "id": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "messages": [
+    {
+      "id": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
+      "message": "The following transformers are within substation OSLO:\n\n1. OSLO T1\n2. OSLO T2\n\nLet me know if you need more details about these transformers.",
+      "usage": {
         "completionTokens": 38,
         "promptTokens": 57322,
         "totalTokens": 57360
+      }
     }
+  ],
+  "usage": {
+    "completionTokens": 38,
+    "promptTokens": 57322,
+    "totalTokens": 57360
+  }
 }
 ```
 
@@ -360,87 +362,87 @@ Sample Response Body Including Graphics:
 - PowSyBl diagram:
 ```json
 {
-    "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
-    "messages": [
-        {
-            "id": "lc_run--019bc183-1b25-7a30-b8df-d746abdf1d20-0",
-            "message": "Here is the **PowSyBl Single-Line Diagram (SLD)** for the **OSLO** substation:\n\n- Substation IRI: `<urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram IRI: `<urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d>`",
-            "usage": {
-                "completionTokens": 821,
-                "promptTokens": 434519,
-                "totalTokens": 435340
-            },
-            "graphics": [
-                {
-                    "type": "svg",
-                    "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-OSLO.svg"
-                }
-            ]
-        }
-    ],
-    "usage": {
+  "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+  "messages": [
+    {
+      "id": "lc_run--019bc183-1b25-7a30-b8df-d746abdf1d20-0",
+      "message": "Here is the **PowSyBl Single-Line Diagram (SLD)** for the **OSLO** substation:\n\n- Substation IRI: `<urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram IRI: `<urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d>`",
+      "usage": {
         "completionTokens": 821,
         "promptTokens": 434519,
         "totalTokens": 435340
+      },
+      "graphics": [
+        {
+          "type": "svg",
+          "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-OSLO.svg"
+        }
+      ]
     }
+  ],
+  "usage": {
+    "completionTokens": 821,
+    "promptTokens": 434519,
+    "totalTokens": 435340
+  }
 }
 ```
 
 - Saved GraphDB Visual Graph
 ```json
 {
-    "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
-    "messages": [
-        {
-            "id": "lc_run--019bc188-fb32-7ed2-8e73-b3ba6601a1e8-0",
-            "message": "Here is the **saved VizGraph diagram** for **TopologicalNode ARENDAL**:\n\n- TopologicalNode IRI: `<urn:uuid:47eb7c24-d0f6-11e7-9f7b-b46d83638f70>`\n- VizGraph diagram IRI: `<urn:uuid:83179477-422c-403b-aca8-d577227430b8>`",
-            "usage": {
-                "completionTokens": 432,
-                "promptTokens": 358842,
-                "totalTokens": 359274
-            },
-            "graphics": [
-                {
-                    "type": "vizGraph",
-                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=dc0d824cdbfb4ca196c71ad55d6b1eb1&embedded=true"
-                }
-            ]
-        }
-    ],
-    "usage": {
+  "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+  "messages": [
+    {
+      "id": "lc_run--019bc188-fb32-7ed2-8e73-b3ba6601a1e8-0",
+      "message": "Here is the **saved VizGraph diagram** for **TopologicalNode ARENDAL**:\n\n- TopologicalNode IRI: `<urn:uuid:47eb7c24-d0f6-11e7-9f7b-b46d83638f70>`\n- VizGraph diagram IRI: `<urn:uuid:83179477-422c-403b-aca8-d577227430b8>`",
+      "usage": {
         "completionTokens": 432,
         "promptTokens": 358842,
         "totalTokens": 359274
+      },
+      "graphics": [
+        {
+          "type": "vizGraph",
+          "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=dc0d824cdbfb4ca196c71ad55d6b1eb1&embedded=true"
+        }
+      ]
     }
+  ],
+  "usage": {
+    "completionTokens": 432,
+    "promptTokens": 358842,
+    "totalTokens": 359274
+  }
 }
 ```
 
 - GraphDB Visual Graph Saved Configuration
 ```json
 {
-    "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
-    "messages": [
-        {
-            "id": "lc_run--019bc18e-8ac6-7e53-8a19-a303830cba9c-0",
-            "message": "Here is the **VizGraph using the “VoltageLevel” configuration** for **HELSINKI420**:\n\n- VoltageLevel IRI: `<urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram configuration IRI: `<urn:uuid:694c7201-eef8-49c5-8fe7-bd48c01e4cc0>`",
-            "usage": {
-                "completionTokens": 470,
-                "promptTokens": 275045,
-                "totalTokens": 275515
-            },
-            "graphics": [
-                {
-                    "type": "vizGraph",
-                    "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f&embedded=true"
-                }
-            ]
-        }
-    ],
-    "usage": {
+  "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+  "messages": [
+    {
+      "id": "lc_run--019bc18e-8ac6-7e53-8a19-a303830cba9c-0",
+      "message": "Here is the **VizGraph using the “VoltageLevel” configuration** for **HELSINKI420**:\n\n- VoltageLevel IRI: `<urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram configuration IRI: `<urn:uuid:694c7201-eef8-49c5-8fe7-bd48c01e4cc0>`",
+      "usage": {
         "completionTokens": 470,
         "promptTokens": 275045,
         "totalTokens": 275515
+      },
+      "graphics": [
+        {
+          "type": "vizGraph",
+          "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f&embedded=true"
+        }
+      ]
     }
+  ],
+  "usage": {
+    "completionTokens": 470,
+    "promptTokens": 275045,
+    "totalTokens": 275515
+  }
 }
 ```
 
@@ -526,6 +528,7 @@ Request Body JSON Schema:
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "required": [
     "conversationId",
     "messageId"
@@ -537,8 +540,8 @@ Sample Request Body:
 
 ```json
 {
-    "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
-    "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9"
+  "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9"
 }
 ```
 
@@ -546,65 +549,65 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "conversationId": {
-            "type": "string"
-        },
-        "messageId": {
-            "type": "string"
-        },
-        "queryMethods": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "args": {
-                        "type": "object"
-                    },
-                    "query": {
-                        "type": "string",
-                        "description": "Present only if the queryType is present."
-                    },
-                    "queryType": {
-                        "enum": [
-                            "sparql"
-                        ]
-                    },
-                    "graphdbRepositoryId": {
-                        "type": "string",
-                        "description": "Present for query methods, which execute queries against GraphDB."
-                    },
-                    "errorOutput": {
-                        "type": "string"
-                    },
-                    "advanced": {
-                        "type": "boolean",
-                        "description": "Advanced tools or tools calls resulted in errors by default are not visible in the UI unless requested by the user."
-                    },
-                    "hideArgs": {
-                        "type": "boolean",
-                        "description": "Indicates that by default the tool call arguments should not be visible in the UI unless requested by the user."
-                    }
-                },
-                "additionalProperties": false,
-                "required": [
-                    "name",
-                    "args"
-                ]
-            }
-        }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "conversationId": {
+      "type": "string"
     },
-    "additionalProperties": false,
-    "required": [
-        "conversationId",
-        "messageId",
-        "queryMethods"
-    ]
+    "messageId": {
+      "type": "string"
+    },
+    "queryMethods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "args": {
+            "type": "object"
+          },
+          "query": {
+            "type": "string",
+            "description": "Present only if the queryType is present."
+          },
+          "queryType": {
+            "enum": [
+              "sparql"
+            ]
+          },
+          "graphdbRepositoryId": {
+            "type": "string",
+            "description": "Present for query methods, which execute queries against GraphDB."
+          },
+          "errorOutput": {
+            "type": "string"
+          },
+          "advanced": {
+            "type": "boolean",
+            "description": "Advanced tools or tools calls resulted in errors by default are not visible in the UI unless requested by the user."
+          },
+          "hideArgs": {
+            "type": "boolean",
+            "description": "Indicates that by default the tool call arguments should not be visible in the UI unless requested by the user."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "args"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "conversationId",
+    "messageId",
+    "queryMethods"
+  ]
 }
 ```
 
@@ -612,54 +615,54 @@ Sample Response Body:
 
 ```json
 {
-    "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
-    "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
-    "queryMethods": [
-        {
-            "name": "autocomplete_search",
-            "args": {
-                "query": "OSLO",
-                "result_class": "cim:Substation"
-            },
-            "query": "\nPREFIX sesame: <http://www.openrdf.org/schema/sesame#>\nPREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>\nPREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>\nSELECT ?iri ?name ?class ?rank {\n    ?iri auto:query \"OSLO\" ;\n        <https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn> ?name ;\n        a cim:Substation ;\n        sesame:directType ?class;\n        rank:hasRDFRank5 ?rank.\n}\nORDER BY DESC(?rank)\nLIMIT 10",
-            "queryType": "sparql",
-            "graphdbRepositoryId": "cim",
-            "advanced": true,
-            "hideArgs": true
-        },
-        {
-            "name": "sparql_query",
-            "args": {
-                "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }"
-            },
-            "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }",
-            "queryType": "sparql",
-            "errorOutput": "Error: ValueError('The following IRIs are not used in the data stored in GraphDB: <urn:uri:1234>') Please fix your mistakes.",
-            "graphdbRepositoryId": "cim",
-            "advanced": true
-        },
-        {
-            "name": "sparql_query",
-            "args": {
-                "query": "\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name"
-            },
-            "query": "\nPREFIX cim: <https://cim.ucaiug.io/ns#>\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name",
-            "queryType": "sparql",
-            "graphdbRepositoryId": "cim",
-            "hideArgs": true
-        },
-        {
-            "name": "retrieve_data_points",
-            "args": {
-                "external_id": "9bb00faf-0f2f-831a-e040-1e828c94e833_estimated_value",
-                "aggregates": [
-                    "average",
-                    "count"
-                ],
-                "granularity": "2days"
-            }
-        }
-    ]
+  "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
+  "queryMethods": [
+    {
+      "name": "autocomplete_search",
+      "args": {
+        "query": "OSLO",
+        "result_class": "cim:Substation"
+      },
+      "query": "\nPREFIX sesame: <http://www.openrdf.org/schema/sesame#>\nPREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>\nPREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>\nSELECT ?iri ?name ?class ?rank {\n    ?iri auto:query \"OSLO\" ;\n        <https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn> ?name ;\n        a cim:Substation ;\n        sesame:directType ?class;\n        rank:hasRDFRank5 ?rank.\n}\nORDER BY DESC(?rank)\nLIMIT 10",
+      "queryType": "sparql",
+      "graphdbRepositoryId": "cim",
+      "advanced": true,
+      "hideArgs": true
+    },
+    {
+      "name": "sparql_query",
+      "args": {
+        "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }"
+      },
+      "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }",
+      "queryType": "sparql",
+      "errorOutput": "Error: ValueError('The following IRIs are not used in the data stored in GraphDB: <urn:uri:1234>') Please fix your mistakes.",
+      "graphdbRepositoryId": "cim",
+      "advanced": true
+    },
+    {
+      "name": "sparql_query",
+      "args": {
+        "query": "\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name"
+      },
+      "query": "\nPREFIX cim: <https://cim.ucaiug.io/ns#>\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name",
+      "queryType": "sparql",
+      "graphdbRepositoryId": "cim",
+      "hideArgs": true
+    },
+    {
+      "name": "retrieve_data_points",
+      "args": {
+        "external_id": "9bb00faf-0f2f-831a-e040-1e828c94e833_estimated_value",
+        "aggregates": [
+          "average",
+          "count"
+        ],
+        "granularity": "2days"
+      }
+    }
+  ]
 }
 ```
 
@@ -687,65 +690,74 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "status": {
-            "type": "string"
-        },
-        "healthChecks": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                            "type": "string"
-                        },
-                        "severity": {
-                            "type": "string"
-                        },
-                        "id": {
-                            "type": "string"
-                        },
-                        "name": {
-                            "type": "string"
-                        },
-                        "type": {
-                            "type": "string"
-                        },
-                        "impact": {
-                            "type": "string"
-                        },
-                        "troubleshooting": {
-                            "type": "string"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "status",
-                        "severity",
-                        "id",
-                        "name",
-                        "type",
-                        "impact",
-                        "troubleshooting",
-                        "description",
-                        "message"
-                    ]
-                }
-            ]
-        }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string"
     },
-    "required": [
-        "status",
-        "healthChecks"
-    ]
+    "healthChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "WARNING",
+              "ERROR"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string"
+          },
+          "troubleshooting": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "severity",
+          "id",
+          "name",
+          "type",
+          "impact",
+          "troubleshooting",
+          "description",
+          "message"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "healthChecks"
+  ]
 }
 ```
 
@@ -753,42 +765,42 @@ Sample Response Body:
 
 ```json
 {
-    "status": "OK",
-    "healthChecks": [
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
-            "name": "Redis Health Check",
-            "type": "redis",
-            "impact": "Redis is inaccessible and the chat bot can't function",
-            "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
-            "description": "Checks if Redis can be queried.",
-            "message": "Redis can be queried."
-        },
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
-            "name": "GraphDB Health Check",
-            "type": "graphdb",
-            "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
-            "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
-            "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
-            "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
-        },
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
-            "name": "LLM Health Check",
-            "type": "llm",
-            "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
-            "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
-            "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
-            "message": "No LLM errors were hit in the last 60 seconds!"
-        }
-    ]
+  "status": "OK",
+  "healthChecks": [
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
+      "name": "Redis Health Check",
+      "type": "redis",
+      "impact": "Redis is inaccessible and the chat bot can't function",
+      "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
+      "description": "Checks if Redis can be queried.",
+      "message": "Redis can be queried."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
+      "name": "GraphDB Health Check",
+      "type": "graphdb",
+      "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+      "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
+      "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+      "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+      "name": "LLM Health Check",
+      "type": "llm",
+      "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+      "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
+      "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+      "message": "No LLM errors were hit in the last 60 seconds!"
+    }
+  ]
 }
 ```
 
@@ -826,9 +838,14 @@ Response Body JSON Schema:
   "type": "object",
   "properties": {
     "gtg": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "OK",
+        "UNAVAILABLE"
+      ]
     }
   },
+  "additionalProperties": false,
   "required": [
     "gtg"
   ]
@@ -867,295 +884,311 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "ontologies": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        },
-                        "version": {
-                            "type": "string"
-                        },
-                        "date": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "uri"
-                    ]
-                }
-            ]
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "ontologies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
         },
-        "datasets": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        },
-                        "date": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "uri"
-                    ]
-                }
-            ]
-        },
-        "graphdb": {
-            "type": "object",
-            "properties": {
-                "baseUrl": {
-                    "type": "string"
-                },
-                "repository": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "string"
-                },
-                "numberOfExplicitTriples": {
-                    "type": "integer"
-                },
-                "numberOfTriples": {
-                    "type": "integer"
-                },
-                "autocompleteIndexStatus": {
-                    "type": "string"
-                },
-                "rdfRankStatus": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "baseUrl",
-                "repository",
-                "version",
-                "numberOfExplicitTriples",
-                "numberOfTriples",
-                "autocompleteIndexStatus",
-                "rdfRankStatus"
-            ]
-        },
-        "agent": {
-            "type": "object",
-            "properties": {
-                "assistantInstructions": {
-                    "type": "string"
-                },
-                "llm": {
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string"
-                        },
-                        "model": {
-                            "type": "string"
-                        },
-                        "temperature": {
-                            "type": "number"
-                        },
-                        "seed": {
-                            "type": "integer"
-                        }
-                    },
-                    "required": [
-                        "type",
-                        "model",
-                        "temperature",
-                        "seed"
-                    ]
-                },
-                "tools": {
-                    "type": "object",
-                    "properties": {
-                        "sparql_query": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "display_graphics": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "sparql_query_template": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled",
-                                "sparql_query_template"
-                            ]
-                        },
-                        "autocomplete_search": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "property_path": {
-                                    "type": "string"
-                                },
-                                "sparql_query_template": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "sample_sparql_queries": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "sparql_query_template": {
-                                    "type": "string"
-                                },
-                                "connector_name": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "retrieve_data_points": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "base_url": {
-                                    "type": "string"
-                                },
-                                "project": {
-                                    "type": "string"
-                                },
-                                "client_name": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "retrieve_time_series": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "base_url": {
-                                    "type": "string"
-                                },
-                                "project": {
-                                    "type": "string"
-                                },
-                                "client_name": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "now": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "sparql_query",
-                        "display_graphics",
-                        "autocomplete_search",
-                        "sample_sparql_queries",
-                        "retrieve_data_points",
-                        "retrieve_time_series",
-                        "now"
-                    ]
-                }
-            },
-            "required": [
-                "assistantInstructions",
-                "llm",
-                "tools"
-            ]
-        },
-        "backend": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "string"
-                },
-                "buildDate": {
-                    "type": "string"
-                },
-                "buildBranch": {
-                    "type": "string"
-                },
-                "gitSHA": {
-                    "type": "string"
-                },
-                "pythonVersion": {
-                    "type": "string"
-                },
-                "dependencies": {
-                    "type": "object"
-                }
-            },
-            "required": [
-                "description",
-                "version",
-                "buildDate",
-                "buildBranch",
-                "gitSHA",
-                "pythonVersion",
-                "dependencies"
-            ]
-        }
+        "additionalProperties": false,
+        "required": [
+          "uri"
+        ]
+      }
     },
-    "required": [
-        "ontologies",
-        "datasets",
-        "graphdb",
-        "agent",
-        "backend"
-    ]
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "uri"
+        ]
+      }
+    },
+    "graphdb": {
+      "type": "object",
+      "properties": {
+        "baseUrl": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "numberOfExplicitTriples": {
+          "type": "integer"
+        },
+        "numberOfTriples": {
+          "type": "integer"
+        },
+        "autocompleteIndexStatus": {
+          "type": "string",
+          "enum": [
+            "READY",
+            "READY_CONFIG",
+            "ERROR",
+            "NONE",
+            "BUILDING",
+            "CANCELED"
+          ]
+        },
+        "rdfRankStatus": {
+          "type": "string",
+          "enum": [
+            "CANCELED",
+            "COMPUTED",
+            "COMPUTING",
+            "EMPTY",
+            "ERROR",
+            "OUTDATED",
+            "CONFIG_CHANGED"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "baseUrl",
+        "repository",
+        "version",
+        "numberOfExplicitTriples",
+        "numberOfTriples",
+        "autocompleteIndexStatus",
+        "rdfRankStatus"
+      ]
+    },
+    "agent": {
+      "type": "object",
+      "properties": {
+        "assistantInstructions": {
+          "type": "string"
+        },
+        "llm": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "model": {
+              "type": "string"
+            },
+            "temperature": {
+              "type": "number"
+            },
+            "seed": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "model"
+          ]
+        },
+        "tools": {
+          "type": "object",
+          "properties": {
+            "sparql_query": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "display_graphics": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sparql_query_template": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "autocomplete_search": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "property_path": {
+                  "type": "string"
+                },
+                "sparql_query_template": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "sample_sparql_queries": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sparql_query_template": {
+                  "type": "string"
+                },
+                "connector_name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "retrieve_data_points": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "base_url": {
+                  "type": "string"
+                },
+                "project": {
+                  "type": "string"
+                },
+                "client_name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "retrieve_time_series": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "base_url": {
+                  "type": "string"
+                },
+                "project": {
+                  "type": "string"
+                },
+                "client_name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "now": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            }
+          },
+          "required": [
+            "sparql_query",
+            "display_graphics",
+            "autocomplete_search",
+            "sample_sparql_queries",
+            "retrieve_data_points",
+            "retrieve_time_series",
+            "now"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "assistantInstructions",
+        "llm",
+        "tools"
+      ]
+    },
+    "backend": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "buildDate": {
+          "type": "string"
+        },
+        "buildBranch": {
+          "type": "string"
+        },
+        "gitSHA": {
+          "type": "string"
+        },
+        "pythonVersion": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "version",
+        "buildDate",
+        "buildBranch",
+        "gitSHA",
+        "pythonVersion",
+        "dependencies"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "ontologies",
+    "datasets",
+    "graphdb",
+    "agent",
+    "backend"
+  ]
 }
 ```
 
@@ -1656,7 +1689,8 @@ Sample Response Body:
 }
 ```
 
-The `ontologies`, `datasets` and `graphdb` sections are updated on a scheduled basis (30 seconds by default). The `agent` and `backend` sections are static and initialized at the start of the application, since the data don't change at run time.
+The `ontologies`, `datasets` and `graphdb` sections are updated on a scheduled basis (30 seconds by default). 
+The `agent` and `backend` sections are static and initialized at the start of the application, since the data don't change at run time.
 The SPARQL query, which fetches the `ontologies` data is
 ```
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

@@ -1,3 +1,11 @@
+2.0.0-rc3
+============
+
+* [#357](https://github.com/statnett/Talk2PowerSystem_PM/issues/357):
+  Update JSON schemas for the requests and the responses from the REST API.
+* [#357](https://github.com/statnett/Talk2PowerSystem_PM/issues/357):
+  Update some 3rd party libraries to their latest versions.
+
 2.0.0-rc2
 ============
 

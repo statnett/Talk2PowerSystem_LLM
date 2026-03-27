@@ -36,18 +36,58 @@ The project follows a structured role-based access control model. The roles are 
 == Branch Management Strategy
 
 === Default Branch
-- The default working branch for active development is **`development`**.
-- All new features and bug fixes must be merged into the **`development`** branch before being included in a release.
+- The default working branch for active development is **`main`**.
+- All new features and bug fixes must be merged into the **`main`** branch before being included in a release.
 
-=== Historical Branches
-- Versioning follows **Semantic Versioning** (MAJOR.MINOR.PATCH).
-- Major and minor releases are archived as historical branches following the format:
-  - `vX.Y` (e.g., `v1.0`, `v1.1`, `v2.0`)
-- Patch releases are handled within the latest minor release branch.
+== Versioning & Tags
+
+The releases follow the https://semver.org/[Semantic Versioning Standard].
+However, `poetry` follows the https://peps.python.org/pep-0440/[PEP 440 Standard],
+so the `project.version` in the `pyproject.toml` is updated manually, and not with the
+`poetry version` command.
+The official releases versions are in the form of `major.minor.patch`.
+The pre-releases versions are in the form of `major.minor.patch-rc<N>`.
+The development versions are in the form of `major.minor.patch-dev<N>`.
+
+Steps to create an official release (from the main branch):
+
+. Edit the `project.version` in the `pyproject.toml` by removing the `-rc<N>`
+. Update the `CHANGELOG.md`
+. `git add pyproject.toml CHANGELOG.md`
+. `git commit -m "Official release of <previous-version> as <current-version>"`
+. `git push -u origin main`
+. Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface].
+The tag and the release title must match the version from poetry with added `v` in front!
+
+. Edit the `project.version` in `pyproject.toml` - increase the `patch` and add `-dev0` after it.
+For example, if the version is `2.0.0`, the next version must be `2.0.1-dev0`.
+. `git add pyproject.toml`
+. `git commit -m "Bumping version from <previous-version> to <current-version>"`
+. `git push -u origin main`
+
+Steps to create a pre-release (from the main branch):
+
+. Edit the `project.version` in `pyproject.toml` - If the current version is a pre-release version,
+then you must increase the release candidate number.
+For example, if the current version is `1.2.0-rc1`, the next version must be `1.2.0-rc2`.
+If the current version is a development version, then the next pre-release version must follow the
+semantic versioning convention on how to increment the major,
+minor and patch parts of the version and add `-rc1` at the end.
+For example, if the current version is `1.1.0-dev0` and the next release will be a major one,
+the next version must be `2.0.0-rc1`.
+. Update the `CHANGELOG.md`
+. `git add pyproject.toml CHANGELOG.md`
+. `git commit -m "Bumping version from <previous-version> to <current-version>"`
+. `git push -u origin main`
+. Create a release from https://github.com/statnett/Talk2PowerSystem_LLM/releases[the GitHub interface].
+The tag and the release title must match the version from poetry with added `v` in front!
+
+Releases are created on demand. First, a pre-release is created, then deployed and tested.
+Until the changes don't meet the acceptance criteria, new pre-releases are created with fixes.
+If the changes meet the acceptance criteria, an official release is created, which is deployed.
 
 === Branch Protection Rules
-- The **`development`** branch is protected and requires pull request reviews before merging.
-- Historical branches are read-only to preserve past versions.
+- The **`main`** branch is protected and requires pull request reviews before merging.
 - Direct pushes to protected branches are restricted to **Maintain** and **Admin** roles.
 
 == Decision-Making Process

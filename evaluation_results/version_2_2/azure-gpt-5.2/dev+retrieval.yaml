@@ -50,7 +50,6 @@ llm:
   azure_endpoint: "https://statnett-2.openai.azure.com/"
   model: "gpt-5.2"
   api_version: "2025-04-01-preview"
-  temperature: 0
   seed: 1
   timeout: 120
 prompts:

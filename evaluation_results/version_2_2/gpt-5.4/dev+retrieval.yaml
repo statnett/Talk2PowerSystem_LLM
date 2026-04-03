@@ -49,7 +49,6 @@ tools:
 llm:
   type: openai
   model: "gpt-5.4-2026-03-05"
-  temperature: 0
   seed: 1
   timeout: 120
 prompts:

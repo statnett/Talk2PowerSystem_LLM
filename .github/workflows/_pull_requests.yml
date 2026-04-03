@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v3.3.0
         with:
           activate-environment: Talk2PowerSystemLLM
           environment-file: environment.yml
@@ -52,9 +52,13 @@ jobs:
           docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
           docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
 
-      - name: Run acceptance tests
+      - name: Run acceptance tests with Completions API
         run: |
-          docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+          LLM_SEED=1 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+
+      - name: Run acceptance tests with Responses API
+        run: |
+          LLM_USE_RESPONSES_API=true docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
 
       - name: Always clean up Docker Compose
         if: always()

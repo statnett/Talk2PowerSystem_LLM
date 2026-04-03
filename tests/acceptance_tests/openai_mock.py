@@ -4,10 +4,12 @@ import string
 
 from mockserver import MockServerClient, json_equals, times
 
+from .conf import USE_RESPONSES_API
+
 random.seed(42)
 MOCK_OPENAI_CLIENT = MockServerClient("http://mock-server:1080")
 
-TOOLS = [
+COMPLETIONS_API_TOOLS = [
     {
         "type": "function",
         "function": {
@@ -96,9 +98,25 @@ TOOLS = [
 ]
 
 
+def transform_tools(completions_api_tools: list) -> list:
+    """
+    Transforms tools from the Chat Completions format to the Responses API format
+    """
+    transformed = []
+    for tool in completions_api_tools:
+        responses_api_tool = {"type": tool["type"]}
+        if "function" in tool:
+            responses_api_tool.update(tool["function"])
+        transformed.append(responses_api_tool)
+    return transformed
+
+
+RESPONSES_API_TOOLS = transform_tools(COMPLETIONS_API_TOOLS)
+
+
 def mock_openai_verify() -> None:
-    # latest version of the python library is not working with the latest version of the mock server
-    # hence we need to override this method
+    # The latest version of the Python library is not working with the latest version of the mock
+    # server. Hence, we need to override this method.
     for req, timing in MOCK_OPENAI_CLIENT.expectations:
         result = MOCK_OPENAI_CLIENT._call(
             "verify",
@@ -158,24 +176,42 @@ def mock_openai(
     )
 
 
-def openai_request(request_messages: list) -> dict:
+def openai_request(
+    request_messages: list,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
     messages = [
         {"content": "Mocked responses. Prompt doesn't matter.\n", "role": "system"}
     ] + request_messages
+
+    if use_responses_api:
+        path = "/openai/responses"
+        for message in messages:
+            if "type" not in message:
+                message["type"] = "message"
+        body = {
+            "input": messages,
+            "model": "gpt-5.4",
+            "tools": RESPONSES_API_TOOLS,
+            "stream": False,
+            "store": False,
+        }
+    else:
+        path = "/openai/deployments/gpt-5.4/chat/completions"
+        body = {
+            "messages": messages,
+            "model": "gpt-5.4",
+            "tools": COMPLETIONS_API_TOOLS,
+            "stream": False,
+            "store": False,
+            "seed": 1,
+        }
+
     return {
         "method": "POST",
-        "path": "/openai/deployments/gpt-4.1/chat/completions",
-        "queryStringParameters": {"api-version": ["2024-12-01-preview"]},
-        "body": json_equals(
-            {
-                "messages": messages,
-                "model": "gpt-4.1",
-                "seed": 1,
-                "stream": False,
-                "temperature": 0.0,
-                "tools": TOOLS,
-            }
-        ),
+        "path": path,
+        "queryStringParameters": {"api-version": ["2025-04-01-preview"]},
+        "body": json_equals(body),
     }
 
 
@@ -184,22 +220,68 @@ def openai_response(
     completion_tokens: int,
     content: str | None = None,
     tool_calls: list | None = None,
+    use_responses_api: bool = USE_RESPONSES_API,
 ) -> dict:
-    finish_reason = "stop"
-    message: dict = {
-        "role": "assistant",
-        "content": content,
-    }
-    if tool_calls:
-        message.update({"tool_calls": tool_calls})
-        finish_reason = "tool_calls"
-    return {
-        "statusCode": 200,
-        "body": {
-            "id": "chat-completion-mock" + "".join(random.choices(string.digits, k=6)),
+    random_id = "".join(random.choices(string.digits, k=6))
+
+    if use_responses_api:
+        output_items = []
+
+        if content:
+            output_items.append(
+                {
+                    "type": "message",
+                    "id": f"msg_{random_id}",
+                    "status": "completed",
+                    "role": "assistant",
+                    "content": [
+                        {
+                            "type": "output_text",
+                            "text": content,
+                            "annotations": [],
+                        }
+                    ],
+                }
+            )
+
+        if tool_calls:
+            for tool_call in tool_calls:
+                output_items.append(
+                    {
+                        "type": "function_call",
+                        "id": tool_call["id"],
+                        "call_id": f"call_{tool_call['id']}",
+                        "name": tool_call["function"]["name"],
+                        "arguments": tool_call["function"]["arguments"],
+                        "status": "completed",
+                    }
+                )
+
+        body = {
+            "id": f"response_mock_{random_id}",
+            "object": "response",
+            "model": "gpt-5.4",
+            "status": "completed",
+            "output": output_items,
+            "usage": {
+                "input_tokens": prompt_tokens,
+                "output_tokens": completion_tokens,
+                "total_tokens": prompt_tokens + completion_tokens,
+            },
+        }
+    else:
+        finish_reason = "stop"
+        message: dict = {
+            "role": "assistant",
+            "content": content,
+        }
+        if tool_calls:
+            message.update({"tool_calls": tool_calls})
+            finish_reason = "tool_calls"
+        body = {
+            "id": f"chat_completion_mock_{random_id}",
             "object": "chat.completion",
-            "created": 1650000000,
-            "model": "gpt-4.1",
+            "model": "gpt-5.4",
             "choices": [
                 {"index": 0, "message": message, "finish_reason": finish_reason}
             ],
@@ -208,8 +290,9 @@ def openai_response(
                 "completion_tokens": completion_tokens,
                 "total_tokens": prompt_tokens + completion_tokens,
             },
-        },
-    }
+        }
+
+    return {"statusCode": 200, "body": body}
 
 
 def openai_error_response(

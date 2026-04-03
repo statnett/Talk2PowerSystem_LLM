@@ -124,8 +124,6 @@ configuration:
       username: "chatbot"
     llm:
       model: "gpt-4.1"
-      temperature: 0
-      seed: 1
       timeout: 120
 
   # Allows provisioning of a new agent configurations.

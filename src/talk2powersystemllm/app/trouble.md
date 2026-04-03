@@ -30,7 +30,7 @@ The application can be secured using OpenID.
 
 Talk2PowerSystem Chat Bot Application depends on GraphDB, OpenAI / Azure OpenAI, Redis and optionally on Cognite.
 
-![context-diagram](https://lucid.app/publicSegments/view/ee7d6024-4f91-4435-882b-b941009664ea/image.jpeg)
+![context-diagram](https://lucid.app/publicSegments/view/ab6f335a-518b-4bca-a365-9ebf9b1b5829/image.jpeg)
 
 #### Important Endpoints
 
@@ -1005,6 +1005,9 @@ Response Body JSON Schema:
             },
             "seed": {
               "type": "integer"
+            },
+            "use_responses_api": {
+              "type": "boolean"
             }
           },
           "required": [

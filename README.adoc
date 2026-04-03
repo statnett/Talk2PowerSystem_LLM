@@ -117,7 +117,8 @@ bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
-LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+LLM_SEED=1 LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+LLM_USE_RESPONSES_API=true LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
 ----
 

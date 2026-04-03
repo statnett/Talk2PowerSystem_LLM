@@ -73,8 +73,9 @@ class AboutGraphDBInfo(BaseModel):
 class AboutLLMInfo(BaseModel):
     type: LLMType
     model: str
-    temperature: float
-    seed: int
+    temperature: float | None = None
+    seed: int | None = None
+    use_responses_api: bool | None = None
 
 
 class AboutAgentInfo(BaseModel):

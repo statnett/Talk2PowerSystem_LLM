@@ -45,10 +45,11 @@ async def run_agent_loop(
         callbacks=callbacks,
     )
     input_ = {"messages": [{"role": "user", "content": question}]}
+    logger.info(f'Conversation {conversation_id}: Input "{question}"')
     # noinspection PyTypeChecker
     async for output in agent.astream(input_, runnable_config, stream_mode="updates"):
         output = dict(output)
-        logger.debug(f"Conversation {conversation_id}: Output {output}")
+        logger.info(f"Conversation {conversation_id}: Output {output}")
 
         if "model" in output and "messages" in output["model"]:
             for ai_message in output["model"]["messages"]:
@@ -56,29 +57,41 @@ async def run_agent_loop(
                 sum_input_tokens += usage_metadata["input_tokens"]
                 sum_output_tokens += usage_metadata["output_tokens"]
                 sum_total_tokens += usage_metadata["total_tokens"]
-                if ai_message.content:
-                    logger.info(
-                        f'Conversation {conversation_id}: AI Message: "{ai_message.content}"'
+
+                raw_content = ai_message.content
+                text_content = ""
+                if isinstance(raw_content, str):
+                    text_content = raw_content
+                elif isinstance(raw_content, list):
+                    text_content = "".join(
+                        [
+                            content["text"]
+                            for content in raw_content
+                            if content.get("type") == "text"
+                        ]
                     )
-                    message_kwargs = {
-                        "id": ai_message.id,
-                        "message": ai_message.content,
-                        "usage": Usage(
-                            promptTokens=sum_input_tokens,
-                            completionTokens=sum_output_tokens,
-                            totalTokens=sum_total_tokens,
-                        ),
-                    }
-                    if graphics:
-                        message_kwargs["graphics"] = graphics
-                    messages.append(Message(**message_kwargs))
-                    sum_input_tokens, sum_output_tokens, sum_total_tokens = 0, 0, 0
-                    graphics: list[Graphic] = []
-                if ai_message.tool_calls:
-                    for tool_call in ai_message.tool_calls:
-                        logger.info(
-                            f"Conversation {conversation_id}: Tool Call: {tool_call}"
+
+                has_tools = bool(ai_message.tool_calls)
+
+                if text_content and not has_tools:
+                    messages.append(
+                        Message(
+                            id=ai_message.id,
+                            message=text_content,
+                            usage=Usage(
+                                promptTokens=sum_input_tokens,
+                                completionTokens=sum_output_tokens,
+                                totalTokens=sum_total_tokens,
+                            ),
+                            graphics=graphics if graphics else None,
                         )
+                    )
+                    sum_input_tokens = sum_output_tokens = sum_total_tokens = 0
+                    graphics = []
+                elif text_content and has_tools:
+                    logger.info(
+                        f"Conversation {conversation_id}: Model Thought: {text_content}"
+                    )
 
         elif "tools" in output and "messages" in output["tools"]:
             for tool_message in output["tools"]["messages"]:

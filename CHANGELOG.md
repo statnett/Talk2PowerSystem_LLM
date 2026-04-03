@@ -1,3 +1,16 @@
+v2.1.0-rc1
+============
+
+* [#358](https://github.com/statnett/Talk2PowerSystem_PM/issues/358):
+  Update the context diagram in the trouble.md document and keep a copy
+  of it in the source code.
+* [#358](https://github.com/statnett/Talk2PowerSystem_PM/issues/358):
+  Update Cognite sdk to `8.0.5`, update some other transitive
+  dependencies to their latest versions to address the security
+  vulnerabilities.
+* [#358](https://github.com/statnett/Talk2PowerSystem_PM/issues/358):
+  Support for OpenAI/Azure OpenAI Responses API.
+
 v2.0.0
 ============
 

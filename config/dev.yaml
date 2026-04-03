@@ -22,11 +22,10 @@ tools:
       ORDER BY DESC(?rank)
       LIMIT {limit}
 llm:
-  azure_endpoint: "https://statnett.openai.azure.com/"
-  model: "gpt-4.1"
-  api_version: "2024-12-01-preview"
+  type: openai
+  model: "gpt-5.4-2026-03-05"
   temperature: 0
-  seed: 1
+  use_responses_api: true
   timeout: 120
 prompts:
   assistant_instructions: |

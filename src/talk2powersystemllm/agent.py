@@ -127,12 +127,13 @@ class LLMSettings(BaseSettings):
     api_version: str | None = None
     hugging_face_endpoint: str | None = None
     temperature: float = Field(default=0, ge=0.0, le=2.0)
-    seed: int = Field(default=1)
+    use_responses_api: bool | None = Field(default=None)
+    seed: int | None = Field(default=None)
     timeout: int = Field(default=120, gt=0.0)
     api_key: SecretStr
 
     @model_validator(mode="after")
-    def check_required_if_properties(self) -> "LLMSettings":
+    def validate_model(self) -> "LLMSettings":
         if self.type == LLMType.azure_openai:
             if not self.azure_endpoint:
                 raise ValueError("azure_endpoint is required!")
@@ -141,6 +142,13 @@ class LLMSettings(BaseSettings):
         elif self.type == LLMType.hugging_face:
             if not self.hugging_face_endpoint:
                 raise ValueError("hugging_face_endpoint is required!")
+
+        if self.use_responses_api and self.seed is not None:
+            raise ValueError(
+                "`seed` is not supported by the Responses API."
+                "Please, remove it, or use the Completions API."
+            )
+
         return self
 
 
@@ -328,6 +336,8 @@ class Talk2PowerSystemAgentFactory:
                 api_version=llm_settings.api_version,
                 model=llm_settings.model,
                 temperature=llm_settings.temperature,
+                use_responses_api=llm_settings.use_responses_api,
+                store=False,
                 seed=llm_settings.seed,
                 timeout=llm_settings.timeout,
                 api_key=llm_settings.api_key,
@@ -336,6 +346,8 @@ class Talk2PowerSystemAgentFactory:
             self.model = ChatOpenAI(
                 model=llm_settings.model,
                 temperature=llm_settings.temperature,
+                use_responses_api=llm_settings.use_responses_api,
+                store=False,
                 seed=llm_settings.seed,
                 timeout=llm_settings.timeout,
                 api_key=llm_settings.api_key,
@@ -345,6 +357,8 @@ class Talk2PowerSystemAgentFactory:
                 base_url=llm_settings.hugging_face_endpoint,
                 model=llm_settings.model,
                 temperature=llm_settings.temperature,
+                use_responses_api=llm_settings.use_responses_api,
+                store=False,
                 seed=llm_settings.seed,
                 timeout=llm_settings.timeout,
                 api_key=llm_settings.api_key,
@@ -408,5 +422,5 @@ class Talk2PowerSystemAgentFactory:
     @property
     def llm_metadata(self) -> dict:
         return self.__settings.llm.model_dump(
-            include={"type", "model", "temperature", "seed"}
+            include={"type", "model", "temperature", "seed", "use_responses_api"}
         )

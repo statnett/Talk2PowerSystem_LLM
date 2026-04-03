@@ -74,7 +74,8 @@ class AboutLLMInfo(BaseModel):
     type: LLMType
     model: str
     temperature: float
-    seed: int
+    seed: int | None
+    use_responses_api: bool | None
 
 
 class AboutAgentInfo(BaseModel):

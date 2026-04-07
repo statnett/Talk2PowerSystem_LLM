@@ -1,3 +1,11 @@
+v2.1.0-rc1
+============
+
+* [#285](https://github.com/statnett/Talk2PowerSystem_PM/issues/285):
+  - Update the diagrams to the regenerated ones including Telemark120.
+  - Update the diagrams interactions instructions in the prompt to expect
+  multiple IRIs, not just one or two.
+
 v2.0.0
 ============
 

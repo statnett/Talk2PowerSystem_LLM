@@ -2,8 +2,8 @@ apiVersion: v2
 name: t2ps-chatbot-llm
 description: Python application for the Talk to the Power System Chatbot LLM
 type: application
-version: 1.2.0
-appVersion: "v2.0.0"
+version: 1.2.1
+appVersion: "v2.1.0-rc1"
 home: https://github.com/statnett/Talk2PowerSystem_LLM
 sources:
   - https://github.com/statnett/Talk2PowerSystem_LLM

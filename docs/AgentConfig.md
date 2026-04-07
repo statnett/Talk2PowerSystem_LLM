@@ -182,8 +182,10 @@ The API key must be provided using the environment variable `LLM_API_KEY`.
   Sampling temperature for the LLM. Lower values indicate more deterministic results.
   Check OpenAI documentation for the compatibility of this parameter with the
   specific model. For example, GPT-5.4 supports temperature, only when the 
-  reasoning effort is set to "none". LangChain may remove or override this 
-  parameter. Check [`valiadate_temperature`](https://reference.langchain.com/python/langchain-openai/chat_models/base/BaseChatOpenAI/validate_temperature)
+  reasoning effort is set to "none", but this must be passed explicitly as
+  `llm.reasoning_effort=none`, otherwise LangChain will remove the temperature.
+  LangChain may also override this parameter.
+  Check [`valiadate_temperature`](https://reference.langchain.com/python/langchain-openai/chat_models/base/BaseChatOpenAI/validate_temperature)
   method for more details.
 - `llm.use_responses_api` - OPTIONAL, none by default, boolean - For OpenAI and Azure OpenAI 
 whether to use [the Responses API](https://developers.openai.com/api/reference/responses/overview)
@@ -192,6 +194,9 @@ Note that `seed` is not supported by the Responses API, and if `llm.use_response
 then `llm.seed` must be removed, otherwise an error will be raised.
 Regardless of the API in both cases `store=false` is passed, so that the 
 responses are not stored.
+- `llm.reasoning_effort` - OPTIONAL, none by default, string.
+Configuration options for reasoning models.
+Check OpenAI documentation for supported values and models.
 - `llm.seed` - OPTIONAL, integer - Random seed for reproducibility
 (compatible with the Completions API).
 - `llm.timeout` - OPTIONAL, DEFAULT=`120`, integer - Timeout in seconds for LLM API calls.

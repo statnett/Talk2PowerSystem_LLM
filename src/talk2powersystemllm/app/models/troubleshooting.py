@@ -76,6 +76,7 @@ class AboutLLMInfo(BaseModel):
     temperature: float | None = None
     seed: int | None = None
     use_responses_api: bool | None = None
+    reasoning_effort: str | None = None
 
 
 class AboutAgentInfo(BaseModel):

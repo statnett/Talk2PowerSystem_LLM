@@ -1,4 +1,4 @@
-v2.1.0-rc1
+v2.2.0-rc1
 ============
 
 * [#358](https://github.com/statnett/Talk2PowerSystem_PM/issues/358):
@@ -10,6 +10,16 @@ v2.1.0-rc1
   latest versions to address the security vulnerabilities.
 * [#358](https://github.com/statnett/Talk2PowerSystem_PM/issues/358):
   Support for OpenAI/Azure OpenAI Responses API.
+* [#358](https://github.com/statnett/Talk2PowerSystem_PM/issues/358):
+  Expose reasoning effort as configuration.
+
+v2.1.0-rc1
+============
+
+* [#285](https://github.com/statnett/Talk2PowerSystem_PM/issues/285):
+  - Update the diagrams to the regenerated ones including Telemark120.
+  - Update the diagrams interactions instructions in the prompt to expect
+  multiple IRIs, not just one or two.
 
 v2.0.0
 ============

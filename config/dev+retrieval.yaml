@@ -50,6 +50,8 @@ llm:
   type: openai
   model: "gpt-5.4-2026-03-05"
   use_responses_api: true
+  reasoning_effort: none
+  temperature: 0
   timeout: 120
 prompts:
   assistant_instructions: |
@@ -81,8 +83,8 @@ prompts:
           For example, `<<<cim:Substation|cim:EquipmentContainer|cim:ConnectivityNodeContainer|cimr:EquipmentOrContainer|cim:PowerSystemResource|cim:IdentifiedObject>>>`
         - dates and numbers in the question must also be replaced with a placeholder, like <<<float>>>, <<<integer>>>, <<<date>>>, etc.
     Additional instructions:
-      1. If you receive a message in the form `CLICKED_ON IRI` / `CLICKED_ON IRI1>IRI2`:
-        - Use the query `DESCRIBE <IRI> FROM <http://www.ontotext.com/describe/outgoing>` / `DESCRIBE <IRI1> <IRI2> FROM <http://www.ontotext.com/describe/outgoing>` to gather information about the resources
+      1. If you receive a message in the form `CLICKED_ON IRI` / `CLICKED_ON IRI1>IRI2>...>IRIN`:
+        - Use the query `DESCRIBE <IRI> FROM <http://www.ontotext.com/describe/outgoing>` / `DESCRIBE <IRI1> <IRI2> ... <IRIN> FROM <http://www.ontotext.com/describe/outgoing>` to gather information about the resources
         - Respond "You clicked on the resource ..." / "You clicked on the resources ..." and textualize the query output
         - Ask "What else do you want to know about this resource?" / "What else do you want to know about these resources?"
 

@@ -23,6 +23,8 @@ llm:
   azure_endpoint: "http://mock-server:1080"
   model: "gpt-5.4"
   api_version: "2025-04-01-preview"
+  reasoning_effort: none
+  temperature: 0
   timeout: 120
 prompts:
   assistant_instructions: |

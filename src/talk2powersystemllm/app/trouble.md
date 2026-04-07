@@ -1008,6 +1008,9 @@ Response Body JSON Schema:
             },
             "use_responses_api": {
               "type": "boolean"
+            },
+            "reasoning_effort": {
+              "type": "string"
             }
           },
           "required": [

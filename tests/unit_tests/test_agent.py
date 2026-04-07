@@ -10,16 +10,18 @@ from talk2powersystemllm.agent import LLMSettings, LLMType
 def test_llm_settings_openai_success():
     settings = LLMSettings(
         type=LLMType.openai,
-        model="gpt-4o",
+        model="gpt-5.4",
+        reasoning_effort="high",
         api_key=SecretStr("secret-key"),
     )
     assert settings.type == LLMType.openai
-    assert settings.model == "gpt-4o"
+    assert settings.model == "gpt-5.4"
     assert settings.azure_endpoint is None
     assert settings.api_version is None
     assert settings.hugging_face_endpoint is None
     assert settings.temperature is None
     assert settings.use_responses_api is None
+    assert settings.reasoning_effort == "high"
     assert settings.seed is None
     assert settings.timeout == 120
     assert settings.api_key.get_secret_value() == "secret-key"
@@ -27,18 +29,20 @@ def test_llm_settings_openai_success():
 
 def test_llm_settings_default_azure_success():
     settings = LLMSettings(
-        model="gpt-4o",
+        model="gpt-5.4",
         azure_endpoint="https://example.openai.azure.com",
         api_version="2024-02-15-preview",
+        reasoning_effort="high",
         api_key=SecretStr("secret-key"),
     )
     assert settings.type == LLMType.azure_openai
-    assert settings.model == "gpt-4o"
+    assert settings.model == "gpt-5.4"
     assert settings.azure_endpoint == "https://example.openai.azure.com"
     assert settings.api_version == "2024-02-15-preview"
     assert settings.hugging_face_endpoint is None
     assert settings.temperature is None
     assert settings.use_responses_api is None
+    assert settings.reasoning_effort == "high"
     assert settings.seed is None
     assert settings.timeout == 120
     assert settings.api_key.get_secret_value() == "secret-key"
@@ -47,7 +51,7 @@ def test_llm_settings_default_azure_success():
 def test_llm_settings_azure_missing_endpoint_and_version():
     with pytest.raises(ValueError, match="azure_endpoint is required!"):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             api_key=SecretStr("secret-key"),
         )
 
@@ -55,7 +59,7 @@ def test_llm_settings_azure_missing_endpoint_and_version():
 def test_llm_settings_azure_missing_endpoint():
     with pytest.raises(ValueError, match="azure_endpoint is required!"):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             api_version="2024-02-15-preview",
             api_key=SecretStr("secret-key"),
         )
@@ -64,7 +68,7 @@ def test_llm_settings_azure_missing_endpoint():
 def test_llm_settings_azure_missing_version():
     with pytest.raises(ValueError, match="api_version is required!"):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_key=SecretStr("secret-key"),
         )
@@ -90,6 +94,7 @@ def test_llm_settings_hugging_face_success():
     )
     assert settings.temperature == 1
     assert settings.use_responses_api is None
+    assert settings.reasoning_effort is None
     assert settings.seed == 42
     assert settings.timeout == 60
     assert settings.api_key.get_secret_value() == "secret-key"
@@ -111,7 +116,7 @@ def test_llm_settings_responses_api_and_seed_conflict():
         "Please, remove it, or use the Completions API.",
     ):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_version="2024-02-15-preview",
             use_responses_api=True,
@@ -125,7 +130,7 @@ def test_llm_settings_responses_api_and_seed_conflict():
         "Please, remove it, or use the Completions API.",
     ):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_version="2024-02-15-preview",
             use_responses_api=True,
@@ -140,7 +145,7 @@ def test_llm_settings_responses_api_and_seed_conflict():
     ):
         LLMSettings(
             type=LLMType.openai,
-            model="gpt-4o",
+            model="gpt-5.4",
             use_responses_api=True,
             seed=0,
             api_key=SecretStr("secret-key"),
@@ -153,7 +158,7 @@ def test_llm_settings_responses_api_and_seed_conflict():
     ):
         LLMSettings(
             type=LLMType.openai,
-            model="gpt-4o",
+            model="gpt-5.4",
             use_responses_api=True,
             seed=42,
             api_key=SecretStr("secret-key"),
@@ -162,36 +167,38 @@ def test_llm_settings_responses_api_and_seed_conflict():
 
 def test_llm_settings_responses_api_without_seed_success():
     settings = LLMSettings(
-        model="gpt-4o",
+        model="gpt-5.4",
         azure_endpoint="https://example.openai.azure.com",
         api_version="2024-02-15-preview",
         use_responses_api=True,
         api_key=SecretStr("secret-key"),
     )
     assert settings.type == LLMType.azure_openai
-    assert settings.model == "gpt-4o"
+    assert settings.model == "gpt-5.4"
     assert settings.azure_endpoint == "https://example.openai.azure.com"
     assert settings.api_version == "2024-02-15-preview"
     assert settings.hugging_face_endpoint is None
     assert settings.temperature is None
     assert settings.use_responses_api
+    assert settings.reasoning_effort is None
     assert settings.seed is None
     assert settings.timeout == 120
     assert settings.api_key.get_secret_value() == "secret-key"
 
     settings = LLMSettings(
         type=LLMType.openai,
-        model="gpt-4o",
+        model="gpt-5.4",
         use_responses_api=True,
         api_key=SecretStr("secret-key"),
     )
     assert settings.type == LLMType.openai
-    assert settings.model == "gpt-4o"
+    assert settings.model == "gpt-5.4"
     assert settings.azure_endpoint is None
     assert settings.api_version is None
     assert settings.hugging_face_endpoint is None
     assert settings.temperature is None
     assert settings.use_responses_api
+    assert settings.reasoning_effort is None
     assert settings.seed is None
     assert settings.timeout == 120
     assert settings.api_key.get_secret_value() == "secret-key"
@@ -201,7 +208,7 @@ def test_llm_settings_env_prefix_loading():
     with patch.dict(
         os.environ,
         {
-            "LLM_MODEL": "gpt-4o",
+            "LLM_MODEL": "gpt-5.4",
             "LLM_AZURE_ENDPOINT": "https://example.openai.azure.com",
             "LLM_API_VERSION": "2024-02-15-preview",
             "LLM_API_KEY": "secret-key",
@@ -209,12 +216,13 @@ def test_llm_settings_env_prefix_loading():
     ):
         settings = LLMSettings()
         assert settings.type == LLMType.azure_openai
-        assert settings.model == "gpt-4o"
+        assert settings.model == "gpt-5.4"
         assert settings.azure_endpoint == "https://example.openai.azure.com"
         assert settings.api_version == "2024-02-15-preview"
         assert settings.hugging_face_endpoint is None
         assert settings.temperature is None
         assert settings.use_responses_api is None
+        assert settings.reasoning_effort is None
         assert settings.seed is None
         assert settings.timeout == 120
         assert settings.api_key.get_secret_value() == "secret-key"
@@ -223,7 +231,7 @@ def test_llm_settings_env_prefix_loading():
 def test_llm_settings_temperature_range_validation():
     with pytest.raises(ValueError):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_version="2024-02-15-preview",
             temperature=2.1,
@@ -233,7 +241,7 @@ def test_llm_settings_temperature_range_validation():
 
     with pytest.raises(ValueError):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_version="2024-02-15-preview",
             temperature=-0.1,
@@ -245,7 +253,7 @@ def test_llm_settings_temperature_range_validation():
 def test_llm_settings_timeout_range_validation():
     with pytest.raises(ValueError):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_version="2024-02-15-preview",
             timeout=0,
@@ -255,7 +263,7 @@ def test_llm_settings_timeout_range_validation():
 
     with pytest.raises(ValueError):
         LLMSettings(
-            model="gpt-4o",
+            model="gpt-5.4",
             azure_endpoint="https://example.openai.azure.com",
             api_version="2024-02-15-preview",
             timeout=-1,

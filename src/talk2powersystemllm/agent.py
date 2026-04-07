@@ -127,8 +127,9 @@ class LLMSettings(BaseSettings):
     api_version: str | None = None
     hugging_face_endpoint: str | None = None
     temperature: float | None = Field(default=None, ge=0.0, le=2.0)
-    use_responses_api: bool | None = Field(default=None)
-    seed: int | None = Field(default=None)
+    use_responses_api: bool | None = None
+    seed: int | None = None
+    reasoning_effort: str | None = None
     timeout: int = Field(default=120, gt=0.0)
     api_key: SecretStr
 
@@ -337,6 +338,7 @@ class Talk2PowerSystemAgentFactory:
                 model=llm_settings.model,
                 temperature=llm_settings.temperature,
                 use_responses_api=llm_settings.use_responses_api,
+                reasoning_effort=llm_settings.reasoning_effort,
                 store=False,
                 seed=llm_settings.seed,
                 timeout=llm_settings.timeout,
@@ -347,6 +349,7 @@ class Talk2PowerSystemAgentFactory:
                 model=llm_settings.model,
                 temperature=llm_settings.temperature,
                 use_responses_api=llm_settings.use_responses_api,
+                reasoning_effort=llm_settings.reasoning_effort,
                 store=False,
                 seed=llm_settings.seed,
                 timeout=llm_settings.timeout,
@@ -358,6 +361,7 @@ class Talk2PowerSystemAgentFactory:
                 model=llm_settings.model,
                 temperature=llm_settings.temperature,
                 use_responses_api=llm_settings.use_responses_api,
+                reasoning_effort=llm_settings.reasoning_effort,
                 store=False,
                 seed=llm_settings.seed,
                 timeout=llm_settings.timeout,
@@ -422,9 +426,9 @@ class Talk2PowerSystemAgentFactory:
     @property
     def llm_metadata(self) -> dict:
         metadata = self.__settings.llm.model_dump(
-            include={"type", "model", "seed", "use_responses_api"},
+            include={"type", "model", "seed", "use_responses_api", "reasoning_effort"},
             exclude_none=True,
         )
-        if hasattr(self.model, "temperature") and self.model.temperature:
+        if hasattr(self.model, "temperature") and self.model.temperature is not None:
             metadata["temperature"] = self.model.temperature
         return metadata

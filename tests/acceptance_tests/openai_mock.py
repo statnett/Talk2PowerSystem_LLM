@@ -141,10 +141,12 @@ def mock_openai_error(
     request_messages: list,
     status_code: int,
     error_message: str,
+    use_responses_api: bool = USE_RESPONSES_API,
 ):
     MOCK_OPENAI_CLIENT.expect(
         request=openai_request(
             request_messages=request_messages,
+            use_responses_api=use_responses_api,
         ),
         response=openai_error_response(
             status_code=status_code,
@@ -161,19 +163,140 @@ def mock_openai(
     response_completion_tokens: int,
     response_content: str | None = None,
     response_tool_calls: list | None = None,
+    use_responses_api: bool = USE_RESPONSES_API,
 ) -> None:
     MOCK_OPENAI_CLIENT.expect(
         request=openai_request(
             request_messages=request_messages,
+            use_responses_api=use_responses_api,
         ),
         response=openai_response(
             content=response_content,
             tool_calls=response_tool_calls,
             prompt_tokens=response_prompt_tokens,
             completion_tokens=response_completion_tokens,
+            use_responses_api=use_responses_api,
         ),
         timing=times(n_times),
     )
+
+
+def system_message(
+    content: str,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
+    message = {"content": content, "role": "system"}
+    if use_responses_api:
+        message["type"] = "message"
+    return message
+
+
+def user_message(
+    content: str,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
+    message = {"content": content, "role": "user"}
+    if use_responses_api:
+        message["type"] = "message"
+    return message
+
+
+def assistant_message(
+    content: str,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
+    if use_responses_api:
+        return {
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "output_text",
+                    "text": content,
+                    "annotations": [],
+                }
+            ],
+            "id": "${json-unit.ignore-element}",
+            "type": "message",
+        }
+    else:
+        return {
+            "role": "assistant",
+            "content": content,
+        }
+
+
+def tool_call_message(
+    call_id: str,
+    name: str,
+    arguments: str,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
+    if use_responses_api:
+        return {
+            "id": f"{call_id}",
+            "name": f"{name}",
+            "arguments": f"{arguments}",
+            "call_id": f"call_{call_id}",
+            "type": "function_call",
+            "status": "completed",
+        }
+    else:
+        return {
+            "role": "assistant",
+            "content": None,
+            "tool_calls": [
+                {
+                    "type": "function",
+                    "id": f"{call_id}",
+                    "function": {
+                        "name": f"{name}",
+                        "arguments": f"{arguments}",
+                    },
+                }
+            ],
+        }
+
+
+def response_tool_call(
+    call_id: str,
+    name: str,
+    arguments: str,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
+    if use_responses_api:
+        return {
+            "id": f"{call_id}",
+            "call_id": f"call_{call_id}",
+            "type": "function_call",
+            "name": f"{name}",
+            "arguments": f"{arguments}",
+            "status": "completed",
+        }
+    else:
+        return {
+            "id": f"{call_id}",
+            "type": "function",
+            "function": {"name": f"{name}", "arguments": f"{arguments}"},
+        }
+
+
+def tool_output_message(
+    call_id: str,
+    output: str,
+    use_responses_api: bool = USE_RESPONSES_API,
+) -> dict:
+    if use_responses_api:
+        return {
+            "output": f"{output}",
+            "call_id": f"call_{call_id}",
+            "type": "function_call_output",
+        }
+    else:
+        return {
+            "content": f"{output}",
+            "tool_call_id": f"{call_id}",
+            "role": "tool",
+        }
 
 
 def openai_request(
@@ -181,20 +304,19 @@ def openai_request(
     use_responses_api: bool = USE_RESPONSES_API,
 ) -> dict:
     messages = [
-        {"content": "Mocked responses. Prompt doesn't matter.\n", "role": "system"}
+        system_message("Mocked responses. Prompt doesn't matter.\n")
     ] + request_messages
 
     if use_responses_api:
         path = "/openai/responses"
-        for message in messages:
-            if "type" not in message:
-                message["type"] = "message"
         body = {
             "input": messages,
             "model": "gpt-5.4",
             "tools": RESPONSES_API_TOOLS,
+            "temperature": 0.0,
             "stream": False,
             "store": False,
+            "reasoning": {"effort": "none"},
         }
     else:
         path = "/openai/deployments/gpt-5.4/chat/completions"
@@ -202,9 +324,11 @@ def openai_request(
             "messages": messages,
             "model": "gpt-5.4",
             "tools": COMPLETIONS_API_TOOLS,
+            "temperature": 0.0,
             "stream": False,
             "store": False,
             "seed": 1,
+            "reasoning_effort": "none",
         }
 
     return {
@@ -222,17 +346,11 @@ def openai_response(
     tool_calls: list | None = None,
     use_responses_api: bool = USE_RESPONSES_API,
 ) -> dict:
-    random_id = "".join(random.choices(string.digits, k=6))
-
     if use_responses_api:
-        output_items = []
-
+        output_items = tool_calls if tool_calls else []
         if content:
             output_items.append(
                 {
-                    "type": "message",
-                    "id": f"msg_{random_id}",
-                    "status": "completed",
                     "role": "assistant",
                     "content": [
                         {
@@ -241,24 +359,13 @@ def openai_response(
                             "annotations": [],
                         }
                     ],
+                    "id": f"msg_{''.join(random.choices(string.digits, k=6))}",
+                    "type": "message",
+                    "status": "completed",
                 }
             )
-
-        if tool_calls:
-            for tool_call in tool_calls:
-                output_items.append(
-                    {
-                        "type": "function_call",
-                        "id": tool_call["id"],
-                        "call_id": f"call_{tool_call['id']}",
-                        "name": tool_call["function"]["name"],
-                        "arguments": tool_call["function"]["arguments"],
-                        "status": "completed",
-                    }
-                )
-
         body = {
-            "id": f"response_mock_{random_id}",
+            "id": f"response_mock_{''.join(random.choices(string.digits, k=6))}",
             "object": "response",
             "model": "gpt-5.4",
             "status": "completed",
@@ -279,7 +386,7 @@ def openai_response(
             message.update({"tool_calls": tool_calls})
             finish_reason = "tool_calls"
         body = {
-            "id": f"chat_completion_mock_{random_id}",
+            "id": f"chat_completion_mock_{''.join(random.choices(string.digits, k=6))}",
             "object": "chat.completion",
             "model": "gpt-5.4",
             "choices": [

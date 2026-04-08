@@ -29,15 +29,32 @@ async def get_explain_messages(
 ) -> list[Any]:
     messages = await get_all_messages(agent_factory, conversation_id, message_id)
 
-    # going backwards find a human message or AI message with content
-    # all messages in between are the explanation
+    # Going backwards find a human message or AI message with text content and no tool calls.
+    # All messages in between are the "explanation".
     explain_messages = []
+
+    # We iterate backwards starting from the message before the one we are explaining.
     for message in reversed(messages[:-1]):
-        if isinstance(message, HumanMessage) or (
-            isinstance(message, AIMessage) and message.content != ""
-        ):
+        is_final_ai_answer = False
+        if isinstance(message, AIMessage):
+            # Completions API
+            if isinstance(message.content, str) and message.content.strip() != "":
+                # It's only a final answer if there are no tool calls attached
+                if not getattr(message, "tool_calls", []):
+                    is_final_ai_answer = True
+            #  Responses API
+            elif isinstance(message.content, list):
+                has_text = any(
+                    content.get("type") == "text" for content in message.content
+                )
+                has_tools = len(getattr(message, "tool_calls", [])) > 0
+                if has_text and not has_tools:
+                    is_final_ai_answer = True
+
+        if isinstance(message, HumanMessage) or is_final_ai_answer:
             break
         explain_messages.insert(0, message)
+
     return explain_messages
 
 

@@ -7,20 +7,18 @@ from unittest import TestCase
 import requests
 from requests import Response
 
+from .conf import USE_RESPONSES_API
 from .openai_mock import (
+    assistant_message,
     mock_openai,
     mock_openai_error,
     mock_openai_reset,
     mock_openai_verify,
+    response_tool_call,
+    tool_call_message,
+    tool_output_message,
+    user_message,
 )
-
-
-def is_valid_uuid_v4(s: str) -> bool:
-    pattern = re.compile(
-        "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", re.I
-    )
-    return pattern.match(s) is not None
-
 
 # Endpoints
 API_ENDPOINT = "http://talk2powersystem:8000/"
@@ -31,6 +29,16 @@ TROUBLE_ENDPOINT = API_ENDPOINT + "__trouble"
 SECURITY_CONFIG_ENDPOINT = API_ENDPOINT + "/rest/authentication/config"
 CONVERSATION_ENDPOINT = API_ENDPOINT + "/rest/chat/conversations"
 EXPLAIN_ENDPOINT = API_ENDPOINT + "/rest/chat/conversations/explain"
+
+
+_UUID_V4_PATTERN = re.compile(
+    r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+    re.IGNORECASE,
+)
+
+
+def is_valid_uuid_v4(s: str) -> bool:
+    return _UUID_V4_PATTERN.match(s) is not None
 
 
 class AcceptanceTestsApp(TestCase):
@@ -50,11 +58,9 @@ class AcceptanceTestsApp(TestCase):
     ) -> dict:
         self.assertEqual(expected_status_code, response.status_code)
         if expected_x_request_id:
-            self.assertEqual(
-                expected_x_request_id, response.headers.get("X-Request-Id")
-            )
+            self.assertEqual(expected_x_request_id, response.headers["X-Request-Id"])
         else:
-            self.assertTrue(is_valid_uuid_v4(response.headers.get("X-Request-Id")))
+            self.assertTrue(is_valid_uuid_v4(response.headers["X-Request-Id"]))
         return response.json()
 
     def test_gtg(self) -> None:
@@ -228,15 +234,24 @@ class AcceptanceTestsApp(TestCase):
             "Mocked responses. Prompt doesn't matter.\n",
             actual_response_json["agent"]["assistantInstructions"],
         )
+
         self.assertTrue("llm" in actual_response_json["agent"])
-        self.assertTrue("type" in actual_response_json["agent"]["llm"])
-        self.assertEqual("azure_openai", actual_response_json["agent"]["llm"]["type"])
-        self.assertTrue("model" in actual_response_json["agent"]["llm"])
-        self.assertEqual("gpt-4.1", actual_response_json["agent"]["llm"]["model"])
-        self.assertTrue("temperature" in actual_response_json["agent"]["llm"])
-        self.assertEqual(0, actual_response_json["agent"]["llm"]["temperature"])
-        self.assertTrue("seed" in actual_response_json["agent"]["llm"])
-        self.assertEqual(1, actual_response_json["agent"]["llm"]["seed"])
+        agent_llm = actual_response_json["agent"]["llm"]
+        self.assertTrue("type" in agent_llm)
+        self.assertEqual("azure_openai", agent_llm["type"])
+        self.assertTrue("model" in agent_llm)
+        self.assertEqual("gpt-5.4", agent_llm["model"])
+        self.assertTrue("temperature" in agent_llm)
+        self.assertEqual(0, agent_llm["temperature"])
+
+        if USE_RESPONSES_API:
+            self.assertTrue("use_responses_api" in agent_llm)
+            self.assertTrue(agent_llm["use_responses_api"])
+            self.assertFalse("seed" in agent_llm)
+        else:
+            self.assertTrue("seed" in agent_llm)
+            self.assertEqual(1, agent_llm["seed"])
+            self.assertFalse("use_responses_api" in agent_llm)
 
         self.assertTrue("tools" in actual_response_json["agent"])
         self.assertEqual(7, len(actual_response_json["agent"]["tools"]))
@@ -394,13 +409,13 @@ SELECT ?link ?name ?format ?description ?kind {{
     def test_trouble(self) -> None:
         response = requests.get(TROUBLE_ENDPOINT, timeout=(2, 10))
         self.assertEqual(200, response.status_code)
-        self.assertTrue(is_valid_uuid_v4(response.headers.get("X-Request-Id")))
+        self.assertTrue(is_valid_uuid_v4(response.headers["X-Request-Id"]))
 
         response = requests.get(
             TROUBLE_ENDPOINT, headers={"X-Request-Id": "test"}, timeout=(2, 10)
         )
         self.assertEqual(200, response.status_code)
-        self.assertEqual("test", response.headers.get("X-Request-Id"))
+        self.assertEqual("test", response.headers["X-Request-Id"])
 
     def test_security_config(self) -> None:
         response = requests.get(SECURITY_CONFIG_ENDPOINT, timeout=(2, 10))
@@ -450,7 +465,7 @@ SELECT ?link ?name ?format ?description ?kind {{
         prompt_tokens = random.randint(10, 20)
         completion_tokens = random.randint(10, 20)
         mock_openai(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             response_content=answer,
             response_prompt_tokens=prompt_tokens,
             response_completion_tokens=completion_tokens,
@@ -519,7 +534,7 @@ SELECT ?link ?name ?format ?description ?kind {{
         prompt_tokens = random.randint(10, 20)
         completion_tokens = random.randint(10, 20)
         mock_openai(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             response_content=answer,
             response_prompt_tokens=prompt_tokens,
             response_completion_tokens=completion_tokens,
@@ -592,16 +607,13 @@ SELECT ?link ?name ?format ?description ?kind {{
         prompt_tokens1 = random.randint(10, 20)
         completion_tokens1 = random.randint(10, 20)
         mock_openai(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             response_tool_calls=[
-                {
-                    "id": "sparql_query_call_1",
-                    "type": "function",
-                    "function": {
-                        "name": "sparql_query",
-                        "arguments": '{ "query": "SELECT * { ?substation a cim:Substation }" }',
-                    },
-                }
+                response_tool_call(
+                    "sparql_query_call_1",
+                    "sparql_query",
+                    '{"query": "SELECT * { ?substation a cim:Substation }"}',
+                )
             ],
             response_prompt_tokens=prompt_tokens1,
             response_completion_tokens=completion_tokens1,
@@ -611,26 +623,16 @@ SELECT ?link ?name ?format ?description ?kind {{
         completion_tokens2 = random.randint(10, 20)
         mock_openai(
             request_messages=[
-                {"content": question, "role": "user"},
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "sparql_query_call_1",
-                            "function": {
-                                "name": "sparql_query",
-                                "arguments": '{"query": "SELECT * { ?substation a cim:Substation }"}',
-                            },
-                        }
-                    ],
-                },
-                {
-                    "content": "The following prefixes are undefined: cim",
-                    "role": "tool",
-                    "tool_call_id": "sparql_query_call_1",
-                },
+                user_message(question),
+                tool_call_message(
+                    "sparql_query_call_1",
+                    "sparql_query",
+                    '{"query": "SELECT * { ?substation a cim:Substation }"}',
+                ),
+                tool_output_message(
+                    "sparql_query_call_1",
+                    "The following prefixes are undefined: cim",
+                ),
             ],
             response_content=answer,
             response_prompt_tokens=prompt_tokens2,
@@ -720,17 +722,13 @@ SELECT ?link ?name ?format ?description ?kind {{
         prompt_tokens1 = random.randint(10, 20)
         completion_tokens1 = random.randint(10, 20)
         mock_openai(
-            request_messages=[{"content": question_1, "role": "user"}],
+            request_messages=[user_message(question_1)],
             response_tool_calls=[
-                {
-                    "id": "sparql_query_call_1",
-                    "type": "function",
-                    "function": {
-                        "name": "sparql_query",
-                        "arguments": '{ "query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> '
-                        '}" }',
-                    },
-                }
+                response_tool_call(
+                    "sparql_query_call_1",
+                    "sparql_query",
+                    '{"query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }"}',
+                )
             ],
             response_prompt_tokens=prompt_tokens1,
             response_completion_tokens=completion_tokens1,
@@ -740,29 +738,18 @@ SELECT ?link ?name ?format ?description ?kind {{
         completion_tokens2 = random.randint(10, 20)
         mock_openai(
             request_messages=[
-                {"content": question_1, "role": "user"},
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "sparql_query_call_1",
-                            "function": {
-                                "name": "sparql_query",
-                                "arguments": '{"query": "SELECT * { ?substation a '
-                                '<https://cim.ucaiug.io/ns#Substation> }"}',
-                            },
-                        }
-                    ],
-                },
-                {
+                user_message(question_1),
+                tool_call_message(
+                    "sparql_query_call_1",
+                    "sparql_query",
+                    '{"query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }"}',
+                ),
+                tool_output_message(
+                    "sparql_query_call_1",
                     # the actual SPARQL query tool is called and the result is a JSON serialized
                     # string
-                    "content": "${json-unit.ignore-element}",
-                    "role": "tool",
-                    "tool_call_id": "sparql_query_call_1",
-                },
+                    "${json-unit.ignore-element}",
+                ),
             ],
             response_content=answer_1,
             response_prompt_tokens=prompt_tokens2,
@@ -782,44 +769,27 @@ SELECT ?link ?name ?format ?description ?kind {{
         completion_tokens3 = random.randint(10, 20)
         mock_openai(
             request_messages=[
-                {"content": question_1, "role": "user"},
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "sparql_query_call_1",
-                            "function": {
-                                "name": "sparql_query",
-                                "arguments": '{"query": "SELECT * { ?substation a '
-                                '<https://cim.ucaiug.io/ns#Substation> }"}',
-                            },
-                        }
-                    ],
-                },
-                {
+                user_message(question_1),
+                tool_call_message(
+                    "sparql_query_call_1",
+                    "sparql_query",
+                    '{"query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }"}',
+                ),
+                tool_output_message(
+                    "sparql_query_call_1",
                     # the actual SPARQL query tool is called and the result is a JSON serialized
                     # string
-                    "content": "${json-unit.ignore-element}",
-                    "role": "tool",
-                    "tool_call_id": "sparql_query_call_1",
-                },
-                {
-                    "content": answer_1,
-                    "role": "assistant",
-                },
-                {
-                    "content": question_2,
-                    "role": "user",
-                },
+                    "${json-unit.ignore-element}",
+                ),
+                assistant_message(answer_1),
+                user_message(question_2),
             ],
             response_tool_calls=[
-                {
-                    "id": "now_call_1",
-                    "type": "function",
-                    "function": {"name": "now", "arguments": "{}"},
-                }
+                response_tool_call(
+                    "now_call_1",
+                    "now",
+                    "{}",
+                )
             ],
             response_prompt_tokens=prompt_tokens3,
             response_completion_tokens=completion_tokens3,
@@ -829,54 +799,30 @@ SELECT ?link ?name ?format ?description ?kind {{
         completion_tokens4 = random.randint(10, 20)
         mock_openai(
             request_messages=[
-                {"content": question_1, "role": "user"},
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "sparql_query_call_1",
-                            "function": {
-                                "name": "sparql_query",
-                                "arguments": '{"query": "SELECT * { ?substation a '
-                                '<https://cim.ucaiug.io/ns#Substation> }"}',
-                            },
-                        }
-                    ],
-                },
-                {
+                user_message(question_1),
+                tool_call_message(
+                    "sparql_query_call_1",
+                    "sparql_query",
+                    '{"query": "SELECT * { ?substation a <https://cim.ucaiug.io/ns#Substation> }"}',
+                ),
+                tool_output_message(
+                    "sparql_query_call_1",
                     # the actual SPARQL query tool is called and the result is a JSON serialized
                     # string
-                    "content": "${json-unit.ignore-element}",
-                    "role": "tool",
-                    "tool_call_id": "sparql_query_call_1",
-                },
-                {
-                    "content": answer_1,
-                    "role": "assistant",
-                },
-                {
-                    "content": question_2,
-                    "role": "user",
-                },
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "now_call_1",
-                            "function": {"name": "now", "arguments": "{}"},
-                        }
-                    ],
-                },
-                {
+                    "${json-unit.ignore-element}",
+                ),
+                assistant_message(answer_1),
+                user_message(question_2),
+                tool_call_message(
+                    "now_call_1",
+                    "now",
+                    "{}",
+                ),
+                tool_output_message(
+                    "now_call_1",
                     # the actual now tool is called and this changes
-                    "content": "${json-unit.ignore-element}",
-                    "role": "tool",
-                    "tool_call_id": "now_call_1",
-                },
+                    "${json-unit.ignore-element}",
+                ),
             ],
             response_content=answer_2,
             response_prompt_tokens=prompt_tokens4,
@@ -949,17 +895,13 @@ SELECT ?link ?name ?format ?description ?kind {{
         prompt_tokens = random.randint(10, 20)
         completion_tokens = random.randint(10, 20)
         mock_openai(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             response_tool_calls=[
-                {
-                    "id": "graphics_tool_call_1",
-                    "type": "function",
-                    "function": {
-                        "name": "display_graphics",
-                        "arguments": '{"diagram_iri": '
-                        '"urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"}',
-                    },
-                }
+                response_tool_call(
+                    "graphics_tool_call_1",
+                    "display_graphics",
+                    '{"diagram_iri": "urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"}',
+                )
             ],
             response_prompt_tokens=prompt_tokens,
             response_completion_tokens=completion_tokens,
@@ -969,29 +911,18 @@ SELECT ?link ?name ?format ?description ?kind {{
         completion_tokens2 = random.randint(10, 20)
         mock_openai(
             request_messages=[
-                {"content": question, "role": "user"},
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "graphics_tool_call_1",
-                            "function": {
-                                "name": "display_graphics",
-                                "arguments": '{"diagram_iri": '
-                                '"urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"}',
-                            },
-                        }
-                    ],
-                },
-                {
-                    "content": 'Diagram with name "Diagram of substation OSLO" and description '
+                user_message(question),
+                tool_call_message(
+                    "graphics_tool_call_1",
+                    "display_graphics",
+                    '{"diagram_iri": "urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d"}',
+                ),
+                tool_output_message(
+                    "graphics_tool_call_1",
+                    'Diagram with name "Diagram of substation OSLO" and description '
                     '"PowSyBl Single-Line-Diagram of substation OSLO" of kind '
                     '"PowSyBl-SingleLineDiagram"',
-                    "role": "tool",
-                    "tool_call_id": "graphics_tool_call_1",
-                },
+                ),
             ],
             response_content=answer,
             response_prompt_tokens=prompt_tokens2,
@@ -1055,19 +986,15 @@ SELECT ?link ?name ?format ?description ?kind {{
         prompt_tokens = random.randint(10, 20)
         completion_tokens = random.randint(10, 20)
         mock_openai(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             response_tool_calls=[
-                {
-                    "id": "graphics_tool_call_1",
-                    "type": "function",
-                    "function": {
-                        "name": "display_graphics",
-                        "arguments": "{"
-                        '"diagram_configuration_iri": "urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377",'
-                        '"node_iri": "https://cim.ucaiug.io/ns#Equipment"'
-                        "}",
-                    },
-                }
+                response_tool_call(
+                    "graphics_tool_call_1",
+                    "display_graphics",
+                    '{"diagram_configuration_iri": '
+                    '"urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377", '
+                    '"node_iri": "https://cim.ucaiug.io/ns#Equipment"}',
+                )
             ],
             response_prompt_tokens=prompt_tokens,
             response_completion_tokens=completion_tokens,
@@ -1077,32 +1004,22 @@ SELECT ?link ?name ?format ?description ?kind {{
         completion_tokens2 = random.randint(10, 20)
         mock_openai(
             request_messages=[
-                {"content": question, "role": "user"},
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "type": "function",
-                            "id": "graphics_tool_call_1",
-                            "function": {
-                                "name": "display_graphics",
-                                "arguments": "{"
-                                '"diagram_configuration_iri": '
-                                '"urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377", '
-                                '"node_iri": "https://cim.ucaiug.io/ns#Equipment"'
-                                "}",
-                            },
-                        }
-                    ],
-                },
-                {
-                    "content": 'Diagram with name "Class hierarchy (VizGraph config)" and '
+                user_message(question),
+                tool_call_message(
+                    "graphics_tool_call_1",
+                    "display_graphics",
+                    "{"
+                    '"diagram_configuration_iri": '
+                    '"urn:uuid:e81beed4-781c-4683-91a4-9ed8d8ebf377", '
+                    '"node_iri": "https://cim.ucaiug.io/ns#Equipment"'
+                    "}",
+                ),
+                tool_output_message(
+                    "graphics_tool_call_1",
+                    'Diagram with name "Class hierarchy (VizGraph config)" and '
                     'description "Shows the hierarchy (parent and children) of any class." '
                     'for "https://cim.ucaiug.io/ns#Equipment"',
-                    "role": "tool",
-                    "tool_call_id": "graphics_tool_call_1",
-                },
+                ),
             ],
             response_content=answer,
             response_prompt_tokens=prompt_tokens2,
@@ -1165,7 +1082,7 @@ SELECT ?link ?name ?format ?description ?kind {{
 
         question = "list substations"
         mock_openai_error(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             status_code=401,
             error_message="Access denied due to invalid subscription key or wrong API endpoint. "
             "Make sure to provide a valid key for an active subscription and use a correct "
@@ -1188,7 +1105,7 @@ SELECT ?link ?name ?format ?description ?kind {{
 
         question = "list substations"
         mock_openai_error(
-            request_messages=[{"content": question, "role": "user"}],
+            request_messages=[user_message(question)],
             status_code=429,
             error_message="You exceeded your current quota, please check your plan and "
             "billing details. For more information on this error, read the docs: "

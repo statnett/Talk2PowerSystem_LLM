@@ -178,9 +178,27 @@ The API key must be provided using the environment variable `LLM_API_KEY`.
 - `llm.azure_endpoint` - OPTIONAL, REQUIRED, iff `llm.type=azure_openai` - Azure OpenAI API endpoint.
 - `llm.hugging_face_endpoint` - OPTIONAL, REQUIRED, iff `llm.type=hugging_face` - The Hugging Face endpoint to use.
 - `llm.api_version` - OPTIONAL, REQUIRED, iff `llm.type=azure_openai` - API version for Azure OpenAI.
-- `llm.temperature` - OPTIONAL, DEFAULT=`0`, float value greater than or equal to 0, and less than or equal to 2 -
+- `llm.temperature` - OPTIONAL, none by default, float value greater than or equal to 0, and less than or equal to 2 -
   Sampling temperature for the LLM. Lower values indicate more deterministic results.
-- `llm.seed` - OPTIONAL, DEFAULT=`1`, integer - Random seed for reproducibility.
+  Check OpenAI documentation for the compatibility of this parameter with the
+  specific model. For example, GPT-5.4 supports temperature, only when the 
+  reasoning effort is set to "none", but this must be passed explicitly as
+  `llm.reasoning_effort=none`, otherwise LangChain will remove the temperature.
+  LangChain may also override this parameter.
+  Check [`valiadate_temperature`](https://reference.langchain.com/python/langchain-openai/chat_models/base/BaseChatOpenAI/validate_temperature)
+  method for more details.
+- `llm.use_responses_api` - OPTIONAL, none by default, boolean - For OpenAI and Azure OpenAI 
+whether to use [the Responses API](https://developers.openai.com/api/reference/responses/overview)
+instead of [the Completions API](https://developers.openai.com/api/reference/resources/chat).
+Note that `seed` is not supported by the Responses API, and if `llm.use_responses_api=true`,
+then `llm.seed` must be removed, otherwise an error will be raised.
+Regardless of the API in both cases `store=false` is passed, so that the 
+responses are not stored.
+- `llm.reasoning_effort` - OPTIONAL, none by default, string.
+Configuration options for reasoning models.
+Check OpenAI documentation for supported values and models.
+- `llm.seed` - OPTIONAL, integer - Random seed for reproducibility
+(compatible with the Completions API).
 - `llm.timeout` - OPTIONAL, DEFAULT=`120`, integer - Timeout in seconds for LLM API calls.
 
 ## `prompts`

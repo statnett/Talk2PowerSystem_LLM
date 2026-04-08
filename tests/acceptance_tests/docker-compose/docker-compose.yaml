@@ -40,6 +40,8 @@ services:
     environment:
       - AGENT_CONFIG=/code/config/agent.yaml
       - LLM_API_KEY=FAKE_API_KEY
+      - LLM_SEED
+      - LLM_USE_RESPONSES_API
       - REDIS_HOST=redis
       - REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
     ports:
@@ -64,6 +66,8 @@ services:
   talk2powersystem-acceptance-tests:
     image: talk2powersystem-acceptance-tests
     container_name: talk2powersystem-acceptance-tests
+    environment:
+      - LLM_USE_RESPONSES_API
     depends_on:
       talk2powersystem:
         condition: service_healthy

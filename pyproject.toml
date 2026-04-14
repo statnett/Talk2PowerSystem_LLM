@@ -31,7 +31,7 @@ dependencies = [
 repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 
 [tool.poetry.group.test.dependencies]
-pytest = "<10,>=9"
+pytest = ">=9.0.3,<10"
 pytest-cov = "<8,>=7"
 pytest-asyncio = "<2,>=1"
 requests = "<3,>=2"

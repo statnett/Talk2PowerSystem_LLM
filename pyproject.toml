@@ -10,7 +10,7 @@ dependencies = [
     "ttyg==4.2.0",
     "graphrag-eval==5.3.1",
     "jupyter==1.1.1",
-    "langchain-openai==1.1.12",
+    "langchain-openai==1.1.14",
     "langgraph-checkpoint-redis==0.4.0",
     "jsonlines==4.0.0",
     "cognite-sdk==8.0.5",

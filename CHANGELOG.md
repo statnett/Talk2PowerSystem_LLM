@@ -1,3 +1,26 @@
+v2.3.0-rc1
+============
+
+* [#363](https://github.com/statnett/Talk2PowerSystem_PM/issues/363):
+  - Implement access to Cognite with a service account.
+  - Environment variable `COGNITE_CLIENT_SECRET`
+  (`tools.cognite.client_secret` in the agent config) used for OBO 
+  authentication to Cognite is renamed to `COGNITE_OBO_CLIENT_SECRET`
+  (`tools.cognite.obo_client_secret` in the agent config).
+  - Bring back Cognite health check for deployments with service 
+    account or with a token from a file.
+    For deployments with OBO authentication, the health check is disabled.
+  - Update `langchain-openai` to `1.2.0`,
+    `langgraph-checkpoint-redis` to `0.4.1`, `cognite-sdk` to `8.1.0`, 
+    `pydantic-settings` to `2.14.0`, `uvicorn` to `0.46.0`,
+    `fastapi` to `0.136.0`, `msal` to `1.36.0`, `cachetools` to `7.0.6`, 
+    `importlib_resources` to `7.1.0`, update some other transitive 
+    dependencies to their latest versions to address the security 
+    vulnerabilities.
+* [#362](https://github.com/statnett/Talk2PowerSystem_PM/issues/362):
+  Use `RNDP_mrid` metadata instead of `mrid` for time series.
+  Add hard filter for timeseries having `RNDP_mrid` metadata.
+
 v2.2.0-rc1
 ============
 

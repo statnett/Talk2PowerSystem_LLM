@@ -761,7 +761,7 @@ Response Body JSON Schema:
 }
 ```
 
-Sample Response Body:
+Sample Response Body Without Cognite Health Check:
 
 ```json
 {
@@ -788,6 +788,60 @@ Sample Response Body:
       "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
       "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
       "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+      "name": "LLM Health Check",
+      "type": "llm",
+      "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+      "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
+      "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+      "message": "No LLM errors were hit in the last 60 seconds!"
+    }
+  ]
+}
+```
+
+Sample Response Body With Cognite Health Check:
+
+```json
+{
+  "status": "OK",
+  "healthChecks": [
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
+      "name": "Redis Health Check",
+      "type": "redis",
+      "impact": "Redis is inaccessible and the chat bot can't function",
+      "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
+      "description": "Checks if Redis can be queried.",
+      "message": "Redis can be queried."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
+      "name": "GraphDB Health Check",
+      "type": "graphdb",
+      "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+      "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
+      "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+      "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
+      "name": "Cognite Health Check",
+      "type": "cognite",
+      "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
+      "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
+      "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
+      "message": "Cognite can be queried."
     },
     {
       "status": "OK",
@@ -1809,6 +1863,10 @@ Most probable cause: [Cognite can't be queried or is misconfigured](#cognite-can
 
 Most probable cause: [Redis can't be queried or is misconfigured](#redis-cant-be-queried-or-is-misconfigured)
 
+#### Cognite health check status is not OK
+
+Most probable cause: [Cognite can't be queried or is misconfigured](#cognite-cant-be-queried-or-is-misconfigured)
+
 #### LLM health check status is not OK
 
 There are two probable causes:
@@ -1941,22 +1999,44 @@ Another option is to change the LLM system prompt, or the LLM model to a more ca
 
 ##### Solution
 
-- Make sure Cognite is reachable from the app host.
-- Make sure the application security is enabled, otherwise Cognite won't be accessible.
-- Make sure that in the application configuration in Azure `user impersonation` for Cognite is set under API permissions and is approved.
-- Make sure the property `tools.cognite.client_secret` is set and has a correct value. To create / obtain it you (or your Azure admin) must:
-    1. Go to the Azure Portal → Microsoft Entra ID → App registrations → Your FastAPI Backend App
-    2. In the left menu, choose Certificates & secrets
-    3. Under Client secrets, click ➕ New client secret
-    4. Give it a description and choose an expiry (6 months, 12 months, custom)
-    5. Click Add
-    Azure will show you:
-        - Value – this is your actual secret (copy it now → you can’t view it later)
-        - Secret ID – an internal reference (not needed in code)
+The solution depends on how Cognite authentication is configured.
+There are 4 ways to authenticate against Cognite, 3 of which are applicable for
+backend app deployments:
+
+1) service account authentication (`tools.cognite.client_id` must be present)  
+2) authentication with a token from a file (`tools.cognite.token_file_path` 
+   must be present)  
+3) OBO authentication (`tools.cognite.obo_client_secret` must be present),
+which is available only if the app security is enabled. In this case the Cognite
+health check is not present.  
+
+For all three, first make sure Cognite is reachable from the app host.  
+
+1) For service account authentication, make sure that `tools.cognite.client_id`,
+   `tools.cognite.client_secret` (environment variable `COGNITE_CLIENT_SECRET`),
+  `tools.cognite.tenant_id` are correct. The client secret has expiration date,
+   and must be renewed prior to it.  
+2) For authentication with a token from a file, make sure that
+  `tools.cognite.token_file_path` points to an existing non-empty file on the 
+  disk, and that the content is a valid token.  
+3) For OBO authentication:  
+   - Make sure that in the application configuration in Azure `user impersonation` for Cognite is set under API permissions and is approved.  
+   - Make sure the property `tools.cognite.obo_client_secret` (environment variable `COGNITE_OBO_CLIENT_SECRET`) is set and has a correct value.  
+   To create / obtain it you (or your Azure admin) must:  
+       1. Go to the Azure Portal → Microsoft Entra ID → App registrations → Your FastAPI Backend App  
+       2. In the left menu, choose Certificates & secrets  
+       3. Under Client secrets, click ➕ New client secret  
+       4. Give it a description and choose an expiry (6 months, 12 months, custom)  
+       5. Click Add  
+       Azure will show you:  
+           - Value – this is your actual secret (copy it now → you can’t view it later)  
+           - Secret ID – an internal reference (not needed in code)  
 
 ##### Verification
 
-Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
+- Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
+- If service account authentication is used, or authentication with a token from a file,
+check the response body of the `__health` endpoint, Cognite health check must have status `OK`.
 
 #### Redis can't be queried or is misconfigured
 

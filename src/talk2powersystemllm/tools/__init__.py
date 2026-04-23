@@ -1,7 +1,5 @@
-from .cognite import CogniteSession
-from .cognite import RetrieveDataPointsTool
-from .cognite import RetrieveTimeSeriesTool
-from .graphics_tool import GraphicsTool, ImageArtifact
+from .cognite import CogniteSession, RetrieveDataPointsTool, RetrieveTimeSeriesTool
+from .graphics_tool import GraphDBVisualGraphArtifact, GraphicsTool, SvgArtifact
 from .now_tool import NowTool
 from .user_datetime_context import user_datetime_ctx
 
@@ -9,8 +7,9 @@ __all__ = [
     "CogniteSession",
     "RetrieveDataPointsTool",
     "RetrieveTimeSeriesTool",
+    "GraphDBVisualGraphArtifact",
     "GraphicsTool",
-    "ImageArtifact",
+    "SvgArtifact",
     "NowTool",
     "user_datetime_ctx",
 ]

@@ -64,15 +64,19 @@ class AboutGraphDBInfo(BaseModel):
     version: str
     number_of_explicit_triples: int = Field(alias="numberOfExplicitTriples")
     number_of_triples: int = Field(alias="numberOfTriples")
-    autocomplete_index_status: GraphDBAutocompleteStatus = Field(alias="autocompleteIndexStatus")
+    autocomplete_index_status: GraphDBAutocompleteStatus = Field(
+        alias="autocompleteIndexStatus"
+    )
     rdf_rank_status: GraphDBRdfRankStatus = Field(alias="rdfRankStatus")
 
 
 class AboutLLMInfo(BaseModel):
     type: LLMType
     model: str
-    temperature: float
-    seed: int
+    temperature: float | None = None
+    seed: int | None = None
+    use_responses_api: bool | None = None
+    reasoning_effort: str | None = None
 
 
 class AboutAgentInfo(BaseModel):

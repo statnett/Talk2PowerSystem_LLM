@@ -7,12 +7,15 @@
 * `AGENT_CONFIG` - REQUIRED - Path to the agent configuration file in yaml format.
   Check [the agent configurations here](./AgentConfig.md).
 * `DIAGRAMS_PATH` - OPTIONAL, DEFAULT=`/code/diagrams/` - Path to the static diagrams.
+* `FRONTEND_CONTEXT_PATH` - OPTIONAL, DEFAULT=`/` - The context path behind which the UI is deployed.
+This is added as a prefix to the relative paths to the diagrams.
 
 ### Redis
 
 * `REDIS_HOST` - REQUIRED - Redis connection host. For example, `localhost`.
 The connection to Redis is with `redis://` protocol, i.e. TCP socket connection.
 * `REDIS_PORT` - OPTIONAL, DEFAULT=`6379` - Redis connection port.
+* `REDIS_IS_A_CLUSTER` - OPTIONAL, DEFAULT=`False` - False, if Redis is a single node. True, if Redis is a cluster.
 * `REDIS_CONNECT_TIMEOUT` - OPTIONAL, DEFAULT=`2` - Redis connect timeout in seconds, must be >= 1.
 * `REDIS_READ_TIMEOUT` - OPTIONAL, DEFAULT=`10` - Redis read timeout in seconds, must be >= 1.
 * `REDIS_HEALTHCHECK_INTERVAL` - OPTIONAL, DEFAULT=`3` - Redis health check interval in seconds, must be >= 1.
@@ -70,12 +73,14 @@ The `version` information is included in the response from the `/__about` endpoi
 
 * `SECURITY_ENABLED` - OPTIONAL, DEFAULT=False, Exposed to the UI - Indicates if security is enabled.
 * `SECURITY_CLIENT_ID` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The registered application (client) ID.
+* `SECURITY_FRONTEND_APP_CLIENT_ID` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The registered frontend application (client) ID.
 * `SECURITY_AUTHORITY` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The authority URL used for authentication.
 * `SECURITY_LOGOUT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The logout endpoint URL.
 * `SECURITY_LOGIN_REDIRECT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The URL to redirect to after a successful login.
 * `SECURITY_LOGOUT_REDIRECT` - REQUIRED iff `SECURITY_ENABLED=True`, Exposed to the UI - The URL to redirect to after logout.
 * `SECURITY_OIDC_DISCOVERY_URL` - OPTIONAL, DEFAULT=`{SECURITY_AUTHORITY}/v2.0/.well-known/openid-configuration` - OpenID Connect Discovery URL.
 * `SECURITY_AUDIENCE` - REQUIRED iff `SECURITY_ENABLED=True` - The expected audience of the security tokens.
+* `SECURITY_ISSUER` - REQUIRED iff `SECURITY_ENABLED=True` - The expected issuer of the security tokens.
 * `SECURITY_TTL` - OPTIONAL, DEFAULT=`86400` seconds (24 hours), must be >= 1 - Indicates how many seconds to cache the public keys and the issuer obtained from the OpenID Configuration endpoint.
 According to [the Azure documentation](https://learn.microsoft.com/en-us/entra/identity-platform/access-tokens) a reasonable frequency to check for updates to the public keys used by Microsoft Entra ID is every 24 hours.
 
@@ -95,7 +100,7 @@ but you will need to create a `.env` file with sample content
 
 ```
 MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
-DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem/diagram/svg
+DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem/diagram/PowSyBl/svg
 LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
 AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev+retrieval.yaml
 PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml

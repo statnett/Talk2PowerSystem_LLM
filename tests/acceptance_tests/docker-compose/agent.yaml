@@ -21,10 +21,10 @@ tools:
       LIMIT {limit}
 llm:
   azure_endpoint: "http://mock-server:1080"
-  model: "gpt-4.1"
-  api_version: "2024-12-01-preview"
+  model: "gpt-5.4"
+  api_version: "2025-04-01-preview"
+  reasoning_effort: none
   temperature: 0
-  seed: 1
   timeout: 120
 prompts:
   assistant_instructions: |

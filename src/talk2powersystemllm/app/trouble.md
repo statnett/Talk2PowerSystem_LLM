@@ -19,18 +19,18 @@ The application is implemented in Python and uses Fast API. It's served with the
 It provides functionality for chatting with the Talk2PowerSystem Chat Bot.
 It doesn't provide functionalities for:
 
-- creating, updating or deleting chat bots
+- creating, updating or deleting chatbots
 - conversations / chats histories
 
-The chat bot memory is persisted in Redis.
+The chatbot memory is persisted in Redis.
 
 The application can be secured using OpenID.
 
 #### Context Diagram
 
-Talk2PowerSystem Chat Bot Application depends on GraphDB, Azure OpenAI, Redis and optionally on Cognite.
+Talk2PowerSystem Chat Bot Application depends on GraphDB, OpenAI / Azure OpenAI, Redis and optionally on Cognite.
 
-![context-diagram](https://lucid.app/publicSegments/view/f29659b5-21c1-4b8b-b91b-b8b2d4eea769/image.jpeg)
+![context-diagram](https://lucid.app/publicSegments/view/ab6f335a-518b-4bca-a365-9ebf9b1b5829/image.jpeg)
 
 #### Important Endpoints
 
@@ -67,6 +67,15 @@ Response Body JSON Schema:
     "clientId": {
       "type": "string"
     },
+    "frontendAppClientId": {
+      "type": "string"
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "authority": {
       "type": "string"
     },
@@ -80,6 +89,7 @@ Response Body JSON Schema:
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "required": [
     "enabled"
   ]
@@ -91,11 +101,17 @@ Sample Response Body:
 ```json
 {
   "enabled": true,
-  "clientId": "6f8c5e30-b4b4-4b78-bdba-0ac5f5947fb6",
+  "clientId": "7b9f2087-68f1-45fe-a21d-023daedd4047",
+  "frontendAppClientId": "10acd638-f239-4aa2-8186-761512253325",
+  "scopes": [
+    "openid",
+    "profile",
+    "api://7b9f2087-68f1-45fe-a21d-023daedd4047/access_as_user"
+  ],
   "authority": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875",
-  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/logout",
-  "loginRedirect": "http://localhost:3000",
-  "logoutRedirect": "http://localhost:3000/login"
+  "logout": "https://login.microsoftonline.com/519ed184-e4d5-4431-97e5-fb4410a3f875/oauth2/v2.0/logout",
+  "loginRedirect": "http://localhost:3000/",
+  "logoutRedirect": "http://localhost:3000/"
 }
 ```
 
@@ -144,6 +160,7 @@ Request Body JSON Schema:
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "required": [
     "question"
   ]
@@ -164,8 +181,8 @@ Sample Request Bodies:
 
 ```json
 {
- "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
- "question": "List all transformers within substation OSLO."
+  "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "question": "List all transformers within substation OSLO."
 }
 ```
 
@@ -173,143 +190,146 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "id": {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
             "type": "string"
-        },
-        "messages": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "id": {
-                            "type": "string"
-                        },
-                        "message": {
-                            "type": "string"
-                        },
-                        "usage": {
-                            "type": "object",
-                            "properties": {
-                                "completionTokens": {
-                                    "type": "integer"
-                                },
-                                "promptTokens": {
-                                    "type": "integer"
-                                },
-                                "totalTokens": {
-                                    "type": "integer"
-                                }
-                            },
-                            "required": [
-                                "completionTokens",
-                                "promptTokens",
-                                "totalTokens"
-                            ]
-                        },
-                        "graphics": {
-                            "type": "array",
-                            "items": {
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "svg"
-                                                ]
-                                            },
-                                            "svg": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "required": [
-                                            "type",
-                                            "svg"
-                                        ],
-                                        "additionalProperties": false
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "image"
-                                                ]
-                                            },
-                                            "url": {
-                                                "type": "string",
-                                                "format": "uri-reference"
-                                            }
-                                        },
-                                        "required": [
-                                            "type",
-                                            "url"
-                                        ],
-                                        "additionalProperties": false
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "iframe"
-                                                ]
-                                            },
-                                            "url": {
-                                                "type": "string",
-                                                "format": "uri"
-                                            }
-                                        },
-                                        "required": [
-                                            "type",
-                                            "url"
-                                        ],
-                                        "additionalProperties": false
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "required": [
-                        "id",
-                        "message",
-                        "usage"
-                    ]
-                }
-            ]
-        },
-        "usage": {
+          },
+          "message": {
+            "type": "string"
+          },
+          "usage": {
             "type": "object",
             "properties": {
-                "completionTokens": {
-                    "type": "integer"
-                },
-                "promptTokens": {
-                    "type": "integer"
-                },
-                "totalTokens": {
-                    "type": "integer"
-                }
+              "completionTokens": {
+                "type": "integer"
+              },
+              "promptTokens": {
+                "type": "integer"
+              },
+              "totalTokens": {
+                "type": "integer"
+              }
             },
+            "additionalProperties": false,
             "required": [
-                "completionTokens",
-                "promptTokens",
-                "totalTokens"
+              "completionTokens",
+              "promptTokens",
+              "totalTokens"
             ]
-        }
+          },
+          "graphics": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "svg"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri-reference"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "url"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "image"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri-reference"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "url"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "vizGraph"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "url"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "message",
+          "usage"
+        ]
+      }
     },
-    "required": [
-        "id",
-        "messages",
-        "usage"
-    ]
+    "usage": {
+      "type": "object",
+      "properties": {
+        "completionTokens": {
+          "type": "integer"
+        },
+        "promptTokens": {
+          "type": "integer"
+        },
+        "totalTokens": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "completionTokens",
+        "promptTokens",
+        "totalTokens"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "messages",
+    "usage"
+  ]
 }
 ```
 
@@ -317,52 +337,111 @@ Sample Response Body Without Graphics:
 
 ```json
 {
-    "id": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
-    "messages": [
-        {
-            "id": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
-            "message": "The following transformers are within substation OSLO:\n\n1. OSLO T1\n2. OSLO T2\n\nLet me know if you need more details about these transformers.",
-            "usage": {
-                "completionTokens": 38,
-                "promptTokens": 57322,
-                "totalTokens": 57360
-            }
-        }
-    ],
-    "usage": {
+  "id": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "messages": [
+    {
+      "id": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
+      "message": "The following transformers are within substation OSLO:\n\n1. OSLO T1\n2. OSLO T2\n\nLet me know if you need more details about these transformers.",
+      "usage": {
         "completionTokens": 38,
         "promptTokens": 57322,
         "totalTokens": 57360
+      }
     }
+  ],
+  "usage": {
+    "completionTokens": 38,
+    "promptTokens": 57322,
+    "totalTokens": 57360
+  }
 }
 ```
 
 Sample Response Body Including Graphics:
 
+- PowSyBl diagram:
 ```json
 {
-  "id": "thread_ce5859f4-f4ca-4bf7-90a7-6fa534ff77fe",
+  "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
   "messages": [
     {
-      "id": "lc_run--28ade889-f636-4d2c-8e48-ef298daf9f06-0",
-      "message": "Here is the diagram: Diagram of substation KRISTIANSAND — PowSyBl Single-Line-Diagram of substation KRISTIANSAND",
+      "id": "lc_run--019bc183-1b25-7a30-b8df-d746abdf1d20-0",
+      "message": "Here is the **PowSyBl Single-Line Diagram (SLD)** for the **OSLO** substation:\n\n- Substation IRI: `<urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram IRI: `<urn:uuid:a53f9c60-189d-4be2-b3af-0320298e529d>`",
       "usage": {
-        "completionTokens": 1171,
-        "promptTokens": 164831,
-        "totalTokens": 166002
+        "completionTokens": 821,
+        "promptTokens": 434519,
+        "totalTokens": 435340
       },
       "graphics": [
         {
-          "type": "image",
-          "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-KRISTIANSAND.svg"
+          "type": "svg",
+          "url": "/rest/chat/diagrams/PowSyBl-SLD-substation-OSLO.svg"
         }
       ]
     }
   ],
   "usage": {
-    "completionTokens": 1171,
-    "promptTokens": 164831,
-    "totalTokens": 166002
+    "completionTokens": 821,
+    "promptTokens": 434519,
+    "totalTokens": 435340
+  }
+}
+```
+
+- Saved GraphDB Visual Graph
+```json
+{
+  "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+  "messages": [
+    {
+      "id": "lc_run--019bc188-fb32-7ed2-8e73-b3ba6601a1e8-0",
+      "message": "Here is the **saved VizGraph diagram** for **TopologicalNode ARENDAL**:\n\n- TopologicalNode IRI: `<urn:uuid:47eb7c24-d0f6-11e7-9f7b-b46d83638f70>`\n- VizGraph diagram IRI: `<urn:uuid:83179477-422c-403b-aca8-d577227430b8>`",
+      "usage": {
+        "completionTokens": 432,
+        "promptTokens": 358842,
+        "totalTokens": 359274
+      },
+      "graphics": [
+        {
+          "type": "vizGraph",
+          "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?saved=dc0d824cdbfb4ca196c71ad55d6b1eb1&embedded=true"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "completionTokens": 432,
+    "promptTokens": 358842,
+    "totalTokens": 359274
+  }
+}
+```
+
+- GraphDB Visual Graph Saved Configuration
+```json
+{
+  "id": "thread_bd697c94-29d4-46c1-ba96-69615d2538b4",
+  "messages": [
+    {
+      "id": "lc_run--019bc18e-8ac6-7e53-8a19-a303830cba9c-0",
+      "message": "Here is the **VizGraph using the “VoltageLevel” configuration** for **HELSINKI420**:\n\n- VoltageLevel IRI: `<urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f>`\n- Diagram configuration IRI: `<urn:uuid:694c7201-eef8-49c5-8fe7-bd48c01e4cc0>`",
+      "usage": {
+        "completionTokens": 470,
+        "promptTokens": 275045,
+        "totalTokens": 275515
+      },
+      "graphics": [
+        {
+          "type": "vizGraph",
+          "url": "https://cim.ontotext.com/graphdb/graphs-visualizations?config=99638482586148159e97fb379901dc54&uri=urn:uuid:f17696b4-9aeb-11e5-91da-b8763fd99c5f&embedded=true"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "completionTokens": 470,
+    "promptTokens": 275045,
+    "totalTokens": 275515
   }
 }
 ```
@@ -449,6 +528,7 @@ Request Body JSON Schema:
       "type": "string"
     }
   },
+  "additionalProperties": false,
   "required": [
     "conversationId",
     "messageId"
@@ -460,8 +540,8 @@ Sample Request Body:
 
 ```json
 {
-    "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
-    "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9"
+  "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9"
 }
 ```
 
@@ -469,53 +549,65 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "conversationId": {
-            "type": "string"
-        },
-        "messageId": {
-            "type": "string"
-        },
-        "queryMethods": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "args": {
-                            "type": "object"
-                        },
-                        "query": {
-                            "type": "string",
-                            "description": "Present only if the queryType is present."
-                        },
-                        "queryType": {
-                            "enum": [
-                                "sparql"
-                            ]
-                        },
-                        "errorOutput": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "name",
-                        "args"
-                    ]
-                }
-            ]
-        }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "conversationId": {
+      "type": "string"
     },
-    "required": [
-        "conversationId",
-        "messageId",
-        "queryMethods"
-    ]
+    "messageId": {
+      "type": "string"
+    },
+    "queryMethods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "args": {
+            "type": "object"
+          },
+          "query": {
+            "type": "string",
+            "description": "Present only if the queryType is present."
+          },
+          "queryType": {
+            "enum": [
+              "sparql"
+            ]
+          },
+          "graphdbRepositoryId": {
+            "type": "string",
+            "description": "Present for query methods, which execute queries against GraphDB."
+          },
+          "errorOutput": {
+            "type": "string"
+          },
+          "advanced": {
+            "type": "boolean",
+            "description": "Advanced tools or tools calls resulted in errors by default are not visible in the UI unless requested by the user."
+          },
+          "hideArgs": {
+            "type": "boolean",
+            "description": "Indicates that by default the tool call arguments should not be visible in the UI unless requested by the user."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "args"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "conversationId",
+    "messageId",
+    "queryMethods"
+  ]
 }
 ```
 
@@ -523,47 +615,54 @@ Sample Response Body:
 
 ```json
 {
-    "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
-    "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
-    "queryMethods": [
-        {
-            "name": "autocomplete_search",
-            "args": {
-                "query": "OSLO",
-                "result_class": "cim:Substation"
-            },
-            "query": "\nPREFIX sesame: <http://www.openrdf.org/schema/sesame#>\nPREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>\nPREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>\nSELECT ?iri ?name ?class ?rank {\n    ?iri auto:query \"OSLO\" ;\n        <https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn> ?name ;\n        a cim:Substation ;\n        sesame:directType ?class;\n        rank:hasRDFRank5 ?rank.\n}\nORDER BY DESC(?rank)\nLIMIT 10",
-            "queryType": "sparql"
-        },
-        {
-            "name": "sparql_query",
-            "args": {
-                "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }"
-            },
-            "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }",
-            "queryType": "sparql",
-            "errorOutput": "Error: ValueError('The following IRIs are not used in the data stored in GraphDB: <urn:uri:1234>') Please fix your mistakes."
-        },
-        {
-            "name": "sparql_query",
-            "args": {
-                "query": "\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name"
-            },
-            "query": "\nPREFIX cim: <https://cim.ucaiug.io/ns#>\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name",
-            "queryType": "sparql"
-        },
-        {
-            "name": "retrieve_data_points",
-            "args": {
-                "external_id": "9bb00faf-0f2f-831a-e040-1e828c94e833_estimated_value",
-                "aggregates": [
-                    "average",
-                    "count"
-                ],
-                "granularity": "2days"
-            }
-        }
-    ]
+  "conversationId": "thread_x8PTAw42sC3Mzl7vr6JP8ZMa",
+  "messageId": "msg_sObdXPBa0RBtvwl2BR6hUVd9",
+  "queryMethods": [
+    {
+      "name": "autocomplete_search",
+      "args": {
+        "query": "OSLO",
+        "result_class": "cim:Substation"
+      },
+      "query": "\nPREFIX sesame: <http://www.openrdf.org/schema/sesame#>\nPREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>\nPREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>\nSELECT ?iri ?name ?class ?rank {\n    ?iri auto:query \"OSLO\" ;\n        <https://cim.ucaiug.io/ns#IdentifiedObject.name> | <https://cim.ucaiug.io/ns#IdentifiedObject.aliasName> | <https://cim.ucaiug.io/ns#CoordinateSystem.crsUrn> ?name ;\n        a cim:Substation ;\n        sesame:directType ?class;\n        rank:hasRDFRank5 ?rank.\n}\nORDER BY DESC(?rank)\nLIMIT 10",
+      "queryType": "sparql",
+      "graphdbRepositoryId": "cim",
+      "advanced": true,
+      "hideArgs": true
+    },
+    {
+      "name": "sparql_query",
+      "args": {
+        "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }"
+      },
+      "query": "SELECT ?class WHERE { <urn:uri:1234> a ?class }",
+      "queryType": "sparql",
+      "errorOutput": "Error: ValueError('The following IRIs are not used in the data stored in GraphDB: <urn:uri:1234>') Please fix your mistakes.",
+      "graphdbRepositoryId": "cim",
+      "advanced": true
+    },
+    {
+      "name": "sparql_query",
+      "args": {
+        "query": "\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name"
+      },
+      "query": "\nPREFIX cim: <https://cim.ucaiug.io/ns#>\nSELECT ?transformer ?name WHERE {\n  ?transformer a cim:PowerTransformer .\n  ?transformer cim:Equipment.EquipmentContainer <urn:uuid:f176963c-9aeb-11e5-91da-b8763fd99c5f> .\n  OPTIONAL { ?transformer cim:IdentifiedObject.name ?name }\n} ORDER BY ?name",
+      "queryType": "sparql",
+      "graphdbRepositoryId": "cim",
+      "hideArgs": true
+    },
+    {
+      "name": "retrieve_data_points",
+      "args": {
+        "external_id": "9bb00faf-0f2f-831a-e040-1e828c94e833_estimated_value",
+        "aggregates": [
+          "average",
+          "count"
+        ],
+        "granularity": "2days"
+      }
+    }
+  ]
 }
 ```
 
@@ -591,65 +690,74 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "status": {
-            "type": "string"
-        },
-        "healthChecks": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                            "type": "string"
-                        },
-                        "severity": {
-                            "type": "string"
-                        },
-                        "id": {
-                            "type": "string"
-                        },
-                        "name": {
-                            "type": "string"
-                        },
-                        "type": {
-                            "type": "string"
-                        },
-                        "impact": {
-                            "type": "string"
-                        },
-                        "troubleshooting": {
-                            "type": "string"
-                        },
-                        "description": {
-                            "type": "string"
-                        },
-                        "message": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "status",
-                        "severity",
-                        "id",
-                        "name",
-                        "type",
-                        "impact",
-                        "troubleshooting",
-                        "description",
-                        "message"
-                    ]
-                }
-            ]
-        }
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string"
     },
-    "required": [
-        "status",
-        "healthChecks"
-    ]
+    "healthChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "WARNING",
+              "ERROR"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string"
+          },
+          "troubleshooting": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "severity",
+          "id",
+          "name",
+          "type",
+          "impact",
+          "troubleshooting",
+          "description",
+          "message"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "healthChecks"
+  ]
 }
 ```
 
@@ -657,42 +765,42 @@ Sample Response Body:
 
 ```json
 {
-    "status": "OK",
-    "healthChecks": [
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
-            "name": "Redis Health Check",
-            "type": "redis",
-            "impact": "Redis is inaccessible and the chat bot can't function",
-            "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
-            "description": "Checks if Redis can be queried.",
-            "message": "Redis can be queried."
-        },
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
-            "name": "Cognite Health Check",
-            "type": "cognite",
-            "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
-            "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
-            "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
-            "message": "Cognite can be queried."
-        },
-        {
-            "status": "OK",
-            "severity": "HIGH",
-            "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
-            "name": "GraphDB Health Check",
-            "type": "graphdb",
-            "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
-            "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
-            "description": "Checks if GraphDB repository can be queried. Also checks that the autocomplete is enabled, and RDF rank is computed.",
-            "message": "GraphDB repository can be queried and it's configured correctly."
-        }
-    ]
+  "status": "OK",
+  "healthChecks": [
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
+      "name": "Redis Health Check",
+      "type": "redis",
+      "impact": "Redis is inaccessible and the chat bot can't function",
+      "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
+      "description": "Checks if Redis can be queried.",
+      "message": "Redis can be queried."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
+      "name": "GraphDB Health Check",
+      "type": "graphdb",
+      "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+      "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
+      "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
+      "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
+    },
+    {
+      "status": "OK",
+      "severity": "HIGH",
+      "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
+      "name": "LLM Health Check",
+      "type": "llm",
+      "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+      "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
+      "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
+      "message": "No LLM errors were hit in the last 60 seconds!"
+    }
+  ]
 }
 ```
 
@@ -730,9 +838,14 @@ Response Body JSON Schema:
   "type": "object",
   "properties": {
     "gtg": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "OK",
+        "UNAVAILABLE"
+      ]
     }
   },
+  "additionalProperties": false,
   "required": [
     "gtg"
   ]
@@ -771,295 +884,317 @@ Response Body JSON Schema:
 
 ```json
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "properties": {
-        "ontologies": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        },
-                        "version": {
-                            "type": "string"
-                        },
-                        "date": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "uri"
-                    ]
-                }
-            ]
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "ontologies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
         },
-        "datasets": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "uri": {
-                            "type": "string"
-                        },
-                        "date": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "uri"
-                    ]
-                }
-            ]
-        },
-        "graphdb": {
-            "type": "object",
-            "properties": {
-                "baseUrl": {
-                    "type": "string"
-                },
-                "repository": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "string"
-                },
-                "numberOfExplicitTriples": {
-                    "type": "integer"
-                },
-                "numberOfTriples": {
-                    "type": "integer"
-                },
-                "autocompleteIndexStatus": {
-                    "type": "string"
-                },
-                "rdfRankStatus": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "baseUrl",
-                "repository",
-                "version",
-                "numberOfExplicitTriples",
-                "numberOfTriples",
-                "autocompleteIndexStatus",
-                "rdfRankStatus"
-            ]
-        },
-        "agent": {
-            "type": "object",
-            "properties": {
-                "assistantInstructions": {
-                    "type": "string"
-                },
-                "llm": {
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string"
-                        },
-                        "model": {
-                            "type": "string"
-                        },
-                        "temperature": {
-                            "type": "number"
-                        },
-                        "seed": {
-                            "type": "integer"
-                        }
-                    },
-                    "required": [
-                        "type",
-                        "model",
-                        "temperature",
-                        "seed"
-                    ]
-                },
-                "tools": {
-                    "type": "object",
-                    "properties": {
-                        "sparql_query": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "display_graphics": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "sparql_query_template": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled",
-                                "sparql_query_template"
-                            ]
-                        },
-                        "autocomplete_search": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "property_path": {
-                                    "type": "string"
-                                },
-                                "sparql_query_template": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "sample_sparql_queries": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "sparql_query_template": {
-                                    "type": "string"
-                                },
-                                "connector_name": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "retrieve_data_points": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "base_url": {
-                                    "type": "string"
-                                },
-                                "project": {
-                                    "type": "string"
-                                },
-                                "client_name": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "retrieve_time_series": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                },
-                                "base_url": {
-                                    "type": "string"
-                                },
-                                "project": {
-                                    "type": "string"
-                                },
-                                "client_name": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        },
-                        "now": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean"
-                                }
-                            },
-                            "required": [
-                                "enabled"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "sparql_query",
-                        "display_graphics",
-                        "autocomplete_search",
-                        "sample_sparql_queries",
-                        "retrieve_data_points",
-                        "retrieve_time_series",
-                        "now"
-                    ]
-                }
-            },
-            "required": [
-                "assistantInstructions",
-                "llm",
-                "tools"
-            ]
-        },
-        "backend": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "version": {
-                    "type": "string"
-                },
-                "buildDate": {
-                    "type": "string"
-                },
-                "buildBranch": {
-                    "type": "string"
-                },
-                "gitSHA": {
-                    "type": "string"
-                },
-                "pythonVersion": {
-                    "type": "string"
-                },
-                "dependencies": {
-                    "type": "object"
-                }
-            },
-            "required": [
-                "description",
-                "version",
-                "buildDate",
-                "buildBranch",
-                "gitSHA",
-                "pythonVersion",
-                "dependencies"
-            ]
-        }
+        "additionalProperties": false,
+        "required": [
+          "uri"
+        ]
+      }
     },
-    "required": [
-        "ontologies",
-        "datasets",
-        "graphdb",
-        "agent",
-        "backend"
-    ]
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "uri"
+        ]
+      }
+    },
+    "graphdb": {
+      "type": "object",
+      "properties": {
+        "baseUrl": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "numberOfExplicitTriples": {
+          "type": "integer"
+        },
+        "numberOfTriples": {
+          "type": "integer"
+        },
+        "autocompleteIndexStatus": {
+          "type": "string",
+          "enum": [
+            "READY",
+            "READY_CONFIG",
+            "ERROR",
+            "NONE",
+            "BUILDING",
+            "CANCELED"
+          ]
+        },
+        "rdfRankStatus": {
+          "type": "string",
+          "enum": [
+            "CANCELED",
+            "COMPUTED",
+            "COMPUTING",
+            "EMPTY",
+            "ERROR",
+            "OUTDATED",
+            "CONFIG_CHANGED"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "baseUrl",
+        "repository",
+        "version",
+        "numberOfExplicitTriples",
+        "numberOfTriples",
+        "autocompleteIndexStatus",
+        "rdfRankStatus"
+      ]
+    },
+    "agent": {
+      "type": "object",
+      "properties": {
+        "assistantInstructions": {
+          "type": "string"
+        },
+        "llm": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "model": {
+              "type": "string"
+            },
+            "temperature": {
+              "type": "number"
+            },
+            "seed": {
+              "type": "integer"
+            },
+            "use_responses_api": {
+              "type": "boolean"
+            },
+            "reasoning_effort": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "model"
+          ]
+        },
+        "tools": {
+          "type": "object",
+          "properties": {
+            "sparql_query": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "display_graphics": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sparql_query_template": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "autocomplete_search": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "property_path": {
+                  "type": "string"
+                },
+                "sparql_query_template": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "sample_sparql_queries": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "sparql_query_template": {
+                  "type": "string"
+                },
+                "connector_name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "retrieve_data_points": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "base_url": {
+                  "type": "string"
+                },
+                "project": {
+                  "type": "string"
+                },
+                "client_name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "retrieve_time_series": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "base_url": {
+                  "type": "string"
+                },
+                "project": {
+                  "type": "string"
+                },
+                "client_name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "now": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            }
+          },
+          "required": [
+            "sparql_query",
+            "display_graphics",
+            "autocomplete_search",
+            "sample_sparql_queries",
+            "retrieve_data_points",
+            "retrieve_time_series",
+            "now"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "assistantInstructions",
+        "llm",
+        "tools"
+      ]
+    },
+    "backend": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "buildDate": {
+          "type": "string"
+        },
+        "buildBranch": {
+          "type": "string"
+        },
+        "gitSHA": {
+          "type": "string"
+        },
+        "pythonVersion": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "version",
+        "buildDate",
+        "buildBranch",
+        "gitSHA",
+        "pythonVersion",
+        "dependencies"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "ontologies",
+    "datasets",
+    "graphdb",
+    "agent",
+    "backend"
+  ]
 }
 ```
 
@@ -1560,7 +1695,8 @@ Sample Response Body:
 }
 ```
 
-The `ontologies`, `datasets` and `graphdb` sections are updated on a scheduled basis (30 seconds by default). The `agent` and `backend` sections are static and initialized at the start of the application, since the data don't change at run time.
+The `ontologies`, `datasets` and `graphdb` sections are updated on a scheduled basis (30 seconds by default). 
+The `agent` and `backend` sections are static and initialized at the start of the application, since the data don't change at run time.
 The SPARQL query, which fetches the `ontologies` data is
 ```
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1646,7 +1782,8 @@ experienced with the following:
 * bash
 * GraphDB
 * Cognite
-* Azure OpenAI
+* OpenAI / Azure OpenAI
+* OpenID, Microsoft Entra ID
 * Redis
 
 ## Resolving Known Issues
@@ -1655,60 +1792,173 @@ experienced with the following:
 
 #### GraphDB health check status is not OK
 
-Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
+There are two probable causes:
 
-#### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search` are failing
+- [GraphDB can't be queried or is misconfigured](#graphdb-cant-be-queried-or-is-misconfigured)
+- [Long-running queries](#long-running-queries)
 
-Most probable cause: ["GraphDB can't be queried or is mis-configured"](#graphdb-cant-be-queried-or-is-mis-configured)
+#### Calls made by the LLM agent to the tools `sparql_query`, `autocomplete_search`, `retrieval_search`, `display_graphics` are failing
 
-#### Cognite health check status is not OK
-
-Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
+Most probable cause: [GraphDB can't be queried or is misconfigured](#graphdb-cant-be-queried-or-is-misconfigured)
 
 #### Calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing
 
-Most probable cause: ["Cognite can't be queried or is mis-configured"](#cognite-cant-be-queried-or-is-mis-configured)
+Most probable cause: [Cognite can't be queried or is misconfigured](#cognite-cant-be-queried-or-is-misconfigured)
 
 #### Redis health check status is not OK
 
-Most probable cause: ["Redis can't be queried or is mis-configured"](#redis-cant-be-queried-or-is-mis-configured)
+Most probable cause: [Redis can't be queried or is misconfigured](#redis-cant-be-queried-or-is-misconfigured)
+
+#### LLM health check status is not OK
+
+There are two probable causes:
+
+- [Redis can't be queried or is misconfigured](#redis-cant-be-queried-or-is-misconfigured)
+- [LLM Misconfiguration](#llm-misconfiguration)
 
 #### Users are experiencing slow responses
 
-Most probable cause: ["Mis-configurations"](#mis-configurations)
+Most probable cause: [Misconfigurations](#misconfiguration)
 
 ### Causes
 
 This section lists the causes of known issues and provides solutions.
 
-#### GraphDB can't be queried or is mis-configured
+#### GraphDB can't be queried or is misconfigured
 
 ##### Solution
 
 - Make sure GraphDB is reachable from the app host.
 - Make sure GraphDB credentials are correct. The application needs read access.
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
-- Make sure [GraphDB autocomplete index status](https://graphdb.ontotext.com/documentation/11.0/autocomplete-index.html) is `READY`.
-- Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/10.0/rdf-rank.html) is computed and up-to-date. The status must be `COMPUTED`.
+- Make sure [GraphDB autocomplete index status](https://graphdb.ontotext.com/documentation/11.3/autocomplete-index.html) is `READY`.
+- Make sure [GraphDB RDF rank](https://graphdb.ontotext.com/documentation/11.3/ranking-results.html) is computed and up-to-date. The status must be `COMPUTED`.
+- If the n-shot tool is available, make sure the GraphDB repository for the tool exists, and the ChatGPT Retrieval Plugin Connector also exists.
+Check [the documentation](https://github.com/statnett/Talk2PowerSystem/tree/main/qa-dataset-ontology-schema) for more details.
 
 ##### Verification
 
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
 - Check the response body of the `__health` endpoint, GraphDB health check must have status `OK`.
 
-#### Cognite can't be queried or is mis-configured
+#### Long-running queries
+
+Since the app is using a LLM to generate SPARQL queries, potentially they can be heavy and inefficient.
+It is recommended to set query-timeout (to 60 seconds for example) and throw-QueryEvaluationException-on-timeout=true for all GraphDB repositories used by this application.
+
+To inspect the long-running queries check GraphDB query.log for messages like this one:
+
+```
+[ERROR] 2026-03-06 14:47:35,407 [repositories/cim | c.o.t.q.LoggingClosableIteration] Error while executing query: <number>ms
+<?xml version='1.0'?>
+<query includeInferred='true' maxExecutionTime='0'>
+	<body>SELECT ?s1 ?s2 { ?s1 a ?type1 . ?s2 a ?type2 . FILTER(?s1 != ?s2)}</body>
+</query>
+
+com.ontotext.trree.QueryTimeoutErrorException: Query evaluation took too long
+	at com.ontotext.trree.TimeoutIteration.checkThrowError(TimeoutIteration.java:150)
+	at com.ontotext.trree.TimeoutIteration.onExternalTimeout(TimeoutIteration.java:193)
+	at com.ontotext.trree.QueryTimeout.checkTimeout(QueryTimeout.java:23)
+	at com.ontotext.trree.query.SubQuery$5.wasInterruptedOrTimedOut(SubQuery.java:1701)
+	at com.ontotext.trree.query.SubQuery$5.next(SubQuery.java:1509)
+	at com.ontotext.trree.query.MainQuery$1.next(MainQuery.java:314)
+	at com.ontotext.trree.query.QueryModelConverter$2.next(QueryModelConverter.java:486)
+	at com.ontotext.trree.query.QueryModelConverter$2.next(QueryModelConverter.java:469)
+	at org.eclipse.rdf4j.common.iteration.ConvertingIteration.next(ConvertingIteration.java:84)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at com.ontotext.trree.SailIterationWrapper.next(SailIterationWrapper.java:72)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at com.ontotext.trree.TimeoutIteration.next(TimeoutIteration.java:107)
+	at com.ontotext.trree.TimeoutIteration.next(TimeoutIteration.java:31)
+	at com.ontotext.trree.query.LoggingClosableIteration.next(LoggingClosableIteration.java:120)
+	at com.ontotext.trree.query.LoggingClosableIteration.next(LoggingClosableIteration.java:27)
+	at org.eclipse.rdf4j.common.iteration.IterationWrapper.next(IterationWrapper.java:88)
+	at com.ontotext.graphdb.sesame.CatchHandler.processWithBuffer(CatchHandler.java:138)
+	at com.ontotext.graphdb.sesame.TupleQueryResultView.renderQueryResult(TupleQueryResultView.java:71)
+	at com.ontotext.graphdb.sesame.TupleQueryResultView.renderQueryResult(TupleQueryResultView.java:22)
+	at com.ontotext.graphdb.sesame.QueryResultViewBase.renderInternal(QueryResultViewBase.java:82)
+	at org.eclipse.rdf4j.http.server.repository.QueryResultView.render(QueryResultView.java:71)
+	at org.springframework.web.servlet.DispatcherServlet.render(DispatcherServlet.java:1438)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1168)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128)
+	at com.ontotext.forest.security.AdminDelegatingFilterProxy.doFilter(AdminDelegatingFilterProxy.java:92)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at com.ontotext.forest.clusterproxy.ClusterFilterBean.doFilter(ClusterFilterBean.java:73)
+	at com.ontotext.forest.clusterproxy.ClusterLoadBalancerFilter.doFilterInternal(ClusterLoadBalancerFilter.java:25)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at com.ontotext.forest.core.request.RequestFilter.doFilterInternal(RequestFilter.java:47)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at com.ontotext.forest.core.request.GraphDBUrlHandlerFilter.lambda$new$0(GraphDBUrlHandlerFilter.java:26)
+	at com.ontotext.forest.core.request.GraphDBUrlHandlerFilter.doFilter(GraphDBUrlHandlerFilter.java:32)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:90)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1780)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:948)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:482)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+```
+
+Note that as of GraphDB 11.3.0 these queries don't appear in the slow-queries.log until [GDB-14252](https://graphwise.atlassian.net/browse/GDB-14252) is fixed.
 
 ##### Solution
 
-- Make sure Cognite is reachable from the app host.
-- Make sure Cognite credentials are correct.
+The default value of the GraphDB parameter `health.max.query.time.seconds` is 20 seconds.
+You can consider increasing the value.
+Another option is to change the LLM system prompt, or the LLM model to a more capable one.
 
 ##### Verification
 
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
-- Check the response body of the `__health` endpoint, Cognite health check must have status `OK`.
+- Check the response body of the `__health` endpoint, GraphDB health check must have status `OK`.
 
-#### Redis can't be queried or is mis-configured
+#### Cognite can't be queried or is misconfigured
+
+##### Solution
+
+- Make sure Cognite is reachable from the app host.
+- Make sure the application security is enabled, otherwise Cognite won't be accessible.
+- Make sure that in the application configuration in Azure `user impersonation` for Cognite is set under API permissions and is approved.
+- Make sure the property `tools.cognite.client_secret` is set and has a correct value. To create / obtain it you (or your Azure admin) must:
+    1. Go to the Azure Portal → Microsoft Entra ID → App registrations → Your FastAPI Backend App
+    2. In the left menu, choose Certificates & secrets
+    3. Under Client secrets, click ➕ New client secret
+    4. Give it a description and choose an expiry (6 months, 12 months, custom)
+    5. Click Add
+    Azure will show you:
+        - Value – this is your actual secret (copy it now → you can’t view it later)
+        - Secret ID – an internal reference (not needed in code)
+
+##### Verification
+
+Users no longer report that the calls made by the LLM agent to the tools `retrieve_time_series`, `retrieve_data_points` are failing.
+
+#### Redis can't be queried or is misconfigured
 
 ##### Solution
 
@@ -1721,16 +1971,43 @@ This section lists the causes of known issues and provides solutions.
 - Check the response status code of the `__gtg` endpoint, it must be `200`.
 - Check the response body of the `__health` endpoint, Redis health check must have status `OK`.
 
-#### Mis-configurations
+#### Misconfiguration
 
 ##### Solution
 
 - Make sure GraphDB timeouts are configured correctly according to the network performance.
 - Make sure Redis connect and read timeouts are configured correctly.
-- Make sure the application is not hitting [Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST).
-If it does, in the application logs there will be messages containing `429 Too Many Requests`. If this is the case, the rate limits must be increased. 
+- Make sure the application is not hitting [the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST)
+or [the OpenAI rate limits](https://developers.openai.com/api/docs/guides/rate-limits) depending on which service the app is running with.
+If it does, in the application logs there will be messages containing `429 Too Many Requests`.
+If this is the case, you should consider changing the rate limits.
 - Make sure the number of uvicorn [workers](https://fastapi.tiangolo.com/deployment/server-workers/) is configured according to the number of parallel users of the system.
 
 ##### Verification
 
 Users no longer report slow responses
+
+#### LLM misconfiguration
+
+##### Solution
+
+- Make sure the LLM configuration is correct including but not limited to the credentials and the timeout.
+If the credentials are not correct, you will see error messages like these in the logs:
+
+```
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: ***. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}
+```
+
+```
+openai.AuthenticationError: Error code: 401 - {'error': {'code': '401', 'message': 'Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.'}}
+```
+
+- Make sure the application is not hitting [the Azure OpenAI rate limits](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits?tabs=REST)
+or [the OpenAI rate limits](https://developers.openai.com/api/docs/guides/rate-limits) depending on which service the app is running with.
+If it does, in the application logs there will be messages containing `429 Too Many Requests`.
+If this is the case, you should consider changing the rate limits.
+
+##### Verification
+
+- Check the response status code of the `__gtg` endpoint, it must be `200`.
+- Check the response body of the `__health` endpoint, LLM health check must have status `OK`.

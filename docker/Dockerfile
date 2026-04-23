@@ -44,7 +44,7 @@ COPY config/ontology/ /code/config/ontology/
 COPY config/*yaml /code/config/
 COPY ./pyproject.toml /code/
 
-COPY --from=diagrams-repo /tmp/diagrams/diagram/svg/*.svg /code/diagrams/
+COPY --from=diagrams-repo /tmp/diagrams/diagram/PowSyBl/svg/*.svg /code/diagrams/
 
 RUN mkdir -p /code/logs && chmod 0777 /code/logs
 

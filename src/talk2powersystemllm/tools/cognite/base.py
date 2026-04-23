@@ -11,18 +11,20 @@ from langchain_core.tools import BaseTool
 
 class CogniteSession:
     """Wrapper around CogniteClient to keep session from expiring."""
+
     _client: CogniteClient
     _token_file_path: Path | None
     _expires_at: datetime | None
 
     def __init__(
-            self,
-            base_url: str,
-            client_name: str,
-            project: str,
-            token_file_path: Path | None = None,
-            interactive_client_id: str | None = None,
-            tenant_id: str | None = None,
+        self,
+        base_url: str,
+        client_name: str,
+        project: str,
+        token_file_path: Path | None = None,
+        interactive_client_id: str | None = None,
+        tenant_id: str | None = None,
+        obo_token: str | None = None,
     ):
         """
         Configure CogniteSession instance.
@@ -41,14 +43,20 @@ class CogniteSession:
             tenant_id (str | None): Azure tenant ID.
         """
 
-        if token_file_path:
+        if obo_token:
+            credentials = CredentialProvider.load({"token": obo_token})
+        elif token_file_path:
             self._token_file_path = token_file_path
             credentials = self._refresh()
-        else:
+        elif interactive_client_id and tenant_id:
             credentials = OAuthInteractive(
                 authority_url=f"https://login.microsoftonline.com/{tenant_id}",
                 client_id=interactive_client_id,
                 scopes=[f"{base_url}/.default"],
+            )
+        else:
+            raise ValueError(
+                "Cannot initialize a Cognite client with the provided configuration!"
             )
 
         config = ClientConfig(
@@ -74,7 +82,9 @@ class CogniteSession:
 
         Use for every api request to ensure its not expired.
         """
-        if hasattr(self, "_expires_at") and ((self._expires_at - datetime.now(timezone.utc)).total_seconds() < 60):
+        if hasattr(self, "_expires_at") and (
+            (self._expires_at - datetime.now(timezone.utc)).total_seconds() < 60
+        ):
             self._refresh()
 
         return self._client

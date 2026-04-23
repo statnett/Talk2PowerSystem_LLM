@@ -13,8 +13,10 @@ class NowTool(BaseTool):
     """
 
     name: str = "now"
-    description: str = ("Returns the user's current date time in yyyy-mm-ddTHH:MM:SS±hhmm format (ISO 8601). "
-                        "Do not reuse responses.")
+    description: str = (
+        "Returns the user's current date time in yyyy-mm-ddTHH:MM:SS±hhmm format (ISO 8601). "
+        "Do not reuse responses."
+    )
     handle_tool_error: bool = True
 
     @timeit
@@ -23,6 +25,8 @@ class NowTool(BaseTool):
         run_manager: CallbackManagerForToolRun | None = None,
     ) -> str:
         try:
-            return user_datetime_ctx.get() or datetime.now().astimezone().strftime("%Y-%m-%dT%H:%M:%S%z")
+            return user_datetime_ctx.get() or datetime.now().astimezone().strftime(
+                "%Y-%m-%dT%H:%M:%S%z"
+            )
         except Exception as e:
             raise ToolException(str(e))

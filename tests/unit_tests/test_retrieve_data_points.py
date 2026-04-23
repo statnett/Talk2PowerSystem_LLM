@@ -6,14 +6,19 @@ from cognite.client.exceptions import CogniteNotFoundError
 from cognite.client.testing import monkeypatch_cognite_client
 from langchain_core.tools import ToolException
 
-from talk2powersystemllm.tools import RetrieveDataPointsTool, CogniteSession
+from talk2powersystemllm.tools import CogniteSession, RetrieveDataPointsTool
 
 
 @pytest.mark.parametrize(
     "end",
     [
-        "2025-06-03", "2025-06-03T00:00:00", "2025-06-03T12:34:56Z", "2025-06-03T12:34:56+02:00", "2025-06-03T12",
-        "2025-06-03T12:34", None
+        "2025-06-03",
+        "2025-06-03T00:00:00",
+        "2025-06-03T12:34:56Z",
+        "2025-06-03T12:34:56+02:00",
+        "2025-06-03T12",
+        "2025-06-03T12:34",
+        None,
     ],
 )
 def test_correct_format_end(end: str) -> None:
@@ -33,8 +38,13 @@ def test_correct_format_end(end: str) -> None:
 @pytest.mark.parametrize(
     "start",
     [
-        "2025-06-03", "2025-06-03T00:00:00", "2025-06-03T12:34:56Z", "2025-06-03T12:34:56+02:00", "2025-06-03T12",
-        "2025-06-03T12:34", None
+        "2025-06-03",
+        "2025-06-03T00:00:00",
+        "2025-06-03T12:34:56Z",
+        "2025-06-03T12:34:56+02:00",
+        "2025-06-03T12",
+        "2025-06-03T12:34",
+        None,
     ],
 )
 def test_correct_format_start(start: str) -> None:
@@ -43,10 +53,7 @@ def test_correct_format_start(start: str) -> None:
         mock_session.client.return_value = c_mock
 
         tool = RetrieveDataPointsTool(cognite_session=mock_session)
-        tool._run(
-            external_id="external_id",
-            start=start
-        )
+        tool._run(external_id="external_id", start=start)
 
         c_mock.time_series.data.retrieve_arrays.assert_called_once()
 
@@ -54,17 +61,21 @@ def test_correct_format_start(start: str) -> None:
 def test_external_id_doesnt_exist() -> None:
     with monkeypatch_cognite_client() as c_mock:
         c_mock.time_series.data.retrieve_arrays.side_effect = CogniteNotFoundError(
-            not_found=["external_id"],
+            message="Not found",
+            code=404,
+            missing=["external_id"],
         )
         mock_session = MagicMock(spec=CogniteSession)
         mock_session.client.return_value = c_mock
 
         tool = RetrieveDataPointsTool(cognite_session=mock_session)
-        with pytest.raises(ToolException) as exc:
+        with pytest.raises(
+            ToolException,
+            match="Not found, missing: [external_id] | code: 404 | X-Request-ID: None",
+        ):
             tool._run(
                 external_id="external_id",
             )
-        assert f"Not found: ['external_id']" == str(exc.value)
 
         c_mock.time_series.data.retrieve_arrays.assert_called_once_with(
             external_id="external_id",
@@ -79,9 +90,14 @@ def test_external_id_doesnt_exist() -> None:
 @pytest.mark.parametrize(
     "dt",
     [
-        None, "", "date",
-        "1w-ago", "1w-ahead", "now",
-        "2025", "2025-06",
+        None,
+        "",
+        "date",
+        "1w-ago",
+        "1w-ahead",
+        "now",
+        "2025",
+        "2025-06",
     ],
 )
 def test_try_to_parse_as_iso_format_invalid_iso_format(dt: str | None) -> None:
@@ -100,54 +116,128 @@ def test_try_to_parse_as_iso_format_valid_iso_format() -> None:
 
         tool = RetrieveDataPointsTool(cognite_session=mock_session)
         assert tool._try_to_parse_as_iso_format("2025-06-04") == datetime.datetime(
-            year=2025, month=6, day=4,
-            tzinfo=datetime.timezone.utc
+            year=2025, month=6, day=4, tzinfo=datetime.timezone.utc
         )
         assert tool._try_to_parse_as_iso_format("2025-06-04T14") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14,
-            tzinfo=datetime.timezone.utc
+            year=2025, month=6, day=4, hour=14, tzinfo=datetime.timezone.utc
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14, minute=30,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30"
+        ) == datetime.datetime(
+            year=2025, month=6, day=4, hour=14, minute=30, tzinfo=datetime.timezone.utc
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14, minute=30, second=30,
-            tzinfo=datetime.timezone.utc
-        )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14, minute=30, second=30, microsecond=123000,
-            tzinfo=datetime.timezone.utc
-        )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30Z") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14, minute=30, second=30,
-            tzinfo=datetime.timezone.utc
-        )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123Z") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14, minute=30, second=30, microsecond=123000,
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14,
+            minute=30,
+            second=30,
             tzinfo=datetime.timezone.utc,
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30-04:00") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30.123"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14,
+            minute=30,
+            second=30,
+            microsecond=123000,
+            tzinfo=datetime.timezone.utc,
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123-04:00") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30, microsecond=123000,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30Z"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14,
+            minute=30,
+            second=30,
+            tzinfo=datetime.timezone.utc,
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30-0400") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30.123Z"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14,
+            minute=30,
+            second=30,
+            microsecond=123000,
+            tzinfo=datetime.timezone.utc,
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123-0400") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30, microsecond=123000,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30-04:00"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14 + 4,
+            minute=30,
+            second=30,
+            tzinfo=datetime.timezone.utc,
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30-04") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30.123-04:00"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14 + 4,
+            minute=30,
+            second=30,
+            microsecond=123000,
+            tzinfo=datetime.timezone.utc,
         )
-        assert tool._try_to_parse_as_iso_format("2025-06-04T14:30:30.123-04") == datetime.datetime(
-            year=2025, month=6, day=4, hour=14 + 4, minute=30, second=30, microsecond=123000,
-            tzinfo=datetime.timezone.utc
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30-0400"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14 + 4,
+            minute=30,
+            second=30,
+            tzinfo=datetime.timezone.utc,
+        )
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30.123-0400"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14 + 4,
+            minute=30,
+            second=30,
+            microsecond=123000,
+            tzinfo=datetime.timezone.utc,
+        )
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30-04"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14 + 4,
+            minute=30,
+            second=30,
+            tzinfo=datetime.timezone.utc,
+        )
+        assert tool._try_to_parse_as_iso_format(
+            "2025-06-04T14:30:30.123-04"
+        ) == datetime.datetime(
+            year=2025,
+            month=6,
+            day=4,
+            hour=14 + 4,
+            minute=30,
+            second=30,
+            microsecond=123000,
+            tzinfo=datetime.timezone.utc,
         )

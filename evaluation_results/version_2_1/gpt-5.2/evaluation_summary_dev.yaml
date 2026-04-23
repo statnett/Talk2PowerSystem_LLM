@@ -1,0 +1,2223 @@
+per_template:
+  template_list_a1646084566c7133664c229cbb1fafc7:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1435639
+      mean: 287127.8
+      median: 254649
+      min: 167937
+      max: 502149
+    output_tokens:
+      sum: 2842
+      mean: 568.4
+      median: 508
+      min: 444
+      max: 720
+    total_tokens:
+      sum: 1438481
+      mean: 287696.2
+      median: 255137
+      min: 168381
+      max: 502869
+    elapsed_sec:
+      sum: 92.69503092765808
+      mean: 18.539006185531616
+      median: 16.483989238739014
+      min: 12.437757015228271
+      max: 29.674418926239014
+    steps:
+      total:
+        sparql_query: 9
+        sample_sparql_queries: 4
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 4
+        autocomplete_search: 2
+      empty_results:
+        sparql_query: 1
+  template_list_91a7f2cf5de9c16f6ec1fe55e84354ea:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 683259
+      mean: 341629.5
+      median: 341629.5
+      min: 254612
+      max: 428647
+    output_tokens:
+      sum: 1236
+      mean: 618
+      median: 618.0
+      min: 605
+      max: 631
+    total_tokens:
+      sum: 684495
+      mean: 342247.5
+      median: 342247.5
+      min: 255243
+      max: 429252
+    elapsed_sec:
+      sum: 37.96348857879639
+      mean: 18.981744289398193
+      median: 18.981744289398193
+      min: 17.211459636688232
+      max: 20.752028942108154
+    steps:
+      total:
+        sample_sparql_queries: 2
+        sparql_query: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sample_sparql_queries: 2
+        sparql_query: 2
+        autocomplete_search: 1
+  template_list_80f99db11bf84b8a4a441eadce51ed08:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 3.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 760507
+      mean: 253502.33333333334
+      median: 253874
+      min: 252719
+      max: 253914
+    output_tokens:
+      sum: 1159
+      mean: 386.3333333333333
+      median: 373
+      min: 312
+      max: 474
+    total_tokens:
+      sum: 761666
+      mean: 253888.66666666666
+      median: 254226
+      min: 253193
+      max: 254247
+    elapsed_sec:
+      sum: 39.60526418685913
+      mean: 13.201754728953043
+      median: 12.232394933700562
+      min: 11.92048978805542
+      max: 15.45237946510315
+    steps:
+      total:
+        sparql_query: 4
+        autocomplete_search: 2
+        sample_sparql_queries: 2
+      once_per_sample:
+        sparql_query: 3
+        autocomplete_search: 2
+        sample_sparql_queries: 2
+  template_list_ff474dc65baff0a11c03ffd8f64fd7cb:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1440957
+      mean: 288191.4
+      median: 254570
+      min: 253618
+      max: 339827
+    output_tokens:
+      sum: 2127
+      mean: 425.4
+      median: 385
+      min: 289
+      max: 606
+    total_tokens:
+      sum: 1443084
+      mean: 288616.8
+      median: 254955
+      min: 253907
+      max: 340371
+    elapsed_sec:
+      sum: 68.86602544784546
+      mean: 13.773205089569093
+      median: 12.282145738601685
+      min: 10.335792779922485
+      max: 17.3939049243927
+    steps:
+      total:
+        autocomplete_search: 4
+        sample_sparql_queries: 5
+        sparql_query: 7
+      once_per_sample:
+        autocomplete_search: 4
+        sample_sparql_queries: 5
+        sparql_query: 5
+      errors:
+        sparql_query: 1
+  template_list_a255b3d21675d130e8227530f937948e:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 2.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 595790
+      mean: 297895
+      median: 297895.0
+      min: 254817
+      max: 340973
+    output_tokens:
+      sum: 1491
+      mean: 745.5
+      median: 745.5
+      min: 595
+      max: 896
+    total_tokens:
+      sum: 597281
+      mean: 298640.5
+      median: 298640.5
+      min: 255412
+      max: 341869
+    elapsed_sec:
+      sum: 33.539613008499146
+      mean: 16.769806504249573
+      median: 16.769806504249573
+      min: 13.154101848602295
+      max: 20.38551115989685
+    steps:
+      total:
+        sparql_query: 5
+        sample_sparql_queries: 2
+      once_per_sample:
+        sparql_query: 2
+        sample_sparql_queries: 2
+  template_list_f0c8ab7dfc1fe4d66cf5ef4ef3d1d134:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1189717
+      mean: 237943.4
+      median: 254815
+      min: 167909
+      max: 256483
+    output_tokens:
+      sum: 1951
+      mean: 390.2
+      median: 337
+      min: 294
+      max: 557
+    total_tokens:
+      sum: 1191668
+      mean: 238333.6
+      median: 255250
+      min: 168466
+      max: 256811
+    elapsed_sec:
+      sum: 67.9516339302063
+      mean: 13.59032678604126
+      median: 13.61145830154419
+      min: 11.05367922782898
+      max: 16.339630365371704
+    steps:
+      total:
+        sample_sparql_queries: 4
+        autocomplete_search: 3
+        sparql_query: 7
+      once_per_sample:
+        sample_sparql_queries: 4
+        autocomplete_search: 3
+        sparql_query: 5
+      empty_results:
+        sparql_query: 1
+  template_list_0e6302c814316f3423ce3a14c2af971c:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1185032
+      mean: 237006.4
+      median: 253276
+      min: 169348
+      max: 255119
+    output_tokens:
+      sum: 2099
+      mean: 419.8
+      median: 381
+      min: 338
+      max: 586
+    total_tokens:
+      sum: 1187131
+      mean: 237426.2
+      median: 253614
+      min: 169934
+      max: 255535
+    elapsed_sec:
+      sum: 70.45025062561035
+      mean: 14.09005012512207
+      median: 14.081814527511597
+      min: 13.401896953582764
+      max: 15.028785228729248
+    steps:
+      total:
+        sparql_query: 9
+        sample_sparql_queries: 3
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 3
+        autocomplete_search: 1
+      empty_results:
+        sparql_query: 1
+  template_list_d525ab726130ada12f9061812e56ba7a:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 3.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 934744
+      mean: 311581.3333333333
+      median: 254632
+      min: 254600
+      max: 425512
+    output_tokens:
+      sum: 1337
+      mean: 445.6666666666667
+      median: 447
+      min: 276
+      max: 614
+    total_tokens:
+      sum: 936081
+      mean: 312027
+      median: 255047
+      min: 254908
+      max: 426126
+    elapsed_sec:
+      sum: 52.8064603805542
+      mean: 17.602153460184734
+      median: 16.713659048080444
+      min: 13.416500806808472
+      max: 22.676300525665283
+    steps:
+      total:
+        sample_sparql_queries: 3
+        sparql_query: 7
+        autocomplete_search: 1
+      once_per_sample:
+        sample_sparql_queries: 3
+        sparql_query: 3
+        autocomplete_search: 1
+      empty_results:
+        sparql_query: 3
+  template_list_95dda54f630cbd2f2f59547952fd3e62:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1970555
+      mean: 394111
+      median: 340103
+      min: 255307
+      max: 776704
+    output_tokens:
+      sum: 2297
+      mean: 459.4
+      median: 393
+      min: 302
+      max: 725
+    total_tokens:
+      sum: 1972852
+      mean: 394570.4
+      median: 340622
+      min: 255665
+      max: 777429
+    elapsed_sec:
+      sum: 103.41263890266418
+      mean: 20.682527780532837
+      median: 15.242294073104858
+      min: 13.760370969772339
+      max: 37.26630234718323
+    steps:
+      total:
+        autocomplete_search: 7
+        sample_sparql_queries: 5
+        sparql_query: 9
+      once_per_sample:
+        autocomplete_search: 4
+        sample_sparql_queries: 5
+        sparql_query: 5
+      empty_results:
+        sparql_query: 3
+        autocomplete_search: 1
+      errors:
+        autocomplete_search: 1
+  template_list_1897ceab494bfc5db2876850259ed86c:
+    number_of_error_samples: 0
+    number_of_success_samples: 2
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 592840
+      mean: 296420
+      median: 296420.0
+      min: 253825
+      max: 339015
+    output_tokens:
+      sum: 1169
+      mean: 584.5
+      median: 584.5
+      min: 550
+      max: 619
+    total_tokens:
+      sum: 594009
+      mean: 297004.5
+      median: 297004.5
+      min: 254375
+      max: 339634
+    elapsed_sec:
+      sum: 33.56407690048218
+      mean: 16.78203845024109
+      median: 16.78203845024109
+      min: 16.16471576690674
+      max: 17.39936113357544
+    steps:
+      total:
+        sample_sparql_queries: 2
+        sparql_query: 5
+      once_per_sample:
+        sample_sparql_queries: 2
+        sparql_query: 2
+      empty_results:
+        sparql_query: 5
+  template_list_a046cf93fa575aa42af2e7ffb09fba1b:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1523877
+      mean: 304775.4
+      median: 338001
+      min: 253046
+      max: 340282
+    output_tokens:
+      sum: 2100
+      mean: 420
+      median: 349
+      min: 309
+      max: 588
+    total_tokens:
+      sum: 1525977
+      mean: 305195.4
+      median: 338310
+      min: 253634
+      max: 340811
+    elapsed_sec:
+      sum: 74.6211941242218
+      mean: 14.92423882484436
+      median: 15.23363733291626
+      min: 13.261454343795776
+      max: 16.170559883117676
+    steps:
+      total:
+        sparql_query: 9
+        sample_sparql_queries: 4
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 4
+        autocomplete_search: 2
+      errors:
+        sparql_query: 1
+  template_list_74371ba1d72ec5c4f885ff4b0923dff9:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1360449
+      mean: 272089.8
+      median: 255130
+      min: 253954
+      max: 340336
+    output_tokens:
+      sum: 2146
+      mean: 429.2
+      median: 461
+      min: 305
+      max: 538
+    total_tokens:
+      sum: 1362595
+      mean: 272519
+      median: 255668
+      min: 254259
+      max: 340848
+    elapsed_sec:
+      sum: 76.48954653739929
+      mean: 15.297909307479859
+      median: 14.748390197753906
+      min: 11.825535535812378
+      max: 19.130216121673584
+    steps:
+      total:
+        sparql_query: 8
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+  template_list_e49a2416843a82250225222ac9e26e9e:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1703505
+      mean: 340701
+      median: 341059
+      min: 253871
+      max: 425564
+    output_tokens:
+      sum: 2725
+      mean: 545
+      median: 531
+      min: 283
+      max: 942
+    total_tokens:
+      sum: 1706230
+      mean: 341246
+      median: 341901
+      min: 254154
+      max: 426095
+    elapsed_sec:
+      sum: 90.76921439170837
+      mean: 18.153842878341674
+      median: 16.271116971969604
+      min: 12.989859342575073
+      max: 24.034504652023315
+    steps:
+      total:
+        sparql_query: 12
+        sample_sparql_queries: 5
+        autocomplete_search: 3
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 3
+      errors:
+        sparql_query: 2
+      empty_results:
+        sparql_query: 1
+  template_list_7f91aaea615b4f9394a2bab9d97a6c6c:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1269130
+      mean: 253826
+      median: 253763
+      min: 253559
+      max: 254078
+    output_tokens:
+      sum: 1915
+      mean: 383
+      median: 387
+      min: 311
+      max: 423
+    total_tokens:
+      sum: 1271045
+      mean: 254209
+      median: 254076
+      min: 253946
+      max: 254489
+    elapsed_sec:
+      sum: 70.82526278495789
+      mean: 14.165052556991578
+      median: 14.658377408981323
+      min: 10.965238332748413
+      max: 17.225508213043213
+    steps:
+      total:
+        sample_sparql_queries: 5
+        sparql_query: 9
+        autocomplete_search: 2
+      once_per_sample:
+        sample_sparql_queries: 5
+        sparql_query: 5
+        autocomplete_search: 2
+      empty_results:
+        sparql_query: 1
+  template_list_2290cd820cfe6cd23955af287e1f1ebf:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 340427
+      mean: 340427
+      median: 340427
+      min: 340427
+      max: 340427
+    output_tokens:
+      sum: 617
+      mean: 617
+      median: 617
+      min: 617
+      max: 617
+    total_tokens:
+      sum: 341044
+      mean: 341044
+      median: 341044
+      min: 341044
+      max: 341044
+    elapsed_sec:
+      sum: 18.302699089050293
+      mean: 18.302699089050293
+      median: 18.302699089050293
+      min: 18.302699089050293
+      max: 18.302699089050293
+    steps:
+      total:
+        sample_sparql_queries: 1
+        sparql_query: 3
+      once_per_sample:
+        sample_sparql_queries: 1
+        sparql_query: 1
+      errors:
+        sparql_query: 1
+  template_list_74550c068f3795450fdd486e7843d417:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1873715
+      mean: 374743
+      median: 340819
+      min: 339290
+      max: 428491
+    output_tokens:
+      sum: 3683
+      mean: 736.6
+      median: 598
+      min: 434
+      max: 1438
+    total_tokens:
+      sum: 1877398
+      mean: 375479.6
+      median: 341490
+      min: 339724
+      max: 429929
+    elapsed_sec:
+      sum: 112.60157704353333
+      mean: 22.520315408706665
+      median: 20.09478521347046
+      min: 17.740882396697998
+      max: 32.61699891090393
+    steps:
+      total:
+        sample_sparql_queries: 5
+        sparql_query: 14
+        autocomplete_search: 1
+      once_per_sample:
+        sample_sparql_queries: 5
+        sparql_query: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 2
+  template_list_91ee1fdc7afc2a5d7eb897469797525a:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1273665
+      mean: 254733
+      median: 254035
+      min: 167879
+      max: 429211
+    output_tokens:
+      sum: 3011
+      mean: 602.2
+      median: 434
+      min: 372
+      max: 1354
+    total_tokens:
+      sum: 1276676
+      mean: 255335.2
+      median: 254469
+      min: 168313
+      max: 430565
+    elapsed_sec:
+      sum: 76.65961694717407
+      mean: 15.331923389434815
+      median: 11.540998458862305
+      min: 10.682859182357788
+      max: 29.991571187973022
+    steps:
+      total:
+        autocomplete_search: 1
+        sample_sparql_queries: 3
+        sparql_query: 13
+      once_per_sample:
+        autocomplete_search: 1
+        sample_sparql_queries: 3
+        sparql_query: 5
+      empty_results:
+        sparql_query: 2
+      errors:
+        sparql_query: 1
+  template_list_cd9b8d62ffcbd8bb6e7e2bf1f02c4970:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1711039
+      mean: 342207.8
+      median: 255709
+      min: 254810
+      max: 604173
+    output_tokens:
+      sum: 2494
+      mean: 498.8
+      median: 434
+      min: 325
+      max: 717
+    total_tokens:
+      sum: 1713533
+      mean: 342706.6
+      median: 256037
+      min: 255135
+      max: 604890
+    elapsed_sec:
+      sum: 95.2208456993103
+      mean: 19.04416913986206
+      median: 14.532583713531494
+      min: 13.001756429672241
+      max: 32.387934923172
+    steps:
+      total:
+        autocomplete_search: 2
+        sample_sparql_queries: 5
+        sparql_query: 13
+      once_per_sample:
+        autocomplete_search: 2
+        sample_sparql_queries: 5
+        sparql_query: 5
+      empty_results:
+        sparql_query: 3
+      errors:
+        sparql_query: 1
+  template_list_dfcc795f822771767ea7014c9c37db41:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1182677
+      mean: 236535.4
+      median: 253669
+      min: 167969
+      max: 253726
+    output_tokens:
+      sum: 1935
+      mean: 387
+      median: 370
+      min: 301
+      max: 506
+    total_tokens:
+      sum: 1184612
+      mean: 236922.4
+      median: 253972
+      min: 168475
+      max: 254136
+    elapsed_sec:
+      sum: 61.3530638217926
+      mean: 12.270612764358521
+      median: 12.30117654800415
+      min: 11.778315782546997
+      max: 12.840429782867432
+    steps:
+      total:
+        sample_sparql_queries: 4
+        sparql_query: 8
+        autocomplete_search: 2
+      once_per_sample:
+        sample_sparql_queries: 4
+        sparql_query: 5
+        autocomplete_search: 2
+      empty_results:
+        sparql_query: 1
+  template_list_2a6a20dc960766a4024d03cc70ec6d11:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 2.0
+      mean: 0.4
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1268666
+      mean: 253733.2
+      median: 253734
+      min: 253533
+      max: 253898
+    output_tokens:
+      sum: 2294
+      mean: 458.8
+      median: 436
+      min: 340
+      max: 637
+    total_tokens:
+      sum: 1270960
+      mean: 254192
+      median: 254206
+      min: 253969
+      max: 254535
+    elapsed_sec:
+      sum: 67.5367591381073
+      mean: 13.50735182762146
+      median: 13.305019617080688
+      min: 10.329665899276733
+      max: 18.525771379470825
+    steps:
+      total:
+        sample_sparql_queries: 5
+        sparql_query: 10
+      once_per_sample:
+        sample_sparql_queries: 5
+        sparql_query: 5
+      empty_results:
+        sparql_query: 6
+  template_list_31843fa2c1b2d9309eff6bfe7d27a96b:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 3.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1020395
+      mean: 340131.6666666667
+      median: 340082
+      min: 339908
+      max: 340405
+    output_tokens:
+      sum: 1801
+      mean: 600.3333333333334
+      median: 657
+      min: 482
+      max: 662
+    total_tokens:
+      sum: 1022196
+      mean: 340732
+      median: 340570
+      min: 340564
+      max: 341062
+    elapsed_sec:
+      sum: 56.12892699241638
+      mean: 18.709642330805462
+      median: 20.049808263778687
+      min: 15.400339603424072
+      max: 20.678779125213623
+    steps:
+      total:
+        sample_sparql_queries: 3
+        sparql_query: 8
+        autocomplete_search: 1
+      once_per_sample:
+        sample_sparql_queries: 3
+        sparql_query: 3
+        autocomplete_search: 1
+      errors:
+        sparql_query: 3
+  template_list_ef09dd8946556300034f277918435dec:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 2.0
+      mean: 0.6666666666666666
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 850475
+      mean: 283491.6666666667
+      median: 255710
+      min: 253877
+      max: 340888
+    output_tokens:
+      sum: 2175
+      mean: 725
+      median: 869
+      min: 427
+      max: 879
+    total_tokens:
+      sum: 852650
+      mean: 284216.6666666667
+      median: 256589
+      min: 254304
+      max: 341757
+    elapsed_sec:
+      sum: 53.464542865753174
+      mean: 17.821514288584392
+      median: 17.933217763900757
+      min: 12.837024211883545
+      max: 22.694300889968872
+    steps:
+      total:
+        autocomplete_search: 2
+        sample_sparql_queries: 3
+        sparql_query: 5
+      once_per_sample:
+        autocomplete_search: 2
+        sample_sparql_queries: 3
+        sparql_query: 3
+      errors:
+        sparql_query: 1
+  template_list_2c1c1a0ee5fa055e6a79bf56a396a582:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1887685
+      mean: 377537
+      median: 340348
+      min: 254503
+      max: 695736
+    output_tokens:
+      sum: 2347
+      mean: 469.4
+      median: 389
+      min: 344
+      max: 779
+    total_tokens:
+      sum: 1890032
+      mean: 378006.4
+      median: 340814
+      min: 254892
+      max: 696515
+    elapsed_sec:
+      sum: 93.53231382369995
+      mean: 18.70646276473999
+      median: 14.605788946151733
+      min: 12.530127048492432
+      max: 34.1873242855072
+    steps:
+      total:
+        sparql_query: 15
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 3
+  template_list_d793a7af0d3dc195095c7bd870003eb9:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1273901
+      mean: 254780.2
+      median: 254529
+      min: 254149
+      max: 256149
+    output_tokens:
+      sum: 2057
+      mean: 411.4
+      median: 409
+      min: 343
+      max: 474
+    total_tokens:
+      sum: 1275958
+      mean: 255191.6
+      median: 254932
+      min: 254623
+      max: 256577
+    elapsed_sec:
+      sum: 66.30602931976318
+      mean: 13.261205863952636
+      median: 13.197182178497314
+      min: 12.58481478691101
+      max: 14.325006246566772
+    steps:
+      total:
+        sparql_query: 8
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+  template_list_27d64dd1c260a2c9561181bf48b77200:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1270303
+      mean: 254060.6
+      median: 253843
+      min: 253666
+      max: 254525
+    output_tokens:
+      sum: 1818
+      mean: 363.6
+      median: 367
+      min: 312
+      max: 409
+    total_tokens:
+      sum: 1272121
+      mean: 254424.2
+      median: 254194
+      min: 253978
+      max: 254934
+    elapsed_sec:
+      sum: 64.65111780166626
+      mean: 12.930223560333252
+      median: 12.360466480255127
+      min: 11.949026584625244
+      max: 14.150066375732422
+    steps:
+      total:
+        autocomplete_search: 3
+        sample_sparql_queries: 5
+        sparql_query: 7
+      once_per_sample:
+        autocomplete_search: 3
+        sample_sparql_queries: 5
+        sparql_query: 5
+  template_list_c7a70c0b8203742bf6437567335459a1:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 168883
+      mean: 168883
+      median: 168883
+      min: 168883
+      max: 168883
+    output_tokens:
+      sum: 359
+      mean: 359
+      median: 359
+      min: 359
+      max: 359
+    total_tokens:
+      sum: 169242
+      mean: 169242
+      median: 169242
+      min: 169242
+      max: 169242
+    elapsed_sec:
+      sum: 12.652164220809937
+      mean: 12.652164220809937
+      median: 12.652164220809937
+      min: 12.652164220809937
+      max: 12.652164220809937
+    steps:
+      total:
+        sample_sparql_queries: 1
+        sparql_query: 2
+      once_per_sample:
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_2433331f3848a62f8995dce1abb67179:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 340052
+      mean: 340052
+      median: 340052
+      min: 340052
+      max: 340052
+    output_tokens:
+      sum: 635
+      mean: 635
+      median: 635
+      min: 635
+      max: 635
+    total_tokens:
+      sum: 340687
+      mean: 340687
+      median: 340687
+      min: 340687
+      max: 340687
+    elapsed_sec:
+      sum: 21.013168573379517
+      mean: 21.013168573379517
+      median: 21.013168573379517
+      min: 21.013168573379517
+      max: 21.013168573379517
+    steps:
+      total:
+        sparql_query: 3
+        sample_sparql_queries: 1
+      once_per_sample:
+        sparql_query: 1
+        sample_sparql_queries: 1
+  template_list_72ebfcf535ab4649c805df3aacd65298:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 168376
+      mean: 168376
+      median: 168376
+      min: 168376
+      max: 168376
+    output_tokens:
+      sum: 309
+      mean: 309
+      median: 309
+      min: 309
+      max: 309
+    total_tokens:
+      sum: 168685
+      mean: 168685
+      median: 168685
+      min: 168685
+      max: 168685
+    elapsed_sec:
+      sum: 10.707820177078247
+      mean: 10.707820177078247
+      median: 10.707820177078247
+      min: 10.707820177078247
+      max: 10.707820177078247
+    steps:
+      total:
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_28d37241ad45438c3e89c4b6ad2f132c:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 2.0
+      mean: 0.6666666666666666
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 847618
+      mean: 282539.3333333333
+      median: 253672
+      min: 169044
+      max: 424902
+    output_tokens:
+      sum: 1392
+      mean: 464
+      median: 299
+      min: 273
+      max: 820
+    total_tokens:
+      sum: 849010
+      mean: 283003.3333333333
+      median: 253945
+      min: 169343
+      max: 425722
+    elapsed_sec:
+      sum: 51.9787712097168
+      mean: 17.326257069905598
+      median: 12.899474143981934
+      min: 11.660022974014282
+      max: 27.41927409172058
+    steps:
+      total:
+        autocomplete_search: 1
+        sample_sparql_queries: 3
+        sparql_query: 6
+      once_per_sample:
+        autocomplete_search: 1
+        sample_sparql_queries: 3
+        sparql_query: 3
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 2
+  template_list_fb037e43c2df89cb5d08466200347cdd:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 167509
+      mean: 167509
+      median: 167509
+      min: 167509
+      max: 167509
+    output_tokens:
+      sum: 148
+      mean: 148
+      median: 148
+      min: 148
+      max: 148
+    total_tokens:
+      sum: 167657
+      mean: 167657
+      median: 167657
+      min: 167657
+      max: 167657
+    elapsed_sec:
+      sum: 5.753924131393433
+      mean: 5.753924131393433
+      median: 5.753924131393433
+      min: 5.753924131393433
+      max: 5.753924131393433
+    steps:
+      total:
+        sparql_query: 1
+      once_per_sample:
+        sparql_query: 1
+  template_list_8dbebcbc4407bc8851f8ef958bc18fbf:
+    number_of_error_samples: 0
+    number_of_success_samples: 4
+    steps_score:
+      sum: 4.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1364599
+      mean: 341149.75
+      median: 340700.0
+      min: 339845
+      max: 343354
+    output_tokens:
+      sum: 2672
+      mean: 668
+      median: 599.5
+      min: 509
+      max: 964
+    total_tokens:
+      sum: 1367271
+      mean: 341817.75
+      median: 341520.5
+      min: 340354
+      max: 343876
+    elapsed_sec:
+      sum: 73.69056177139282
+      mean: 18.422640442848206
+      median: 17.971598982810974
+      min: 15.118163824081421
+      max: 22.629199981689453
+    steps:
+      total:
+        sparql_query: 11
+        sample_sparql_queries: 4
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 4
+        sample_sparql_queries: 4
+        autocomplete_search: 1
+      errors:
+        sparql_query: 3
+  template_list_eca4d16a9f23207b1405fa8669bb3395:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1616312
+      mean: 323262.4
+      median: 255442
+      min: 254157
+      max: 510697
+    output_tokens:
+      sum: 2788
+      mean: 557.6
+      median: 507
+      min: 422
+      max: 752
+    total_tokens:
+      sum: 1619100
+      mean: 323820
+      median: 256086
+      min: 254579
+      max: 511449
+    elapsed_sec:
+      sum: 89.76366996765137
+      mean: 17.952733993530273
+      median: 17.78015923500061
+      min: 12.810509443283081
+      max: 27.323062658309937
+    steps:
+      total:
+        sample_sparql_queries: 5
+        sparql_query: 12
+        autocomplete_search: 2
+      once_per_sample:
+        sample_sparql_queries: 5
+        sparql_query: 5
+        autocomplete_search: 2
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 3
+  template_list_37ed4e19597ca95dd8e3ab8504da2363:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 253260
+      mean: 253260
+      median: 253260
+      min: 253260
+      max: 253260
+    output_tokens:
+      sum: 227
+      mean: 227
+      median: 227
+      min: 227
+      max: 227
+    total_tokens:
+      sum: 253487
+      mean: 253487
+      median: 253487
+      min: 253487
+      max: 253487
+    elapsed_sec:
+      sum: 8.79019808769226
+      mean: 8.79019808769226
+      median: 8.79019808769226
+      min: 8.79019808769226
+      max: 8.79019808769226
+    steps:
+      total:
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_0e58a15d35560f390d8b530d3d5f21f0:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1613664
+      mean: 322732.8
+      median: 339558
+      min: 254627
+      max: 340108
+    output_tokens:
+      sum: 2595
+      mean: 519
+      median: 519
+      min: 437
+      max: 601
+    total_tokens:
+      sum: 1616259
+      mean: 323251.8
+      median: 340159
+      min: 255135
+      max: 340545
+    elapsed_sec:
+      sum: 94.24800300598145
+      mean: 18.84960060119629
+      median: 19.135326147079468
+      min: 16.36416506767273
+      max: 22.290058612823486
+    steps:
+      total:
+        sparql_query: 11
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 1
+      empty_results:
+        sparql_query: 1
+  template_list_4745f092dfb600a0263a01c814eaf017:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1362276
+      mean: 272455.2
+      median: 255864
+      min: 255321
+      max: 339447
+    output_tokens:
+      sum: 3380
+      mean: 676
+      median: 665
+      min: 453
+      max: 969
+    total_tokens:
+      sum: 1365656
+      mean: 273131.2
+      median: 256390
+      min: 255997
+      max: 340064
+    elapsed_sec:
+      sum: 86.69851565361023
+      mean: 17.339703130722047
+      median: 17.248327016830444
+      min: 14.272754192352295
+      max: 22.263495683670044
+    steps:
+      total:
+        sparql_query: 14
+        autocomplete_search: 2
+        sample_sparql_queries: 5
+      once_per_sample:
+        sparql_query: 5
+        autocomplete_search: 2
+        sample_sparql_queries: 5
+      errors:
+        sparql_query: 1
+  template_list_bb5ba6e5dc93d86eb8097f2050eee8b4:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 3.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 676250
+      mean: 225416.66666666666
+      median: 253498
+      min: 168980
+      max: 253772
+    output_tokens:
+      sum: 1323
+      mean: 441
+      median: 415
+      min: 403
+      max: 505
+    total_tokens:
+      sum: 677573
+      mean: 225857.66666666666
+      median: 253901
+      min: 169485
+      max: 254187
+    elapsed_sec:
+      sum: 38.46616888046265
+      mean: 12.822056293487549
+      median: 12.550503969192505
+      min: 11.243069887161255
+      max: 14.672595024108887
+    steps:
+      total:
+        sample_sparql_queries: 3
+        sparql_query: 3
+      once_per_sample:
+        sample_sparql_queries: 3
+        sparql_query: 3
+  template_list_221a1272cead6fdaf47fcaa67baf43ea:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1866870
+      mean: 373374
+      median: 341276
+      min: 340148
+      max: 422597
+    output_tokens:
+      sum: 3028
+      mean: 605.6
+      median: 615
+      min: 429
+      max: 736
+    total_tokens:
+      sum: 1869898
+      mean: 373979.6
+      median: 341937
+      min: 340577
+      max: 423333
+    elapsed_sec:
+      sum: 95.90217137336731
+      mean: 19.180434274673463
+      median: 19.917255401611328
+      min: 15.713300704956055
+      max: 21.557345628738403
+    steps:
+      total:
+        sparql_query: 16
+        sample_sparql_queries: 3
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 3
+      errors:
+        sparql_query: 3
+      empty_results:
+        sparql_query: 2
+  template_list_3bf0163f8af4111fcb9d881e1aaadd74:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 168714
+      mean: 168714
+      median: 168714
+      min: 168714
+      max: 168714
+    output_tokens:
+      sum: 335
+      mean: 335
+      median: 335
+      min: 335
+      max: 335
+    total_tokens:
+      sum: 169049
+      mean: 169049
+      median: 169049
+      min: 169049
+      max: 169049
+    elapsed_sec:
+      sum: 11.929060459136963
+      mean: 11.929060459136963
+      median: 11.929060459136963
+      min: 11.929060459136963
+      max: 11.929060459136963
+    steps:
+      total:
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_d868ea4b7001b517efda272eb84770a4:
+    number_of_error_samples: 0
+    number_of_success_samples: 3
+    steps_score:
+      sum: 3.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 934913
+      mean: 311637.6666666667
+      median: 339956
+      min: 254721
+      max: 340236
+    output_tokens:
+      sum: 1417
+      mean: 472.3333333333333
+      median: 429
+      min: 426
+      max: 562
+    total_tokens:
+      sum: 936330
+      mean: 312110
+      median: 340385
+      min: 255147
+      max: 340798
+    elapsed_sec:
+      sum: 52.39672493934631
+      mean: 17.465574979782104
+      median: 17.395383834838867
+      min: 17.041696071624756
+      max: 17.95964503288269
+    steps:
+      total:
+        sparql_query: 7
+        sample_sparql_queries: 3
+      once_per_sample:
+        sparql_query: 3
+        sample_sparql_queries: 3
+      errors:
+        sparql_query: 1
+  template_list_76309a54b335f4f77419fc7fe165828e:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1613677
+      mean: 322735.4
+      median: 338971
+      min: 254171
+      max: 423872
+    output_tokens:
+      sum: 3107
+      mean: 621.4
+      median: 615
+      min: 526
+      max: 722
+    total_tokens:
+      sum: 1616784
+      mean: 323356.8
+      median: 339693
+      min: 254742
+      max: 424487
+    elapsed_sec:
+      sum: 80.79455995559692
+      mean: 16.158911991119385
+      median: 16.27131462097168
+      min: 14.379389524459839
+      max: 17.655306816101074
+    steps:
+      total:
+        sparql_query: 11
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 1
+  template_list_eb0b241d7a50c5a0454e0c9260c9cbe1:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1443925
+      mean: 288785
+      median: 254464
+      min: 254358
+      max: 341809
+    output_tokens:
+      sum: 2493
+      mean: 498.6
+      median: 508
+      min: 380
+      max: 685
+    total_tokens:
+      sum: 1446418
+      mean: 289283.6
+      median: 254875
+      min: 254831
+      max: 342494
+    elapsed_sec:
+      sum: 84.31975412368774
+      mean: 16.86395082473755
+      median: 16.370206594467163
+      min: 14.008192777633667
+      max: 22.20361328125
+    steps:
+      total:
+        sample_sparql_queries: 5
+        sparql_query: 11
+        autocomplete_search: 1
+      once_per_sample:
+        sample_sparql_queries: 5
+        sparql_query: 5
+        autocomplete_search: 1
+      empty_results:
+        sparql_query: 6
+  template_list_b54cef52fa1ed6a8c3cfd7ba3a8a3897:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1699992
+      mean: 339998.4
+      median: 340900
+      min: 254657
+      max: 422855
+    output_tokens:
+      sum: 3304
+      mean: 660.8
+      median: 688
+      min: 421
+      max: 873
+    total_tokens:
+      sum: 1703296
+      mean: 340659.2
+      median: 341588
+      min: 255078
+      max: 423728
+    elapsed_sec:
+      sum: 95.42806458473206
+      mean: 19.08561291694641
+      median: 17.191570520401
+      min: 14.472875595092773
+      max: 24.5768461227417
+    steps:
+      total:
+        sparql_query: 15
+        sample_sparql_queries: 4
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 4
+      errors:
+        sparql_query: 3
+      empty_results:
+        sparql_query: 1
+  template_list_87aeb0c95f264154f097559667e06f5b:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1529460
+      mean: 305892
+      median: 338441
+      min: 254559
+      max: 341242
+    output_tokens:
+      sum: 3044
+      mean: 608.8
+      median: 580
+      min: 363
+      max: 1035
+    total_tokens:
+      sum: 1532504
+      mean: 306500.8
+      median: 339021
+      min: 254922
+      max: 342277
+    elapsed_sec:
+      sum: 84.62528991699219
+      mean: 16.92505798339844
+      median: 15.649624347686768
+      min: 10.916218996047974
+      max: 28.068786144256592
+    steps:
+      total:
+        sample_sparql_queries: 5
+        autocomplete_search: 3
+        sparql_query: 9
+      once_per_sample:
+        sample_sparql_queries: 5
+        autocomplete_search: 3
+        sparql_query: 5
+      errors:
+        sparql_query: 2
+  template_list_4f3e70e66e542bb22709e086b65caf48:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 253947
+      mean: 253947
+      median: 253947
+      min: 253947
+      max: 253947
+    output_tokens:
+      sum: 447
+      mean: 447
+      median: 447
+      min: 447
+      max: 447
+    total_tokens:
+      sum: 254394
+      mean: 254394
+      median: 254394
+      min: 254394
+      max: 254394
+    elapsed_sec:
+      sum: 15.433261632919312
+      mean: 15.433261632919312
+      median: 15.433261632919312
+      min: 15.433261632919312
+      max: 15.433261632919312
+    steps:
+      total:
+        sample_sparql_queries: 1
+        sparql_query: 2
+      once_per_sample:
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_170e2b71b3d729a17f8db09850613fe3:
+    number_of_error_samples: 0
+    number_of_success_samples: 1
+    steps_score:
+      sum: 1.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 254058
+      mean: 254058
+      median: 254058
+      min: 254058
+      max: 254058
+    output_tokens:
+      sum: 510
+      mean: 510
+      median: 510
+      min: 510
+      max: 510
+    total_tokens:
+      sum: 254568
+      mean: 254568
+      median: 254568
+      min: 254568
+      max: 254568
+    elapsed_sec:
+      sum: 16.091217279434204
+      mean: 16.091217279434204
+      median: 16.091217279434204
+      min: 16.091217279434204
+      max: 16.091217279434204
+    steps:
+      total:
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+      once_per_sample:
+        autocomplete_search: 1
+        sample_sparql_queries: 1
+        sparql_query: 1
+  template_list_54b09136fbadbef3aab3257d31d1f45a:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1542688
+      mean: 308537.6
+      median: 342470
+      min: 255872
+      max: 344543
+    output_tokens:
+      sum: 3034
+      mean: 606.8
+      median: 659
+      min: 432
+      max: 777
+    total_tokens:
+      sum: 1545722
+      mean: 309144.4
+      median: 343168
+      min: 256340
+      max: 345202
+    elapsed_sec:
+      sum: 91.77900075912476
+      mean: 18.35580015182495
+      median: 17.928582906723022
+      min: 13.023257493972778
+      max: 23.541359186172485
+    steps:
+      total:
+        sparql_query: 13
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 2
+      errors:
+        sparql_query: 3
+  template_list_f08da9f2b8d91bf15630469e955db570:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1609512
+      mean: 321902.4
+      median: 338735
+      min: 253783
+      max: 339363
+    output_tokens:
+      sum: 2303
+      mean: 460.6
+      median: 429
+      min: 324
+      max: 581
+    total_tokens:
+      sum: 1611815
+      mean: 322363
+      median: 339059
+      min: 254212
+      max: 339932
+    elapsed_sec:
+      sum: 81.39346480369568
+      mean: 16.278692960739136
+      median: 16.209317207336426
+      min: 14.783623933792114
+      max: 18.45371103286743
+    steps:
+      total:
+        sparql_query: 11
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 2
+  template_list_062b43c5792b70f0703571f662fe4ac9:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1706622
+      mean: 341324.4
+      median: 339988
+      min: 254075
+      max: 429607
+    output_tokens:
+      sum: 2424
+      mean: 484.8
+      median: 482
+      min: 437
+      max: 538
+    total_tokens:
+      sum: 1709046
+      mean: 341809.2
+      median: 340526
+      min: 254529
+      max: 430120
+    elapsed_sec:
+      sum: 89.00170564651489
+      mean: 17.80034112930298
+      median: 17.27431607246399
+      min: 15.857331275939941
+      max: 21.182318210601807
+    steps:
+      total:
+        autocomplete_search: 5
+        sample_sparql_queries: 5
+        sparql_query: 9
+      once_per_sample:
+        autocomplete_search: 3
+        sample_sparql_queries: 5
+        sparql_query: 5
+      empty_results:
+        autocomplete_search: 1
+      errors:
+        sparql_query: 1
+  template_list_b61eced1e23d140f8c1bcc42efbdf028:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 4.0
+      mean: 0.8
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 1884162
+      mean: 376832.4
+      median: 425532
+      min: 251964
+      max: 441574
+    output_tokens:
+      sum: 4278
+      mean: 855.6
+      median: 694
+      min: 452
+      max: 1803
+    total_tokens:
+      sum: 1888440
+      mean: 377688
+      median: 426226
+      min: 252416
+      max: 443377
+    elapsed_sec:
+      sum: 114.45862984657288
+      mean: 22.891725969314574
+      median: 21.85149073600769
+      min: 13.622161865234375
+      max: 37.33883190155029
+    steps:
+      total:
+        sample_sparql_queries: 4
+        sparql_query: 16
+        autocomplete_search: 1
+      once_per_sample:
+        sample_sparql_queries: 4
+        sparql_query: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 3
+      empty_results:
+        sparql_query: 1
+  template_list_2a7ab601df13a31e949845660a801e7f:
+    number_of_error_samples: 0
+    number_of_success_samples: 5
+    steps_score:
+      sum: 5.0
+      mean: 1.0
+      median: 1.0
+      min: 1.0
+      max: 1.0
+    input_tokens:
+      sum: 1361026
+      mean: 272205.2
+      median: 255073
+      min: 254281
+      max: 341139
+    output_tokens:
+      sum: 2620
+      mean: 524
+      median: 504
+      min: 413
+      max: 772
+    total_tokens:
+      sum: 1363646
+      mean: 272729.2
+      median: 255506
+      min: 254697
+      max: 341911
+    elapsed_sec:
+      sum: 76.81298208236694
+      mean: 15.362596416473389
+      median: 13.987188577651978
+      min: 13.493254899978638
+      max: 20.80928874015808
+    steps:
+      total:
+        sparql_query: 14
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      once_per_sample:
+        sparql_query: 5
+        sample_sparql_queries: 5
+        autocomplete_search: 1
+      errors:
+        sparql_query: 1
+micro:
+  number_of_error_samples: 0
+  number_of_success_samples: 190
+  steps_score:
+    sum: 177.0
+    mean: 0.9315789473684211
+    median: 1.0
+    min: 0.0
+    max: 1.0
+  input_tokens:
+    sum: 57047314
+    mean: 300249.0210526316
+    median: 255619.0
+    min: 167509
+    max: 776704
+  output_tokens:
+    sum: 98998
+    mean: 521.0421052631579
+    median: 478.0
+    min: 148
+    max: 1803
+  total_tokens:
+    sum: 57146312
+    mean: 300770.06315789477
+    median: 256066.0
+    min: 167657
+    max: 777429
+  elapsed_sec:
+    sum: 3163.4460463523865
+    mean: 16.649716033433613
+    median: 15.551001906394958
+    min: 5.753924131393433
+    max: 37.33883190155029
+  steps:
+    total:
+      sample_sparql_queries: 176
+      sparql_query: 410
+      autocomplete_search: 69
+    once_per_sample:
+      sample_sparql_queries: 176
+      sparql_query: 190
+      autocomplete_search: 64
+    errors:
+      sparql_query: 41
+      autocomplete_search: 1
+    empty_results:
+      sparql_query: 47
+      autocomplete_search: 2
+macro:
+  steps_score:
+    mean: 0.9306666666666666
+  input_tokens:
+    mean: 290695.21033333335
+  output_tokens:
+    mean: 507.70933333333335
+  total_tokens:
+    mean: 291202.91966666665
+  elapsed_sec:
+    mean: 16.208245661735535

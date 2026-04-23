@@ -1,4 +1,4 @@
-from typing import Literal, Annotated, Union
+from typing import Annotated, Literal, Union
 
 from pydantic import BaseModel, Field
 
@@ -14,12 +14,17 @@ class Usage(BaseModel):
     total_tokens: int = Field(alias="totalTokens")
 
 
-class ImageGraphic(BaseModel):
-    type: Literal["image"] = "image"
+class SvgGraphic(BaseModel):
+    type: Literal["svg"] = "svg"
     url: str
 
 
-Graphic = Annotated[Union[ImageGraphic], Field(discriminator="type")]
+class VizGraphGraphic(BaseModel):
+    type: Literal["vizGraph"] = "vizGraph"
+    url: str
+
+
+Graphic = Annotated[Union[SvgGraphic, VizGraphGraphic], Field(discriminator="type")]
 
 
 class Message(BaseModel):
@@ -45,7 +50,10 @@ class QueryMethod(BaseModel):
     args: dict
     query: str | None = None
     query_type: str | None = Field(default=None, alias="queryType")
+    graphdb_repository_id: str | None = Field(default=None, alias="graphdbRepositoryId")
     error_output: str | None = Field(default=None, alias="errorOutput")
+    advanced: bool | None = None
+    hide_args: bool | None = Field(default=None, alias="hideArgs")
 
 
 class ExplainResponse(BaseModel):

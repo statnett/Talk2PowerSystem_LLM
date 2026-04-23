@@ -18,7 +18,6 @@ base_url: "<graphdb-base-url>"
 repository_id: "repository-id"
 connect_timeout: <connect-timeout>
 read_timeout: <read-timeout>
-sparql_timeout: <sparql-timeout>
 ttyg_agent_id: "<agent-id>"
 username: "<username>"
 ```

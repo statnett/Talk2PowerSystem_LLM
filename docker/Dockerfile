@@ -12,6 +12,20 @@ COPY ./pyproject.toml ./poetry.lock ./README.adoc /tmp/
 RUN pip install --upgrade pip && pip install poetry==2.1.3
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root
 
+
+FROM python:3.12.11-slim AS diagrams-repo
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG EXT_REPO_URL="https://github.com/statnett/Talk2PowerSystem.git"
+ARG EXT_REPO_REF="main"
+
+WORKDIR /tmp
+
+RUN git clone --depth 1 --branch "$EXT_REPO_REF" "$EXT_REPO_URL" /tmp/diagrams
+
 FROM python:3.12.11-slim
 
 ENV VIRTUAL_ENV=/tmp/.venv \
@@ -29,6 +43,8 @@ COPY src/talk2powersystemllm/ /code/talk2powersystemllm/
 COPY config/ontology/ /code/config/ontology/
 COPY config/*yaml /code/config/
 COPY ./pyproject.toml /code/
+
+COPY --from=diagrams-repo /tmp/diagrams/diagram/svg/*.svg /code/diagrams/
 
 RUN mkdir -p /code/logs && chmod 0777 /code/logs
 

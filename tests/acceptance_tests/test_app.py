@@ -198,7 +198,9 @@ class AcceptanceTestsApp(TestCase):
         self.assertEqual(0, actual_response_json["agent"]["llm"]["temperature"])
         self.assertTrue("seed" in actual_response_json["agent"]["llm"])
         self.assertEqual(1, actual_response_json["agent"]["llm"]["seed"])
+
         self.assertTrue("tools" in actual_response_json["agent"])
+        self.assertEqual(7, len(actual_response_json["agent"]["tools"]))
         self.assertTrue("sparql_query" in actual_response_json["agent"]["tools"])
         self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["sparql_query"])
         self.assertTrue(actual_response_json["agent"]["tools"]["sparql_query"]["enabled"])
@@ -228,6 +230,22 @@ ORDER BY DESC(?rank)
 LIMIT {limit}
 """,
             actual_response_json["agent"]["tools"]["autocomplete_search"]["sparql_query_template"]
+        )
+        self.assertTrue("display_graphics" in actual_response_json["agent"]["tools"])
+        self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["display_graphics"])
+        self.assertTrue(actual_response_json["agent"]["tools"]["display_graphics"]["enabled"])
+        self.assertTrue("sparql_query_template" in actual_response_json["agent"]["tools"]["display_graphics"])
+        self.assertEqual(
+            """PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX cimd: <https://cim.ucaiug.io/diagrams#>
+PREFIX cim: <https://cim.ucaiug.io/ns#>
+SELECT ?link ?name ?description ?format {{
+    <{iri}> cimd:Diagram.link ?link;
+        cim:IdentifiedObject.name ?name;
+        cim:IdentifiedObject.description ?description;
+        dct:format ?format.
+}}""",
+            actual_response_json["agent"]["tools"]["display_graphics"]["sparql_query_template"]
         )
         self.assertTrue("sample_sparql_queries" in actual_response_json["agent"]["tools"])
         self.assertTrue("enabled" in actual_response_json["agent"]["tools"]["sample_sparql_queries"])
@@ -527,9 +545,9 @@ LIMIT {limit}
         self.assertTrue("usage" in conversation_response_body["messages"][0])
         self.assertEqual(
             {
-                "promptTokens": prompt_tokens2,
-                "completionTokens": completion_tokens2,
-                "totalTokens": prompt_tokens2 + completion_tokens2
+                "promptTokens": prompt_tokens1 + prompt_tokens2,
+                "completionTokens": completion_tokens1 + completion_tokens2,
+                "totalTokens": prompt_tokens1 + prompt_tokens2 + completion_tokens1 + completion_tokens2
             },
             conversation_response_body["messages"][0]["usage"]
         )

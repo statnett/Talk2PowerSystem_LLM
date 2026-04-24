@@ -164,11 +164,25 @@ LIMIT {limit}
 - `tools.cognite.project` - OPTIONAL, DEFAULT=`prod` - Cognite Data Fusion project name.
 One of `dev1`, `dev2`, `dev3`, `test`, `prod` according to [CDF access from RNDP](https://github.com/statnett/Talk2PowerSystem_PM/wiki/CDF-access-from-RNDP).
 - `tools.cognite.client_name` - OPTIONAL, DEFAULT=`talk2powersystem` - Name of the client for logging purposes.
-- `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used (when you run on a dev machine the backend app with uvicorn or the Jupyter Notebook).
-  Otherwise, `tools.cognite.token_file_path` or `tools.cognite.client_secret` must be provided.
-- `tools.cognite.tenant_id` - REQUIRED iff `tools.cognite.interactive_client_id` is present - Azure tenant ID. For example, `a8d61462-f252-44b2-bf6a-d7231960c041`.
-- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the cognite token file (used when you run the Jupyter Notebook on RNDP). For example, `/var/run/secrets/microsoft.com/entra/cognite`.
-* `tools.cognite.client_secret` - OPTIONAL - Client secret for the Cognite confidential application (used for the backend app running on RNDP).
+
+There are 4 ways to authenticate against Cognite. One and only one of `tools.cognite.interactive_client_id`,
+`tools.cognite.client_id`, `tools.cognite.token_file_path`, or `tools.cognite.obo_client_secret` must be provided.
+
+- `tools.cognite.interactive_client_id` - OPTIONAL - If provided, interactive authentication is used.
+  (when you run on a dev machine the backend app with uvicorn or the Jupyter Notebook).
+- `tools.cognite.client_id` - OPTIONAL - If provided, service account authentication is used.
+  (backend app with service account authentication, ex: backend app running on cim.ontotext).
+* `tools.cognite.client_secret` - REQUIRED iff service account authentication is used -
+  Client secret for the service account. Can also be set using the environment variable `COGNITE_CLIENT_SECRET`.
+- `tools.cognite.tenant_id` - REQUIRED iff interactive authentication or service account authentication is used -
+  Azure tenant ID. For example, `a8d61462-f252-44b2-bf6a-d7231960c041`.
+- `tools.cognite.token_file_path` - OPTIONAL - Full path on the disk to the 
+  Cognite token file.
+  (used when you run the Jupyter Notebook on RNDP, or backend app with token authentication).
+  For example, `/var/run/secrets/microsoft.com/entra/cognite`.
+* `tools.cognite.obo_client_secret` - OPTIONAL - Client secret for the Cognite confidential application.
+  Can also be set using the environment variable `COGNITE_OBO_CLIENT_SECRET`.
+  (used for the backend app running on RNDP).
 
 ## `llm`
 
@@ -210,3 +224,5 @@ Check OpenAI documentation for supported values and models.
 
 - `LLM_API_KEY` - REQUIRED - API key for authentication to Azure OpenAI or OpenAI
 - `GRAPHDB_PASSWORD` - REQUIRED, iff `graphdb.username` is set - Password for the GraphDB user
+- `COGNITE_CLIENT_SECRET` - REQUIRED, iff `tools.cognite.client_id` is set - Client secret for the Cognite service account.
+- `COGNITE_OBO_CLIENT_SECRET` - REQUIRED, iff OBO Cognite authentication flow is required - Client secret for the Cognite confidential application.

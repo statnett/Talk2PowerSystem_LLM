@@ -20,10 +20,10 @@ class RetrieveTimeSeriesTool(BaseCogniteTool):
             "Defaults to 25. Set to `-1` to return all items. ",
             default=25,
         )
-        mrid: str | list[str] | None = Field(
+        rndp_mrid: str | list[str] | None = Field(
             description=(
                 "Filter time series by one or more master resource IDs (mrid). "
-                "Note: mrid is not the same as external_id."
+                "Note: RNDP_mrid is not the same as external_id."
                 "Examples: a single mrid, e.g. '105384df-9b48-3848-8fd2-97cf37575885' "
                 "or a list of multiple mrids, e.g. "
                 "['3916ae31-9f3d-af4e-8d87-87d373d8200a', 'fa58f41d-1ee2-9146-8dfc-4595cd86ed0e']"
@@ -40,7 +40,7 @@ class RetrieveTimeSeriesTool(BaseCogniteTool):
 
     name: str = "retrieve_time_series"
     description: str = (
-        "Retrieve one or more time series. Optionally, the time series can be filtered by mrid "
+        "Retrieve one or more time series. Optionally, the time series can be filtered by RNDP_mrid "
         "to fetch the corresponding external_id."
     )
     args_schema: Type[BaseModel] = ArgumentsSchema
@@ -49,22 +49,19 @@ class RetrieveTimeSeriesTool(BaseCogniteTool):
     def _run(
         self,
         limit: int | None = 25,
-        mrid: str | list[str] | None = None,
+        rndp_mrid: str | list[str] | None = None,
         run_manager: CallbackManagerForToolRun | None = None,
     ) -> str:
         try:
-            advanced_filter = None
-            if mrid is not None:
-                if isinstance(mrid, str):
-                    advanced_filter = filters.Equals(["metadata", "mrid"], mrid)
+            exists_filter = filters.Exists(["metadata", "RNDP_mrid"])
+            advanced_filter = exists_filter
+
+            if rndp_mrid is not None:
+                if isinstance(rndp_mrid, str):
+                    mrid_filter = filters.Equals(["metadata", "RNDP_mrid"], rndp_mrid)
                 else:
-                    for idx, item in enumerate(mrid):
-                        if idx == 0:
-                            advanced_filter = filters.Equals(["metadata", "mrid"], item)
-                        else:
-                            advanced_filter = advanced_filter | filters.Equals(
-                                ["metadata", "mrid"], item
-                            )
+                    mrid_filter = filters.In(["metadata", "RNDP_mrid"], rndp_mrid)
+                advanced_filter = exists_filter & mrid_filter
 
             return self.cognite_session.client().time_series.list(
                 limit=limit, advanced_filter=advanced_filter

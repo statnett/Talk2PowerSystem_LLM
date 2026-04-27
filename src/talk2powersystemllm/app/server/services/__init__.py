@@ -4,6 +4,7 @@ from .chat_service import get_or_create_conversation, run_agent_loop
 from .explain_service import get_query_methods
 from .gtg_service import update_gtg_info
 from .healthchecks import (
+    CogniteHealthchecker,
     GraphDBHealthchecker,
     HealthChecks,
     LLMHealthchecker,
@@ -18,6 +19,7 @@ __all__ = [
     "run_agent_loop",
     "get_query_methods",
     "update_gtg_info",
+    "CogniteHealthchecker",
     "GraphDBHealthchecker",
     "HealthChecks",
     "LLMHealthchecker",

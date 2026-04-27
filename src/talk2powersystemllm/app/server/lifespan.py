@@ -12,6 +12,7 @@ from redis.asyncio import Redis, RedisCluster
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
 from talk2powersystemllm.app.server.services import (
+    CogniteHealthchecker,
     GraphDBHealthchecker,
     HealthChecks,
     LLMHealthchecker,
@@ -57,16 +58,14 @@ async def lifespan(fastapi_app: FastAPI):
             fastapi_app.state.jwks_cache = TTLCache(
                 maxsize=1, ttl=settings.security.ttl
             )
-            if agent_factory.cognite_enabled:
-                if not agent_factory.cognite_settings.client_secret:
-                    raise ValueError(
-                        "Cognite client secret must be provided in order to register the Cognite tools, "
-                        "when the security is enabled."
-                    )
+            if (
+                agent_factory.cognite_enabled
+                and agent_factory.cognite_settings.obo_client_secret
+            ):
                 fastapi_app.state.confidential_app = msal.ConfidentialClientApplication(
                     settings.security.client_id,
                     authority=settings.security.authority,
-                    client_credential=agent_factory.cognite_settings.client_secret,
+                    client_credential=agent_factory.cognite_settings.obo_client_secret.get_secret_value(),
                 )
                 fastapi_app.state.cognite_scopes = [
                     f"{agent_factory.cognite_settings.base_url}/.default"
@@ -95,6 +94,8 @@ async def create_health_checks_registry(
     health_checks_registry = HealthChecks()
     health_checks_registry.add(GraphDBHealthchecker(agent_factory))
     health_checks_registry.add(RedisHealthchecker(redis_client))
+    if agent_factory.cognite_session:
+        health_checks_registry.add(CogniteHealthchecker(agent_factory.cognite_session))
     llm_health_check = LLMHealthchecker(redis_client)
     fastapi_app.state.callbacks = [llm_health_check]
     health_checks_registry.add(llm_health_check)

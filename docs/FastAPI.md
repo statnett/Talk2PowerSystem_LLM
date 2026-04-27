@@ -95,7 +95,7 @@ You need however to run Redis locally. In order to do this you can use the Redis
 docker compose -f src/talk2powersystemllm/app/dev-docker-compose.yaml up -d redis
 ```
 
-There is a ready made chat bot config file you can use ["dev+retrieval.yaml"](../config/dev+retrieval.yaml),
+There is a ready made chatbot config file you can use ["dev+retrieval.yaml"](../config/dev+retrieval.yaml),
 but you will need to create a `.env` file with sample content
 
 ```
@@ -154,7 +154,7 @@ To run the image locally you need to point the app to a running GraphDB, Redis a
 You can use GraphDB from cim.ontotext.com and the Azure OpenAI deployments from Graphwise Azure account (shared in Keeper).
 However, you need however to run Redis locally.
 There is a ready made [dev docker compose setup](../src/talk2powersystemllm/app/dev-docker-compose.yaml),
-which uses the chat bot config file ["dev+retrieval.yaml"](../config/dev+retrieval.yaml).
+which uses the chatbot config file ["dev+retrieval.yaml"](../config/dev+retrieval.yaml).
 Create a file `webapp.env` with content
 ```
 AGENT_CONFIG=/code/config/dev+retrieval.yaml

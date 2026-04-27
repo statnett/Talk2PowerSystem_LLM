@@ -1,3 +1,11 @@
+v2.4.0-rc1
+============
+
+* [#363](https://github.com/statnett/Talk2PowerSystem_PM/issues/363):
+  - Change App description and replace all occurrences of 'chat bot' with 
+  'chatbot'.
+  - Update `langchain-openai` to `1.2.1`, `fastapi` to `0.136.1`.
+
 v2.3.0-rc1
 ============
 

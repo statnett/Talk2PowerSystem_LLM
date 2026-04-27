@@ -1,12 +1,13 @@
 [TOC]
 
-# Troubleshooting Talk2PowerSystem Chat Bot Application
+# Troubleshooting Talk2PowerSystem Chatbot Application backend
 
-Synopsis: a document designed to help identify and resolve known issues with Talk2PowerSystem Chat Bot Application.
+Synopsis: a document designed to help identify and resolve known issues with Talk2PowerSystem 
+Chatbot Application backend.
 
 ## Introduction
 
-This document is designed to help troubleshoot the Talk2PowerSystem Chat Bot Application.
+This document is designed to help troubleshoot the Talk2PowerSystem Chatbot Application backend.
 It [describes](#service-overview) the service, the [context](#context-diagram) in which it resides, and lists its
 most [important endpoints](#important-endpoints).
 
@@ -16,7 +17,7 @@ effective. [Known issues](#resolving-known-issues) and solutions are documented.
 ### Service Overview
 
 The application is implemented in Python and uses Fast API. It's served with the uvicorn server.
-It provides functionality for chatting with the Talk2PowerSystem Chat Bot.
+It provides functionality for chatting with the Talk2PowerSystem Chatbot.
 It doesn't provide functionalities for:
 
 - creating, updating or deleting chatbots
@@ -28,7 +29,7 @@ The application can be secured using OpenID.
 
 #### Context Diagram
 
-Talk2PowerSystem Chat Bot Application depends on GraphDB, OpenAI / Azure OpenAI, Redis and optionally on Cognite.
+Talk2PowerSystem Chatbot Application depends on GraphDB, OpenAI / Azure OpenAI, Redis and optionally on Cognite.
 
 ![context-diagram](https://lucid.app/publicSegments/view/ab6f335a-518b-4bca-a365-9ebf9b1b5829/image.jpeg)
 
@@ -773,7 +774,7 @@ Sample Response Body Without Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
       "name": "Redis Health Check",
       "type": "redis",
-      "impact": "Redis is inaccessible and the chat bot can't function",
+      "impact": "Redis is inaccessible and the chatbot can't function",
       "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
       "description": "Checks if Redis can be queried.",
       "message": "Redis can be queried."
@@ -784,7 +785,7 @@ Sample Response Body Without Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
       "name": "GraphDB Health Check",
       "type": "graphdb",
-      "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+      "impact": "Chatbot won't be able to query GraphDB or tools may not function as expected.",
       "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
       "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
       "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
@@ -795,7 +796,7 @@ Sample Response Body Without Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
       "name": "LLM Health Check",
       "type": "llm",
-      "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+      "impact": "Some requests to the chatbot failed during the last 60 seconds due to LLM errors!",
       "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
       "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
       "message": "No LLM errors were hit in the last 60 seconds!"
@@ -816,7 +817,7 @@ Sample Response Body With Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
       "name": "Redis Health Check",
       "type": "redis",
-      "impact": "Redis is inaccessible and the chat bot can't function",
+      "impact": "Redis is inaccessible and the chatbot can't function",
       "troubleshooting": "http://localhost:8000/__trouble#redis-health-check-status-is-not-ok",
       "description": "Checks if Redis can be queried.",
       "message": "Redis can be queried."
@@ -827,7 +828,7 @@ Sample Response Body With Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
       "name": "GraphDB Health Check",
       "type": "graphdb",
-      "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+      "impact": "Chatbot won't be able to query GraphDB or tools may not function as expected.",
       "troubleshooting": "http://localhost:8000/__trouble#graphdb-health-check-status-is-not-ok",
       "description": "Checks that the GraphDB repository can be queried and is healthy. Checks that the status of the autocomplete index is READY, and the RDF rank status is COMPUTED. In addition, if the n-shot tool is available, checks that the n-shot tool GraphDB repository can be queried and is healthy, and that the ChatGPT Retrieval Plugin connector exists and its status is healthy.",
       "message": "GraphDB can be queried, the setup is correct, and the state is healthy."
@@ -838,7 +839,7 @@ Sample Response Body With Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/cognite-healthcheck",
       "name": "Cognite Health Check",
       "type": "cognite",
-      "impact": "Chat bot won't be able to query Cognite or tools may not function as expected.",
+      "impact": "Chatbot won't be able to query Cognite or tools may not function as expected.",
       "troubleshooting": "http://localhost:8000/__trouble#cognite-health-check-status-is-not-ok",
       "description": "Checks if Cognite can be queried by listing the time series with limit of 1.",
       "message": "Cognite can be queried."
@@ -849,7 +850,7 @@ Sample Response Body With Cognite Health Check:
       "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
       "name": "LLM Health Check",
       "type": "llm",
-      "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+      "impact": "Some requests to the chatbot failed during the last 60 seconds due to LLM errors!",
       "troubleshooting": "http://localhost:8000/__trouble#llm-health-check-status-is-not-ok",
       "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
       "message": "No LLM errors were hit in the last 60 seconds!"
@@ -1720,7 +1721,7 @@ Sample Response Body:
     }
   },
   "backend": {
-    "description": "Talk2PowerSystem Chat Bot Application provides functionality for chatting with the Talk2PowerSystem Chat bot",
+    "description": "Talk2PowerSystem Chatbot Application backend",
     "version": "1.3.1-dev0",
     "buildDate": "2025-10-31T18:50:01Z",
     "buildBranch": "Statnett-256",
@@ -1828,8 +1829,8 @@ Response Status Codes:
 
 ## Prerequisites
 
-Users, maintainers and testers who wish to effectively troubleshoot the Talk2PowerSystem Chat Bot Application must be
-experienced with the following:
+Users, maintainers and testers who wish to effectively troubleshoot the Talk2PowerSystem 
+Chatbot Application must be experienced with the following:
 
 * REST (curl/postman)
 * docker, k8s, helm

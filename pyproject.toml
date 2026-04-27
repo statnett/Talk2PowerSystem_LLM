@@ -1,6 +1,6 @@
 [project]
 name = "Talk2PowerSystemLLM"
-version = "2.3.0-rc1"
+version = "2.4.0-rc1"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
@@ -10,14 +10,14 @@ dependencies = [
     "ttyg==4.2.0",
     "graphrag-eval==5.3.1",
     "jupyter==1.1.1",
-    "langchain-openai==1.2.0",
+    "langchain-openai==1.2.1",
     "langgraph-checkpoint-redis==0.4.1",
     "jsonlines==4.0.0",
     "cognite-sdk==8.1.0",
     "pydantic-settings==2.14.0",
     "PyYAML==6.0.3",
     "uvicorn[standard]==0.46.0",
-    "fastapi==0.136.0",
+    "fastapi==0.136.1",
     "APScheduler==3.11.2",
     "toml==0.10.2",
     "markdown==3.10.2",

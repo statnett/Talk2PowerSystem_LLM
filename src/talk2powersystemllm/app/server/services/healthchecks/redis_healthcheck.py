@@ -15,7 +15,7 @@ class RedisHealthcheck(HealthCheck):
     id: str = "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck"
     name: str = "Redis Health Check"
     type: str = "redis"
-    impact: str = "Redis is inaccessible and the chat bot can't function"
+    impact: str = "Redis is inaccessible and the chatbot can't function"
     troubleshooting: str = "#redis-health-check-status-is-not-ok"
     description: str = "Checks if Redis can be queried."
 

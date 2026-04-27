@@ -52,9 +52,8 @@ def create_app() -> FastAPI:
     version, dependencies = get_version_and_dependencies(settings.pyproject_toml_path)
 
     fastapi_app = FastAPI(
-        title="Talk2PowerSystem Chat Bot Application",
-        description="Talk2PowerSystem Chat Bot Application provides functionality "
-        "for chatting with the Talk2PowerSystem Chat bot",
+        title="Talk2PowerSystem Chatbot Application",
+        description="Talk2PowerSystem Chatbot Application backend",
         version=version,
         docs_url=settings.docs_url,
         redoc_url=None,

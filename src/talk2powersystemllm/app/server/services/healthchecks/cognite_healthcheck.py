@@ -15,7 +15,7 @@ class CogniteHealthcheck(HealthCheck):
     name: str = "Cognite Health Check"
     type: str = "cognite"
     impact: str = (
-        "Chat bot won't be able to query Cognite or tools may not function as expected."
+        "Chatbot won't be able to query Cognite or tools may not function as expected."
     )
     troubleshooting: str = "#cognite-health-check-status-is-not-ok"
     description: str = (

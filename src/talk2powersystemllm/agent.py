@@ -72,7 +72,7 @@ class RetrievalSearchSettings(BaseModel):
     sparql_query_template: str
 
 
-class CogniteSettings(BaseModel):
+class CogniteSettings(BaseSettings):
     model_config = {
         "env_prefix": "COGNITE_",
     }
@@ -80,10 +80,12 @@ class CogniteSettings(BaseModel):
     base_url: str
     project: str = "prod"
     client_name: str = "talk2powersystem"
-    token_file_path: Path | None = None
     interactive_client_id: str | None = None
+    client_id: str | None = None
+    client_secret: SecretStr | None = None
     tenant_id: str | None = None
-    client_secret: str | None = None
+    token_file_path: Path | None = None
+    obo_client_secret: SecretStr | None = None
 
     @model_validator(mode="after")
     def check_credentials(self) -> "CogniteSettings":
@@ -91,14 +93,21 @@ class CogniteSettings(BaseModel):
             return sum(a is not None for a in args) == 1
 
         if not exactly_one_is_not_none(
-            self.client_secret, self.token_file_path, self.interactive_client_id
+            self.interactive_client_id,
+            self.client_id,
+            self.token_file_path,
+            self.obo_client_secret,
         ):
             raise ValueError(
-                "Pass exactly one of 'client_secret', 'token_file_path' or 'interactive_client_id'!"
+                "Pass exactly one of 'interactive_client_id', 'client_id', 'token_file_path' or "
+                "'obo_client_secret'!"
             )
 
-        if self.interactive_client_id and not self.tenant_id:
-            raise ValueError("Tenant id is required!")
+        if self.client_id and not self.client_secret:
+            raise ValueError("'client_secret' is required!")
+
+        if (self.interactive_client_id or self.client_id) and not self.tenant_id:
+            raise ValueError("'tenant_id' is required!")
         return self
 
 
@@ -169,10 +178,12 @@ class Talk2PowerSystemAgentFactory:
     model: BaseChatModel
     checkpointer: Checkpointer | None = None
     graphdb_client: GraphDB
+    cognite_session: CogniteSession | None
     tools: list[BaseTool]
     tools_metadata: dict[str, dict[str, Any]]
     tool_name_to_gdb_repository_id: dict[str, str]
     advanced_tools: set[str]
+    __agent: CompiledStateGraph | None
     __settings: Talk2PowerSystemAgentSettings
 
     def __init__(
@@ -181,11 +192,11 @@ class Talk2PowerSystemAgentFactory:
         checkpointer: Checkpointer | None = None,
     ):
         self.__init_settings(path_to_yaml_config)
-        self.__init_graphdb()
-        self.__init_tools()
-        self.__init_instructions()
-        self.__init_model()
         self.checkpointer = checkpointer
+        self.__init_model()
+        self.__init_graphdb()
+        self.__init_instructions()
+        self.__init_tools()
 
     def __init_settings(self, path_to_yaml_config: Path) -> None:
         config_path = Path(path_to_yaml_config).resolve()
@@ -292,16 +303,45 @@ class Talk2PowerSystemAgentFactory:
         self.tools.append(now_tool)
         self.tools_metadata["now"] = {"enabled": True}
 
-        cognite_enabled = bool(tools_settings.cognite)
+        cognite_settings = tools_settings.cognite
+        cognite_enabled = bool(cognite_settings)
         cognite_meta: dict[str, Any] = {"enabled": cognite_enabled}
 
+        self.cognite_session = None
+        self.__agent = None
         if cognite_enabled:
             cognite_meta.update(
                 {
-                    "base_url": tools_settings.cognite.base_url,
-                    "project": tools_settings.cognite.project,
-                    "client_name": tools_settings.cognite.client_name,
+                    "base_url": cognite_settings.base_url,
+                    "project": cognite_settings.project,
+                    "client_name": cognite_settings.client_name,
                 }
+            )
+
+            if (
+                cognite_settings.interactive_client_id
+                or cognite_settings.client_id
+                or cognite_settings.token_file_path
+            ):
+                self.cognite_session = self.__init_cognite()
+                self.tools.append(
+                    RetrieveTimeSeriesTool(cognite_session=self.cognite_session)
+                )
+                self.tools.append(
+                    RetrieveDataPointsTool(cognite_session=self.cognite_session)
+                )
+                self.__agent = create_agent(
+                    model=self.model,
+                    tools=self.tools,
+                    system_prompt=self.instructions,
+                    checkpointer=self.checkpointer,
+                )
+        else:
+            self.__agent = create_agent(
+                model=self.model,
+                tools=self.tools,
+                system_prompt=self.instructions,
+                checkpointer=self.checkpointer,
             )
 
         self.tools_metadata["retrieve_data_points"] = cognite_meta
@@ -376,24 +416,28 @@ class Talk2PowerSystemAgentFactory:
             project=cognite_settings.project,
             token_file_path=cognite_settings.token_file_path,
             interactive_client_id=cognite_settings.interactive_client_id,
+            client_id=cognite_settings.client_id,
+            client_secret=cognite_settings.client_secret,
             tenant_id=cognite_settings.tenant_id,
             obo_token=obo_token,
         )
 
     def get_agent(self, cognite_obo_token: str | None = None) -> CompiledStateGraph:
-        tools = self.tools
-        if self.cognite_enabled:
+        if self.__agent:
+            return self.__agent
+        else:
+            tools = self.tools
             cognite_session = self.__init_cognite(cognite_obo_token)
             tools = tools + [
                 RetrieveTimeSeriesTool(cognite_session=cognite_session),
                 RetrieveDataPointsTool(cognite_session=cognite_session),
             ]
-        return create_agent(
-            model=self.model,
-            tools=tools,
-            system_prompt=self.instructions,
-            checkpointer=self.checkpointer,
-        )
+            return create_agent(
+                model=self.model,
+                tools=tools,
+                system_prompt=self.instructions,
+                checkpointer=self.checkpointer,
+            )
 
     @property
     def graphdb_base_url(self) -> str:

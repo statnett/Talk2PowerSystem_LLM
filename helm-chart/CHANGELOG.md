@@ -1,5 +1,9 @@
 # Talk to the Power System Chatbot LLM
 
+## 1.3.1
+
+- Update `appVersion` to `v2.3.0-rc1`.
+
 ## 1.3.0
 
 - Update `appVersion` to `v2.2.0-rc1` and remove `agent.llm.temperature` and 

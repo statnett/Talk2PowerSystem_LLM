@@ -1,6 +1,6 @@
 [project]
 name = "Talk2PowerSystemLLM"
-version = "2.2.0-rc1"
+version = "2.3.0-rc1"
 description = "Talk to Power System LLM"
 authors = []
 readme = "README.adoc"
@@ -10,28 +10,28 @@ dependencies = [
     "ttyg==4.2.0",
     "graphrag-eval==5.3.1",
     "jupyter==1.1.1",
-    "langchain-openai==1.1.12",
-    "langgraph-checkpoint-redis==0.4.0",
+    "langchain-openai==1.2.0",
+    "langgraph-checkpoint-redis==0.4.1",
     "jsonlines==4.0.0",
-    "cognite-sdk==8.0.5",
-    "pydantic-settings==2.13.1",
+    "cognite-sdk==8.1.0",
+    "pydantic-settings==2.14.0",
     "PyYAML==6.0.3",
-    "uvicorn[standard]==0.44.0",
-    "fastapi==0.135.3",
+    "uvicorn[standard]==0.46.0",
+    "fastapi==0.136.0",
     "APScheduler==3.11.2",
     "toml==0.10.2",
     "markdown==3.10.2",
     "python-jose[cryptography]==3.5.0",
-    "msal==1.35.1",
-    "cachetools==7.0.5",
-    "importlib_resources==6.5.2",
+    "msal==1.36.0",
+    "cachetools==7.0.6",
+    "importlib_resources==7.1.0",
 ]
 
 [project.urls]
 repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 
 [tool.poetry.group.test.dependencies]
-pytest = "<10,>=9"
+pytest = "<10,>=9.0.3"
 pytest-cov = "<8,>=7"
 pytest-asyncio = "<2,>=1"
 requests = "<3,>=2"

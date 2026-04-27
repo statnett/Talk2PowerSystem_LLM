@@ -90,7 +90,7 @@ class AcceptanceTestsApp(TestCase):
                 "id": "http://talk2powersystem.no/talk2powersystem-api/graphdb-healthcheck",
                 "name": "GraphDB Health Check",
                 "type": "graphdb",
-                "impact": "Chat bot won't be able to query GraphDB or tools may not function as expected.",
+                "impact": "Chatbot won't be able to query GraphDB or tools may not function as expected.",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#graphdb-health-check-status-is-not-ok",
                 "description": "Checks that the GraphDB repository can be queried and is healthy. "
                 "Checks that the status of the autocomplete index is READY, "
@@ -109,7 +109,7 @@ class AcceptanceTestsApp(TestCase):
                 "id": "http://talk2powersystem.no/talk2powersystem-api/redis-healthcheck",
                 "name": "Redis Health Check",
                 "type": "redis",
-                "impact": "Redis is inaccessible and the chat bot can't function",
+                "impact": "Redis is inaccessible and the chatbot can't function",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#redis-health-check-status-is-not-ok",
                 "description": "Checks if Redis can be queried.",
                 "message": "Redis can be queried.",
@@ -123,7 +123,7 @@ class AcceptanceTestsApp(TestCase):
                 "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
                 "name": "LLM Health Check",
                 "type": "llm",
-                "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+                "impact": "Some requests to the chatbot failed during the last 60 seconds due to LLM errors!",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#llm-health-check-status-is-not-ok",
                 "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
                 "message": "No LLM errors were hit in the last 60 seconds!",
@@ -367,8 +367,7 @@ SELECT ?link ?name ?format ?description ?kind {{
         self.assertTrue("backend" in actual_response_json)
         self.assertTrue("description" in actual_response_json["backend"])
         self.assertEqual(
-            "Talk2PowerSystem Chat Bot Application provides functionality for chatting "
-            "with the Talk2PowerSystem Chat bot",
+            "Talk2PowerSystem Chatbot Application backend",
             actual_response_json["backend"]["description"],
         )
         self.assertTrue("version" in actual_response_json["backend"])
@@ -1137,7 +1136,7 @@ SELECT ?link ?name ?format ?description ?kind {{
                 "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
                 "name": "LLM Health Check",
                 "type": "llm",
-                "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+                "impact": "Some requests to the chatbot failed during the last 60 seconds due to LLM errors!",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#llm-health-check-status-is-not-ok",
                 "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
                 "message": "No LLM errors were hit in the last 60 seconds!",
@@ -1159,7 +1158,7 @@ SELECT ?link ?name ?format ?description ?kind {{
                 "id": "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck",
                 "name": "LLM Health Check",
                 "type": "llm",
-                "impact": "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!",
+                "impact": "Some requests to the chatbot failed during the last 60 seconds due to LLM errors!",
                 "troubleshooting": "http://talk2powersystem:8000/__trouble#llm-health-check-status-is-not-ok",
                 "description": "Checks if any LLM calls resulted in errors during the last 60 seconds!",
                 "message": "LLM errors were hit in the last 60 seconds!",

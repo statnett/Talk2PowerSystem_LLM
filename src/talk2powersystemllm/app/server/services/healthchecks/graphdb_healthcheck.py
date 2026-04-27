@@ -21,7 +21,7 @@ class GraphDBHealthcheck(HealthCheck):
     name: str = "GraphDB Health Check"
     type: str = "graphdb"
     impact: str = (
-        "Chat bot won't be able to query GraphDB or tools may not function as expected."
+        "Chatbot won't be able to query GraphDB or tools may not function as expected."
     )
     troubleshooting: str = "#graphdb-health-check-status-is-not-ok"
     description: str = (

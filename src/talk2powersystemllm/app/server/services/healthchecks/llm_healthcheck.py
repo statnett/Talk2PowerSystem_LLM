@@ -18,7 +18,7 @@ class LLMHealthcheck(HealthCheck):
     id: str = "http://talk2powersystem.no/talk2powersystem-api/llm-healthcheck"
     name: str = "LLM Health Check"
     type: str = "llm"
-    impact: str = "Some requests to the chat bot failed during the last 60 seconds due to LLM errors!"
+    impact: str = "Some requests to the chatbot failed during the last 60 seconds due to LLM errors!"
     troubleshooting: str = "#llm-health-check-status-is-not-ok"
     description: str = (
         "Checks if any LLM calls resulted in errors during the last 60 seconds!"

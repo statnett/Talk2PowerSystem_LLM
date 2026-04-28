@@ -1,0 +1,365 @@
+per_template:
+  template_energyprice_template1:
+    number_of_error_samples: 0
+    number_of_success_samples: 10
+    steps_score:
+      sum: 8.5
+      mean: 0.85
+      median: 1.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 5645846
+      mean: 564584.6
+      median: 540362.5
+      min: 438851
+      max: 888943
+    output_tokens:
+      sum: 11812
+      mean: 1181.2
+      median: 982.0
+      min: 524
+      max: 3919
+    total_tokens:
+      sum: 5657658
+      mean: 565765.8
+      median: 542658.0
+      min: 439375
+      max: 889988
+    elapsed_sec:
+      sum: 329.1189157962799
+      mean: 32.91189157962799
+      median: 28.14117658138275
+      min: 21.910128116607666
+      max: 62.69722604751587
+    steps:
+      total:
+        sparql_query: 18
+        sample_sparql_queries: 10
+        retrieve_time_series: 10
+        retrieve_data_points: 10
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 10
+        sample_sparql_queries: 10
+        retrieve_time_series: 10
+        retrieve_data_points: 9
+        autocomplete_search: 2
+      errors:
+        retrieve_data_points: 1
+  template_timeseries_template2:
+    number_of_error_samples: 0
+    number_of_success_samples: 10
+    steps_score:
+      sum: 3.0
+      mean: 0.3
+      median: 0.0
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 4574105
+      mean: 457410.5
+      median: 394939.5
+      min: 350056
+      max: 708139
+    output_tokens:
+      sum: 5100
+      mean: 510
+      median: 432.5
+      min: 308
+      max: 778
+    total_tokens:
+      sum: 4579205
+      mean: 457920.5
+      median: 395368.5
+      min: 350364
+      max: 708917
+    elapsed_sec:
+      sum: 209.20319414138794
+      mean: 20.920319414138795
+      median: 17.68152904510498
+      min: 13.43468689918518
+      max: 29.79630756378174
+    steps:
+      total:
+        sparql_query: 15
+        sample_sparql_queries: 10
+        retrieve_time_series: 12
+        autocomplete_search: 3
+        retrieve_data_points: 3
+      once_per_sample:
+        sparql_query: 10
+        sample_sparql_queries: 10
+        retrieve_time_series: 10
+        autocomplete_search: 3
+        retrieve_data_points: 3
+      empty_results:
+        sparql_query: 1
+  template_energyprice_template2:
+    number_of_error_samples: 0
+    number_of_success_samples: 10
+    steps_score:
+      sum: 4.5
+      mean: 0.45
+      median: 0.5
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 5390322
+      mean: 539032.2
+      median: 529293.0
+      min: 350344
+      max: 706668
+    output_tokens:
+      sum: 7001
+      mean: 700.1
+      median: 722.5
+      min: 382
+      max: 979
+    total_tokens:
+      sum: 5397323
+      mean: 539732.3
+      median: 530165.5
+      min: 350787
+      max: 707435
+    elapsed_sec:
+      sum: 236.33820748329163
+      mean: 23.633820748329164
+      median: 24.730265140533447
+      min: 13.209704637527466
+      max: 33.27571201324463
+    steps:
+      total:
+        sparql_query: 19
+        sample_sparql_queries: 10
+        retrieve_time_series: 12
+        retrieve_data_points: 8
+        autocomplete_search: 2
+      once_per_sample:
+        sparql_query: 10
+        sample_sparql_queries: 10
+        retrieve_time_series: 10
+        retrieve_data_points: 8
+        autocomplete_search: 2
+      empty_results:
+        sparql_query: 2
+  template_powerflow_template1:
+    number_of_error_samples: 0
+    number_of_success_samples: 10
+    steps_score:
+      sum: 0.0
+      mean: 0.0
+      median: 0.0
+      min: 0.0
+      max: 0.0
+    input_tokens:
+      sum: 6058102
+      mean: 605810.2
+      median: 491324.0
+      min: 354267
+      max: 979670
+    output_tokens:
+      sum: 13521
+      mean: 1352.1
+      median: 1436.5
+      min: 823
+      max: 1753
+    total_tokens:
+      sum: 6071623
+      mean: 607162.3
+      median: 492825.0
+      min: 355090
+      max: 981110
+    elapsed_sec:
+      sum: 328.8384737968445
+      mean: 32.88384737968445
+      median: 32.98256039619446
+      min: 21.764936685562134
+      max: 46.81293964385986
+    steps:
+      total:
+        sparql_query: 31
+        sample_sparql_queries: 10
+        retrieve_time_series: 10
+        retrieve_data_points: 13
+        autocomplete_search: 7
+      once_per_sample:
+        sparql_query: 10
+        sample_sparql_queries: 10
+        retrieve_time_series: 10
+        retrieve_data_points: 9
+        autocomplete_search: 6
+      errors:
+        autocomplete_search: 2
+        sparql_query: 1
+      empty_results:
+        sparql_query: 4
+  template_powerflow_template2:
+    number_of_error_samples: 0
+    number_of_success_samples: 10
+    steps_score:
+      sum: 7.625
+      mean: 0.7625
+      median: 0.875
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 5625048
+      mean: 562504.8
+      median: 535034.5
+      min: 445737
+      max: 719603
+    output_tokens:
+      sum: 12637
+      mean: 1263.7
+      median: 1255.0
+      min: 797
+      max: 1966
+    total_tokens:
+      sum: 5637685
+      mean: 563768.5
+      median: 536752.5
+      min: 447139
+      max: 720975
+    elapsed_sec:
+      sum: 293.04163551330566
+      mean: 29.304163551330568
+      median: 28.174115896224976
+      min: 23.010775089263916
+      max: 36.76176953315735
+    steps:
+      total:
+        sample_sparql_queries: 10
+        sparql_query: 30
+        autocomplete_search: 6
+        retrieve_time_series: 10
+        retrieve_data_points: 10
+        now: 1
+      once_per_sample:
+        sample_sparql_queries: 10
+        sparql_query: 10
+        autocomplete_search: 4
+        retrieve_time_series: 10
+        retrieve_data_points: 10
+        now: 1
+      empty_results:
+        sparql_query: 6
+      errors:
+        autocomplete_search: 2
+        sparql_query: 1
+  template_timeseries_template1:
+    number_of_error_samples: 0
+    number_of_success_samples: 10
+    steps_score:
+      sum: 4.5
+      mean: 0.45
+      median: 0.25
+      min: 0.0
+      max: 1.0
+    input_tokens:
+      sum: 5314079
+      mean: 531407.9
+      median: 440379.5
+      min: 350248
+      max: 1124293
+    output_tokens:
+      sum: 8837
+      mean: 883.7
+      median: 568.0
+      min: 298
+      max: 2769
+    total_tokens:
+      sum: 5322916
+      mean: 532291.6
+      median: 440947.5
+      min: 350590
+      max: 1126143
+    elapsed_sec:
+      sum: 263.1382164955139
+      mean: 26.313821649551393
+      median: 20.910083413124084
+      min: 11.949581861495972
+      max: 49.763896226882935
+    steps:
+      total:
+        sparql_query: 21
+        sample_sparql_queries: 10
+        autocomplete_search: 2
+        retrieve_time_series: 8
+        retrieve_data_points: 5
+      once_per_sample:
+        sparql_query: 10
+        sample_sparql_queries: 10
+        autocomplete_search: 2
+        retrieve_time_series: 8
+        retrieve_data_points: 5
+      empty_results:
+        sparql_query: 6
+      errors:
+        autocomplete_search: 1
+        sparql_query: 1
+micro:
+  number_of_error_samples: 0
+  number_of_success_samples: 60
+  steps_score:
+    sum: 28.125
+    mean: 0.46875
+    median: 0.5
+    min: 0.0
+    max: 1.0
+  input_tokens:
+    sum: 32607502
+    mean: 543458.3666666667
+    median: 530053.0
+    min: 350056
+    max: 1124293
+  output_tokens:
+    sum: 58908
+    mean: 981.8
+    median: 856.5
+    min: 298
+    max: 3919
+  total_tokens:
+    sum: 32666410
+    mean: 544440.1666666666
+    median: 530952.0
+    min: 350364
+    max: 1126143
+  elapsed_sec:
+    sum: 1659.6786432266235
+    mean: 27.661310720443726
+    median: 27.581472516059875
+    min: 11.949581861495972
+    max: 62.69722604751587
+  steps:
+    total:
+      sparql_query: 134
+      sample_sparql_queries: 60
+      autocomplete_search: 22
+      retrieve_time_series: 62
+      retrieve_data_points: 49
+      now: 1
+    once_per_sample:
+      sparql_query: 60
+      sample_sparql_queries: 60
+      autocomplete_search: 19
+      retrieve_time_series: 58
+      retrieve_data_points: 44
+      now: 1
+    empty_results:
+      sparql_query: 19
+    errors:
+      autocomplete_search: 5
+      sparql_query: 3
+      retrieve_data_points: 1
+macro:
+  steps_score:
+    mean: 0.46875
+  input_tokens:
+    mean: 543458.3666666667
+  output_tokens:
+    mean: 981.8
+  total_tokens:
+    mean: 544440.1666666667
+  elapsed_sec:
+    mean: 27.661310720443726

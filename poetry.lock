@@ -548,14 +548,14 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cognite-sdk"
-version = "8.1.0"
+version = "8.2.0"
 description = "Cognite Python SDK"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "cognite_sdk-8.1.0-py3-none-any.whl", hash = "sha256:f1d720b97aba4591061dd4468e60c58b6680801e96e8bfc46638aa2e9e870e1e"},
-    {file = "cognite_sdk-8.1.0.tar.gz", hash = "sha256:20bb2ced12ee21f4569d90c24234e62f2735173a2ae8c6db22aa7fbfd64b42c7"},
+    {file = "cognite_sdk-8.2.0-py3-none-any.whl", hash = "sha256:e2a8ad3319d1fca47fc5cefe7ce6162bb2e0a2cb27a162bd8ee0107b13329763"},
+    {file = "cognite_sdk-8.2.0.tar.gz", hash = "sha256:072a515490993218e0025441011387c12fa325415b60b24a5985aa92372177c0"},
 ]
 
 [package.dependencies]
@@ -958,18 +958,22 @@ files = [
 
 [[package]]
 name = "graphrag-eval"
-version = "5.3.1"
+version = "6.1.0"
 description = "For assessing question answering systems' final answers and intermediate steps, against a given set of questions, reference answers and steps."
 optional = false
 python-versions = "<3.13,>=3.12"
 groups = ["main"]
 files = [
-    {file = "graphrag_eval-5.3.1-py3-none-any.whl", hash = "sha256:6039437733bd956bc5221040667e6a99170f16881250be19d88737cc3ff08d75"},
-    {file = "graphrag_eval-5.3.1.tar.gz", hash = "sha256:bb9aa5000d35fa5dd6cd5f82b179e4f6a784c6601b8ba1283c8aa2d84cb07851"},
+    {file = "graphrag_eval-6.1.0-py3-none-any.whl", hash = "sha256:78fe5d438951d68dcd1a9321586f2aa8a8f411d81e4966e2d6ddd9cf85a4697e"},
+    {file = "graphrag_eval-6.1.0.tar.gz", hash = "sha256:671ff5d4c5f093e631032fe5565266155f72be3c090596eb164765c85e8c5e1d"},
 ]
 
+[package.dependencies]
+pydantic = "2.12.5"
+python-dateutil = "2.9.0.post0"
+
 [package.extras]
-ragas = ["langchain-openai (==0.3.7)", "langchain_community (==0.3.18)", "langevals[ragas] (==0.1.8)", "litellm (==1.61.20)", "ragas (==0.2.9)"]
+llm = ["ragas (==0.4.3)"]
 
 [[package]]
 name = "h11"
@@ -1800,25 +1804,26 @@ files = [
 
 [[package]]
 name = "langchain"
-version = "1.2.12"
+version = "1.2.15"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "langchain-1.2.12-py3-none-any.whl", hash = "sha256:60eff184b8f92c2610f5a4c9a97ad339a891adb01901e83e4df8e6c9c69cf852"},
-    {file = "langchain-1.2.12.tar.gz", hash = "sha256:ed705b5b293799f7e3e394387f398a1b71707542758283206c8c21415759d991"},
+    {file = "langchain-1.2.15-py3-none-any.whl", hash = "sha256:e349db349cb3e9550c4044077cf90a1717691756cc236438404b23500e615874"},
+    {file = "langchain-1.2.15.tar.gz", hash = "sha256:1717b6719daefae90b2728314a5e2a117ff916291e2862595b6c3d6fba33d652"},
 ]
 
 [package.dependencies]
 langchain-core = ">=1.2.10,<2.0.0"
-langgraph = ">=1.1.1,<1.2.0"
+langgraph = ">=1.1.5,<1.2.0"
 pydantic = ">=2.7.4,<3.0.0"
 
 [package.extras]
 anthropic = ["langchain-anthropic"]
 aws = ["langchain-aws"]
 azure-ai = ["langchain-azure-ai"]
+baseten = ["langchain-baseten (>=0.2.0)"]
 community = ["langchain-community"]
 deepseek = ["langchain-deepseek"]
 fireworks = ["langchain-fireworks"]
@@ -1890,20 +1895,20 @@ typing-extensions = ">=4.7.0,<5.0.0"
 
 [[package]]
 name = "langgraph"
-version = "1.1.1"
+version = "1.1.10"
 description = "Building stateful, multi-actor applications with LLMs"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langgraph-1.1.1-py3-none-any.whl", hash = "sha256:d0cc8d347131cbfc010e65aad9b0f1afbd0e151f470c288bec1f3df8336c50c6"},
-    {file = "langgraph-1.1.1.tar.gz", hash = "sha256:cd6282efc657c955b41bff6bd9693de58137ad18f7e7f16b4d17c7d2118d53e1"},
+    {file = "langgraph-1.1.10-py3-none-any.whl", hash = "sha256:8a4f163f72f4401648d0c11b48ee906947d938ba8cf1f474540fe591534f0d17"},
+    {file = "langgraph-1.1.10.tar.gz", hash = "sha256:3115beb58203283c98d8752a90c034f3432177d2979a1fe205f76e5f1b744500"},
 ]
 
 [package.dependencies]
-langchain-core = ">=0.1"
+langchain-core = ">=1.3.0,<2"
 langgraph-checkpoint = ">=2.1.0,<5.0.0"
-langgraph-prebuilt = ">=1.0.8,<1.1.0"
+langgraph-prebuilt = ">=1.0.12,<1.1.0"
 langgraph-sdk = ">=0.3.0,<0.4.0"
 pydantic = ">=2.7.4"
 xxhash = ">=3.5.0"
@@ -1944,18 +1949,18 @@ redisvl = ">=0.15.0,<1.0.0"
 
 [[package]]
 name = "langgraph-prebuilt"
-version = "1.0.8"
+version = "1.0.12"
 description = "Library with high-level APIs for creating and executing LangGraph agents and tools."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langgraph_prebuilt-1.0.8-py3-none-any.whl", hash = "sha256:d16a731e591ba4470f3e313a319c7eee7dbc40895bcf15c821f985a3522a7ce0"},
-    {file = "langgraph_prebuilt-1.0.8.tar.gz", hash = "sha256:0cd3cf5473ced8a6cd687cc5294e08d3de57529d8dd14fdc6ae4899549efcf69"},
+    {file = "langgraph_prebuilt-1.0.12-py3-none-any.whl", hash = "sha256:ab83822d2724d434d3536dc127b86c7d16fe3fb8dc02a89a683bc77b2e55f6e9"},
+    {file = "langgraph_prebuilt-1.0.12.tar.gz", hash = "sha256:edcb11ff29996def816243f267fb2c85c0a2e4fb618c275f3d238aee8dd6a5ec"},
 ]
 
 [package.dependencies]
-langchain-core = ">=1.0.0"
+langchain-core = ">=1.3.1"
 langgraph-checkpoint = ">=2.1.0,<5.0.0"
 
 [[package]]
@@ -4222,19 +4227,19 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [[package]]
 name = "ttyg"
-version = "4.2.0"
+version = "4.2.1"
 description = "Natural language querying for GraphDB using LangGraph agents"
 optional = false
 python-versions = "<3.14,>=3.12"
 groups = ["main"]
 files = [
-    {file = "ttyg-4.2.0-py3-none-any.whl", hash = "sha256:3430ba1834501025ac9038f519da5c83116593c71e34966b91a13cb45d2a9cb8"},
-    {file = "ttyg-4.2.0.tar.gz", hash = "sha256:51d8e3d27c8b459360d0e2780249f922be6ecc8992996cb5b809b6ec3a68ff9c"},
+    {file = "ttyg-4.2.1-py3-none-any.whl", hash = "sha256:2c588981025c494673b88e6cf3dcbca36b09df50abb47f5e25e9549505afbd56"},
+    {file = "ttyg-4.2.1.tar.gz", hash = "sha256:4d164aa83090aff38e83ed125925521d16d90fc5931544064fc08b6eafd0c311"},
 ]
 
 [package.dependencies]
-langchain = "1.2.12"
-langgraph = "1.1.1"
+langchain = "1.2.15"
+langgraph = "1.1.10"
 rdflib = {version = "7.6.0", extras = ["graphdb"]}
 
 [[package]]
@@ -4973,4 +4978,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "60b6150558de2ae0b3615ebc41d82d44443739816f74aa6fac0ef84fd050dec4"
+content-hash = "0dd8e4da920a45b955abd79f66d050c5124f75d18f5bc0ebd842f7e25fc5adfd"

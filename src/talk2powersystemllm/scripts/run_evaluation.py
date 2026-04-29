@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -12,7 +13,7 @@ from tqdm import tqdm
 from ttyg.agents import run_agent_for_evaluation
 
 from talk2powersystemllm.agent import Talk2PowerSystemAgentFactory
-from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset
+from talk2powersystemllm.qa_dataset import load_and_split_qa_dataset, load_qa_dataset
 
 
 def save_as_yaml(path: Path, obj) -> None:
@@ -50,17 +51,24 @@ def get_args_parser() -> argparse.ArgumentParser:
         required=True,
         help="Path to the results directory",
     )
+    parser.add_argument(
+        "--split_dataset",
+        dest="split_dataset",
+        required=False,
+        default=True,
+        action=argparse.BooleanOptionalAction,
+        help="Toggle dataset splitting (default: True).",
+    )
 
     return parser
 
 
-def run_evaluation_on_split(
+async def run_evaluation_on_split(
     agent: CompiledStateGraph,
     split: list[dict],
     split_name: str,
     results_dir: Path,
 ) -> None:
-    chat_responses_actual_answers = dict()
     chat_responses = dict()
     chat_responses_file = results_dir / f"chat_responses_{split_name}.jsonl"
     with jsonlines.open(chat_responses_file, mode="w") as writer:
@@ -70,16 +78,9 @@ def run_evaluation_on_split(
             for question in template["questions"]:
                 chat_response = run_agent(agent, question)
                 writer.write(chat_response)
-                chat_responses_actual_answers[question["id"]] = chat_response.pop(
-                    "actual_answer", None
-                )
                 chat_responses[question["id"]] = chat_response
 
-    per_question_eval = run_evaluation(split, chat_responses)
-    for question_eval in per_question_eval:
-        question_eval["actual_answer"] = chat_responses_actual_answers[
-            question_eval["question_id"]
-        ]
+    per_question_eval = await run_evaluation(split, chat_responses)
     evaluation_results_file = results_dir / f"evaluation_per_question_{split_name}.yaml"
     save_as_yaml(evaluation_results_file, per_question_eval)
     aggregates = compute_aggregates(per_question_eval)
@@ -118,12 +119,16 @@ def main():
     results_dir = results_dir / timestamp
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    _, dev_split, test_split = load_and_split_qa_dataset(
-        Path(args.qa_dataset_path), n_templates=args.n_templates
-    )
     agent: CompiledStateGraph = Talk2PowerSystemAgentFactory(
         Path(args.chat_config_path),
     ).get_agent()
 
-    run_evaluation_on_split(agent, dev_split, "dev", results_dir)
-    run_evaluation_on_split(agent, test_split, "test", results_dir)
+    if args.split_dataset:
+        _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path))
+        dev_split = dev_split[: args.n_templates]
+        test_split = test_split[: args.n_templates]
+        asyncio.run(run_evaluation_on_split(agent, dev_split, "dev", results_dir))
+        asyncio.run(run_evaluation_on_split(agent, test_split, "test", results_dir))
+    else:
+        qa_dataset = load_qa_dataset(Path(args.qa_dataset_path))
+        asyncio.run(run_evaluation_on_split(agent, qa_dataset, "test", results_dir))

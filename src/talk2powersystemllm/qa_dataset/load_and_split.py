@@ -4,14 +4,11 @@ from pathlib import Path
 import yaml
 
 
-def load_and_split_qa_dataset(
+def load_qa_dataset(
     path_to_yaml: Path,
-    n_templates: int = 50,
-) -> tuple[list[dict], list[dict], list[dict]]:
+) -> list[dict]:
     """
-    Loads the Q&A dataset, shuffles it, and splits it into 3 parts: train, dev and test.
-    The size of the dev and test splits is either 10% or n_templates, whichever is smaller.
-    The remaining templates are in the train split.
+    Loads the Q&A dataset
     """
     with open(path_to_yaml, "r", encoding="utf-8") as yaml_file:
         qa_dataset: list[dict] = yaml.safe_load(yaml_file)
@@ -33,13 +30,26 @@ def load_and_split_qa_dataset(
             "Questions ids are not unique!"
         )
 
-        random.seed(1)
-        random.shuffle(qa_dataset)
+        return qa_dataset
 
-        dev_test_size = min(n_templates, int(len(qa_dataset) * 0.1))
 
-        test_split = qa_dataset[:dev_test_size]
-        dev_split = qa_dataset[dev_test_size : (2 * dev_test_size)]
-        train_split = qa_dataset[(2 * dev_test_size) :]
+def load_and_split_qa_dataset(
+    path_to_yaml: Path,
+) -> tuple[list[dict], list[dict], list[dict]]:
+    """
+    Loads the Q&A dataset, shuffles it, and splits it into 3 parts: train, dev and test.
+    The size of the dev and test splits is 10% .
+    The remaining templates are in the train split.
+    """
+    qa_dataset = load_qa_dataset(path_to_yaml)
 
-        return train_split, dev_split, test_split
+    random.seed(1)
+    random.shuffle(qa_dataset)
+
+    dev_test_size = int(len(qa_dataset) * 0.1)
+
+    test_split = qa_dataset[:dev_test_size]
+    dev_split = qa_dataset[dev_test_size : (2 * dev_test_size)]
+    train_split = qa_dataset[(2 * dev_test_size) :]
+
+    return train_split, dev_split, test_split

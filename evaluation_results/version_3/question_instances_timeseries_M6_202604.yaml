@@ -1,0 +1,3179 @@
+- description: Time series values over a given time period.
+  filters:
+  - property: ''
+    subject: date_start
+    type: xsd:dateTime
+  - property: ''
+    subject: date_end
+    type: xsd:dateTime
+  name: Time series values
+  ontology_subset: ''
+  outputs:
+  - name: values
+    type: time series
+  parameters:
+  - name: analog
+    type: cim:Analog
+  paraphrases: []
+  questions:
+  - id: question_b6eebb9bc01829678d1c106f2ff62a0e
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: Fetch 10YNO-2--------T values between 2023-09-01 00:00:00 and 2023-09-02
+      00:00:00.
+    reference_steps:
+    - - args:
+          query: 10YNO-2--------T
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:31a8b14b-e41f-4c0b-b21b-0be308770228"},
+          "mrid": {"type": "literal", "value": "31a8b14b-e41f-4c0b-b21b-0be308770228"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 31a8b14b-e41f-4c0b-b21b-0be308770228
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO2_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-09-02T00:00:00Z'
+          external_id: Kraftpriser_NO2_13
+          start: '2023-09-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_127e0f6fc52d3e76b8b9409dc9b1d3f0
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:3f43657a-d46a-4247-85d8-55027c0adaf7
+    question_text: Please retrieve the data points for NO5 - NO3 within the timeframe
+      of 2025-05-26 09:00:00 to 2025-05-27 09:00:00.
+    reference_steps:
+    - - args:
+          query: NO5 - NO3
+        name: iri_discovery
+        output: urn:uuid:3f43657a-d46a-4247-85d8-55027c0adaf7
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:3f43657a-d46a-4247-85d8-55027c0adaf7> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:292350c3-1edf-8b57-e050-1e828c94898c"},
+          "mrid": {"type": "literal", "value": "292350c3-1edf-8b57-e050-1e828c94898c"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 292350c3-1edf-8b57-e050-1e828c94898c
+        name: retrieve_time_series
+        output:
+        - external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-05-27T09:00:00Z'
+          external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+          start: '2025-05-26T09:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_289649ca979d3c853cc9ff2dc1a9ed69
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:fdc34686-71ab-4fc4-8975-271a1bbe0acb
+    question_text: What are the readings for fdc34686 for the duration 2024-11-03
+      11:00:00 to 2024-11-04 11:00:00?
+    reference_steps:
+    - - args:
+          query: fdc34686
+        name: iri_discovery
+        output: urn:uuid:fdc34686-71ab-4fc4-8975-271a1bbe0acb
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:fdc34686-71ab-4fc4-8975-271a1bbe0acb> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-7bb9-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-7bb9-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-7bb9-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-7bb9-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-11-04T11:00:00Z'
+          external_id: 9bb00fb1-7bb9-831a-e040-1e828c94e833_agg_value
+          start: '2024-11-03T11:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_3bcd26b1c53d88781df4fabb352f2a62
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+    question_text: Select all values for 10Y1001A1001A44P where the timestamp is between
+      2024-07-20 00:00:00 and 2024-08-17 00:00:00.
+    reference_steps:
+    - - args:
+          query: 10Y1001A1001A44P
+        name: iri_discovery
+        output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:b478a210-4550-4986-9e47-47912ff06d61> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:a6437ea1-25cb-4958-867d-3a62f189034b"},
+          "mrid": {"type": "literal", "value": "a6437ea1-25cb-4958-867d-3a62f189034b"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: a6437ea1-25cb-4958-867d-3a62f189034b
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-08-17T00:00:00Z'
+          external_id: Kraftpriser_SE1_13
+          start: '2024-07-20T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_d39f318b9addad4d2601292d2c8a48cf
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+    question_text: What are the readings for 30e6709e-510c-49b9-92ec-e2aebdc1050e
+      for the duration 2023-11-14 00:00:00 to 2023-11-21 00:00:00?
+    reference_steps:
+    - - args:
+          query: 30e6709e-510c-49b9-92ec-e2aebdc1050e
+        name: iri_discovery
+        output: urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:b4e3cb44-dd09-4c06-b7bc-21411872bca4"},
+          "mrid": {"type": "literal", "value": "b4e3cb44-dd09-4c06-b7bc-21411872bca4"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: b4e3cb44-dd09-4c06-b7bc-21411872bca4
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE3_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-11-21T00:00:00Z'
+          external_id: Kraftpriser_SE3_13
+          start: '2023-11-14T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_9b149228905394d540dbc7539c2b3213
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:e7e780b2-3a74-4453-8e4d-f10a397abf5d
+    question_text: What are the readings for 10YDK-1--------W for the duration 2025-05-05
+      07:00:00 to 2025-05-06 07:00:00?
+    reference_steps:
+    - - args:
+          query: 10YDK-1--------W
+        name: iri_discovery
+        output: urn:uuid:e7e780b2-3a74-4453-8e4d-f10a397abf5d
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:e7e780b2-3a74-4453-8e4d-f10a397abf5d> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:26f9ac44-045b-451f-ab21-6e8e78b2b15b"},
+          "mrid": {"type": "literal", "value": "26f9ac44-045b-451f-ab21-6e8e78b2b15b"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 26f9ac44-045b-451f-ab21-6e8e78b2b15b
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_DK1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-05-06T07:00:00Z'
+          external_id: Kraftpriser_DK1_13
+          start: '2025-05-05T07:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_c39a8ce05ba865257c4d8077d4df1b9e
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+    question_text: What are the readings for 6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+      for the duration 2024-06-12 15:00:00 to 2024-06-13 15:00:00?
+    reference_steps:
+    - - args:
+          query: 6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        name: iri_discovery
+        output: urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:00cc6a04-2dab-4bfe-b2e7-50d4da1198e2"},
+          "mrid": {"type": "literal", "value": "00cc6a04-2dab-4bfe-b2e7-50d4da1198e2"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 00cc6a04-2dab-4bfe-b2e7-50d4da1198e2
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_FI_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-06-13T15:00:00Z'
+          external_id: Kraftpriser_FI_13
+          start: '2024-06-12T15:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_0b19a6386402facf83ff0300ae5446fa
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:f87c7026-ffd9-4c9e-b2ad-5311ea79e5f2
+    question_text: Please retrieve the data points for f87c7026-ffd9-4c9e-b2ad-5311ea79e5f2
+      within the timeframe of 2023-10-05 00:00:00 to 2023-10-12 00:00:00.
+    reference_steps:
+    - - args:
+          query: f87c7026-ffd9-4c9e-b2ad-5311ea79e5f2
+        name: iri_discovery
+        output: urn:uuid:f87c7026-ffd9-4c9e-b2ad-5311ea79e5f2
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:f87c7026-ffd9-4c9e-b2ad-5311ea79e5f2> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:ca978e25-50fd-d5ce-e040-1e828c94bc3a"},
+          "mrid": {"type": "literal", "value": "ca978e25-50fd-d5ce-e040-1e828c94bc3a"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: ca978e25-50fd-d5ce-e040-1e828c94bc3a
+        name: retrieve_time_series
+        output:
+        - external_id: ca978e25-50fd-d5ce-e040-1e828c94bc3a_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-10-12T00:00:00Z'
+          external_id: ca978e25-50fd-d5ce-e040-1e828c94bc3a_agg_value
+          start: '2023-10-05T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_835a3c3507e7e6c3793ce67d17035298
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+    question_text: Get me the values of b64efd13 from 2024-08-03 00:00:00 to 2024-08-10
+      00:00:00.
+    reference_steps:
+    - - args:
+          query: b64efd13
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:057de70f-c679-4a76-bf64-c36adf45ede3"},
+          "mrid": {"type": "literal", "value": "057de70f-c679-4a76-bf64-c36adf45ede3"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 057de70f-c679-4a76-bf64-c36adf45ede3
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO4_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-08-10T00:00:00Z'
+          external_id: Kraftpriser_NO4_13
+          start: '2024-08-03T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_bfdb4e1a989c1f8d3fdb6be2073a9beb
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad
+    question_text: Display the numerical results associated with SE4 during the interval
+      defined by 2024-04-01 00:00:00 and 2024-06-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: SE4
+        name: iri_discovery
+        output: urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:b3463067-1513-4014-88e8-c49f672b0f40"},
+          "mrid": {"type": "literal", "value": "b3463067-1513-4014-88e8-c49f672b0f40"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: b3463067-1513-4014-88e8-c49f672b0f40
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE4_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-06-01T00:00:00Z'
+          external_id: Kraftpriser_SE4_13
+          start: '2024-04-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  sparql_template: null
+  template_id: template_timeseries_template1
+- description: Aggregated values for a time series over a given time period with aggregation
+    type and step specified.
+  filters:
+  - property: ''
+    subject: date_start
+    type: xsd:dateTime
+  - property: ''
+    subject: date_end
+    type: xsd:dateTime
+  - property: ''
+    subject: aggregate_type
+    type: xsd:string
+  - property: ''
+    subject: aggregate_step
+    type: xsd:string
+  name: Aggregate time series values
+  ontology_subset: ''
+  outputs:
+  - name: values
+    type: time series
+  parameters:
+  - name: analog
+    type: cim:Analog
+  paraphrases: []
+  questions:
+  - id: question_ff9cc8aaff44b10384d7a50f9ac73774
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad
+    question_text: 'Extract continuous_variance, min, max values for 2119a5e9; range:
+      2024-06-01 00:00:00 to 2025-06-01 00:00:00; granularity: 3mо.'
+    reference_steps:
+    - - args:
+          query: 2119a5e9
+        name: iri_discovery
+        output: urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:b3463067-1513-4014-88e8-c49f672b0f40"},
+          "mrid": {"type": "literal", "value": "b3463067-1513-4014-88e8-c49f672b0f40"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: b3463067-1513-4014-88e8-c49f672b0f40
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE4_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - min
+          - max
+          end: '2025-06-01T00:00:00Z'
+          external_id: Kraftpriser_SE4_13
+          granularity: 3mо
+          start: '2024-06-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_6963f5285f1f25a46c772cd503c46d4b
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: For the duration of 2024-07-01 00:00:00 to 2025-07-01 00:00:00,
+      what is the 1y min, continuous_variance of 0f094148-164b-427a-a8e8-0c5f334688ae?
+    reference_steps:
+    - - args:
+          query: 0f094148-164b-427a-a8e8-0c5f334688ae
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:b27b8d6b-832c-4a33-bbd5-4f2da41760d9"},
+          "mrid": {"type": "literal", "value": "b27b8d6b-832c-4a33-bbd5-4f2da41760d9"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: b27b8d6b-832c-4a33-bbd5-4f2da41760d9
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO3_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          - continuous_variance
+          end: '2025-07-01T00:00:00Z'
+          external_id: Kraftpriser_NO3_13
+          granularity: 1y
+          start: '2024-07-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_768b8ff6fae2b4929bcd9e340f16e93e
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:3f43657a-d46a-4247-85d8-55027c0adaf7
+    question_text: Fetch the NO5 - NO3 data from 2023-09-01 00:00:00 to 2023-11-01
+      00:00:00 and return the min for every 1w.
+    reference_steps:
+    - - args:
+          query: NO5 - NO3
+        name: iri_discovery
+        output: urn:uuid:3f43657a-d46a-4247-85d8-55027c0adaf7
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:3f43657a-d46a-4247-85d8-55027c0adaf7> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:292350c3-1edf-8b57-e050-1e828c94898c"},
+          "mrid": {"type": "literal", "value": "292350c3-1edf-8b57-e050-1e828c94898c"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 292350c3-1edf-8b57-e050-1e828c94898c
+        name: retrieve_time_series
+        output:
+        - external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          end: '2023-11-01T00:00:00Z'
+          external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+          granularity: 1w
+          start: '2023-09-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_d88a2528a49deb58c02f97bf13d04676
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+    question_text: Provide the continuous_variance, max, average, min for dc281688
+      between 2023-09-01 00:00:00 and 2024-09-01 00:00:00, with a frequency of 1y.
+    reference_steps:
+    - - args:
+          query: dc281688
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:aa44db41-319d-4420-a382-38540257062d"},
+          "mrid": {"type": "literal", "value": "aa44db41-319d-4420-a382-38540257062d"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: aa44db41-319d-4420-a382-38540257062d
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO5_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - max
+          - average
+          - min
+          end: '2024-09-01T00:00:00Z'
+          external_id: Kraftpriser_NO5_13
+          granularity: 1y
+          start: '2023-09-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_2d3f8fc39bd56aa45f54a7d5cfcc67a6
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:4f1743b1-da1c-4087-9055-291f7955ec8f
+    question_text: 'Extract average, max, min, continuous_variance values for 4f1743b1;
+      range: 2023-10-19 22:00:00 to 2023-10-20 22:00:00; granularity: 6h.'
+    reference_steps:
+    - - args:
+          query: 4f1743b1
+        name: iri_discovery
+        output: urn:uuid:4f1743b1-da1c-4087-9055-291f7955ec8f
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:4f1743b1-da1c-4087-9055-291f7955ec8f> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:7996c33e-b0e7-4c7a-b845-1af3ba25accc"},
+          "mrid": {"type": "literal", "value": "7996c33e-b0e7-4c7a-b845-1af3ba25accc"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 7996c33e-b0e7-4c7a-b845-1af3ba25accc
+        name: retrieve_time_series
+        output:
+        - external_id: 7996c33e-b0e7-4c7a-b845-1af3ba25accc_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - average
+          - max
+          - min
+          - continuous_variance
+          end: '2023-10-20T22:00:00Z'
+          external_id: 7996c33e-b0e7-4c7a-b845-1af3ba25accc_agg_value
+          granularity: 6h
+          start: '2023-10-19T22:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_8d25e89ec74a385f27157d0a793ca28e
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd
+    question_text: Fetch the EE data from 2024-02-11 00:00:00 to 2024-02-18 00:00:00
+      and return the continuous_variance, average, min for every 3d.
+    reference_steps:
+    - - args:
+          query: EE
+        name: iri_discovery
+        output: urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:1d9d34e6-a31f-4b95-9e67-ce127dd26c84"},
+          "mrid": {"type": "literal", "value": "1d9d34e6-a31f-4b95-9e67-ce127dd26c84"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 1d9d34e6-a31f-4b95-9e67-ce127dd26c84
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_EE_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - average
+          - min
+          end: '2024-02-18T00:00:00Z'
+          external_id: Kraftpriser_EE_13
+          granularity: 3d
+          start: '2024-02-11T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_995f3ed479045e4dd70255b5b09cd99b
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+    question_text: Summarize 10Y1001A1001A46L by min, average, continuous_variance
+      for each 1h between 2024-06-27 11:00:00 and 2024-06-28 11:00:00.
+    reference_steps:
+    - - args:
+          query: 10Y1001A1001A46L
+        name: iri_discovery
+        output: urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:b4e3cb44-dd09-4c06-b7bc-21411872bca4"},
+          "mrid": {"type": "literal", "value": "b4e3cb44-dd09-4c06-b7bc-21411872bca4"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: b4e3cb44-dd09-4c06-b7bc-21411872bca4
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE3_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          - average
+          - continuous_variance
+          end: '2024-06-28T11:00:00Z'
+          external_id: Kraftpriser_SE3_13
+          granularity: 1h
+          start: '2024-06-27T11:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_751c28b68b090d4e2fd99c7274427977
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+    question_text: 'Extract continuous_variance, min, average, max values for 10Y1001A1001A44P;
+      range: 2025-01-01 00:00:00 to 2025-03-01 00:00:00; granularity: 2w.'
+    reference_steps:
+    - - args:
+          query: 10Y1001A1001A44P
+        name: iri_discovery
+        output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:b478a210-4550-4986-9e47-47912ff06d61> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:a6437ea1-25cb-4958-867d-3a62f189034b"},
+          "mrid": {"type": "literal", "value": "a6437ea1-25cb-4958-867d-3a62f189034b"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: a6437ea1-25cb-4958-867d-3a62f189034b
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - min
+          - average
+          - max
+          end: '2025-03-01T00:00:00Z'
+          external_id: Kraftpriser_SE1_13
+          granularity: 2w
+          start: '2025-01-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_f2eb0e1f1d0a1516ac56b0df96435c18
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: List 1d min, continuous_variance, max values for 63b13e2e starting
+      from 2024-02-07 00:00:00 until 2024-02-14 00:00:00.
+    reference_steps:
+    - - args:
+          query: 63b13e2e
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:31a8b14b-e41f-4c0b-b21b-0be308770228"},
+          "mrid": {"type": "literal", "value": "31a8b14b-e41f-4c0b-b21b-0be308770228"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 31a8b14b-e41f-4c0b-b21b-0be308770228
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO2_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          - continuous_variance
+          - max
+          end: '2024-02-14T00:00:00Z'
+          external_id: Kraftpriser_NO2_13
+          granularity: 1d
+          start: '2024-02-07T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_58b997c5305b43e5af89cd6a8b17aaa9
+    parameter_bindings:
+      $ObjectIdentity(0, cim:PowerSystemResource): urn:uuid:8a2653a0-7f76-4f64-a346-9ae318f219dc
+    question_text: 'Extract max values for NO5 - NO2; range: 2025-03-29 00:00:00 to
+      2025-04-05 00:00:00; granularity: 3d.'
+    reference_steps:
+    - - args:
+          query: NO5 - NO2
+        name: iri_discovery
+        output: urn:uuid:8a2653a0-7f76-4f64-a346-9ae318f219dc
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "\n    PREFIX cimr: <https://cim.ucaiug.io/rules#>\n    PREFIX cim:\
+            \ <https://cim.ucaiug.io/ns#>\n    SELECT ?measurement ?mrid WHERE {\n\
+            \      ?measurement a cim:Analog ;\n        cim:Measurement.PowerSystemResource\
+            \ <urn:uuid:8a2653a0-7f76-4f64-a346-9ae318f219dc> ;\n        cimr:Measurement.isInCognite\
+            \ true;\n        cim:IdentifiedObject.mRID ?mrid .\n    } LIMIT 1\n  \
+            \              "
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-7bc7-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-7bc7-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-7bc7-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-7bc7-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          end: '2025-04-05T00:00:00Z'
+          external_id: 9bb00fb1-7bc7-831a-e040-1e828c94e833_agg_value
+          granularity: 3d
+          start: '2025-03-29T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  sparql_template: null
+  template_id: template_timeseries_template2
+- description: Power flow time series between two bidding zones over a given time
+    period.
+  filters:
+  - property: ''
+    subject: date_start
+    type: xsd:dateTime
+  - property: ''
+    subject: date_end
+    type: xsd:dateTime
+  name: Power flow between bidding zones
+  ontology_subset: ''
+  outputs:
+  - name: values
+    type: time series
+  parameters:
+  - name: bidzone1
+    type: nc:BiddingZone
+  - name: bidzone2
+    type: nc:BiddingZone
+  paraphrases: []
+  questions:
+  - id: question_5c15e41e161f47ac7d14d5fa80bcbc4d
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: What were the measured flows on the border between dc281688 and
+      0f094148 from 2025-04-11 00:00:00 to 2025-05-09 00:00:00?
+    reference_steps:
+    - - args:
+          query: dc281688
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 0f094148
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:292350c3-1edf-8b57-e050-1e828c94898c"},
+          "mrid": {"type": "literal", "value": "292350c3-1edf-8b57-e050-1e828c94898c"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 292350c3-1edf-8b57-e050-1e828c94898c
+        name: retrieve_time_series
+        output:
+        - external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-05-09T00:00:00Z'
+          external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+          start: '2025-04-11T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_fb86c4eba215c199120156e2b816afea
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: What were the measured flows on the border between 83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+      and NO2 from 2024-04-05 00:00:00 to 2024-04-12 00:00:00?
+    reference_steps:
+    - - args:
+          query: 83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: NO2
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fae-11ed-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fae-11ed-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fae-11ed-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fae-11ed-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-04-12T00:00:00Z'
+          external_id: 9bb00fae-11ed-831a-e040-1e828c94e833_agg_value
+          start: '2024-04-05T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_aafd3f0dd6718a724307093d61cbbe42
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+    question_text: Show the power exchange between 10YNO-4--------9 and b478a210 from
+      2023-09-29 00:00:00 to 2023-10-06 00:00:00.
+    reference_steps:
+    - - args:
+          query: 10YNO-4--------9
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: b478a210
+        name: iri_discovery
+        output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:b478a210-4550-4986-9e47-47912ff06d61>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:7996c33e-b0e7-4c7a-b845-1af3ba25accc"},
+          "mrid": {"type": "literal", "value": "7996c33e-b0e7-4c7a-b845-1af3ba25accc"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 7996c33e-b0e7-4c7a-b845-1af3ba25accc
+        name: retrieve_time_series
+        output:
+        - external_id: 7996c33e-b0e7-4c7a-b845-1af3ba25accc_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-10-06T00:00:00Z'
+          external_id: 7996c33e-b0e7-4c7a-b845-1af3ba25accc_agg_value
+          start: '2023-09-29T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_8152f6b5baa4a215734ee2f134e0a96f
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: What is the power flow from NO1 to 0f094148 between 2025-05-27
+      00:00:00 and 2025-06-24 00:00:00?
+    reference_steps:
+    - - args:
+          query: NO1
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 0f094148
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-4e7f-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-4e7f-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-4e7f-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-4e7f-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-06-24T00:00:00Z'
+          external_id: 9bb00fb1-4e7f-831a-e040-1e828c94e833_agg_value
+          start: '2025-05-27T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_59d4682831a659a1d23d8d7925a40a5a
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: Display the interconnection flow from dc281688-8b45-4ce7-b2e8-6c524a5afece
+      toward NO2 between 2024-10-20 00:00:00 and 2024-11-17 00:00:00.
+    reference_steps:
+    - - args:
+          query: dc281688-8b45-4ce7-b2e8-6c524a5afece
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: NO2
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-7bc7-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-7bc7-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-7bc7-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-7bc7-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-11-17T00:00:00Z'
+          external_id: 9bb00fb1-7bc7-831a-e040-1e828c94e833_agg_value
+          start: '2024-10-20T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_c4608916cffda8b40ffcb08bc326f18a
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+    question_text: What were the measured flows on the border between NO5 and 83aa03e5
+      from 2025-06-07 10:00:00 to 2025-06-08 10:00:00?
+    reference_steps:
+    - - args:
+          query: NO5
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 83aa03e5
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-7bb9-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-7bb9-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-7bb9-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-7bb9-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-06-08T10:00:00Z'
+          external_id: 9bb00fb1-7bb9-831a-e040-1e828c94e833_agg_value
+          start: '2025-06-07T10:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_b7f05e3222b948dba5a28c3dd1ac7077
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+    question_text: Fetch the time series for power transfer from 30e6709e to 83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+      within 2024-04-01 00:00:00 and 2025-04-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: 30e6709e
+        name: iri_discovery
+        output: urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:ca978e25-50fd-d5ce-e040-1e828c94bc3a"},
+          "mrid": {"type": "literal", "value": "ca978e25-50fd-d5ce-e040-1e828c94bc3a"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: ca978e25-50fd-d5ce-e040-1e828c94bc3a
+        name: retrieve_time_series
+        output:
+        - external_id: ca978e25-50fd-d5ce-e040-1e828c94bc3a_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-04-01T00:00:00Z'
+          external_id: ca978e25-50fd-d5ce-e040-1e828c94bc3a_agg_value
+          start: '2024-04-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_7b7f8662d9a319d1d90364b45471973d
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+    question_text: What is the power flow from b64efd13-92fe-4786-87ef-731d1e2cce0e
+      to FI between 2024-01-13 00:00:00 and 2024-01-20 00:00:00?
+    reference_steps:
+    - - args:
+          query: b64efd13-92fe-4786-87ef-731d1e2cce0e
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: FI
+        name: iri_discovery
+        output: urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:62cef574-c2e3-428e-9cf7-469e572d524e"},
+          "mrid": {"type": "literal", "value": "62cef574-c2e3-428e-9cf7-469e572d524e"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 62cef574-c2e3-428e-9cf7-469e572d524e
+        name: retrieve_time_series
+        output:
+        - external_id: 62cef574-c2e3-428e-9cf7-469e572d524e_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-01-20T00:00:00Z'
+          external_id: 62cef574-c2e3-428e-9cf7-469e572d524e_agg_value
+          start: '2024-01-13T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_2b577dbeb7d8284f17092cbf67c9a11e
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: Get the estimated power flow between 781f385c-f3a1-4691-843d-eab2ed919a1b
+      and 10YNO-3--------J during the interval 2024-05-02 00:00:00 to 2024-05-30 00:00:00.
+    reference_steps:
+    - - args:
+          query: 781f385c-f3a1-4691-843d-eab2ed919a1b
+        name: iri_discovery
+        output: urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 10YNO-3--------J
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:badff250-1f7c-4804-a902-51e6fcf52d41"},
+          "mrid": {"type": "literal", "value": "badff250-1f7c-4804-a902-51e6fcf52d41"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: badff250-1f7c-4804-a902-51e6fcf52d41
+        name: retrieve_time_series
+        output:
+        - external_id: badff250-1f7c-4804-a902-51e6fcf52d41_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-05-30T00:00:00Z'
+          external_id: badff250-1f7c-4804-a902-51e6fcf52d41_agg_value
+          start: '2024-05-02T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_a58f1cc7244114f2d827d250b0e3d10f
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+    question_text: Fetch the time series for power transfer from NO3 to NO4 within
+      2024-05-01 00:00:00 and 2025-05-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: NO3
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: NO4
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00faf-0f2f-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00faf-0f2f-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00faf-0f2f-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00faf-0f2f-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-05-01T00:00:00Z'
+          external_id: 9bb00faf-0f2f-831a-e040-1e828c94e833_agg_value
+          start: '2024-05-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  sparql_template: null
+  template_id: template_powerflow_template1
+- description: Aggregated power flow between two bidding zones with aggregation type
+    and step specified.
+  filters:
+  - property: ''
+    subject: date_start
+    type: xsd:dateTime
+  - property: ''
+    subject: date_end
+    type: xsd:dateTime
+  - property: ''
+    subject: aggregate_type
+    type: xsd:string
+  - property: ''
+    subject: aggregate_step
+    type: xsd:string
+  name: Aggregate power flow between bidding zones
+  ontology_subset: ''
+  outputs:
+  - name: values
+    type: time series
+  parameters:
+  - name: bidzone1
+    type: nc:BiddingZone
+  - name: bidzone2
+    type: nc:BiddingZone
+  paraphrases: []
+  questions:
+  - id: question_26c4804655cd6eb94eb3dec30ac459b5
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: 'Extract max, min, average values for the border flow between dc281688
+      and NO3; range: 2023-11-17 00:00:00 to 2023-11-24 00:00:00; granularity: 1d.'
+    reference_steps:
+    - - args:
+          query: dc281688
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: NO3
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:292350c3-1edf-8b57-e050-1e828c94898c"},
+          "mrid": {"type": "literal", "value": "292350c3-1edf-8b57-e050-1e828c94898c"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 292350c3-1edf-8b57-e050-1e828c94898c
+        name: retrieve_time_series
+        output:
+        - external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          - min
+          - average
+          end: '2023-11-24T00:00:00Z'
+          external_id: 292350c3-1edf-8b57-e050-1e828c94898c_agg_value
+          granularity: 1d
+          start: '2023-11-17T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_692bc87f6353ea68aa26fcc151c4c8de
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+    question_text: What is the 3d aggregated (max, continuous_variance, min) power
+      transfer from 10YNO-4--------9 to b478a210 during 2023-12-25 00:00:00-2024-01-01
+      00:00:00?
+    reference_steps:
+    - - args:
+          query: 10YNO-4--------9
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: b478a210
+        name: iri_discovery
+        output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:b478a210-4550-4986-9e47-47912ff06d61>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:7996c33e-b0e7-4c7a-b845-1af3ba25accc"},
+          "mrid": {"type": "literal", "value": "7996c33e-b0e7-4c7a-b845-1af3ba25accc"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 7996c33e-b0e7-4c7a-b845-1af3ba25accc
+        name: retrieve_time_series
+        output:
+        - external_id: 7996c33e-b0e7-4c7a-b845-1af3ba25accc_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          - continuous_variance
+          - min
+          end: '2024-01-01T00:00:00Z'
+          external_id: 7996c33e-b0e7-4c7a-b845-1af3ba25accc_agg_value
+          granularity: 3d
+          start: '2023-12-25T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_422a28a6361eaadbb4bee7af8a2f047c
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b
+    question_text: Show the 1mо continuous_variance, min, average cross-border flow
+      from NO4 to 10Y1001A1001A45N for 2023-11-01 00:00:00 through 2024-01-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: NO4
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 10Y1001A1001A45N
+        name: iri_discovery
+        output: urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:ca978e25-6023-d5ce-e040-1e828c94bc3a"},
+          "mrid": {"type": "literal", "value": "ca978e25-6023-d5ce-e040-1e828c94bc3a"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: ca978e25-6023-d5ce-e040-1e828c94bc3a
+        name: retrieve_time_series
+        output:
+        - external_id: ca978e25-6023-d5ce-e040-1e828c94bc3a_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - min
+          - average
+          end: '2024-01-01T00:00:00Z'
+          external_id: ca978e25-6023-d5ce-e040-1e828c94bc3a_agg_value
+          granularity: 1mо
+          start: '2023-11-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_18e623bfc9315be9fcb59ef7af7ab888
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: 'Extract min, average, continuous_variance values for the border
+      flow between dc281688 and 63b13e2e-8d0a-47d0-8de8-fb686decbae4; range: 2023-08-12
+      03:00:00 to 2023-08-13 03:00:00; granularity: 1h.'
+    reference_steps:
+    - - args:
+          query: dc281688
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-7bc7-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-7bc7-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-7bc7-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-7bc7-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          - average
+          - continuous_variance
+          end: '2023-08-13T03:00:00Z'
+          external_id: 9bb00fb1-7bc7-831a-e040-1e828c94e833_agg_value
+          granularity: 1h
+          start: '2023-08-12T03:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_dec7be7582f0c5fcc55365b13c55fcbe
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+    question_text: Show the 2w min, continuous_variance, max cross-border flow from
+      SE3 to 83aa03e5 for 2023-10-01 00:00:00 through 2023-12-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: SE3
+        name: iri_discovery
+        output: urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 83aa03e5
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:ca978e25-50fd-d5ce-e040-1e828c94bc3a"},
+          "mrid": {"type": "literal", "value": "ca978e25-50fd-d5ce-e040-1e828c94bc3a"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: ca978e25-50fd-d5ce-e040-1e828c94bc3a
+        name: retrieve_time_series
+        output:
+        - external_id: ca978e25-50fd-d5ce-e040-1e828c94bc3a_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          - continuous_variance
+          - max
+          end: '2023-12-01T00:00:00Z'
+          external_id: ca978e25-50fd-d5ce-e040-1e828c94bc3a_agg_value
+          granularity: 2w
+          start: '2023-10-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_144a7cb0e844022a098d8f050bc801d9
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+    question_text: Retrieve the continuous_variance, max of the power exchange between
+      b64efd13-92fe-4786-87ef-731d1e2cce0e and 10YFI-1--------U, grouped by 3h, from
+      2025-03-31 16:00:00 to 2025-04-01 16:00:00.
+    reference_steps:
+    - - args:
+          query: b64efd13-92fe-4786-87ef-731d1e2cce0e
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 10YFI-1--------U
+        name: iri_discovery
+        output: urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:62cef574-c2e3-428e-9cf7-469e572d524e"},
+          "mrid": {"type": "literal", "value": "62cef574-c2e3-428e-9cf7-469e572d524e"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 62cef574-c2e3-428e-9cf7-469e572d524e
+        name: retrieve_time_series
+        output:
+        - external_id: 62cef574-c2e3-428e-9cf7-469e572d524e_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - max
+          end: '2025-04-01T16:00:00Z'
+          external_id: 62cef574-c2e3-428e-9cf7-469e572d524e_agg_value
+          granularity: 3h
+          start: '2025-03-31T16:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_d62c85ff074f741fbe1062c388cbbfa1
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+    question_text: 'Extract min values for the border flow between 0f094148-164b-427a-a8e8-0c5f334688ae
+      and b64efd13; range: 2025-04-09 03:00:00 to 2025-04-10 03:00:00; granularity:
+      1h.'
+    reference_steps:
+    - - args:
+          query: 0f094148-164b-427a-a8e8-0c5f334688ae
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: b64efd13
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00faf-0f2f-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00faf-0f2f-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00faf-0f2f-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00faf-0f2f-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          end: '2025-04-10T03:00:00Z'
+          external_id: 9bb00faf-0f2f-831a-e040-1e828c94e833_agg_value
+          granularity: 1h
+          start: '2025-04-09T03:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_e3bd220ee16b739d14edb3726c0a42ad
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: Show the 1d continuous_variance, max, average, min cross-border
+      flow from 83aa03e5-5fd0-431c-b8dd-acc08c21ed6a to 10YNO-2--------T for 2025-03-21
+      00:00:00 through 2025-04-18 00:00:00.
+    reference_steps:
+    - - args:
+          query: 83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 10YNO-2--------T
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fae-11ed-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fae-11ed-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fae-11ed-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fae-11ed-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - max
+          - average
+          - min
+          end: '2025-04-18T00:00:00Z'
+          external_id: 9bb00fae-11ed-831a-e040-1e828c94e833_agg_value
+          granularity: 1d
+          start: '2025-03-21T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_9ed80c6f6e1940271446293a15d52370
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: What is the max, continuous_variance, min power flow from 83aa03e5
+      to 0f094148 per 5d between 2024-06-27 00:00:00 and 2024-07-25 00:00:00?
+    reference_steps:
+    - - args:
+          query: 83aa03e5
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 0f094148
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn true ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-4e7f-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-4e7f-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-4e7f-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-4e7f-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          - continuous_variance
+          - min
+          end: '2024-07-25T00:00:00Z'
+          external_id: 9bb00fb1-4e7f-831a-e040-1e828c94e833_agg_value
+          granularity: 5d
+          start: '2024-06-27T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_ee20b04165600dab1c73784896c7afa9
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+      $ObjectIdentity(1, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+    question_text: What is the 3d aggregated (max, average, continuous_variance, min)
+      power transfer from NO5 to 83aa03e5 during 2024-11-02 00:00:00-2024-11-30 00:00:00?
+    reference_steps:
+    - - args:
+          query: NO5
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+      - args:
+          query: 83aa03e5
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            PREFIX nc: <https://cim4.eu/ns/nc#>\nSELECT ?measurement ?mrid WHERE {\n\
+            \    ?border a nc:BiddingZoneBorder;\n    nc:BiddingZoneBorder.BiddingZoneOne\
+            \ <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>;\n    nc:BiddingZoneBorder.BiddingZoneTwo\
+            \ <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>.\n    ?analog cim:Measurement.PowerSystemResource\
+            \ ?border;\n    cim:Measurement.measurementType \"ThreePhaseActivePower-Flow-Estimated\"\
+            ;\n    cim:Analog.positiveFlowIn false ;\n    cimr:Measurement.isInCognite\
+            \ true;\n    cim:IdentifiedObject.mRID ?mrid.\n    BIND(?analog AS ?measurement)\n\
+            }"
+        name: sparql_query
+        output: '{"head": {"vars": ["measurement", "mrid"]}, "results": {"bindings":
+          [{"measurement": {"type": "uri", "value": "urn:uuid:9bb00fb1-7bb9-831a-e040-1e828c94e833"},
+          "mrid": {"type": "literal", "value": "9bb00fb1-7bb9-831a-e040-1e828c94e833"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - measurement
+        - mrid
+    - - args:
+          mrid: 9bb00fb1-7bb9-831a-e040-1e828c94e833
+        name: retrieve_time_series
+        output:
+        - external_id: 9bb00fb1-7bb9-831a-e040-1e828c94e833_agg_value
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          - average
+          - continuous_variance
+          - min
+          end: '2024-11-30T00:00:00Z'
+          external_id: 9bb00fb1-7bb9-831a-e040-1e828c94e833_agg_value
+          granularity: 3d
+          start: '2024-11-02T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  sparql_template: null
+  template_id: template_powerflow_template2
+- description: Energy price time series in a given currency for a bidding zone over
+    a time period.
+  filters:
+  - property: ''
+    subject: currency
+    type: xsd:string
+  - property: ''
+    subject: date_start
+    type: xsd:dateTime
+  - property: ''
+    subject: date_end
+    type: xsd:dateTime
+  name: Energy price for a bidding zone
+  ontology_subset: ''
+  outputs:
+  - name: values
+    type: time series
+  parameters:
+  - name: bidzone
+    type: nc:BiddingZone
+  paraphrases: []
+  questions:
+  - id: question_fead9662669c07bc37aa6508a4c93ea7
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad
+    question_text: Fetch the price time series for 2119a5e9 in EUR within the interval
+      2023-08-07 00:00:00 and 2023-09-04 00:00:00.
+    reference_steps:
+    - - args:
+          query: 2119a5e9
+        name: iri_discovery
+        output: urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:2119a5e9-fa38-4fe8-a8e9-2a2cc6f73bad>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:b3463067-1513-4014-88e8-c49f672b0f40"},
+          "mrid": {"type": "literal", "value": "b3463067-1513-4014-88e8-c49f672b0f40"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: b3463067-1513-4014-88e8-c49f672b0f40
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE4_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-09-04T00:00:00Z'
+          external_id: Kraftpriser_SE4_13
+          start: '2023-08-07T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_2350061e32974ec9206cdac828613faf
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+    question_text: What are the energy prices in EUR for 10Y1001A1001A44P between
+      2025-02-08 00:00:00 and 2025-03-08 00:00:00?
+    reference_steps:
+    - - args:
+          query: 10Y1001A1001A44P
+        name: iri_discovery
+        output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:b478a210-4550-4986-9e47-47912ff06d61>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:a6437ea1-25cb-4958-867d-3a62f189034b"},
+          "mrid": {"type": "literal", "value": "a6437ea1-25cb-4958-867d-3a62f189034b"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: a6437ea1-25cb-4958-867d-3a62f189034b
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-03-08T00:00:00Z'
+          external_id: Kraftpriser_SE1_13
+          start: '2025-02-08T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_cc93a35020fa5c6fdcc7c48a072dc4f5
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: Retrieve the EUR spot prices for 0f094148 from 2023-12-09 13:00:00
+      to 2023-12-10 13:00:00.
+    reference_steps:
+    - - args:
+          query: 0f094148
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:b27b8d6b-832c-4a33-bbd5-4f2da41760d9"},
+          "mrid": {"type": "literal", "value": "b27b8d6b-832c-4a33-bbd5-4f2da41760d9"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: b27b8d6b-832c-4a33-bbd5-4f2da41760d9
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO3_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-12-10T13:00:00Z'
+          external_id: Kraftpriser_NO3_13
+          start: '2023-12-09T13:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_c0f298f920a3648b922096e43b798d23
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+    question_text: What are the energy prices in EUR for 10YNO-4--------9 between
+      2023-12-20 00:00:00 and 2024-01-17 00:00:00?
+    reference_steps:
+    - - args:
+          query: 10YNO-4--------9
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:057de70f-c679-4a76-bf64-c36adf45ede3"},
+          "mrid": {"type": "literal", "value": "057de70f-c679-4a76-bf64-c36adf45ede3"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 057de70f-c679-4a76-bf64-c36adf45ede3
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO4_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-01-17T00:00:00Z'
+          external_id: Kraftpriser_NO4_13
+          start: '2023-12-20T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_c18ba423e25a573ad88f0616d24105ff
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:e7e780b2-3a74-4453-8e4d-f10a397abf5d
+    question_text: What were the EUR market prices for DK1 from 2024-01-03 00:00:00
+      to 2024-01-31 00:00:00?
+    reference_steps:
+    - - args:
+          query: DK1
+        name: iri_discovery
+        output: urn:uuid:e7e780b2-3a74-4453-8e4d-f10a397abf5d
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:e7e780b2-3a74-4453-8e4d-f10a397abf5d>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:26f9ac44-045b-451f-ab21-6e8e78b2b15b"},
+          "mrid": {"type": "literal", "value": "26f9ac44-045b-451f-ab21-6e8e78b2b15b"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 26f9ac44-045b-451f-ab21-6e8e78b2b15b
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_DK1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-01-31T00:00:00Z'
+          external_id: Kraftpriser_DK1_13
+          start: '2024-01-03T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_b5cafc0f43f4e3074cd904291520ef8b
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:0c1bc7f4-7404-4a4d-9d6b-d9edc0944a54
+    question_text: What were the EUR market prices for 10YDK-2--------M from 2024-05-10
+      00:00:00 to 2024-05-17 00:00:00?
+    reference_steps:
+    - - args:
+          query: 10YDK-2--------M
+        name: iri_discovery
+        output: urn:uuid:0c1bc7f4-7404-4a4d-9d6b-d9edc0944a54
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:0c1bc7f4-7404-4a4d-9d6b-d9edc0944a54>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:c6e21885-4b36-458d-a8e5-1cb94e3a0f19"},
+          "mrid": {"type": "literal", "value": "c6e21885-4b36-458d-a8e5-1cb94e3a0f19"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: c6e21885-4b36-458d-a8e5-1cb94e3a0f19
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_DK2_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-05-17T00:00:00Z'
+          external_id: Kraftpriser_DK2_13
+          start: '2024-05-10T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_5add14e2e311a20354f9d19f107b817c
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+    question_text: Give me the EUR price readings for 6eaaae78 between 2024-08-25
+      16:00:00 and 2024-08-26 16:00:00.
+    reference_steps:
+    - - args:
+          query: 6eaaae78
+        name: iri_discovery
+        output: urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:00cc6a04-2dab-4bfe-b2e7-50d4da1198e2"},
+          "mrid": {"type": "literal", "value": "00cc6a04-2dab-4bfe-b2e7-50d4da1198e2"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 00cc6a04-2dab-4bfe-b2e7-50d4da1198e2
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_FI_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-08-26T16:00:00Z'
+          external_id: Kraftpriser_FI_13
+          start: '2024-08-25T16:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_9e6ac33b4ba4c05969c08f89dc502b12
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: What were the EUR market prices for 63b13e2e-8d0a-47d0-8de8-fb686decbae4
+      from 2025-04-29 21:00:00 to 2025-04-30 21:00:00?
+    reference_steps:
+    - - args:
+          query: 63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:31a8b14b-e41f-4c0b-b21b-0be308770228"},
+          "mrid": {"type": "literal", "value": "31a8b14b-e41f-4c0b-b21b-0be308770228"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 31a8b14b-e41f-4c0b-b21b-0be308770228
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO2_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2025-04-30T21:00:00Z'
+          external_id: Kraftpriser_NO2_13
+          start: '2025-04-29T21:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_58fbae3e3e134c2a0e4dce148add9122
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd
+    question_text: What were the EUR market prices for 10Y1001A1001A39I from 2023-08-14
+      00:00:00 to 2023-08-21 00:00:00?
+    reference_steps:
+    - - args:
+          query: 10Y1001A1001A39I
+        name: iri_discovery
+        output: urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:1d9d34e6-a31f-4b95-9e67-ce127dd26c84"},
+          "mrid": {"type": "literal", "value": "1d9d34e6-a31f-4b95-9e67-ce127dd26c84"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 1d9d34e6-a31f-4b95-9e67-ce127dd26c84
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_EE_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2023-08-21T00:00:00Z'
+          external_id: Kraftpriser_EE_13
+          start: '2023-08-14T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_ff8f7d44e3eaac353f197193927767d2
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+    question_text: What are the energy prices in EUR for NO1 between 2023-12-01 00:00:00
+      and 2024-12-01 00:00:00?
+    reference_steps:
+    - - args:
+          query: NO1
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:7d90224c-ab77-4786-8e08-7f9b275c46da"},
+          "mrid": {"type": "literal", "value": "7d90224c-ab77-4786-8e08-7f9b275c46da"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 7d90224c-ab77-4786-8e08-7f9b275c46da
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          end: '2024-12-01T00:00:00Z'
+          external_id: Kraftpriser_NO1_13
+          start: '2023-12-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  sparql_template: null
+  template_id: template_energyprice_template1
+- description: Aggregated energy price in a given currency for a bidding zone with
+    aggregation type and step specified.
+  filters:
+  - property: ''
+    subject: currency
+    type: xsd:string
+  - property: ''
+    subject: date_start
+    type: xsd:dateTime
+  - property: ''
+    subject: date_end
+    type: xsd:dateTime
+  - property: ''
+    subject: aggregate_type
+    type: xsd:string
+  - property: ''
+    subject: aggregate_step
+    type: xsd:string
+  name: Aggregate energy price for a bidding zone
+  ontology_subset: ''
+  outputs:
+  - name: values
+    type: time series
+  parameters:
+  - name: bidzone
+    type: nc:BiddingZone
+  paraphrases: []
+  questions:
+  - id: question_54f740aefbfff22fc892dda9284a74c5
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+    question_text: For 2024-05-18 00:00:00 to 2024-06-15 00:00:00, give me the 5d
+      min, max, average energy price in EUR for b478a210-4550-4986-9e47-47912ff06d61.
+    reference_steps:
+    - - args:
+          query: b478a210-4550-4986-9e47-47912ff06d61
+        name: iri_discovery
+        output: urn:uuid:b478a210-4550-4986-9e47-47912ff06d61
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:b478a210-4550-4986-9e47-47912ff06d61>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:a6437ea1-25cb-4958-867d-3a62f189034b"},
+          "mrid": {"type": "literal", "value": "a6437ea1-25cb-4958-867d-3a62f189034b"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: a6437ea1-25cb-4958-867d-3a62f189034b
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          - max
+          - average
+          end: '2024-06-15T00:00:00Z'
+          external_id: Kraftpriser_SE1_13
+          granularity: 5d
+          start: '2024-05-18T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_eee90cbb29f85e22135a327c0e35431a
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+    question_text: 'Extract min EUR price values for dc281688; range: 2023-10-02 19:00:00
+      to 2023-10-03 19:00:00; granularity: 1h.'
+    reference_steps:
+    - - args:
+          query: dc281688
+        name: iri_discovery
+        output: urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:dc281688-8b45-4ce7-b2e8-6c524a5afece>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:aa44db41-319d-4420-a382-38540257062d"},
+          "mrid": {"type": "literal", "value": "aa44db41-319d-4420-a382-38540257062d"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: aa44db41-319d-4420-a382-38540257062d
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO5_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          end: '2023-10-03T19:00:00Z'
+          external_id: Kraftpriser_NO5_13
+          granularity: 1h
+          start: '2023-10-02T19:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_5df65fe24523734efe57c192d8f388ee
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b
+    question_text: Summarize EUR prices for SE2 by max, average for each 2w between
+      2023-07-01 00:00:00 and 2023-09-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: SE2
+        name: iri_discovery
+        output: urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:781f385c-f3a1-4691-843d-eab2ed919a1b>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:de509a35-5427-4ae1-8e2b-9c6925d17999"},
+          "mrid": {"type": "literal", "value": "de509a35-5427-4ae1-8e2b-9c6925d17999"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: de509a35-5427-4ae1-8e2b-9c6925d17999
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE2_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          - average
+          end: '2023-09-01T00:00:00Z'
+          external_id: Kraftpriser_SE2_13
+          granularity: 2w
+          start: '2023-07-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_1ed768e5ae40683f67d8a7a41723894b
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+    question_text: What is the average, max, min, continuous_variance energy price
+      in EUR for 30e6709e-510c-49b9-92ec-e2aebdc1050e per 1d between 2023-12-01 00:00:00
+      and 2023-12-08 00:00:00?
+    reference_steps:
+    - - args:
+          query: 30e6709e-510c-49b9-92ec-e2aebdc1050e
+        name: iri_discovery
+        output: urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:30e6709e-510c-49b9-92ec-e2aebdc1050e>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:b4e3cb44-dd09-4c06-b7bc-21411872bca4"},
+          "mrid": {"type": "literal", "value": "b4e3cb44-dd09-4c06-b7bc-21411872bca4"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: b4e3cb44-dd09-4c06-b7bc-21411872bca4
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_SE3_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - average
+          - max
+          - min
+          - continuous_variance
+          end: '2023-12-08T00:00:00Z'
+          external_id: Kraftpriser_SE3_13
+          granularity: 1d
+          start: '2023-12-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_cdb04c10e01cec3fda0d9efe4a426626
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+    question_text: I'd like the average, min, continuous_variance of EUR electricity
+      prices for NO3 from 2024-10-27 00:00:00 through 2024-11-24 00:00:00, broken
+      down by 5d.
+    reference_steps:
+    - - args:
+          query: NO3
+        name: iri_discovery
+        output: urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:0f094148-164b-427a-a8e8-0c5f334688ae>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:b27b8d6b-832c-4a33-bbd5-4f2da41760d9"},
+          "mrid": {"type": "literal", "value": "b27b8d6b-832c-4a33-bbd5-4f2da41760d9"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: b27b8d6b-832c-4a33-bbd5-4f2da41760d9
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO3_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - average
+          - min
+          - continuous_variance
+          end: '2024-11-24T00:00:00Z'
+          external_id: Kraftpriser_NO3_13
+          granularity: 5d
+          start: '2024-10-27T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_fd14318420bcb248a3904f82e3dbc7e2
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+    question_text: Retrieve the min EUR price for 63b13e2e-8d0a-47d0-8de8-fb686decbae4,
+      grouped by 6h, for the period 2024-07-19 12:00:00 through 2024-07-20 12:00:00.
+    reference_steps:
+    - - args:
+          query: 63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        name: iri_discovery
+        output: urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:63b13e2e-8d0a-47d0-8de8-fb686decbae4>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:31a8b14b-e41f-4c0b-b21b-0be308770228"},
+          "mrid": {"type": "literal", "value": "31a8b14b-e41f-4c0b-b21b-0be308770228"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 31a8b14b-e41f-4c0b-b21b-0be308770228
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO2_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - min
+          end: '2024-07-20T12:00:00Z'
+          external_id: Kraftpriser_NO2_13
+          granularity: 6h
+          start: '2024-07-19T12:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_d98915babbd9e5af2798983e5f6ba3b0
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+    question_text: 'Extract continuous_variance EUR price values for 10YNO-4--------9;
+      range: 2024-10-05 00:00:00 to 2024-11-02 00:00:00; granularity: 5d.'
+    reference_steps:
+    - - args:
+          query: 10YNO-4--------9
+        name: iri_discovery
+        output: urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:b64efd13-92fe-4786-87ef-731d1e2cce0e>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:057de70f-c679-4a76-bf64-c36adf45ede3"},
+          "mrid": {"type": "literal", "value": "057de70f-c679-4a76-bf64-c36adf45ede3"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 057de70f-c679-4a76-bf64-c36adf45ede3
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO4_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          end: '2024-11-02T00:00:00Z'
+          external_id: Kraftpriser_NO4_13
+          granularity: 5d
+          start: '2024-10-05T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_d538a70f5746b83bf34ab64636f5014c
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+    question_text: Summarize EUR prices for 6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc by
+      average for each 3mо between 2023-07-01 00:00:00 and 2024-07-01 00:00:00.
+    reference_steps:
+    - - args:
+          query: 6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        name: iri_discovery
+        output: urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:6eaaae78-21f1-41c7-81a4-2b0fe15cdbfc>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:00cc6a04-2dab-4bfe-b2e7-50d4da1198e2"},
+          "mrid": {"type": "literal", "value": "00cc6a04-2dab-4bfe-b2e7-50d4da1198e2"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 00cc6a04-2dab-4bfe-b2e7-50d4da1198e2
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_FI_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - average
+          end: '2024-07-01T00:00:00Z'
+          external_id: Kraftpriser_FI_13
+          granularity: 3mо
+          start: '2023-07-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_7653a8857bc2330d8eb16db047698d55
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+    question_text: Show the 1d max of EUR spot prices for 83aa03e5 from 2025-03-14
+      00:00:00 to 2025-03-21 00:00:00.
+    reference_steps:
+    - - args:
+          query: 83aa03e5
+        name: iri_discovery
+        output: urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:83aa03e5-5fd0-431c-b8dd-acc08c21ed6a>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:7d90224c-ab77-4786-8e08-7f9b275c46da"},
+          "mrid": {"type": "literal", "value": "7d90224c-ab77-4786-8e08-7f9b275c46da"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 7d90224c-ab77-4786-8e08-7f9b275c46da
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_NO1_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - max
+          end: '2025-03-21T00:00:00Z'
+          external_id: Kraftpriser_NO1_13
+          granularity: 1d
+          start: '2025-03-14T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  - id: question_37db8020e712df06ee4df33ac9673379
+    parameter_bindings:
+      $ObjectIdentity(0, nc:BiddingZone): urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd
+    question_text: I'd like the continuous_variance, max, average, min of EUR electricity
+      prices for 10Y1001A1001A39I from 2023-10-01 00:00:00 through 2024-10-01 00:00:00,
+      broken down by 6mо.
+    reference_steps:
+    - - args:
+          query: 10Y1001A1001A39I
+        name: iri_discovery
+        output: urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd
+        output_media_type: text/uri
+        required_columns:
+        - uri
+    - - args:
+          query: "PREFIX cimr: <https://cim.ucaiug.io/rules#>\nPREFIX cim: <https://cim.ucaiug.io/ns#>\n\
+            SELECT ?price_measurement ?mrid WHERE {\n    ?price_measurement cim:Measurement.measurementType\
+            \ \"Price-Actual\" .\n    ?price_measurement cim:Measurement.unitSymbol\
+            \ <https://cim.ucaiug.io/ns#UnitSymbol.EURperMWh> .\n    ?price_measurement\
+            \ cim:Measurement.PowerSystemResource <urn:uuid:2bd7a8ab-18d1-42c6-8454-c2c8ff4dbebd>\
+            \ .\n    ?price_measurement cimr:Measurement.isInCognite true .\n    ?price_measurement\
+            \ cim:IdentifiedObject.mRID ?mrid .\n} LIMIT 1"
+        name: sparql_query
+        output: '{"head": {"vars": ["price_measurement", "mrid"]}, "results": {"bindings":
+          [{"price_measurement": {"type": "uri", "value": "urn:uuid:1d9d34e6-a31f-4b95-9e67-ce127dd26c84"},
+          "mrid": {"type": "literal", "value": "1d9d34e6-a31f-4b95-9e67-ce127dd26c84"}}]}}'
+        output_media_type: application/sparql-results+json
+        required_columns:
+        - price_measurement
+        - mrid
+    - - args:
+          mrid: 1d9d34e6-a31f-4b95-9e67-ce127dd26c84
+        name: retrieve_time_series
+        output:
+        - external_id: Kraftpriser_EE_13
+        output_media_type: application/json
+        required_columns:
+        - external_id
+    - - args:
+          aggregates:
+          - continuous_variance
+          - max
+          - average
+          - min
+          end: '2024-10-01T00:00:00Z'
+          external_id: Kraftpriser_EE_13
+          granularity: 6mо
+          start: '2023-10-01T00:00:00Z'
+        name: retrieve_data_points
+        output: null
+        output_media_type: application/json
+        required_columns: null
+  sparql_template: null
+  template_id: template_energyprice_template2

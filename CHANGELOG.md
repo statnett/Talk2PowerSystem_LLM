@@ -1,3 +1,14 @@
+v2.4.0
+============
+
+* [#282](https://github.com/statnett/Talk2PowerSystem_PM/issues/282):
+  - Fix Q&A dataset issues with encoding, duplicate template ids, 
+    invalid values for timeseries aggregates, and empty reference steps groups.
+  - Update `ttyg` to `4.2.1`, `graphrag-eval` to `6.1.0`, `cognite-sdk` to 
+    `8.2.0`.
+  - Rename `retrieve timeseries` tool argument `rndp_mrid` to `mrid` for the 
+    sake of the evaluation.
+
 v2.4.0-rc1
 ============
 

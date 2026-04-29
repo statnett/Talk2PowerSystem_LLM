@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import io
 import json
 import time
@@ -271,7 +272,7 @@ def init_graphdb(graphdb_settings: GraphDBSettings) -> GraphDBWrapper:
     return GraphDBWrapper(**kwargs)
 
 
-def run_evaluation_on_split(
+async def run_evaluation_on_split(
     graphdb_settings: GraphDBSettings,
     split: list[dict],
     split_name: str,
@@ -292,7 +293,6 @@ def run_evaluation_on_split(
                 )
 
     graphdb_client = init_graphdb(graphdb_settings)
-    chat_responses_actual_answers = dict()
     chat_responses = dict()
     with open(gdb_responses_file, encoding="utf-8") as reader:
         lines = reader.readlines()
@@ -356,7 +356,6 @@ def run_evaluation_on_split(
                         }
                     )
 
-                chat_responses_actual_answers[question_id] = messages[-1]["message"]
                 chat_responses[question_id] = {
                     "question_id": question_id,
                     "input_tokens": usage["promptTokens"],
@@ -366,11 +365,7 @@ def run_evaluation_on_split(
                     "actual_steps": actual_steps,
                 }
 
-    per_question_eval = run_evaluation(split, chat_responses)
-    for question_eval in per_question_eval:
-        question_eval["actual_answer"] = chat_responses_actual_answers.get(
-            question_eval["question_id"], None
-        )
+    per_question_eval = await run_evaluation(split, chat_responses)
     evaluation_results_file = results_dir / f"evaluation_per_question_{split_name}.yaml"
     save_as_yaml(evaluation_results_file, per_question_eval)
     aggregates = compute_aggregates(per_question_eval)
@@ -391,12 +386,16 @@ def main():
     results_dir = results_dir / timestamp
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    _, dev_split, test_split = load_and_split_qa_dataset(
-        Path(args.qa_dataset_path), n_templates=args.n_templates
-    )
+    _, dev_split, test_split = load_and_split_qa_dataset(Path(args.qa_dataset_path))
+    dev_split = dev_split[: args.n_templates]
+    test_split = test_split[: args.n_templates]
 
-    run_evaluation_on_split(graphdb_settings, dev_split, "dev", results_dir)
-    run_evaluation_on_split(graphdb_settings, test_split, "test", results_dir)
+    asyncio.run(
+        run_evaluation_on_split(graphdb_settings, dev_split, "dev", results_dir)
+    )
+    asyncio.run(
+        run_evaluation_on_split(graphdb_settings, test_split, "test", results_dir)
+    )
 
 
 if __name__ == "__main__":

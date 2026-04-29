@@ -23,6 +23,11 @@ poetry run evaluation --chat_config_path FULL_PATH_TO_CHAT_CONFIG --qa-dataset-p
 
 where FULL_PATH_TO_CHAT_CONFIG_PATH is the full path to the [dev+retrieval.yaml](../config/dev+retrieval.yaml).
 If you want to run the evaluation without the N-Shot tool, use the [dev.yaml](../config/dev.yaml).
+If you want to run the evaluation with the Cognite query tools, 
+add `tools.cognite` configuration to the agent configuration,
+add `--no-split_dataset` to the above command and remove 
+`--n_templates MAX_NUMBER_OF_TEMPLATES_FOR_DEV_AND_TEST`, so that all 
+templates are used for evaluation.
 
 The results will be saved in the specified `RESULTS_DIR` under a sub-folder with name derived from the current date time, and it will include:
 

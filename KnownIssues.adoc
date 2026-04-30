@@ -1,4 +1,6 @@
 = Known Issues
 The following are know issues:
 
--
+- Enabling parallel tools calls causes the agent to hit `Param.postParse2() missing 1 required
+positional argument: 'tokenList'` sometimes
+

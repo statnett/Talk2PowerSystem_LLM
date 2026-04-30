@@ -1,3 +1,10 @@
+v2.4.1
+============
+
+* [#369](https://github.com/statnett/Talk2PowerSystem_PM/issues/369):
+  Disable parallel tools calls to prevent the agent from hitting 
+  `Param.postParse2() missing 1 required positional argument: 'tokenList'`
+
 v2.4.0
 ============
 

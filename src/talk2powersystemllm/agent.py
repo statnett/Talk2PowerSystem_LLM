@@ -330,15 +330,21 @@ class Talk2PowerSystemAgentFactory:
                 self.tools.append(
                     RetrieveDataPointsTool(cognite_session=self.cognite_session)
                 )
+                model_with_tools = self.model.bind_tools(
+                    self.tools, parallel_tool_calls=False
+                )
                 self.__agent = create_agent(
-                    model=self.model,
+                    model=model_with_tools,
                     tools=self.tools,
                     system_prompt=self.instructions,
                     checkpointer=self.checkpointer,
                 )
         else:
+            model_with_tools = self.model.bind_tools(
+                self.tools, parallel_tool_calls=False
+            )
             self.__agent = create_agent(
-                model=self.model,
+                model=model_with_tools,
                 tools=self.tools,
                 system_prompt=self.instructions,
                 checkpointer=self.checkpointer,
@@ -432,8 +438,9 @@ class Talk2PowerSystemAgentFactory:
                 RetrieveTimeSeriesTool(cognite_session=cognite_session),
                 RetrieveDataPointsTool(cognite_session=cognite_session),
             ]
+            model_with_tools = self.model.bind_tools(tools, parallel_tool_calls=False)
             return create_agent(
-                model=self.model,
+                model=model_with_tools,
                 tools=tools,
                 system_prompt=self.instructions,
                 checkpointer=self.checkpointer,

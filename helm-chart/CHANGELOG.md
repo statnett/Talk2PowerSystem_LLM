@@ -1,5 +1,9 @@
 # Talk to the Power System Chatbot LLM
 
+## 1.4.1
+
+- Update `appVersion` to `v2.4.1`.
+
 ## 1.4.0
 
 - Update `appVersion` to `v2.4.0`.

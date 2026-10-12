@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 #
-# Regression test: runs the acceptance tests locally against GraphDB 10, which needs no licence.
-# Builds the three images, runs the two passes that CI runs (Completions API, then Responses
+# Regression test: runs the unit tests and the acceptance tests locally, the latter against
+# GraphDB 10, which needs no licence. Builds the three images, runs the unit tests in the
+# application image, runs the two acceptance passes that CI runs (Completions API, then Responses
 # API) and tears everything down again.
 #
 #   tests/regression-test.sh                   # everything; about six minutes once the images are cached
-#   tests/regression-test.sh -k test_health    # arguments are passed on to pytest
+#   tests/regression-test.sh -k test_health    # arguments are passed on to pytest for the acceptance tests
 #
 # Settings are environment variables:
 #   GRAPHDB_VERSION   tag of the ontotext/graphdb image to test against   [10.8.14]
@@ -58,6 +59,20 @@ explain_failure() {
 results=()
 failed=0
 
+# The unit tests run inside the application image, so against the dependencies that the image
+# ships with. The image has no test runner; the versions are those of the test group in pyproject.toml.
+run_unit_tests() {
+  step "Unit tests"
+  if docker run --rm --volume "$ROOT/tests:/code/tests:ro" talk2powersystem sh -c '
+      pip install --quiet --disable-pip-version-check --root-user-action=ignore "pytest>=9.0.3,<10" "pytest-asyncio>=1,<2" &&
+      python -m pytest tests/unit_tests/'; then
+    results+=("PASS  Unit tests")
+  else
+    results+=("FAIL  Unit tests")
+    failed=1
+  fi
+}
+
 # run_pass NAME SETTING [PYTEST_ARGS...]: one pytest run, with the chatbot started under SETTING.
 run_pass() {
   local name="$1" setting="$2"
@@ -80,6 +95,8 @@ docker compose -f "$COMPOSE" down -v --remove-orphans > /dev/null 2>&1 || true
 step "Building the application image"
 bash ./docker/generate-manifest.sh > /dev/null 2>&1 || { echo "ERROR: docker/generate-manifest.sh failed" >&2; exit 2; }
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
+
+run_unit_tests
 
 step "Building the acceptance tests image"
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .

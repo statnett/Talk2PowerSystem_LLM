@@ -1,0 +1,8 @@
+# Mounts a GraphDB license into the graphdb service.
+# GraphDB 11 rejects every write without one, so pass this file after docker-compose.yaml,
+# unless the graphdb image was built with a version that runs without a license (10.8).
+services:
+
+  graphdb:
+    volumes:
+      - ${LICENSE_PATH:-./graphdb.license}:/opt/graphdb/dist/conf/graphdb.license:ro

@@ -109,16 +109,44 @@ base64 -i /path/to/new/graphdb.license
 --
 
 ===== Local Execution
-When running acceptance tests locally, the environment does not use the GitHub Secret. Instead, you must pass the absolute path to the license file on your machine via the `LICENSE_PATH` environment variable:
+The GraphDB version is a build argument of `DockerfileGraphDB` (`GRAPHDB_VERSION`, default `11.3.1`), and the license is mounted by a separate compose file, `docker-compose.license.yaml`.
+This gives two ways to run the acceptance tests locally: with a license on GraphDB 11, as in CI, or without a license on GraphDB 10.8.
+
+In both cases, first build the application and the acceptance tests images:
 
 [,bash]
 ----
 bash ./docker/generate-manifest.sh
 docker buildx build --file docker/Dockerfile --tag talk2powersystem .
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
+----
+
+====== With a license (GraphDB 11)
+The environment does not use the GitHub Secret. Instead, you must pass the absolute path to the license file on your machine via the `LICENSE_PATH` environment variable:
+
+[,bash]
+----
 docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
-LLM_SEED=1 LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
-LLM_USE_RESPONSES_API=true LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+LLM_SEED=1 LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml -f tests/acceptance_tests/docker-compose/docker-compose.license.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+LLM_USE_RESPONSES_API=true LICENSE_PATH=/path/to/graphdb.license docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml -f tests/acceptance_tests/docker-compose/docker-compose.license.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+----
+
+====== Without a license (GraphDB 10.8)
+GraphDB 10.8 runs as GraphDB Free when no license is set. Build the GraphDB image with that version and leave out `docker-compose.license.yaml`:
+
+[,bash]
+----
+docker buildx build --build-arg GRAPHDB_VERSION=10.8.14 --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
+LLM_SEED=1 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+LLM_USE_RESPONSES_API=true docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+----
+
+NOTE: GraphDB 10.8 returns an empty result for `DESCRIBE ... FROM <http://www.ontotext.com/describe/outgoing>`, which the agent instructions use for the `CLICKED_ON` messages. The acceptance tests do not cover this.
+
+====== Clean up
+
+[,bash]
+----
 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
 ----
 

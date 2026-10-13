@@ -1,3 +1,23 @@
+v2.4.2-rc1
+============
+
+* Upgrade dependencies flagged by Dependabot security alerts, closing 98 of the
+  103 open alerts. Notable bumps: `starlette` 0.52.1 to 1.8.0, `cryptography`
+  46.0.7 to 50.0.2, `redis` 7.3.0 to 8.1.0, `urllib3` 2.6.3 to 2.8.0, `msal`
+  1.36.0 to 1.39.0, `pydantic-settings` 2.14.0 to 2.14.2, `langchain-core` to
+  1.3.3, and the Jupyter stack (`jupyterlab`, `jupyter-server`, `notebook`,
+  `mistune`, `tornado`). `langgraph-checkpoint` is pinned to 4.0.1 on purpose:
+  later versions change the checkpoint serialisation, so the explain endpoint
+  loses the query metadata it reconstructs from the stored tool artifact. The
+  remaining alerts have no fixed release (`python-jose`, `ecdsa`) or are capped
+  by `ttyg` (`langchain`, `langgraph-sdk`) and by that pin
+  (`langgraph-checkpoint`).
+* Restrict JWT signature verification in `verify_jwt` to `RS256`, the algorithm
+  Microsoft Entra ID signs with. Without an explicit allow-list a token could
+  claim a symmetric algorithm and be verified against the issuer's public key as
+  an HMAC secret, letting anyone holding that public key forge tokens
+  (python-jose GHSA-3qf3-8w2g-rqmx / CVE-2026-85394, which has no fixed release).
+
 v2.4.1
 ============
 

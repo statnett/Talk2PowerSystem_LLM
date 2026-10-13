@@ -39,23 +39,30 @@ jobs:
           conda activate Talk2PowerSystemLLM
           poetry run pytest --cov=talk2powersystemllm --cov-report=term-missing tests/unit_tests/
 
+      - name: Create GraphDB License File
+        run: |
+          echo -n "${{ secrets.GRAPHDB_LICENSE }}" | base64 -d > graphdb.license
+        working-directory: tests/acceptance_tests/docker-compose/
+        shell: bash
+
       - name: Build Docker images for acceptance tests
         run: |
           bash ./docker/generate-manifest.sh
           docker buildx build --file docker/Dockerfile --tag talk2powersystem .
           docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileAcceptanceTests --tag talk2powersystem-acceptance-tests .
-          docker buildx build --build-arg GRAPHDB_VERSION=10.8.14 --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
+          docker buildx build --file tests/acceptance_tests/docker-compose/DockerfileGraphDB --tag graphdb .
 
       - name: Run acceptance tests with Completions API
         run: |
-          LLM_SEED=1 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+          LLM_SEED=1 docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml -f tests/acceptance_tests/docker-compose/docker-compose.license.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
 
       - name: Run acceptance tests with Responses API
         run: |
-          LLM_USE_RESPONSES_API=true docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
+          LLM_USE_RESPONSES_API=true docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml -f tests/acceptance_tests/docker-compose/docker-compose.license.yaml run --rm talk2powersystem-acceptance-tests poetry run pytest tests/acceptance_tests/
 
       - name: Always clean up Docker Compose
         if: always()
         run: |
           docker compose -f tests/acceptance_tests/docker-compose/docker-compose.yaml down -v --remove-orphans
           rm -f git-manifest.yaml
+          rm -f tests/acceptance_tests/docker-compose/graphdb.license

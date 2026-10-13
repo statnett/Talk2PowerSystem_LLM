@@ -24,6 +24,8 @@ services:
     container_name: graphdb
     ports:
       - "7200"
+    volumes:
+      - ${LICENSE_PATH:-./graphdb.license}:/opt/graphdb/dist/conf/graphdb.license:ro
     healthcheck:
       test: >
         curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'query=ASK { _:s <http://www.ontotext.com/plugins/autocomplete#enabled> ?o }' http://localhost:7200/repositories/cim | grep -q true

@@ -10,7 +10,6 @@ jupyter notebook
 
 Open the notebook `src/jupyter_notebooks/Talk2PowerSystem.ipynb` and run its cells.
 The notebook will prompt you for Azure OpenAI credentials.
-Azure OpenAI credentials are shared in Graphwise Keeper, entry `Statnett/Graphwise Azure Statnett Deployment GPT4.1`
 
 ## Run the chatbot on the RNDP environment using a Jupyter notebook
 

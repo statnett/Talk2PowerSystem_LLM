@@ -99,12 +99,12 @@ There is a ready made chatbot config file you can use ["dev+retrieval.yaml"](../
 but you will need to create a `.env` file with sample content
 
 ```
-MANIFEST_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
-DIAGRAMS_PATH=/home/neli/workspace/Talk2PowerSystem/diagram/PowSyBl/svg
-LOGGING_YAML_FILE=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
-AGENT_CONFIG=/home/neli/workspace/Talk2PowerSystem_LLM/config/dev+retrieval.yaml
-PYPROJECT_TOML_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/pyproject.toml
-TROUBLE_MD_PATH=/home/neli/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/trouble.md
+MANIFEST_PATH=/home/user/workspace/Talk2PowerSystem_LLM/git-manifest.yaml
+DIAGRAMS_PATH=/home/user/workspace/Talk2PowerSystem/diagram/PowSyBl/svg
+LOGGING_YAML_FILE=/home/user/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/logging.yaml
+AGENT_CONFIG=/home/user/workspace/Talk2PowerSystem_LLM/config/dev+retrieval.yaml
+PYPROJECT_TOML_PATH=/home/user/workspace/Talk2PowerSystem_LLM/pyproject.toml
+TROUBLE_MD_PATH=/home/user/workspace/Talk2PowerSystem_LLM/src/talk2powersystemllm/app/trouble.md
 REDIS_HOST=localhost
 REDIS_PASSWORD=DUMMY_REDIS_PASSWORD
 LLM_API_KEY=***

@@ -16,8 +16,6 @@ services:
         redis-server --requirepass DUMMY_REDIS_PASSWORD --appendonly yes --appendfsync everysec --save 300 10 --save 60 10000
       ports:
         - "6379"
-      volumes:
-        - redis_data:/data
 
   graphdb:
     image: graphdb
@@ -71,7 +69,3 @@ services:
     depends_on:
       talk2powersystem:
         condition: service_healthy
-
-volumes:
-
-  redis_data:

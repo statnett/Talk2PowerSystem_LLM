@@ -7,23 +7,23 @@ readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==4.2.1",
-    "graphrag-eval==6.1.0",
+    "ttyg==4.3.0",
+    "graphrag-eval==6.4.0",
     "jupyter==1.1.1",
-    "langchain-openai==1.2.1",
-    "langgraph-checkpoint-redis==0.4.1",
+    "langchain-openai==1.7.2",
+    "langgraph-checkpoint-redis==0.5.2",
     "jsonlines==4.0.0",
-    "cognite-sdk==8.2.0",
-    "pydantic-settings==2.14.0",
+    "cognite-sdk==8.21.0",
+    "pydantic-settings==2.16.0",
     "PyYAML==6.0.3",
-    "uvicorn[standard]==0.46.0",
-    "fastapi==0.136.1",
-    "APScheduler==3.11.2",
+    "uvicorn[standard]==0.54.0",
+    "fastapi==0.143.1",
+    "APScheduler==3.11.3",
     "toml==0.10.2",
-    "markdown==3.10.2",
+    "markdown==3.11.1",
     "python-jose[cryptography]==3.5.0",
-    "msal==1.36.0",
-    "cachetools==7.0.6",
+    "msal==1.39.0",
+    "cachetools==7.2.1",
     "importlib_resources==7.1.0",
 ]
 
@@ -31,10 +31,10 @@ dependencies = [
 repository = "https://github.com/statnett/Talk2PowerSystem_LLM"
 
 [tool.poetry.group.test.dependencies]
-pytest = "<10,>=9.0.3"
-pytest-cov = "<8,>=7"
-pytest-asyncio = "<2,>=1"
-requests = "<3,>=2"
+pytest = "<10,>=9.1.1"
+pytest-cov = "<8,>=7.1.0"
+pytest-asyncio = "<2,>=1.4.0"
+requests = "<3,>=2.34.2"
 mockserver-client = "0.0.6"
 
 [tool.poetry.group.test]

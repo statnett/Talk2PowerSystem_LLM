@@ -1,0 +1,5 @@
+logs/*
+.art/*
+unsloth_compiled_cache/*
+full_trace.jsonl
+__pycache__/*

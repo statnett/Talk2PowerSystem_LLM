@@ -35,7 +35,7 @@ jobs:
 
       # Sets up Miniconda required for the application building process
       - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb
         with:
           activate-environment: Talk2PowerSystemLLM
           environment-file: environment.yml

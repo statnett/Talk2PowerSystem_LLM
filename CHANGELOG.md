@@ -1,3 +1,11 @@
+v2.5.0
+============
+
+* Run acceptance tests with GraphDB 11.4.3.
+  Remove the Redis volume from the acceptance tests.
+* Update 3rd party libraries to fix security vulnerabilities.
+* Use Redis lock to init the Redis saver, so that "index already exists" error is not thrown.
+
 v2.4.1
 ============
 

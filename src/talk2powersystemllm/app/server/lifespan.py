@@ -31,17 +31,17 @@ async def lifespan(fastapi_app: FastAPI):
 
     settings = fastapi_app.state.settings
 
-    async with (
-        create_redis_client(settings.redis) as redis_client,
-        AsyncRedisSaver.from_conn_string(
-            redis_client=redis_client,
-            ttl={
-                "default_ttl": settings.redis.ttl,
-                "refresh_on_read": settings.redis.ttl_refresh_on_read,
-            },
-        ) as redis_saver,
-    ):
-        await redis_saver.asetup()
+    async with create_redis_client(settings.redis) as redis_client:
+        lock = redis_client.lock("checkpoint_index_init_lock", timeout=15)
+        async with lock:
+            redis_saver = AsyncRedisSaver(
+                redis_client=redis_client,
+                ttl={
+                    "default_ttl": settings.redis.ttl,
+                    "refresh_on_read": settings.redis.ttl_refresh_on_read,
+                }
+            )
+            await redis_saver.asetup()
 
         agent_factory = Talk2PowerSystemAgentFactory(
             settings.agent_config,

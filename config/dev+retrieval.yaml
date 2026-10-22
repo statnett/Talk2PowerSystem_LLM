@@ -13,7 +13,7 @@ tools:
       PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
       PREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>
       SELECT ?iri ?name ?class ?rank {{
-          ?iri auto:query "{query}" ;
+          ?iri auto:query {query} ;
               {property_path} ?name ;
               {filter_clause}
               sesame:directType ?class;
@@ -33,7 +33,7 @@ tools:
       SELECT (REPLACE(GROUP_CONCAT(?q; separator="@"), "(.*?)@.*", "$1") AS ?question) ?query {{
           SELECT ?q ?query ?score {{
               [] a retr-index:{connector_name} ;
-                  retr:query "{query}" ;
+                  retr:query {query} ;
                   retr:limit 100;
                   retr:entities ?entity .
               ?entity retr:score ?score;

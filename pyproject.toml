@@ -7,23 +7,23 @@ readme = "README.adoc"
 license = "Apache-2.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "ttyg==4.3.0",
-    "graphrag-eval==6.5.0",
+    "ttyg==4.4.1",
+    "graphrag-eval==6.6.1",
     "jupyter==1.1.1",
     "langchain-openai==1.7.2",
     "langgraph-checkpoint-redis==0.5.2",
     "jsonlines==4.0.0",
-    "cognite-sdk==8.21.0",
-    "pydantic-settings==2.16.0",
+    "cognite-sdk==8.22.0",
+    "pydantic-settings==2.16.1",
     "PyYAML==6.0.3",
     "uvicorn[standard]==0.54.0",
-    "fastapi==0.143.1",
+    "fastapi==0.159.1",
     "APScheduler==3.11.3",
     "toml==0.10.2",
-    "markdown==3.11.1",
+    "markdown==3.11.2",
     "python-jose[cryptography]==3.5.0",
     "msal==1.39.0",
-    "cachetools==7.2.1",
+    "cachetools==7.2.4",
     "importlib_resources==7.1.0",
 ]
 

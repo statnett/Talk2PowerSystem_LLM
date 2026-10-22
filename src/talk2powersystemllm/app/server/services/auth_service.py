@@ -53,9 +53,15 @@ def get_jwks_keys(settings: AppSettings, jwks_cache: TTLCache) -> dict:
 def verify_jwt(settings: AppSettings, jwks_cache: TTLCache, token: str):
     jwks_keys = get_jwks_keys(settings, jwks_cache)
     try:
+        # Restrict verification to the asymmetric algorithm Microsoft Entra ID signs with.
+        # Without an explicit allow-list, a token header may claim a symmetric algorithm
+        # (e.g. HS256) and have its signature verified against the public key as if it were
+        # an HMAC secret, so anyone holding the public key could forge tokens
+        # (python-jose GHSA-3qf3-8w2g-rqmx / CVE-2026-85394).
         return jwt.decode(
             token,
             jwks_keys,
+            algorithms=["RS256"],
             audience=settings.security.audience,
             issuer=settings.security.issuer,
         )

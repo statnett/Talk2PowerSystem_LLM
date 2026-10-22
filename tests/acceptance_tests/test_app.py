@@ -290,7 +290,7 @@ class AcceptanceTestsApp(TestCase):
 PREFIX rank: <http://www.ontotext.com/owlim/RDFRank#>
 PREFIX auto: <http://www.ontotext.com/plugins/autocomplete#>
 SELECT ?iri ?name ?class ?rank {{
-    ?iri auto:query "{query}" ;
+    ?iri auto:query {query} ;
         {property_path} ?name ;
         {filter_clause}
         sesame:directType ?class;

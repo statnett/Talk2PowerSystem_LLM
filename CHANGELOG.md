@@ -1,10 +1,18 @@
 v2.5.0
 ============
 
-* Run acceptance tests with GraphDB 11.4.3.
-  Remove the Redis volume from the acceptance tests.
-* Update 3rd party libraries to fix security vulnerabilities.
-* Use Redis lock to init the Redis saver, so that "index already exists" error is not thrown.
+* [#373](https://github.com/statnett/Talk2PowerSystem_PM/issues/373):
+  - Update 3rd party libraries to their latest versions and address security 
+    vulnerabilities.
+  - Restrict JWT decoding to RS256 algorithm to address python-jose 
+    GHSA-3qf3-8w2g-rqmx / CVE-2026-85394.
+  - Use Redis lock to init the Redis saver, so that "index already exists" 
+    error is not thrown.
+  - Remove double quotes from SPARQL query templates, so that an exception is 
+    not thrown in case of an LLM-generated string containing quotes. Instead, 
+    a SPARQL literal is used.
+  - Run acceptance tests with GraphDB 11.4.3.
+  - Remove the Redis volume from the acceptance tests.
 
 v2.4.1
 ============
